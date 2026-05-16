@@ -128,26 +128,69 @@ const SAMPLE_DATA: Record<Sector, Equity[]> = {
   Industrials: [],
 };
 
-// ── Sparkline ─────────────────────────────────────────────────────────────────
-function SparklineChart({ prices, positive }: { prices: number[]; positive: boolean }) {
+// ── Mini chart (price chart with axes) ────────────────────────────────────────
+function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }) {
   if (!prices || prices.length < 2) return null;
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  const range = max - min || 1;
-  const W = 100; const H = 36; const pad = 2;
-  const pts = prices.map((p, i) => ({
-    x: pad + (i / (prices.length - 1)) * (W - pad * 2),
-    y: H - pad - ((p - min) / range) * (H - pad * 2),
-  }));
-  const polylinePoints = pts.map(p => `${p.x},${p.y}`).join(' ');
-  const areaD = [`M ${pts[0].x} ${H - pad}`, ...pts.map(p => `L ${p.x} ${p.y}`), `L ${pts[pts.length - 1].x} ${H - pad}`, 'Z'].join(' ');
-  const stroke = positive ? '#34d399' : '#f87171';
-  const fill   = positive ? '#34d39918' : '#f8717118';
+
+  const VW = 260; const VH = 120;
+  const padL = 46; const padR = 6; const padT = 6; const padB = 20;
+  const chartW = VW - padL - padR;
+  const chartH = VH - padT - padB;
+
+  const rawMin = Math.min(...prices);
+  const rawMax = Math.max(...prices);
+  const rawRange = rawMax - rawMin || rawMin * 0.02 || 1;
+  const yMin = rawMin - rawRange * 0.15;
+  const yMax = rawMax + rawRange * 0.15;
+  const yRange = yMax - yMin;
+
+  const toX = (i: number) => padL + (i / (prices.length - 1)) * chartW;
+  const toY = (p: number) => padT + chartH - ((p - yMin) / yRange) * chartH;
+
+  const pts = prices.map((p, i) => ({ x: toX(i), y: toY(p) }));
+  const linePath = pts.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`).join(' ');
+  const areaPath = `${linePath} L ${pts[pts.length - 1].x.toFixed(1)} ${(padT + chartH).toFixed(1)} L ${pts[0].x.toFixed(1)} ${(padT + chartH).toFixed(1)} Z`;
+
+  const color = positive ? '#34d399' : '#f87171';
+  const fillColor = positive ? 'rgba(52,211,153,0.12)' : 'rgba(248,113,113,0.12)';
+
+  // 3 Y-axis ticks
+  const yTicks = [yMin + yRange * 0.1, yMin + yRange * 0.5, yMin + yRange * 0.9];
+  const fmtPrice = (v: number) =>
+    v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v >= 100 ? v.toFixed(0) : v.toFixed(1);
+
+  // X-axis labels — 5 trading days
+  const xLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: '36px' }} preserveAspectRatio="none">
-      <path d={areaD} fill={fill} />
-      <polyline points={polylinePoints} fill="none" stroke={stroke} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r="2.5" fill={stroke} />
+    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH}>
+      {/* Horizontal grid lines */}
+      {yTicks.map((tick, i) => (
+        <line key={i} x1={padL} y1={toY(tick)} x2={VW - padR} y2={toY(tick)}
+          stroke="#1e293b" strokeWidth="1" />
+      ))}
+      {/* Y axis */}
+      <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+      {/* X axis */}
+      <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+      {/* Y labels */}
+      {yTicks.map((tick, i) => (
+        <text key={i} x={padL - 5} y={toY(tick) + 3.5} textAnchor="end" fontSize="9" fill="#64748b">
+          {fmtPrice(tick)}
+        </text>
+      ))}
+      {/* X labels */}
+      {xLabels.map((label, i) => (
+        <text key={i} x={toX(i)} y={padT + chartH + 14} textAnchor="middle" fontSize="9" fill="#64748b">
+          {label}
+        </text>
+      ))}
+      {/* Area fill */}
+      <path d={areaPath} fill={fillColor} />
+      {/* Price line */}
+      <path d={linePath} fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Endpoint dot */}
+      <circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r="3" fill={color} />
     </svg>
   );
 }
@@ -236,9 +279,9 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
             </div>
           </div>
 
-          {/* Sparkline — centred anchor of the lower tile */}
+          {/* Mini chart — centred anchor of the lower tile */}
           <div className="mt-auto -mx-1">
-            <SparklineChart prices={equity.weeklyPrices} positive={positive} />
+            <MiniChart prices={equity.weeklyPrices} positive={positive} />
           </div>
 
           <p className="text-slate-700 text-xs pt-2 text-right">flip for detail →</p>
