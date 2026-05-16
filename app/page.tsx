@@ -211,19 +211,19 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
             <EasyScoreBadge score={equity.easyScore} />
           </div>
 
-          {/* Sparkline */}
-          <div className="my-3 -mx-1 flex-shrink-0">
-            <SparklineChart prices={equity.weeklyPrices} positive={positive} />
-          </div>
-
           {/* Price */}
-          <div className="flex items-baseline justify-between flex-shrink-0">
+          <div className="flex items-baseline justify-between flex-shrink-0 mt-3">
             <p className="text-white font-bold text-xl tabular-nums">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
             <span className={`text-xs font-semibold tabular-nums ${changeColor}`}>
               {changeSign}{equity.weeklyChange.toFixed(1)}% wk
             </span>
+          </div>
+
+          {/* Sparkline */}
+          <div className="my-3 -mx-1 flex-shrink-0">
+            <SparklineChart prices={equity.weeklyPrices} positive={positive} />
           </div>
 
           {/* Divider */}
