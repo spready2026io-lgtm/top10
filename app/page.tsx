@@ -132,8 +132,8 @@ const SAMPLE_DATA: Record<Sector, Equity[]> = {
 function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }) {
   if (!prices || prices.length < 2) return null;
 
-  const VW = 260; const VH = 120;
-  const padL = 46; const padR = 6; const padT = 6; const padB = 20;
+  const VW = 280; const VH = 175;
+  const padL = 46; const padR = 4; const padT = 8; const padB = 22;
   const chartW = VW - padL - padR;
   const chartH = VH - padT - padB;
 
@@ -163,7 +163,7 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
   const xLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
   return (
-    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH}>
+    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH} style={{ display: 'block' }}>
       {/* Horizontal grid lines */}
       {yTicks.map((tick, i) => (
         <line key={i} x1={padL} y1={toY(tick)} x2={VW - padR} y2={toY(tick)}
