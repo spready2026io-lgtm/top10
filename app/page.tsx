@@ -221,11 +221,6 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
             </span>
           </div>
 
-          {/* Sparkline */}
-          <div className="my-3 -mx-1 flex-shrink-0">
-            <SparklineChart prices={equity.weeklyPrices} positive={positive} />
-          </div>
-
           {/* Divider */}
           <div className="border-t border-slate-800 my-3 flex-shrink-0" />
 
@@ -241,7 +236,12 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
             </div>
           </div>
 
-          <p className="text-slate-700 text-xs mt-auto pt-3 text-right">flip for detail →</p>
+          {/* Sparkline — centred anchor of the lower tile */}
+          <div className="mt-auto -mx-1">
+            <SparklineChart prices={equity.weeklyPrices} positive={positive} />
+          </div>
+
+          <p className="text-slate-700 text-xs pt-2 text-right">flip for detail →</p>
         </div>
 
         {/* ── BACK ── */}
