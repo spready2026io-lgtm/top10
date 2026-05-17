@@ -11,6 +11,8 @@ import {
   SECTOR_ETFS,
   SECTOR_BENCHMARKS,
   SECTOR_BENCHMARK_ETF,
+  SECTOR_ETF_RETURNS,
+  SPY_RET,
   SAMPLE_DATA,
   INDEX_CHART_DATA,
 } from '@/lib/data';
@@ -74,8 +76,7 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
 // ── Index performance chart ───────────────────────────────────────────────────
 const PERIODS: Period[] = ['1W', '1M', '6M', '1Y'];
 
-function IndexChart({ sector }: { sector: Sector }) {
-  const [period, setPeriod] = useState<Period>('6M');
+function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Period; setPeriod: (p: Period) => void }) {
   const d: ChartPeriodData = INDEX_CHART_DATA[sector][period];
 
   const VW = 800; const VH = 200;
@@ -118,7 +119,7 @@ function IndexChart({ sector }: { sector: Sector }) {
   const zeroInRange = yMin <= 100 && yMax >= 100;
 
   return (
-    <div className="max-w-md mb-6">
+    <div className="max-w-md">
       <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3">
 
         {/* Headline */}
@@ -201,6 +202,47 @@ function IndexChart({ sector }: { sector: Sector }) {
           <span className="text-slate-700 text-xs ml-auto">indicative</span>
         </div>
 
+      </div>
+    </div>
+  );
+}
+
+// ── ETF performance summary tile ─────────────────────────────────────────────
+function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
+  const ticker    = SECTOR_BENCHMARK_ETF[sector];
+  const etfReturn = SECTOR_ETF_RETURNS[sector][period];
+  const spyReturn = SPY_RET[period];
+  const delta     = etfReturn - spyReturn;
+  const deltaPos  = delta >= 0;
+  const etfPos    = etfReturn >= 0;
+  const spyPos    = spyReturn >= 0;
+
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col gap-3 w-44 flex-shrink-0">
+      <div>
+        <p className="text-slate-500 text-xs uppercase tracking-wider mb-0.5">Sector ETF</p>
+        <p className="text-white font-bold text-xl">{ticker}</p>
+        <p className="text-slate-600 text-xs">{sector}</p>
+      </div>
+
+      <div className="border-t border-slate-800 pt-3">
+        <p className={`text-2xl font-bold tabular-nums leading-none ${etfPos ? 'text-emerald-400' : 'text-rose-400'}`}>
+          {etfPos ? '+' : ''}{etfReturn.toFixed(1)}%
+        </p>
+        <p className="text-slate-500 text-xs mt-0.5">{period} return</p>
+      </div>
+
+      <div className="border-t border-slate-800 pt-3 space-y-1.5">
+        <div className="flex items-center justify-between">
+          <span className="text-slate-500 text-xs">S&amp;P 500</span>
+          <span className={`text-xs font-semibold tabular-nums ${spyPos ? 'text-slate-300' : 'text-rose-400'}`}>
+            {spyPos ? '+' : ''}{spyReturn.toFixed(1)}%
+          </span>
+        </div>
+        <div className={`flex items-center gap-1 text-xs font-bold tabular-nums ${deltaPos ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <span>{deltaPos ? '▲' : '▼'}</span>
+          <span>{Math.abs(delta).toFixed(1)}% vs index</span>
+        </div>
       </div>
     </div>
   );
@@ -402,6 +444,7 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [sector, setSector] = useState<Sector>('Technology');
+  const [period, setPeriod] = useState<Period>('6M');
   const equities = SAMPLE_DATA[sector];
   const etfs     = SECTOR_ETFS[sector];
 
@@ -467,8 +510,11 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {equities.length > 0 ? (
           <>
-            {/* Index performance chart */}
-            <IndexChart sector={sector} />
+            {/* Index chart + ETF summary tile */}
+            <div className="flex items-start gap-4 mb-6">
+              <IndexChart sector={sector} period={period} setPeriod={setPeriod} />
+              <EtfPerfTile sector={sector} period={period} />
+            </div>
 
             {/* Legend + score explanation */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
@@ -485,9 +531,6 @@ export default function Home() {
               ))}
               <span className="text-slate-600 text-xs ml-auto hidden sm:block">Pro Score = avg weight in holding ETFs</span>
             </div>
-
-            {/* Index validation strip */}
-            <ValidationStrip equities={equities} sector={sector} />
 
             {/* Tile grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">

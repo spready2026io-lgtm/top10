@@ -40,7 +40,7 @@ const XLABELS: Record<Period, string[]> = {
 };
 
 // S&P 500 returns — same across all sectors (it is what it is)
-const SPY_RET: Record<Period, number> = { '1W': 1.2, '1M': 3.6, '6M': 10.4, '1Y': 18.8 };
+export const SPY_RET: Record<Period, number> = { '1W': 1.2, '1M': 3.6, '6M': 10.4, '1Y': 18.8 };
 
 // Top10 composite returns per sector per period
 const TOP10_RET: Record<Sector, Record<Period, number>> = {
@@ -123,6 +123,15 @@ export const SECTOR_BENCHMARKS: Record<Sector, number> = {
   Energy:      2.4,
   Healthcare: -0.8,
   Industrials: 1.1,
+};
+
+// Multi-period returns for the primary sector ETF (XLK, XLF, XLE, XLV, XLI)
+export const SECTOR_ETF_RETURNS: Record<Sector, Record<Period, number>> = {
+  Technology:  { '1W': 1.0,  '1M': 4.8,  '6M': 15.2, '1Y': 28.4 },
+  Financials:  { '1W': 0.9,  '1M': 3.2,  '6M': 10.6, '1Y': 18.2 },
+  Energy:      { '1W': 2.4,  '1M': 6.8,  '6M': 12.4, '1Y': 22.6 },
+  Healthcare:  { '1W': -0.8, '1M': -1.6, '6M': 2.4,  '1Y': 8.4  },
+  Industrials: { '1W': 1.1,  '1M': 4.0,  '6M': 12.2, '1Y': 20.8 },
 };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
