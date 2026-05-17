@@ -603,7 +603,9 @@ export default function Home() {
             {/* Index chart + ETF summary tile */}
             <div className="flex items-stretch gap-4 mb-6">
               <IndexChart sector={sector} period={period} setPeriod={setPeriod} />
-              <EtfPerfTile sector={sector} period={period} />
+              <div className="hidden sm:block flex-shrink-0 h-full">
+                <EtfPerfTile sector={sector} period={period} />
+              </div>
             </div>
 
             {/* Legend + score explanation */}
