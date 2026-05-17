@@ -17,11 +17,66 @@ import {
   INDEX_CHART_DATA,
 } from '@/lib/data';
 
+// ── Ticker → domain map for Clearbit logos ────────────────────────────────────
+const TICKER_DOMAINS: Record<string, string> = {
+  NVDA: 'nvidia.com',    AVGO: 'broadcom.com',       AMD: 'amd.com',
+  INTC: 'intel.com',     MU:   'micron.com',          LRCX: 'lamresearch.com',
+  AMAT: 'appliedmaterials.com', TXN: 'ti.com',        KLAC: 'kla.com',
+  QCOM: 'qualcomm.com',  ADI:  'analog.com',          SNPS: 'synopsys.com',
+  JPM:  'jpmorgan.com',  'BRK.B': 'berkshirehathaway.com', BAC: 'bankofamerica.com',
+  WFC:  'wellsfargo.com', GS:  'goldmansachs.com',    MS:   'morganstanley.com',
+  AXP:  'americanexpress.com', BLK: 'blackrock.com', SCHW: 'schwab.com',
+  MCO:  'moodys.com',
+  XOM:  'exxonmobil.com', CVX: 'chevron.com',         COP:  'conocophillips.com',
+  EOG:  'eogresources.com', SLB: 'slb.com',           MPC:  'marathonpetroleum.com',
+  PSX:  'phillips66.com', VLO: 'valero.com',          OXY:  'oxy.com',
+  HAL:  'halliburton.com',
+  LLY:  'lilly.com',     UNH: 'unitedhealthgroup.com', JNJ: 'jnj.com',
+  ABBV: 'abbvie.com',    MRK: 'merck.com',            TMO:  'thermofisher.com',
+  DHR:  'danaher.com',   AMGN: 'amgen.com',           ABT:  'abbott.com',
+  PFE:  'pfizer.com',
+  GE:   'ge.com',        RTX: 'rtx.com',              HON:  'honeywell.com',
+  CAT:  'caterpillar.com', DE: 'deere.com',            LMT:  'lockheedmartin.com',
+  ETN:  'eaton.com',     UPS: 'ups.com',              NOC:  'northropgrumman.com',
+  EMR:  'emerson.com',
+};
+
+// ── Per-tile x-axis labels per period ─────────────────────────────────────────
+const TILE_XLABELS: Record<Period, string[]> = {
+  '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+  '1M': ['May 1', 'May 15', 'Jun 1'],
+  '6M': ['Nov', 'Jan', 'Mar', 'May'],
+  '1Y': ["May '25", "Nov '25", "May '26"],
+};
+
+// ── Generate deterministic price path for a tile chart ───────────────────────
+function makeTilePrices(ticker: string, currentPrice: number, weeklyChange: number, period: Period): number[] {
+  const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const nMap:  Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const scale: Record<Period, number> = { '1W': 1, '1M': 3.4, '6M': 10.5, '1Y': 19 };
+  const n           = nMap[period];
+  const finalReturn = weeklyChange * scale[period];
+  const startPrice  = currentPrice / (1 + finalReturn / 100);
+  const pts: number[] = [startPrice];
+  let cur = startPrice;
+  for (let i = 1; i < n; i++) {
+    const remaining = n - i;
+    const drift = (currentPrice - cur) / remaining * 0.38;
+    const decay = 1 - (i / n) * 0.55;
+    const noise = (Math.sin(i * 1.87 + seed) * Math.cos(i * 0.73 + seed * 1.1))
+                  * Math.max(currentPrice * 0.003, 0.01) * decay;
+    cur = Math.max(0.01, parseFloat((cur + drift + noise).toFixed(2)));
+    pts.push(cur);
+  }
+  pts[n - 1] = parseFloat(currentPrice.toFixed(2));
+  return pts;
+}
+
 // ── Mini chart (price chart with axes) ────────────────────────────────────────
-function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }) {
+function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: boolean; xLabels: string[] }) {
   if (!prices || prices.length < 2) return null;
 
-  const VW = 280; const VH = 175;
+  const VW = 280; const VH = 155;
   const padL = 46; const padR = 4; const padT = 8; const padB = 22;
   const chartW = VW - padL - padR;
   const chartH = VH - padT - padB;
@@ -35,6 +90,7 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
 
   const toX = (i: number) => padL + (i / (prices.length - 1)) * chartW;
   const toY = (p: number) => padT + chartH - ((p - yMin) / yRange) * chartH;
+  const xLabelPos = xLabels.map((_, i) => padL + (i / (xLabels.length - 1)) * chartW);
 
   const pts = prices.map((p, i) => ({ x: toX(i), y: toY(p) }));
   const linePath = pts.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`).join(' ');
@@ -46,7 +102,6 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
   const yTicks = [yMin + yRange * 0.1, yMin + yRange * 0.5, yMin + yRange * 0.9];
   const fmtPrice = (v: number) =>
     v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v >= 100 ? v.toFixed(0) : v.toFixed(1);
-  const xLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
   return (
     <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH} style={{ display: 'block' }}>
@@ -62,7 +117,7 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
         </text>
       ))}
       {xLabels.map((label, i) => (
-        <text key={i} x={toX(i)} y={padT + chartH + 14} textAnchor="middle" fontSize="9" fill="#64748b">
+        <text key={i} x={xLabelPos[i]} y={padT + chartH + 14} textAnchor="middle" fontSize="9" fill="#64748b">
           {label}
         </text>
       ))}
@@ -313,19 +368,25 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
 
 // ── Equity tile ───────────────────────────────────────────────────────────────
 function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
-  const [flipped, setFlipped] = useState(false);
-  const positive    = equity.weeklyChange >= 0;
-  const changeColor = positive ? 'text-emerald-400' : 'text-rose-400';
-  const changeSign  = positive ? '+' : '';
+  const [flipped,    setFlipped]    = useState(false);
+  const [tilePeriod, setTilePeriod] = useState<Period>('1W');
+
+  const tilePrices  = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
+  const positive    = tilePrices[tilePrices.length - 1] >= tilePrices[0];
+  const changeColor = equity.weeklyChange >= 0 ? 'text-emerald-400' : 'text-rose-400';
+  const changeSign  = equity.weeklyChange >= 0 ? '+' : '';
 
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
   const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
   const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
 
+  const domain   = TICKER_DOMAINS[equity.ticker];
+  const logoUrl  = domain ? `https://logo.clearbit.com/${domain}` : null;
+
   return (
     <div
       className="relative cursor-pointer"
-      style={{ perspective: '1000px', height: '380px' }}
+      style={{ perspective: '1000px', height: '400px' }}
       onClick={() => setFlipped(f => !f)}
     >
       <div
@@ -338,11 +399,23 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
           className="absolute inset-0 rounded-xl border border-slate-700 bg-slate-900 p-4 hover:border-slate-500 transition-colors flex flex-col"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          {/* Name + badge */}
+          {/* Name + logo + badge */}
           <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
-              <p className="text-white font-bold text-sm leading-tight">{equity.name}</p>
-              <p className="text-slate-500 text-xs font-mono mt-0.5">{equity.ticker}</p>
+            <div className="flex items-start gap-2 min-w-0">
+              {logoUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={logoUrl}
+                  width={22} height={22}
+                  className="rounded-md flex-shrink-0 mt-0.5 bg-white"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  alt=""
+                />
+              )}
+              <div className="min-w-0">
+                <p className="text-white font-bold text-sm leading-tight">{equity.name}</p>
+                <p className="text-slate-500 text-xs font-mono mt-0.5">{equity.ticker}</p>
+              </div>
             </div>
             <EasyScoreBadge score={equity.easyScore} />
           </div>
@@ -358,26 +431,37 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-slate-800 my-3 flex-shrink-0" />
+          <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
-          {/* Scores */}
-          <div className="flex items-center justify-between flex-shrink-0">
-            <div>
-              <p className="text-slate-500 text-xs leading-none mb-0.5">Easy Score</p>
-              <p className="text-white font-bold text-sm">{equity.easyScore}/5</p>
-            </div>
-            <div className="text-right">
-              <p className="text-slate-500 text-xs leading-none mb-0.5">Weight Score</p>
-              <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
-            </div>
+          {/* Weight Score */}
+          <div className="flex-shrink-0">
+            <p className="text-slate-500 text-xs leading-none mb-0.5">Weight Score</p>
+            <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
+          </div>
+
+          {/* Period toggle */}
+          <div className="flex items-center gap-0.5 mt-2 flex-shrink-0" onClick={e => e.stopPropagation()}>
+            {PERIODS.map(p => (
+              <button
+                key={p}
+                onClick={() => setTilePeriod(p)}
+                className={`px-2 py-0.5 rounded text-xs font-semibold transition-all ${
+                  p === tilePeriod
+                    ? 'bg-slate-700 text-white border border-slate-600'
+                    : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/60'
+                }`}
+              >
+                {p}
+              </button>
+            ))}
           </div>
 
           {/* Chart */}
           <div className="mt-auto -mx-1">
-            <MiniChart prices={equity.weeklyPrices} positive={positive} />
+            <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
           </div>
 
-          <p className="text-slate-700 text-xs pt-2 text-right">flip for detail →</p>
+          <p className="text-slate-700 text-xs pt-1 text-right">flip for detail →</p>
         </div>
 
         {/* ── BACK ── */}
