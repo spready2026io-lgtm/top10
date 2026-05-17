@@ -220,22 +220,22 @@ function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
   const maxAbs = Math.max(...rows.map(r => Math.abs(r.ret)), 0.1);
 
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col justify-between w-56 flex-shrink-0 h-full">
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 flex flex-col justify-between w-56 flex-shrink-0 h-full">
 
       {/* Header */}
-      <div className="mb-3">
+      <div>
         <p className="text-white font-semibold text-sm">{sector} Sector ETFs</p>
         <p className="text-slate-500 text-xs">5 tracked · ranked by {period} return</p>
       </div>
 
       {/* ETF rows */}
-      <div className="flex flex-col gap-2.5 flex-1">
+      <div className="flex flex-col gap-1">
         {rows.map(({ ticker, ret }) => {
-          const pos      = ret >= 0;
-          const barPct   = (Math.abs(ret) / maxAbs) * 100;
+          const pos    = ret >= 0;
+          const barPct = (Math.abs(ret) / maxAbs) * 100;
           return (
             <div key={ticker}>
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-0.5">
                 <span className="text-slate-300 text-xs font-mono font-bold">{ticker}</span>
                 <span className={`text-xs font-bold tabular-nums ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {pos ? '+' : ''}{ret.toFixed(1)}%
@@ -253,8 +253,8 @@ function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
       </div>
 
       {/* S&P 500 reference */}
-      <div className="border-t border-slate-800 pt-2.5 mt-3 flex items-center justify-between">
-        <span className="text-slate-500 text-xs">S&amp;P 500 benchmark</span>
+      <div className="border-t border-slate-800 pt-2 flex items-center justify-between">
+        <span className="text-slate-500 text-xs">S&amp;P 500</span>
         <span className={`text-xs font-semibold tabular-nums ${spyPos ? 'text-slate-300' : 'text-rose-400'}`}>
           {spyPos ? '+' : ''}{spyReturn.toFixed(1)}%
         </span>
