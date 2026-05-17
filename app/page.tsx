@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Sector,
@@ -533,8 +533,10 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [sector, setSector] = useState<Sector>('Technology');
-  const [period, setPeriod] = useState<Period>('6M');
+  const [sector,  setSector]  = useState<Sector>('Technology');
+  const [period,  setPeriod]  = useState<Period>('6M');
+  const [tagline, setTagline] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setTagline(true), 300); return () => clearTimeout(t); }, []);
   const equities = SAMPLE_DATA[sector];
   const etfs     = SECTOR_ETFS[sector];
 
@@ -543,23 +545,26 @@ export default function Home() {
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold tracking-tight">
+            <h1 className="text-5xl font-black tracking-tight leading-none">
               <span className="text-emerald-400">Top</span>10
             </h1>
-            <div className="mt-1.5">
-              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
-                ETF Holdings Analyser
-              </span>
-            </div>
+            <p
+              className="text-slate-400 text-sm font-medium mt-2 tracking-wide"
+              style={{
+                opacity:   tagline ? 1 : 0,
+                transform: tagline ? 'translateY(0)' : 'translateY(6px)',
+                transition: 'opacity 0.55s ease, transform 0.55s ease',
+              }}
+            >
+              ETF Holdings Analyser
+            </p>
           </div>
-          <div className="flex-shrink-0 flex flex-col items-end gap-3">
-            <nav className="flex items-center gap-4 text-sm">
-              <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
-              <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
-            </nav>
-          </div>
+          <nav className="flex items-center gap-4 text-sm flex-shrink-0">
+            <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
+            <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+          </nav>
         </div>
       </header>
 
