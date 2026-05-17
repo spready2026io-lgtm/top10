@@ -25,58 +25,262 @@ export default function About() {
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-4 py-12">
+      <div className="max-w-2xl mx-auto px-4 py-12 space-y-14">
 
-        <h2 className="text-2xl font-bold text-white mb-2">What is Top10?</h2>
-        <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          Top10 is an ETF holdings analyser for professional traders and investors. It ranks equities
-          by how many sector ETFs hold them and by average weight — surfacing the names with the
-          highest conviction across institutional products.
-        </p>
+        {/* Hero */}
+        <section>
+          <h2 className="text-2xl font-bold text-white mb-3">What is Top10?</h2>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            Top10 is an ETF holdings analyser. It reads the holdings of major U.S. sector ETFs every day,
+            ranks every stock by how much conviction those ETFs have in it, and surfaces the Top 10 names
+            per sector.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            The idea is simple. When five serious ETFs all own the same stock and all give it a large
+            weighting, that is a signal worth paying attention to. Top10 makes that signal visible at
+            a glance.
+          </p>
+        </section>
 
-        <div className="space-y-6">
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-            <h3 className="text-white font-semibold mb-2">Easy Score</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Counts how many of the five tracked sector ETFs hold this equity. A score of 5/5 means
-              every major sector ETF has conviction in this name. Lower scores indicate more specialised
-              or niche exposure.
-            </p>
+        {/* What is an ETF */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">What is an ETF?</h2>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            An ETF (Exchange-Traded Fund) is a basket of stocks that trades on an exchange like a single
+            share. A sector ETF owns many companies within one industry. For example, XLK (the Technology
+            Select Sector SPDR Fund) holds around 70 technology companies, weighted by market cap and
+            rules set by the fund manager.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            These funds manage billions of dollars of real capital. Their holdings are published daily.
+            When an ETF increases its weighting in a stock, it is buying more of that stock. When multiple
+            ETFs do that simultaneously, it means institutional money is concentrating in one name.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Top10 tracks 5 ETFs per sector across 5 sectors, giving you a view across 25 institutional
+            products simultaneously.
+          </p>
+
+          {/* ETF table */}
+          <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+            <div className="px-4 py-3 border-b border-slate-800">
+              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs</p>
+            </div>
+            {[
+              { sector: 'Technology',  etfs: 'XLK, VGT, QQQ, IYW, SMH' },
+              { sector: 'Financials',  etfs: 'XLF, VFH, KBWB, IYF, FNCL' },
+              { sector: 'Energy',      etfs: 'XLE, VDE, FENY, IYE, OIH' },
+              { sector: 'Healthcare',  etfs: 'XLV, VHT, RSPH, IYH, FHLC' },
+              { sector: 'Industrials', etfs: 'XLI, VIS, PAVE, IYJ, FIDU' },
+            ].map(({ sector, etfs }, i) => (
+              <div key={sector} className={`flex items-center justify-between px-4 py-2.5 text-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'}`}>
+                <span className="text-slate-300 font-medium w-28 flex-shrink-0">{sector}</span>
+                <span className="text-slate-500 text-xs font-mono">{etfs}</span>
+              </div>
+            ))}
           </div>
+        </section>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-            <h3 className="text-white font-semibold mb-2">Weight Score</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              The average portfolio weight across all ETFs that hold this equity. A higher Weight Score
-              means institutional products are allocating more capital to this name — not just holding
-              it, but overweighting it. This is the signal that separates a filler position from a
-              conviction bet.
-            </p>
+        {/* The scores */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">The Two Scores</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-5">
+            Each stock tile shows two scores. Together they tell you how much institutional conviction
+            sits behind a name.
+          </p>
+
+          <div className="space-y-4">
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">5/5</span>
+                <h3 className="text-white font-semibold">Easy Score</h3>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed mb-2">
+                How many of the 5 tracked ETFs hold this stock. Scored out of 5.
+              </p>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-center gap-2">
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">5/5</span>
+                  <span className="text-slate-400">All 5 ETFs hold this stock. Maximum conviction across the sector.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">4/5</span>
+                  <span className="text-slate-400">Strong. One ETF is out. Usually still a high-confidence name.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">3/5</span>
+                  <span className="text-slate-400">Moderate. Held by a majority but not universal. More niche exposure.</span>
+                </li>
+              </ul>
+              <p className="text-slate-500 text-xs mt-3">
+                A 5/5 means every major sector ETF has conviction in this name, regardless of how much they own.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-emerald-400 font-bold text-sm">16.2% avg wt</span>
+                <h3 className="text-white font-semibold">Weight Score</h3>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed mb-2">
+                The average portfolio weight across all ETFs that hold this stock, expressed as a percentage.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed mb-2">
+                This is the signal that separates a filler position from a conviction bet. An ETF might
+                hold 80 stocks, but if it gives one stock a 16% weighting, that is not passive exposure.
+                That is an active bet.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                A stock can have an Easy Score of 5/5 but a low Weight Score (owned by everyone, but
+                only as a small position). A high Weight Score with a lower Easy Score (owned by fewer
+                funds but in size) is often the more interesting signal.
+              </p>
+            </div>
           </div>
+        </section>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-            <h3 className="text-white font-semibold mb-2">Model vs index</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              The validation strip at the top of each sector shows the equal-weighted average weekly
-              return of the displayed equities against the primary sector ETF benchmark. Over time,
-              the hypothesis is that highest-conviction names (by ETF weight) outperform the broad
-              sector index.
-            </p>
+        {/* The chart */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">Top10 vs S&P500 Chart</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            At the top of each sector view you will see a performance chart. It compares two things:
+          </p>
+          <ul className="space-y-2 mb-4">
+            <li className="flex items-start gap-2">
+              <div className="w-4 h-0.5 bg-emerald-400 rounded-full mt-2 flex-shrink-0" />
+              <div>
+                <span className="text-slate-200 text-sm font-semibold">Top10 line (green).</span>
+                <span className="text-slate-400 text-sm"> The equal-weighted average return of the 10 highest-conviction names in this sector.</span>
+              </div>
+            </li>
+            <li className="flex items-start gap-2">
+              <div className="w-4 h-0.5 bg-sky-400 rounded-full mt-2 flex-shrink-0 opacity-65" />
+              <div>
+                <span className="text-slate-200 text-sm font-semibold">S&P500 line (blue).</span>
+                <span className="text-slate-400 text-sm"> The return of the broader U.S. market over the same period.</span>
+              </div>
+            </li>
+          </ul>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            The chart starts at 100 for both lines. If the green line is above the blue line, the
+            Top10 selection has outperformed the market over that period.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Use the time toggle (1W / 1M / 6M / 1Y) to zoom in or out. The delta badge in the top
+            right of the chart shows the performance gap between the two lines.
+          </p>
+        </section>
+
+        {/* ETF performance tile */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">Sector ETF Performance Tile</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            Beside the chart (on desktop) you will see a tile ranking the 5 tracked ETFs for that
+            sector by return over the selected period.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            This lets you see at a glance which ETF has been performing strongest within the sector.
+            For example in Technology, SMH (semiconductor-focused) often diverges sharply from XLK
+            (broad tech). That divergence tells you where the sector momentum is concentrated.
+          </p>
+        </section>
+
+        {/* Tile detail */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">Reading a Stock Tile</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-4">
+            Each tile has a front face and a back face. Tap or click any tile to flip it.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              <p className="text-white font-semibold text-sm mb-2">Front face</p>
+              <ul className="space-y-1.5 text-sm text-slate-400">
+                <li><span className="text-slate-300 font-medium">Logo and name.</span> Company identity at a glance.</li>
+                <li><span className="text-slate-300 font-medium">Ticker.</span> The stock symbol.</li>
+                <li><span className="text-slate-300 font-medium">Easy Score badge.</span> ETF ownership breadth (out of 5).</li>
+                <li><span className="text-slate-300 font-medium">Price and weekly change.</span> Current price and 1-week return.</li>
+                <li><span className="text-slate-300 font-medium">Weight Score.</span> Average ETF weighting across holders.</li>
+                <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / 6M / 1Y.</li>
+              </ul>
+            </div>
+            <div className="rounded-xl border border-emerald-900 bg-slate-900 p-4">
+              <p className="text-white font-semibold text-sm mb-2">Back face</p>
+              <ul className="space-y-1.5 text-sm text-slate-400">
+                <li><span className="text-slate-300 font-medium">ETF presence.</span> Which ETFs hold the stock and which do not.</li>
+                <li><span className="text-slate-300 font-medium">Key financials.</span> Market cap, P/E, EPS, revenue growth, gross margin, dividend yield.</li>
+                <li><span className="text-slate-300 font-medium">Tony&apos;s Analysis.</span> Investment thesis, key risks, and what to watch.</li>
+              </ul>
+            </div>
           </div>
+        </section>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-            <h3 className="text-white font-semibold mb-2">Tony&apos;s Analysis</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Flip any tile to see the back face, which includes key financials and a qualitative
-              analysis note from Tony — our U.S. Equity and ETF Research Analyst. Tony covers the
-              investment thesis, key risks, and what to watch for each position.
-            </p>
-          </div>
-        </div>
+        {/* Tony's analysis */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">Tony&apos;s Analysis</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            Tony is our U.S. Equity and ETF Research Analyst. Every stock in the Top10 has a note
+            from Tony on the back of the tile.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            Tony covers three things per stock: the investment thesis (why this stock ranks high and
+            what is driving it), the key risks (what could break the thesis), and what to watch
+            (the specific catalysts or data points that matter most in the near term).
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Tony does not give investment advice. He explains the data. The score ranks the stock.
+            The note explains why.
+          </p>
+        </section>
 
-        <p className="text-slate-600 text-xs mt-10">
+        {/* How to use */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">How to Use Top10</h2>
+          <ol className="space-y-3">
+            {[
+              { n: '1', title: 'Pick your sector.', body: 'Use the toggle in the header to switch between Technology, Financials, Energy, Healthcare, and Industrials.' },
+              { n: '2', title: 'Check the chart.', body: 'See how the Top10 selection is performing versus the S&P500. Use the time toggle to change the period.' },
+              { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
+              { n: '4', title: 'Check the scores.', body: 'Easy Score tells you how many ETFs own it. Weight Score tells you how much they own. Both high means maximum conviction.' },
+              { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full financials and Tony\'s qualitative analysis note.' },
+              { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
+            ].map(({ n, title, body }) => (
+              <li key={n} className="flex items-start gap-3">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center justify-center mt-0.5">
+                  {n}
+                </span>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  <span className="text-slate-200 font-semibold">{title}</span>{' '}
+                  {body}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* Data */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">The Data</h2>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            ETF holdings are published daily by the fund providers (iShares, Vanguard, SPDR, Invesco).
+            Top10 scrapes these published holdings every day and rebuilds the rankings automatically.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            Fundamentals (P/E, revenue growth, EPS, gross margin) come from public market data sources.
+            Price data comes from exchange feeds.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            All data is indicative. Top10 does not modify, filter, or adjust the underlying ETF
+            holdings data. What the ETF publishes is what you see.
+          </p>
+        </section>
+
+        {/* Disclaimer */}
+        <p className="text-slate-600 text-xs border-t border-slate-800 pt-6">
           Top10 is for informational purposes only and does not constitute financial advice.
-          All data is indicative. Always do your own research.
+          All data is indicative. Past performance is not a guarantee of future results.
+          Always do your own research.
         </p>
 
       </div>

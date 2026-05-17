@@ -531,63 +531,155 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
   );
 }
 
+// ── Welcome modal ─────────────────────────────────────────────────────────────
+function WelcomeModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      style={{ backgroundColor: 'rgba(2,6,23,0.85)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 p-7 shadow-2xl"
+        onClick={e => e.stopPropagation()}
+        style={{ animation: 'modalIn 0.3s ease forwards' }}
+      >
+        {/* Logo */}
+        <div className="mb-5">
+          <p className="text-2xl font-bold tracking-tight">
+            <span className="text-emerald-400">Top</span>10
+          </p>
+          <span className="inline-flex items-center mt-1.5 bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
+            ETF Holdings Analyser
+          </span>
+        </div>
+
+        {/* Body */}
+        <p className="text-slate-200 text-sm leading-relaxed mb-5">
+          Top10 is an ETF holdings analyser for professional traders and investors.
+          It ranks equities by how many sector ETFs hold them and by average weight,
+          surfacing the names with the highest conviction across institutional products.
+        </p>
+
+        {/* Three key points */}
+        <div className="space-y-2.5 mb-6">
+          {[
+            { icon: '◆', label: 'Easy Score', desc: 'How many of 5 ETFs hold this stock.' },
+            { icon: '◆', label: 'Weight Score', desc: 'Average weighting across all holding ETFs.' },
+            { icon: '◆', label: "Tony's Analysis", desc: 'Thesis, risks, and what to watch. Flip any tile.' },
+          ].map(({ icon, label, desc }) => (
+            <div key={label} className="flex items-start gap-2.5">
+              <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">{icon}</span>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                <span className="text-slate-200 font-semibold">{label}.</span>{' '}{desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-bold py-2.5 rounded-lg transition-colors"
+          >
+            Start exploring
+          </button>
+          <a
+            href="/about"
+            className="flex-1 text-center border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-slate-200 text-sm font-semibold py-2.5 rounded-lg transition-colors"
+          >
+            Learn more
+          </a>
+        </div>
+
+        {/* Dismiss hint */}
+        <p className="text-slate-700 text-xs text-center mt-4">Click anywhere outside to dismiss</p>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [sector,  setSector]  = useState<Sector>('Technology');
   const [period,  setPeriod]  = useState<Period>('6M');
   const [tagline, setTagline] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setTagline(true), 300); return () => clearTimeout(t); }, []);
+  const [welcome, setWelcome] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setTagline(true), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const seen = localStorage.getItem('top10_welcomed');
+    if (!seen) setWelcome(true);
+  }, []);
+
+  const closeWelcome = () => {
+    setWelcome(false);
+    localStorage.setItem('top10_welcomed', '1');
+  };
+
   const equities = SAMPLE_DATA[sector];
   const etfs     = SECTOR_ETFS[sector];
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
+      {welcome && <WelcomeModal onClose={closeWelcome} />}
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
+
+          {/* Left: logo + badge */}
           <div className="flex-shrink-0">
             <h1 className="text-xl font-bold tracking-tight">
               <span className="text-emerald-400">Top</span>10
             </h1>
-            <p
-              className="text-slate-200 text-2xl font-bold mt-1 tracking-tight"
+            <div
+              className="mt-1.5"
               style={{
                 opacity:   tagline ? 1 : 0,
                 transform: tagline ? 'translateY(0)' : 'translateY(6px)',
                 transition: 'opacity 0.55s ease, transform 0.55s ease',
               }}
             >
-              ETF Holdings Analyser
-            </p>
+              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide animate-sway">
+                ETF Holdings Analyser
+              </span>
+            </div>
           </div>
-          <nav className="flex items-center gap-4 text-sm flex-shrink-0">
-            <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
-            <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
-          </nav>
+
+          {/* Right: nav + sector toggle */}
+          <div className="flex flex-col items-end gap-2 min-w-0 flex-1">
+            <nav className="flex items-center gap-4 text-sm flex-shrink-0">
+              <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
+              <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+            </nav>
+            <div className="w-full overflow-x-auto scrollbar-none flex justify-end">
+              <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700">
+                {SECTORS.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => setSector(s)}
+                    className={`px-3 sm:px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
+                      sector === s
+                        ? 'bg-emerald-500 text-black shadow-sm'
+                        : 'text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       </header>
-
-      {/* Sector tabs */}
-      <div className="border-b border-slate-800 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-none">
-            {SECTORS.map(s => (
-              <button
-                key={s}
-                onClick={() => setSector(s)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  sector === s
-                    ? 'bg-emerald-500 text-black'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* ETF badges row */}
       <div className="max-w-7xl mx-auto px-4 py-4">

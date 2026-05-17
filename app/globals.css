@@ -21,6 +21,12 @@ body {
   animation: sway 2.4s ease-in-out 1 forwards;
 }
 
+/* Welcome modal entrance */
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
 /* Flip tile — ensure both faces stack in the same cell */
 .tile-container {
   min-height: 260px;
