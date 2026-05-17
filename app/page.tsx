@@ -218,7 +218,7 @@ function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
   const spyPos    = spyReturn >= 0;
 
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col gap-3 w-44 flex-shrink-0">
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col justify-between w-44 flex-shrink-0 h-full">
       <div>
         <p className="text-slate-500 text-xs uppercase tracking-wider mb-0.5">Sector ETF</p>
         <p className="text-white font-bold text-xl">{ticker}</p>
@@ -511,7 +511,7 @@ export default function Home() {
         {equities.length > 0 ? (
           <>
             {/* Index chart + ETF summary tile */}
-            <div className="flex items-start gap-4 mb-6">
+            <div className="flex items-stretch gap-4 mb-6">
               <IndexChart sector={sector} period={period} setPeriod={setPeriod} />
               <EtfPerfTile sector={sector} period={period} />
             </div>
