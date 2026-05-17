@@ -547,11 +547,11 @@ export default function Home() {
       <header className="border-b border-slate-800 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
           <div className="flex-shrink-0">
-            <h1 className="text-5xl font-black tracking-tight leading-none">
+            <h1 className="text-xl font-bold tracking-tight">
               <span className="text-emerald-400">Top</span>10
             </h1>
             <p
-              className="text-slate-400 text-sm font-medium mt-2 tracking-wide"
+              className="text-slate-200 text-2xl font-bold mt-1 tracking-tight"
               style={{
                 opacity:   tagline ? 1 : 0,
                 transform: tagline ? 'translateY(0)' : 'translateY(6px)',
