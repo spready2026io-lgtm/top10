@@ -119,8 +119,8 @@ function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Per
   const zeroInRange = yMin <= 100 && yMax >= 100;
 
   return (
-    <div className="max-w-md">
-      <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3">
+    <div className="max-w-md h-full">
+      <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3 h-full flex flex-col">
 
         {/* Headline */}
         <div className="flex items-center gap-2 mb-3">
@@ -183,8 +183,8 @@ function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Per
           ))}
         </div>
 
-        {/* Legend */}
-        <div className="flex items-center gap-4 mt-2 border-t border-slate-800 pt-2">
+        {/* Legend — pushed to bottom */}
+        <div className="flex items-center gap-4 mt-auto border-t border-slate-800 pt-2">
           <div className="flex items-center gap-1.5">
             <div className="w-4 h-0.5 bg-emerald-400 rounded-full" />
             <span className="text-slate-400 text-xs">Top10</span>
