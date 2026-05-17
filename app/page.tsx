@@ -381,7 +381,7 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
   const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
 
   const domain   = TICKER_DOMAINS[equity.ticker];
-  const logoUrl  = domain ? `https://logo.clearbit.com/${domain}` : null;
+  const logoUrl  = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
 
   return (
     <div
@@ -439,8 +439,13 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
             <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
           </div>
 
-          {/* Period toggle */}
-          <div className="flex items-center gap-0.5 mt-2 flex-shrink-0" onClick={e => e.stopPropagation()}>
+          {/* Chart */}
+          <div className="mt-auto -mx-1">
+            <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
+          </div>
+
+          {/* Period toggle — below chart */}
+          <div className="flex items-center justify-center gap-0.5 pt-1" onClick={e => e.stopPropagation()}>
             {PERIODS.map(p => (
               <button
                 key={p}
@@ -454,11 +459,6 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
                 {p}
               </button>
             ))}
-          </div>
-
-          {/* Chart */}
-          <div className="mt-auto -mx-1">
-            <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
           </div>
 
           <p className="text-slate-700 text-xs pt-1 text-right">flip for detail →</p>
