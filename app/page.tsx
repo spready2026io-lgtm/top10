@@ -367,7 +367,7 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
               <p className="text-white font-bold text-sm">{equity.easyScore}/5</p>
             </div>
             <div className="text-right">
-              <p className="text-slate-500 text-xs leading-none mb-0.5">Pro Score</p>
+              <p className="text-slate-500 text-xs leading-none mb-0.5">Weight Score</p>
               <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
             </div>
           </div>
@@ -524,7 +524,6 @@ export default function Home() {
 
             {/* Legend + score explanation */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
-              <span className="text-slate-500 text-xs">Easy Score:</span>
               {[
                 { score: '5/5', color: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300', label: 'All 5 ETFs' },
                 { score: '4/5', color: 'bg-sky-500/20 border-sky-500/40 text-sky-300',           label: '4 ETFs' },
@@ -535,7 +534,7 @@ export default function Home() {
                   {label}
                 </span>
               ))}
-              <span className="text-slate-600 text-xs ml-auto hidden sm:block">Pro Score = avg weight in holding ETFs</span>
+              <span className="text-slate-600 text-xs ml-auto hidden sm:block">Weight Score = avg weight in holding ETFs</span>
             </div>
 
             {/* Tile grid */}

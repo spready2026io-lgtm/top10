@@ -45,9 +45,9 @@ export default function About() {
           </div>
 
           <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-            <h3 className="text-white font-semibold mb-2">Pro Score</h3>
+            <h3 className="text-white font-semibold mb-2">Weight Score</h3>
             <p className="text-slate-400 text-sm leading-relaxed">
-              The average portfolio weight across all ETFs that hold this equity. A higher Pro Score
+              The average portfolio weight across all ETFs that hold this equity. A higher Weight Score
               means institutional products are allocating more capital to this name — not just holding
               it, but overweighting it. This is the signal that separates a filler position from a
               conviction bet.
