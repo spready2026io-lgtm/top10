@@ -1,3 +1,77 @@
+// ── Index chart types & data ──────────────────────────────────────────────────
+
+export type Period = '1W' | '1M' | '6M' | '1Y';
+
+export type ChartPeriodData = {
+  top10: number[];
+  spy: number[];
+  top10Return: number;
+  spyReturn: number;
+  xLabels: string[];
+};
+
+// Deterministic path generator — no randomness, same shape every render.
+// Creates a realistic trending path with sin/cos noise that decays near the end.
+function makePath(n: number, finalReturn: number, seed: number): number[] {
+  const target = 100 + finalReturn;
+  const pts: number[] = [100];
+  let cur = 100;
+  for (let i = 1; i < n; i++) {
+    const remaining = n - i;
+    const drift     = (target - cur) / remaining * 0.38;
+    // Noise amplitude proportional to return magnitude, decays toward the end
+    const decay   = 1 - (i / n) * 0.55;
+    const noise   = (Math.sin(i * 1.87 + seed) * Math.cos(i * 0.73 + seed * 1.1))
+                    * Math.max(0.15, Math.abs(finalReturn) * 0.11) * decay;
+    cur = parseFloat((cur + drift + noise).toFixed(2));
+    pts.push(cur);
+  }
+  pts[n - 1] = parseFloat(target.toFixed(2));
+  return pts;
+}
+
+const N: Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+
+const XLABELS: Record<Period, string[]> = {
+  '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+  '1M': ['May 1', 'May 8', 'May 15', 'May 22', 'Jun 1'],
+  '6M': ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
+  '1Y': ["May '25", 'Aug', 'Nov', "Feb '26", "May '26"],
+};
+
+// S&P 500 returns — same across all sectors (it is what it is)
+const SPY_RET: Record<Period, number> = { '1W': 1.2, '1M': 3.6, '6M': 10.4, '1Y': 18.8 };
+
+// Top10 composite returns per sector per period
+const TOP10_RET: Record<Sector, Record<Period, number>> = {
+  Technology:  { '1W': 1.4,  '1M': 6.2,  '6M': 18.4, '1Y': 34.8 },
+  Financials:  { '1W': 1.3,  '1M': 4.1,  '6M': 12.8, '1Y': 22.4 },
+  Energy:      { '1W': 2.9,  '1M': 8.4,  '6M': 16.2, '1Y': 28.6 },
+  Healthcare:  { '1W': -0.4, '1M': -2.1, '6M': 4.8,  '1Y': 10.2 },
+  Industrials: { '1W': 1.7,  '1M': 5.2,  '6M': 14.8, '1Y': 24.2 },
+};
+
+const SECTOR_SEED: Record<Sector, number> = {
+  Technology: 7, Financials: 19, Energy: 31, Healthcare: 43, Industrials: 57,
+};
+
+export const INDEX_CHART_DATA: Record<Sector, Record<Period, ChartPeriodData>> = (() => {
+  const out = {} as Record<Sector, Record<Period, ChartPeriodData>>;
+  for (const sector of ['Technology', 'Financials', 'Energy', 'Healthcare', 'Industrials'] as Sector[]) {
+    out[sector] = {} as Record<Period, ChartPeriodData>;
+    for (const p of ['1W', '1M', '6M', '1Y'] as Period[]) {
+      out[sector][p] = {
+        top10:       makePath(N[p], TOP10_RET[sector][p], SECTOR_SEED[sector]),
+        spy:         makePath(N[p], SPY_RET[p], 42),
+        top10Return: TOP10_RET[sector][p],
+        spyReturn:   SPY_RET[p],
+        xLabels:     XLABELS[p],
+      };
+    }
+  }
+  return out;
+})();
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type Sector = 'Technology' | 'Financials' | 'Energy' | 'Healthcare' | 'Industrials';

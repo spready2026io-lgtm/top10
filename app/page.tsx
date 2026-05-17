@@ -5,11 +5,14 @@ import Link from 'next/link';
 import {
   Sector,
   Equity,
+  Period,
+  ChartPeriodData,
   SECTORS,
   SECTOR_ETFS,
   SECTOR_BENCHMARKS,
   SECTOR_BENCHMARK_ETF,
   SAMPLE_DATA,
+  INDEX_CHART_DATA,
 } from '@/lib/data';
 
 // ── Mini chart (price chart with axes) ────────────────────────────────────────
@@ -65,6 +68,145 @@ function MiniChart({ prices, positive }: { prices: number[]; positive: boolean }
       <path d={linePath} fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       <circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r="3" fill={color} />
     </svg>
+  );
+}
+
+// ── Index performance chart ───────────────────────────────────────────────────
+const PERIODS: Period[] = ['1W', '1M', '6M', '1Y'];
+
+function IndexChart({ sector }: { sector: Sector }) {
+  const [period, setPeriod] = useState<Period>('6M');
+  const d: ChartPeriodData = INDEX_CHART_DATA[sector][period];
+
+  const VW = 800; const VH = 200;
+  const padL = 52; const padR = 20; const padT = 12; const padB = 30;
+  const chartW = VW - padL - padR;
+  const chartH = VH - padT - padB;
+
+  // Y range — expand slightly beyond data bounds
+  const allVals = [...d.top10, ...d.spy];
+  const rawMin  = Math.min(...allVals);
+  const rawMax  = Math.max(...allVals);
+  const pad     = Math.max((rawMax - rawMin) * 0.12, 0.8);
+  const yMin = rawMin - pad;
+  const yMax = rawMax + pad;
+  const yRange = yMax - yMin;
+
+  const toX = (i: number, n: number) => padL + (i / (n - 1)) * chartW;
+  const toY = (v: number) => padT + chartH - ((v - yMin) / yRange) * chartH;
+
+  const makeLine = (pts: number[]) =>
+    pts.map((v, i) => `${i === 0 ? 'M' : 'L'} ${toX(i, pts.length).toFixed(1)} ${toY(v).toFixed(1)}`).join(' ');
+
+  // 4 Y-axis ticks, evenly spaced
+  const yTicks = Array.from({ length: 4 }, (_, i) => yMin + (yRange / 3) * i);
+  const fmtY = (v: number) => {
+    const pct = v - 100;
+    return `${pct > 0 ? '+' : pct < 0 ? '' : ''}${pct.toFixed(pct === 0 ? 0 : 1)}%`;
+  };
+
+  // X labels evenly spaced across chart width
+  const xl   = d.xLabels;
+  const xPos = xl.map((_, i) => padL + (i / (xl.length - 1)) * chartW);
+
+  const top10Pos = d.top10Return >= 0;
+  const spyPos   = d.spyReturn   >= 0;
+  const delta    = d.top10Return - d.spyReturn;
+  const deltaPos = delta >= 0;
+
+  // Zero line Y (only if 100 is within visible range)
+  const zeroInRange = yMin <= 100 && yMax >= 100;
+
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 mb-6">
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <p className="text-slate-200 text-sm font-semibold">{sector} Top10 vs S&amp;P500</p>
+          <span className={`text-xs font-bold tabular-nums px-2 py-0.5 rounded-full border ${
+            deltaPos
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+              : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+          }`}>
+            {deltaPos ? '▲' : '▼'} {Math.abs(delta).toFixed(1)}% vs index
+          </span>
+        </div>
+        <div className="flex items-center gap-0.5">
+          {PERIODS.map(p => (
+            <button
+              key={p}
+              onClick={() => setPeriod(p)}
+              className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                p === period
+                  ? 'bg-slate-700 text-white border border-slate-600'
+                  : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/60'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* SVG */}
+      <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH} style={{ display: 'block' }}>
+        {/* Grid lines */}
+        {yTicks.map((tick, i) => (
+          <line key={i} x1={padL} y1={toY(tick)} x2={VW - padR} y2={toY(tick)}
+            stroke="#1e293b" strokeWidth="1" />
+        ))}
+        {/* Zero / start line (dashed, slightly brighter) */}
+        {zeroInRange && (
+          <line x1={padL} y1={toY(100)} x2={VW - padR} y2={toY(100)}
+            stroke="#334155" strokeWidth="1.5" strokeDasharray="5 3" />
+        )}
+        {/* Axes */}
+        <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+        <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+        {/* Y labels */}
+        {yTicks.map((tick, i) => (
+          <text key={i} x={padL - 6} y={toY(tick) + 3.5} textAnchor="end" fontSize="10" fill="#475569">
+            {fmtY(tick)}
+          </text>
+        ))}
+        {/* X labels */}
+        {xl.map((label, i) => (
+          <text key={i} x={xPos[i]} y={VH - 8} textAnchor="middle" fontSize="10" fill="#475569">
+            {label}
+          </text>
+        ))}
+        {/* S&P500 line */}
+        <path d={makeLine(d.spy)} fill="none" stroke="#38bdf8" strokeWidth="1.8"
+          strokeLinecap="round" strokeLinejoin="round" opacity="0.65" />
+        {/* Top10 line — drawn on top */}
+        <path d={makeLine(d.top10)} fill="none" stroke="#34d399" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round" />
+        {/* Endpoint dots */}
+        <circle cx={toX(d.spy.length - 1, d.spy.length).toFixed(1)}
+          cy={toY(d.spy[d.spy.length - 1]).toFixed(1)} r="3.5" fill="#38bdf8" opacity="0.8" />
+        <circle cx={toX(d.top10.length - 1, d.top10.length).toFixed(1)}
+          cy={toY(d.top10[d.top10.length - 1]).toFixed(1)} r="4" fill="#34d399" />
+      </svg>
+
+      {/* Legend */}
+      <div className="flex items-center gap-5 mt-0.5 flex-wrap">
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-0.5 bg-emerald-400 rounded-full" />
+          <span className="text-slate-400 text-xs">Top10</span>
+          <span className={`text-xs font-bold tabular-nums ${top10Pos ? 'text-emerald-400' : 'text-rose-400'}`}>
+            {top10Pos ? '+' : ''}{d.top10Return.toFixed(1)}%
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-0.5 bg-sky-400 rounded-full opacity-65" />
+          <span className="text-slate-400 text-xs">S&amp;P500</span>
+          <span className={`text-xs font-bold tabular-nums ${spyPos ? 'text-slate-300' : 'text-rose-400'}`}>
+            {spyPos ? '+' : ''}{d.spyReturn.toFixed(1)}%
+          </span>
+        </div>
+        <span className="text-slate-700 text-xs ml-auto">indicative · sample data</span>
+      </div>
+    </div>
   );
 }
 
@@ -329,6 +471,9 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {equities.length > 0 ? (
           <>
+            {/* Index performance chart */}
+            <IndexChart sector={sector} />
+
             {/* Legend + score explanation */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <span className="text-slate-500 text-xs">Easy Score:</span>
