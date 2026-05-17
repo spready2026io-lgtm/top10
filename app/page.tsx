@@ -653,19 +653,19 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: nav + sector toggle */}
+          {/* Right: nav + sector toggle (desktop only) */}
           <div className="flex flex-col items-end gap-2 min-w-0 flex-1">
             <nav className="flex items-center gap-4 text-sm flex-shrink-0">
               <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
               <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
             </nav>
-            <div className="w-full overflow-x-auto scrollbar-none flex justify-end">
+            <div className="hidden sm:flex justify-end">
               <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700">
                 {SECTORS.map(s => (
                   <button
                     key={s}
                     onClick={() => setSector(s)}
-                    className={`px-3 sm:px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
+                    className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                       sector === s
                         ? 'bg-emerald-500 text-black shadow-sm'
                         : 'text-slate-400 hover:text-slate-200'
@@ -680,6 +680,27 @@ export default function Home() {
 
         </div>
       </header>
+
+      {/* Sector toggle — mobile only, full-width scrollable bar */}
+      <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
+        <div className="px-4 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1 py-2 w-max">
+            {SECTORS.map(s => (
+              <button
+                key={s}
+                onClick={() => setSector(s)}
+                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                  sector === s
+                    ? 'bg-emerald-500 text-black'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* ETF badges row */}
       <div className="max-w-7xl mx-auto px-4 py-4">
@@ -721,7 +742,7 @@ export default function Home() {
             </div>
 
             {/* Tile grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {equities.map(eq => (
                 <EquityTile key={eq.ticker} equity={eq} etfs={etfs} />
               ))}
