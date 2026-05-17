@@ -11,7 +11,7 @@ import {
   SECTOR_ETFS,
   SECTOR_BENCHMARKS,
   SECTOR_BENCHMARK_ETF,
-  SECTOR_ETF_RETURNS,
+  ETF_RETURNS,
   SPY_RET,
   SAMPLE_DATA,
   INDEX_CHART_DATA,
@@ -209,41 +209,57 @@ function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Per
 
 // ── ETF performance summary tile ─────────────────────────────────────────────
 function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
-  const ticker    = SECTOR_BENCHMARK_ETF[sector];
-  const etfReturn = SECTOR_ETF_RETURNS[sector][period];
+  const etfs      = SECTOR_ETFS[sector];
   const spyReturn = SPY_RET[period];
-  const delta     = etfReturn - spyReturn;
-  const deltaPos  = delta >= 0;
-  const etfPos    = etfReturn >= 0;
   const spyPos    = spyReturn >= 0;
 
+  const rows = etfs
+    .map(ticker => ({ ticker, ret: ETF_RETURNS[ticker]?.[period] ?? 0 }))
+    .sort((a, b) => b.ret - a.ret);
+
+  const maxAbs = Math.max(...rows.map(r => Math.abs(r.ret)), 0.1);
+
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col justify-between w-44 flex-shrink-0 h-full">
-      <div>
-        <p className="text-slate-500 text-xs uppercase tracking-wider mb-0.5">Sector ETF</p>
-        <p className="text-white font-bold text-xl">{ticker}</p>
-        <p className="text-slate-600 text-xs">{sector}</p>
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 flex flex-col justify-between w-56 flex-shrink-0 h-full">
+
+      {/* Header */}
+      <div className="mb-3">
+        <p className="text-white font-semibold text-sm">{sector} Sector ETFs</p>
+        <p className="text-slate-500 text-xs">5 tracked · ranked by {period} return</p>
       </div>
 
-      <div className="border-t border-slate-800 pt-3">
-        <p className={`text-2xl font-bold tabular-nums leading-none ${etfPos ? 'text-emerald-400' : 'text-rose-400'}`}>
-          {etfPos ? '+' : ''}{etfReturn.toFixed(1)}%
-        </p>
-        <p className="text-slate-500 text-xs mt-0.5">{period} return</p>
+      {/* ETF rows */}
+      <div className="flex flex-col gap-2.5 flex-1">
+        {rows.map(({ ticker, ret }) => {
+          const pos      = ret >= 0;
+          const barPct   = (Math.abs(ret) / maxAbs) * 100;
+          return (
+            <div key={ticker}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-300 text-xs font-mono font-bold">{ticker}</span>
+                <span className={`text-xs font-bold tabular-nums ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  {pos ? '+' : ''}{ret.toFixed(1)}%
+                </span>
+              </div>
+              <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full ${pos ? 'bg-emerald-500/50' : 'bg-rose-500/50'}`}
+                  style={{ width: `${barPct}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="border-t border-slate-800 pt-3 space-y-1.5">
-        <div className="flex items-center justify-between">
-          <span className="text-slate-500 text-xs">S&amp;P 500</span>
-          <span className={`text-xs font-semibold tabular-nums ${spyPos ? 'text-slate-300' : 'text-rose-400'}`}>
-            {spyPos ? '+' : ''}{spyReturn.toFixed(1)}%
-          </span>
-        </div>
-        <div className={`flex items-center gap-1 text-xs font-bold tabular-nums ${deltaPos ? 'text-emerald-400' : 'text-rose-400'}`}>
-          <span>{deltaPos ? '▲' : '▼'}</span>
-          <span>{Math.abs(delta).toFixed(1)}% vs index</span>
-        </div>
+      {/* S&P 500 reference */}
+      <div className="border-t border-slate-800 pt-2.5 mt-3 flex items-center justify-between">
+        <span className="text-slate-500 text-xs">S&amp;P 500 benchmark</span>
+        <span className={`text-xs font-semibold tabular-nums ${spyPos ? 'text-slate-300' : 'text-rose-400'}`}>
+          {spyPos ? '+' : ''}{spyReturn.toFixed(1)}%
+        </span>
       </div>
+
     </div>
   );
 }

@@ -125,13 +125,38 @@ export const SECTOR_BENCHMARKS: Record<Sector, number> = {
   Industrials: 1.1,
 };
 
-// Multi-period returns for the primary sector ETF (XLK, XLF, XLE, XLV, XLI)
-export const SECTOR_ETF_RETURNS: Record<Sector, Record<Period, number>> = {
-  Technology:  { '1W': 1.0,  '1M': 4.8,  '6M': 15.2, '1Y': 28.4 },
-  Financials:  { '1W': 0.9,  '1M': 3.2,  '6M': 10.6, '1Y': 18.2 },
-  Energy:      { '1W': 2.4,  '1M': 6.8,  '6M': 12.4, '1Y': 22.6 },
-  Healthcare:  { '1W': -0.8, '1M': -1.6, '6M': 2.4,  '1Y': 8.4  },
-  Industrials: { '1W': 1.1,  '1M': 4.0,  '6M': 12.2, '1Y': 20.8 },
+// Multi-period returns — one entry per tracked ETF ticker
+export const ETF_RETURNS: Record<string, Record<Period, number>> = {
+  // Technology
+  XLK:  { '1W': 1.0,  '1M': 4.8,  '6M': 15.2, '1Y': 28.4 },
+  VGT:  { '1W': 1.1,  '1M': 5.2,  '6M': 16.8, '1Y': 30.2 },
+  QQQ:  { '1W': 1.3,  '1M': 5.6,  '6M': 17.4, '1Y': 31.8 },
+  IYW:  { '1W': 1.0,  '1M': 4.6,  '6M': 14.8, '1Y': 27.6 },
+  SMH:  { '1W': 1.8,  '1M': 7.2,  '6M': 20.4, '1Y': 36.2 },
+  // Financials
+  XLF:  { '1W': 0.9,  '1M': 3.2,  '6M': 10.6, '1Y': 18.2 },
+  VFH:  { '1W': 0.8,  '1M': 3.0,  '6M': 10.2, '1Y': 17.8 },
+  KBWB: { '1W': 1.2,  '1M': 4.0,  '6M': 12.4, '1Y': 21.6 },
+  IYF:  { '1W': 0.9,  '1M': 3.4,  '6M': 11.0, '1Y': 19.0 },
+  FNCL: { '1W': 0.8,  '1M': 3.1,  '6M': 10.4, '1Y': 17.6 },
+  // Energy
+  XLE:  { '1W': 2.4,  '1M': 6.8,  '6M': 12.4, '1Y': 22.6 },
+  VDE:  { '1W': 2.3,  '1M': 6.5,  '6M': 12.0, '1Y': 22.0 },
+  FENY: { '1W': 2.4,  '1M': 6.7,  '6M': 12.2, '1Y': 22.4 },
+  IYE:  { '1W': 2.3,  '1M': 6.6,  '6M': 12.1, '1Y': 22.2 },
+  OIH:  { '1W': 3.2,  '1M': 9.4,  '6M': 16.8, '1Y': 28.4 },
+  // Healthcare
+  XLV:  { '1W': -0.8, '1M': -1.6, '6M': 2.4,  '1Y': 8.4  },
+  VHT:  { '1W': -0.7, '1M': -1.4, '6M': 2.8,  '1Y': 9.0  },
+  RSPH: { '1W': -1.1, '1M': -2.4, '6M': 1.2,  '1Y': 6.2  },
+  IYH:  { '1W': -0.8, '1M': -1.7, '6M': 2.2,  '1Y': 8.0  },
+  FHLC: { '1W': -0.7, '1M': -1.5, '6M': 2.6,  '1Y': 8.8  },
+  // Industrials
+  XLI:  { '1W': 1.1,  '1M': 4.0,  '6M': 12.2, '1Y': 20.8 },
+  VIS:  { '1W': 1.0,  '1M': 3.8,  '6M': 11.8, '1Y': 20.4 },
+  PAVE: { '1W': 1.4,  '1M': 5.2,  '6M': 14.6, '1Y': 24.8 },
+  IYJ:  { '1W': 1.1,  '1M': 4.0,  '6M': 12.0, '1Y': 20.6 },
+  FIDU: { '1W': 1.0,  '1M': 3.9,  '6M': 11.6, '1Y': 20.0 },
 };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
