@@ -647,7 +647,7 @@ export default function Home() {
                 transition: 'opacity 0.55s ease, transform 0.55s ease',
               }}
             >
-              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide animate-sway">
+              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
                 ETF Holdings Analyser
               </span>
             </div>
