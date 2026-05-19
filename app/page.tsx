@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
-  Sector,
+  Theme,
   Equity,
   Period,
   ChartPeriodData,
-  SECTORS,
-  SECTOR_ETFS,
-  SECTOR_BENCHMARKS,
-  SECTOR_BENCHMARK_ETF,
+  THEMES,
+  THEME_ETFS,
+  THEME_BENCHMARKS,
+  THEME_BENCHMARK_ETF,
+  THEME_ETF_COUNT,
   ETF_RETURNS,
   SPY_RET,
   SAMPLE_DATA,
@@ -131,8 +132,8 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
 // ── Index performance chart ───────────────────────────────────────────────────
 const PERIODS: Period[] = ['1W', '1M', '6M', '1Y'];
 
-function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Period; setPeriod: (p: Period) => void }) {
-  const d: ChartPeriodData = INDEX_CHART_DATA[sector][period];
+function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: Period; setPeriod: (p: Period) => void }) {
+  const d: ChartPeriodData = INDEX_CHART_DATA[theme][period];
 
   const VW = 800; const VH = 200;
   const padL = 52; const padR = 20; const padT = 12; const padB = 30;
@@ -179,7 +180,7 @@ function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Per
 
         {/* Headline */}
         <div className="flex items-center gap-2 mb-3">
-          <p className="text-slate-200 text-sm font-semibold">{sector} Top10 vs S&amp;P500</p>
+          <p className="text-slate-200 text-sm font-semibold">{theme} Top10 vs S&amp;P500</p>
           <span className={`text-xs font-bold tabular-nums px-2 py-0.5 rounded-full border ${
             deltaPos
               ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
@@ -263,8 +264,9 @@ function IndexChart({ sector, period, setPeriod }: { sector: Sector; period: Per
 }
 
 // ── ETF performance summary tile ─────────────────────────────────────────────
-function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
-  const etfs = SECTOR_ETFS[sector];
+function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
+  const etfs = THEME_ETFS[theme];
+  const etfCount = THEME_ETF_COUNT[theme];
 
   const rows = etfs
     .map(ticker => ({ ticker, ret: ETF_RETURNS[ticker]?.[period] ?? 0 }))
@@ -277,8 +279,8 @@ function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
 
       {/* Header */}
       <div>
-        <p className="text-white font-semibold text-sm">{sector} Sector ETFs</p>
-        <p className="text-slate-500 text-xs">5 tracked · ranked by {period} return</p>
+        <p className="text-white font-semibold text-sm">{theme} ETFs</p>
+        <p className="text-slate-500 text-xs">{etfCount} tracked · ranked by {period} return</p>
       </div>
 
       {/* ETF rows */}
@@ -310,11 +312,11 @@ function EtfPerfTile({ sector, period }: { sector: Sector; period: Period }) {
 }
 
 // ── Index validation strip ────────────────────────────────────────────────────
-function ValidationStrip({ equities, sector }: { equities: Equity[]; sector: Sector }) {
+function ValidationStrip({ equities, theme }: { equities: Equity[]; theme: Theme }) {
   if (equities.length === 0) return null;
   const portfolioReturn = equities.reduce((sum, e) => sum + e.weeklyChange, 0) / equities.length;
-  const benchmark       = SECTOR_BENCHMARKS[sector];
-  const benchmarkLabel  = SECTOR_BENCHMARK_ETF[sector];
+  const benchmark       = THEME_BENCHMARKS[theme];
+  const benchmarkLabel  = THEME_BENCHMARK_ETF[theme];
   const delta           = portfolioReturn - benchmark;
   const portPositive    = portfolioReturn >= 0;
   const deltaPositive   = delta >= 0;
@@ -344,14 +346,15 @@ function ValidationStrip({ equities, sector }: { equities: Equity[]; sector: Sec
 }
 
 // ── Easy score badge ──────────────────────────────────────────────────────────
-function EasyScoreBadge({ score }: { score: number }) {
-  const color = score === 5 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-              : score === 4 ? 'bg-sky-500/20 border-sky-500/40 text-sky-300'
-              : score === 3 ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+function EasyScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
+  const pct = maxScore > 0 ? score / maxScore : 0;
+  const color = pct >= 0.8 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+              : pct >= 0.6 ? 'bg-sky-500/20 border-sky-500/40 text-sky-300'
+              : pct >= 0.4 ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
               : 'bg-slate-700 border-slate-600 text-slate-400';
   return (
     <span className={`inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${color}`}>
-      {score}/5
+      {score}/{maxScore}
     </span>
   );
 }
@@ -367,7 +370,7 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
 }
 
 // ── Equity tile ───────────────────────────────────────────────────────────────
-function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
+function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]; maxScore: number }) {
   const [flipped,    setFlipped]    = useState(false);
   const [tilePeriod, setTilePeriod] = useState<Period>('1W');
 
@@ -417,7 +420,7 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
                 <p className="text-slate-500 text-xs font-mono mt-0.5">{equity.ticker}</p>
               </div>
             </div>
-            <EasyScoreBadge score={equity.easyScore} />
+            <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
           </div>
 
           {/* Price + weekly change */}
@@ -475,7 +478,7 @@ function EquityTile({ equity, etfs }: { equity: Equity; etfs: string[] }) {
               <p className="text-white font-bold text-sm">{equity.ticker}</p>
               <p className="text-slate-500 text-xs truncate">{equity.name}</p>
             </div>
-            <EasyScoreBadge score={equity.easyScore} />
+            <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
           </div>
 
           {/* ETF presence */}
@@ -564,7 +567,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
         {/* Three key points */}
         <div className="space-y-2.5 mb-6">
           {[
-            { icon: '◆', label: 'Easy Score', desc: 'How many of 5 ETFs hold this stock.' },
+            { icon: '◆', label: 'Easy Score', desc: 'How many ETFs in this theme hold this stock (x/n, relative to the theme).' },
             { icon: '◆', label: 'Weight Score', desc: 'Average weighting across all holding ETFs.' },
             { icon: '◆', label: "Tony's Analysis", desc: 'Thesis, risks, and what to watch. Flip any tile.' },
           ].map(({ icon, label, desc }) => (
@@ -602,7 +605,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [sector,  setSector]  = useState<Sector>('Technology');
+  const [theme,  setTheme]  = useState<Theme>('AI & ML');
   const [period,  setPeriod]  = useState<Period>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
@@ -623,8 +626,9 @@ export default function Home() {
     localStorage.setItem('top10_welcomed', '1');
   };
 
-  const equities = SAMPLE_DATA[sector];
-  const etfs     = SECTOR_ETFS[sector];
+  const equities = SAMPLE_DATA[theme];
+  const etfs     = THEME_ETFS[theme];
+  const maxScore = THEME_ETF_COUNT[theme];
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -661,12 +665,12 @@ export default function Home() {
             </nav>
             <div className="hidden sm:flex justify-end">
               <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700">
-                {SECTORS.map(s => (
+                {THEMES.map(s => (
                   <button
                     key={s}
-                    onClick={() => setSector(s)}
+                    onClick={() => setTheme(s)}
                     className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
-                      sector === s
+                      theme === s
                         ? 'bg-emerald-500 text-black shadow-sm'
                         : 'text-slate-400 hover:text-slate-200'
                     }`}
@@ -681,16 +685,16 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Sector toggle — mobile only, full-width scrollable bar */}
+      {/* Theme toggle — mobile only, full-width scrollable bar */}
       <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
         <div className="px-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-1 py-2 w-max">
-            {SECTORS.map(s => (
+            {THEMES.map(s => (
               <button
                 key={s}
-                onClick={() => setSector(s)}
+                onClick={() => setTheme(s)}
                 className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  sector === s
+                  theme === s
                     ? 'bg-emerald-500 text-black'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
                 }`}
@@ -720,37 +724,39 @@ export default function Home() {
           <>
             {/* Index chart + ETF summary tile */}
             <div className="flex items-stretch gap-4 mb-6">
-              <IndexChart sector={sector} period={period} setPeriod={setPeriod} />
+              <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
               <div className="hidden sm:block flex-shrink-0 h-full">
-                <EtfPerfTile sector={sector} period={period} />
+                <EtfPerfTile theme={theme} period={period} />
               </div>
             </div>
 
             {/* Legend + score explanation */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
-              {[
-                { score: '5/5', color: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300', label: 'All 5 ETFs' },
-                { score: '4/5', color: 'bg-sky-500/20 border-sky-500/40 text-sky-300',           label: '4 ETFs' },
-                { score: '3/5', color: 'bg-amber-500/20 border-amber-500/40 text-amber-300',     label: '3 ETFs' },
-              ].map(({ score, color, label }) => (
-                <span key={score} className="inline-flex items-center gap-1.5 text-xs text-slate-400">
-                  <span className={`border text-xs font-bold px-2 py-0.5 rounded-full ${color}`}>{score}</span>
-                  {label}
-                </span>
-              ))}
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">x/{maxScore}</span>
+                {`≥80% of ${maxScore} ETFs`}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">x/{maxScore}</span>
+                ≥60%
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">x/{maxScore}</span>
+                ≥40%
+              </span>
               <span className="text-slate-600 text-xs ml-auto hidden sm:block">Weight Score = avg weight in holding ETFs</span>
             </div>
 
             {/* Tile grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {equities.map(eq => (
-                <EquityTile key={eq.ticker} equity={eq} etfs={etfs} />
+                <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} />
               ))}
             </div>
           </>
         ) : (
           <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-12 text-center">
-            <p className="text-slate-400 text-sm">Data coming soon for {sector} sector.</p>
+            <p className="text-slate-400 text-sm">Data coming soon for {theme}.</p>
             <p className="text-slate-600 text-xs mt-2">Scraper launching shortly.</p>
           </div>
         )}
