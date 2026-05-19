@@ -1,0 +1,36 @@
+name: Scrape ETF Holdings
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * 1-5'  # 08:00 UTC Mon-Fri
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch holdings + build data.ts
+        run: node scripts/run-all.js
+
+      - name: Commit and push
+        run: |
+          git config user.name "top10-bot"
+          git config user.email "bot@spready.io"
+          git add lib/holdings-raw.json lib/data.ts
+          git diff --staged --quiet || git commit -m "data: ETF holdings update $(date -u +%Y-%m-%d)"
+          git pull --rebase origin master
+          git push
