@@ -92,6 +92,23 @@ function parseCSVHoldings(text) {
 
     if (tIdx === -1) return null;
 
+    // Detect whether weight column uses decimal (0–1) or percentage form.
+    // If the max raw value across all rows is < 1 it's decimal and needs ×100.
+    let isDecimalWeights = false;
+    if (wIdx >= 0) {
+      const maxRaw = rows.slice(hIdx + 1)
+        .map(r => parseFloat(String(r[wIdx] || '').replace('%', '').trim()))
+        .filter(n => !isNaN(n) && n > 0)
+        .reduce((m, v) => Math.max(m, v), 0);
+      isDecimalWeights = maxRaw > 0 && maxRaw < 1;
+    }
+    const colWeight = (raw) => {
+      if (!raw) return 0;
+      const n = parseFloat(String(raw).replace('%', '').trim());
+      if (!n || isNaN(n)) return 0;
+      return isDecimalWeights ? parseFloat((n * 100).toFixed(4)) : n;
+    };
+
     const holdings = rows.slice(hIdx + 1)
       .filter(r => r.length > tIdx && (!r[cIdx] || r[cIdx] === '0' || r[cIdx] === ''))
       .map(r => {
@@ -99,7 +116,7 @@ function parseCSVHoldings(text) {
         return {
           ticker: rawTick,
           name:   nIdx >= 0 ? (r[nIdx] || rawTick).trim() : rawTick,
-          weight: wIdx >= 0 ? parseWeight(r[wIdx]) : 0,
+          weight: wIdx >= 0 ? colWeight(r[wIdx]) : 0,
         };
       })
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));

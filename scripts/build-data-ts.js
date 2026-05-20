@@ -112,7 +112,8 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
     );
     const etfPresence = {};
     for (const etf of themeEtfs) {
-      etfPresence[etf] = data.etfs.some(e => e.etf === etf);
+      const match = data.etfs.find(e => e.etf === etf);
+      etfPresence[etf] = match ? parseFloat(match.weight.toFixed(2)) : false;
     }
     return { ticker, name: data.name, easyScore, proScore, etfPresence };
   });
@@ -165,7 +166,7 @@ function genEquity(eq, financials, totalEtfs, themeName) {
   const tonyNote      = makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.proScore, themeName);
 
   const presenceEntries = Object.entries(eq.etfPresence)
-    .map(([etf, held]) => `${etf}: ${held}`)
+    .map(([etf, val]) => `${etf}: ${val === false ? 'false' : val}`)
     .join(', ');
 
   const wpStr = '[' + weeklyPrices.map(p => p.toFixed(2)).join(', ') + ']';

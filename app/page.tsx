@@ -125,7 +125,7 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
     v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v >= 100 ? v.toFixed(0) : v.toFixed(1);
 
   return (
-    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height={VH} style={{ display: 'block' }}>
+    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height="100%" style={{ display: 'block' }}>
       {yTicks.map((tick, i) => (
         <line key={i} x1={padL} y1={toY(tick)} x2={VW - padR} y2={toY(tick)}
           stroke="#1e293b" strokeWidth="1" />
@@ -409,7 +409,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   return (
     <div
       className="relative cursor-pointer"
-      style={{ perspective: '1000px', height: '400px' }}
+      style={{ perspective: '1000px', height: '520px' }}
       onClick={() => setFlipped(f => !f)}
     >
       <div
@@ -462,8 +462,8 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
           </div>
 
-          {/* Chart */}
-          <div className="mt-auto -mx-1">
+          {/* Chart — fills all remaining vertical space */}
+          <div className="flex-1 min-h-0 -mx-1 mt-2">
             <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
           </div>
 
@@ -506,17 +506,23 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">ETF Presence</p>
             <div className="flex flex-wrap gap-1">
               {etfs.map(etf => {
-                const held = equity.etfPresence[etf];
+                const val = equity.etfPresence[etf];
+                const held = val !== false && val !== 0;
                 return (
                   <span
                     key={etf}
-                    className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full border ${
+                    className={`inline-flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded-full border ${
                       held
                         ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
                         : 'bg-slate-800 border-slate-700 text-slate-600 line-through'
                     }`}
                   >
                     {etf}
+                    {held && (
+                      <span className="text-emerald-500/70 font-normal text-xs">
+                        {(val as number).toFixed(1)}%
+                      </span>
+                    )}
                   </span>
                 );
               })}
