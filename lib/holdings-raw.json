@@ -22,6 +22,8 @@
     "AIRR",
     "AIS",
     "POW",
+    "QQQA",
+    "FDTX",
     "CHAT",
     "DRAM",
     "MARS"
@@ -4927,6 +4929,315 @@
         "ticker": "EUR",
         "name": "EURO",
         "weight": 0.02
+      }
+    ],
+    "QQQA": [
+      {
+        "ticker": "INTC",
+        "name": "INTEL CORP",
+        "weight": 7.0957
+      },
+      {
+        "ticker": "AMD",
+        "name": "ADVANCED MICRO DEVICES",
+        "weight": 6.7483
+      },
+      {
+        "ticker": "ARM",
+        "name": "ARM HOLDINGS PLC-ADR",
+        "weight": 5.9869
+      },
+      {
+        "ticker": "STX",
+        "name": "SEAGATE TECHNOLOGY HOLDINGS",
+        "weight": 5.8275
+      },
+      {
+        "ticker": "MRVL",
+        "name": "MARVELL TECHNOLOGY INC",
+        "weight": 5.4801
+      },
+      {
+        "ticker": "WDC",
+        "name": "WESTERN DIGITAL CORP",
+        "weight": 5.301
+      },
+      {
+        "ticker": "MCHP",
+        "name": "MICROCHIP TECHNOLOGY INC",
+        "weight": 5.1238
+      },
+      {
+        "ticker": "GOOGL",
+        "name": "ALPHABET INC-CL A",
+        "weight": 4.8837
+      },
+      {
+        "ticker": "APP",
+        "name": "APPLOVIN CORP-CLASS A",
+        "weight": 4.8661
+      },
+      {
+        "ticker": "ADI",
+        "name": "ANALOG DEVICES INC",
+        "weight": 4.7234
+      },
+      {
+        "ticker": "FANG",
+        "name": "DIAMONDBACK ENERGY INC",
+        "weight": 4.4097
+      },
+      {
+        "ticker": "MPWR",
+        "name": "MONOLITHIC POWER SYSTEMS INC",
+        "weight": 4.324
+      },
+      {
+        "ticker": "BKR",
+        "name": "BAKER HUGHES CO",
+        "weight": 4.1618
+      },
+      {
+        "ticker": "LRCX",
+        "name": "LAM RESEARCH CORP",
+        "weight": 4.1406
+      },
+      {
+        "ticker": "AMAT",
+        "name": "APPLIED MATERIALS INC",
+        "weight": 4.07
+      },
+      {
+        "ticker": "KLAC",
+        "name": "KLA CORP",
+        "weight": 4.0067
+      },
+      {
+        "ticker": "ASML",
+        "name": "ASML HOLDING NV-NY REG SHS",
+        "weight": 3.9556
+      },
+      {
+        "ticker": "WBD",
+        "name": "WARNER BROS DISCOVERY INC",
+        "weight": 3.9432
+      },
+      {
+        "ticker": "ROST",
+        "name": "ROSS STORES INC",
+        "weight": 3.8405
+      },
+      {
+        "ticker": "GILD",
+        "name": "GILEAD SCIENCES INC",
+        "weight": 3.7509
+      },
+      {
+        "ticker": "REGN",
+        "name": "REGENERON PHARMACEUTICALS",
+        "weight": 3.3605
+      }
+    ],
+    "FDTX": [
+      {
+        "ticker": "MRVL",
+        "name": "Marvell Technology Inc",
+        "weight": 7.68
+      },
+      {
+        "ticker": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd ADR",
+        "weight": 6.71
+      },
+      {
+        "ticker": "MU",
+        "name": "Micron Technology Inc",
+        "weight": 5.89
+      },
+      {
+        "ticker": "NVDA",
+        "name": "NVIDIA Corp",
+        "weight": 5.27
+      },
+      {
+        "ticker": "AMZN",
+        "name": "Amazon.com Inc",
+        "weight": 4.64
+      },
+      {
+        "ticker": "GOOG",
+        "name": "Alphabet Inc Class C",
+        "weight": 4.39
+      },
+      {
+        "ticker": "MSFT",
+        "name": "Microsoft Corp",
+        "weight": 4.06
+      },
+      {
+        "ticker": "COHR",
+        "name": "Coherent Corp",
+        "weight": 3.92
+      },
+      {
+        "ticker": "BESI",
+        "name": "BE Semiconductor Industries NV",
+        "weight": 3.87
+      },
+      {
+        "ticker": "META",
+        "name": "Meta Platforms Inc Class A",
+        "weight": 3.31
+      },
+      {
+        "ticker": "SHOP",
+        "name": "Shopify Inc Registered Shs -A- Subord Vtg",
+        "weight": 3.04
+      },
+      {
+        "ticker": "PLTR",
+        "name": "Palantir Technologies Inc Ordinary Shares - Class A",
+        "weight": 3.01
+      },
+      {
+        "ticker": "PANW",
+        "name": "Palo Alto Networks Inc",
+        "weight": 2.76
+      },
+      {
+        "ticker": "SNPS",
+        "name": "Synopsys Inc",
+        "weight": 2.58
+      },
+      {
+        "ticker": "ANET",
+        "name": "Arista Networks Inc",
+        "weight": 2.29
+      },
+      {
+        "ticker": "NET",
+        "name": "Cloudflare Inc",
+        "weight": 2.05
+      },
+      {
+        "ticker": "WDC",
+        "name": "Western Digital Corp",
+        "weight": 2.03
+      },
+      {
+        "ticker": "STX",
+        "name": "Seagate Technology Holdings PLC",
+        "weight": 2.02
+      },
+      {
+        "ticker": "TWLO",
+        "name": "Twilio Inc Class A",
+        "weight": 1.92
+      },
+      {
+        "ticker": "GLW",
+        "name": "Corning Inc",
+        "weight": 1.7
+      },
+      {
+        "ticker": "MPWR",
+        "name": "Monolithic Power Systems Inc",
+        "weight": 1.59
+      },
+      {
+        "ticker": "DDOG",
+        "name": "Datadog Inc Class A",
+        "weight": 1.54
+      },
+      {
+        "ticker": "NXPI",
+        "name": "NXP Semiconductors NV",
+        "weight": 1.54
+      },
+      {
+        "ticker": "SAP",
+        "name": "SAP SE",
+        "weight": 1.36
+      },
+      {
+        "ticker": "CLS",
+        "name": "Celestica Inc Ordinary Shares (Subordinate Voting)",
+        "weight": 1.35
+      },
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc",
+        "weight": 1.22
+      },
+      {
+        "ticker": "GLBE",
+        "name": "Global E Online Ltd",
+        "weight": 1.1
+      },
+      {
+        "ticker": "PDD",
+        "name": "PDD Holdings Inc ADR",
+        "weight": 1.05
+      },
+      {
+        "ticker": "IBM",
+        "name": "International Business Machines Corp",
+        "weight": 1
+      },
+      {
+        "ticker": "MGNI",
+        "name": "Magnite Inc",
+        "weight": 0.99
+      },
+      {
+        "ticker": "SE",
+        "name": "Sea Ltd ADR",
+        "weight": 0.99
+      },
+      {
+        "ticker": "CRWD",
+        "name": "CrowdStrike Holdings Inc Class A",
+        "weight": 0.89
+      },
+      {
+        "ticker": "AVGO",
+        "name": "Broadcom Inc",
+        "weight": 0.87
+      },
+      {
+        "ticker": "WDAY",
+        "name": "Workday Inc Class A",
+        "weight": 0.86
+      },
+      {
+        "ticker": "ABNB",
+        "name": "Airbnb Inc Ordinary Shares - Class A",
+        "weight": 0.83
+      },
+      {
+        "ticker": "INTU",
+        "name": "Intuit Inc",
+        "weight": 0.7
+      },
+      {
+        "ticker": "ORCL",
+        "name": "Oracle Corp",
+        "weight": 0.7
+      },
+      {
+        "ticker": "CRM",
+        "name": "Salesforce Inc",
+        "weight": 0.64
+      },
+      {
+        "ticker": "ZS",
+        "name": "Zscaler Inc",
+        "weight": 0.63
+      },
+      {
+        "ticker": "ADYEN",
+        "name": "Adyen NV",
+        "weight": 0.44
       }
     ],
     "CHAT": [

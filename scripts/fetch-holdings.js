@@ -391,6 +391,93 @@ const FIRSTTRUST_ETFS = [
   { ticker: 'AIRR' },
 ];
 
+// ── ProShares (QQQA — master daily holdings CSV) ─────────────────────────────
+// Single file contains ALL ProShares ETFs. Filter by fund ticker, derive weight
+// from Market Value column (col 9). Header at row 3.
+
+const PROSHARES_ETFS = [
+  { ticker: 'QQQA' },
+];
+
+async function fetchProShares({ ticker }) {
+  const url = 'https://accounts.profunds.com/etfdata/psdlyhld.csv';
+  console.log(`  [ProShares] ${ticker}...`);
+  try {
+    const text = await fetchText(url);
+    const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+
+    // Find fund rows: col 0 matches ticker (may have quotes)
+    const fundRows = rows.filter(r => {
+      const ft = (r[0] || '').replace(/"/g, '').trim();
+      return ft === ticker && (r[2] || '').replace(/"/g, '').trim().length > 0;
+    });
+    if (fundRows.length === 0) throw new Error(`No rows for ${ticker}`);
+
+    // Col 9 = Market Value; sum for weight denominator
+    const withMV = fundRows.map(r => {
+      const t = (r[2] || '').replace(/"/g, '').trim();
+      const n = (r[4] || '').replace(/"/g, '').trim();
+      const mv = parseFloat(r[9]) || 0;
+      return { ticker: t, name: n, mv };
+    }).filter(r => r.mv > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+
+    const totalMV = withMV.reduce((s, r) => s + r.mv, 0);
+    if (totalMV === 0) throw new Error('Zero total market value');
+
+    const holdings = withMV.map(r => ({
+      ticker: r.ticker,
+      name: r.name,
+      weight: parseFloat((r.mv / totalMV * 100).toFixed(4)),
+    }));
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
+// ── Fidelity (FDTX — HTML holdings table) ────────────────────────────────────
+// research2.fidelity.com ETF screener returns a server-rendered HTML table
+// with columns: Symbol | Company | Weight (%)
+
+const FIDELITY_ETFS = [
+  { ticker: 'FDTX' },
+];
+
+async function fetchFidelity({ ticker }) {
+  const url = `http://research2.fidelity.com/fidelity/screeners/etf/etfholdings.asp?symbol=${ticker}&view=Holdings`;
+  console.log(`  [Fidelity] ${ticker}...`);
+  try {
+    const html = await fetchText(url, {
+      'Accept': 'text/html',
+      'Referer': 'https://institutional.fidelity.com/',
+    });
+
+    const rowRe  = /<tr[\s\S]*?<\/tr>/gi;
+    const cellRe = /<td[^>]*>([\s\S]*?)<\/td>/gi;
+    const strip  = s => s.replace(/<[^>]*>/g, '').replace(/&#160;/g, ' ').replace(/&amp;/g, '&').trim();
+
+    const holdings = [];
+    for (const rowM of html.matchAll(rowRe)) {
+      const cells = [...rowM[0].matchAll(cellRe)].map(m => strip(m[1]));
+      if (cells.length < 3) continue;
+      const t = cells[0].trim();
+      const n = cells[1].trim();
+      const w = parseFloat(cells[2]);
+      if (!isEquityTicker(t) || isCashOrMoneyMarket(t) || !w || w <= 0) continue;
+      holdings.push({ ticker: t, name: n, weight: w });
+    }
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
 // ── VistaShares (AIS, POW — direct CSV endpoint found by inspection) ──────────
 // URL discovered: vistashares.com/csv/top-holdings/?etf={TICKER}
 // CSV columns: Date, Account, StockTicker, CUSIP, SecurityName, Shares, Price, MarketValue, Weightings, ..., MoneyMarketFlag
@@ -498,6 +585,20 @@ async function main() {
     await sleep(800);
   }
 
+  console.log('\n[ProShares]');
+  for (const etf of PROSHARES_ETFS) {
+    const h = await fetchProShares(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(600);
+  }
+
+  console.log('\n[Fidelity]');
+  for (const etf of FIDELITY_ETFS) {
+    const h = await fetchFidelity(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(600);
+  }
+
   const fetched = Object.keys(results);
   const all = [
     ...ISHARES_ETFS.map(e => e.ticker),
@@ -507,6 +608,8 @@ async function main() {
     'VOLT', 'MAGS',
     ...FIRSTTRUST_ETFS.map(e => e.ticker),
     ...VISTASHARES_ETFS.map(e => e.ticker),
+    ...PROSHARES_ETFS.map(e => e.ticker),
+    ...FIDELITY_ETFS.map(e => e.ticker),
   ];
   const failed = all.filter(t => !fetched.includes(t));
 
