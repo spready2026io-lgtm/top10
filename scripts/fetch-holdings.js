@@ -169,8 +169,8 @@ async function fetchARK() {
 // ── Alger (public daily CSV) ─────────────────────────────────────────────────
 
 const ALGER_URLS = [
-  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_%20Adopters_ETF.csv',
-  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_%20Adopters_ETF.csv',
+  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv',
+  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv',
 ];
 
 async function fetchAlger() {
@@ -243,6 +243,201 @@ async function fetchSPDR() {
   }
 }
 
+// ── Wedbush (IVES, IVEP — direct CSV) ───────────────────────────────────────
+
+const WEDBUSH_ETFS = [
+  { ticker: 'IVES', slug: 'ives' },
+  { ticker: 'IVEP', slug: 'ivep' },
+];
+
+const CASH_TICKERS = new Set(['DTRXX', 'DTCXX', 'FGTXX', 'FGXXX', 'CASH', 'USD', 'OTHER']);
+
+function isCashOrMoneyMarket(t) {
+  return CASH_TICKERS.has(t) || /XX+$/.test(t); // catches FGXXX, DTRXX, VMFXX, etc.
+}
+
+async function fetchWedbush({ ticker, slug }) {
+  const url = `https://wedbushfunds.com/latest-sod-holdings-${slug}`;
+  console.log(`  [Wedbush] ${ticker}...`);
+  try {
+    const text = await fetchText(url);
+    const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+
+    // CSV has metadata rows before actual headers — find the row with 'Ticker'
+    const hIdx = rows.findIndex(r => r.some(c => /^ticker$/i.test(c.trim())));
+    if (hIdx === -1) throw new Error('Header row not found');
+
+    const hdrs = rows[hIdx].map(h => h.toLowerCase().trim());
+    const tIdx = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
+    const nIdx = hdrs.findIndex(h => h === 'name');
+    const wIdx = hdrs.findIndex(h => h === 'weight');
+    if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
+
+    const holdings = rows.slice(hIdx + 1)
+      .map(r => ({
+        ticker: (r[tIdx] || '').trim(),
+        name:   nIdx >= 0 ? (r[nIdx] || '').trim() : (r[tIdx] || '').trim(),
+        weight: parseFloat(r[wIdx]) || 0,
+      }))
+      .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
+// ── Tema (VOLT — direct CSV) ──────────────────────────────────────────────────
+
+async function fetchTema() {
+  // VOLT CSV columns: holdings_date, ticker, cusip, proper_name, shares, market_value, percent_of_nav, is_cash, ...
+  // percent_of_nav is a 0-1 decimal (e.g. 0.0796 = 7.96%)
+  const url = 'https://temaetfs.com/hubfs/Website/Holdings/VOLT-holdings.csv';
+  console.log('  [Tema] VOLT...');
+  try {
+    const text = await fetchText(url);
+    const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+    const hdrs = rows[0].map(h => h.toLowerCase().trim());
+    const tIdx = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
+    const nIdx = hdrs.findIndex(h => h === 'proper_name' || h === 'name' || h.includes('security'));
+    const wIdx = hdrs.findIndex(h => h === 'percent_of_nav' || h.includes('weight') || h.includes('pct'));
+    const cIdx = hdrs.findIndex(h => h === 'is_cash');
+    if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
+
+    const holdings = rows.slice(1)
+      .filter(r => !cIdx || r[cIdx] === '0' || r[cIdx] === '') // exclude cash rows
+      .map(r => {
+        const rawTick = (r[tIdx] || '').trim().split(/\s+/)[0]; // drop exchange suffix
+        let weight = parseFloat(r[wIdx]) || 0;
+        if (weight > 0 && weight < 1) weight = parseFloat((weight * 100).toFixed(4)); // 0-1 to %
+        return {
+          ticker: rawTick,
+          name:   nIdx >= 0 ? (r[nIdx] || rawTick).trim() : rawTick,
+          weight,
+        };
+      })
+      .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
+// ── MAGS (hardcoded — always equal-weight Magnificent 7) ─────────────────────
+
+function fetchMAGS() {
+  console.log('  [Roundhill] MAGS (hardcoded equal-weight)...');
+  const weight = parseFloat((100 / 7).toFixed(4));
+  const holdings = [
+    { ticker: 'AAPL', name: 'Apple Inc' },
+    { ticker: 'MSFT', name: 'Microsoft Corp' },
+    { ticker: 'GOOGL', name: 'Alphabet Inc-Cl A' },
+    { ticker: 'AMZN', name: 'Amazon.com Inc' },
+    { ticker: 'META', name: 'Meta Platforms Inc' },
+    { ticker: 'NVDA', name: 'Nvidia Corp' },
+    { ticker: 'TSLA', name: 'Tesla Inc' },
+  ].map(s => ({ ...s, weight }));
+  console.log(`    → ${holdings.length} equity holdings`);
+  return holdings;
+}
+
+// ── First Trust (AIRR — HTML table parse) ────────────────────────────────────
+
+async function fetchFirstTrust({ ticker }) {
+  const url = `https://www.ftportfolios.com/Retail/Etf/EtfHoldings.aspx?Ticker=${ticker}`;
+  console.log(`  [First Trust] ${ticker}...`);
+  try {
+    const html = await fetchText(url, { 'Accept': 'text/html' });
+
+    // Find every row in the holdings table: <tr> containing a 1-5 char uppercase ticker
+    // and a weight like "5.87" or "5.87%"
+    const holdings = [];
+    const rowRe = /<tr[\s\S]*?<\/tr>/gi;
+    const cellRe = /<td[^>]*>([\s\S]*?)<\/td>/gi;
+    const strip  = s => s.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').trim();
+
+    for (const rowMatch of html.matchAll(rowRe)) {
+      const cells = [...rowMatch[0].matchAll(cellRe)].map(m => strip(m[1]));
+      if (cells.length < 3) continue;
+
+      const tickerCell = cells.find(c => /^[A-Z]{1,5}$/.test(c));
+      if (!tickerCell) continue;
+
+      const weightCell = cells.find(c => /^\d+\.\d+%?$/.test(c.trim()));
+      if (!weightCell) continue;
+
+      const nameCell = cells.find(c => c !== tickerCell && c.length > 3 && !/^\d/.test(c) && !c.includes('%'));
+      const weight   = parseFloat(weightCell.replace('%', ''));
+
+      if (weight > 0) {
+        holdings.push({ ticker: tickerCell, name: nameCell || tickerCell, weight });
+      }
+    }
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
+const FIRSTTRUST_ETFS = [
+  { ticker: 'AIRR' },
+];
+
+// ── VistaShares (AIS, POW — direct CSV endpoint found by inspection) ──────────
+// URL discovered: vistashares.com/csv/top-holdings/?etf={TICKER}
+// CSV columns: Date, Account, StockTicker, CUSIP, SecurityName, Shares, Price, MarketValue, Weightings, ..., MoneyMarketFlag
+
+const VISTASHARES_ETFS = [
+  { ticker: 'AIS' },
+  { ticker: 'POW' },
+];
+
+async function fetchVistaShares({ ticker }) {
+  const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;
+  console.log(`  [VistaShares] ${ticker}...`);
+  try {
+    const text = await fetchText(url, {
+      'Referer': `https://www.vistashares.com/etf/${ticker.toLowerCase()}/`,
+    });
+    if (!text || text.trim().startsWith('<!')) throw new Error('Received HTML instead of CSV');
+
+    const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+    const hdrs = rows[0].map(h => h.toLowerCase().trim());
+    const tIdx = hdrs.findIndex(h => h === 'stockticker' || h === 'ticker' || h === 'symbol');
+    const nIdx = hdrs.findIndex(h => h === 'securityname' || h === 'name' || h.includes('security'));
+    const wIdx = hdrs.findIndex(h => h === 'weightings' || h === 'weight' || h.includes('weight'));
+    const mmIdx = hdrs.findIndex(h => h === 'moneymarketflag');
+    if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
+
+    const holdings = rows.slice(1)
+      .filter(r => !r[mmIdx] || r[mmIdx].trim() === '') // exclude money market rows
+      .map(r => {
+        const rawTick = (r[tIdx] || '').replace(/"/g, '').trim().split(/\s+/)[0]; // drop exchange suffix
+        const rawW    = (r[wIdx] || '0').replace('%', '').trim();
+        return {
+          ticker: rawTick,
+          name:   nIdx >= 0 ? (r[nIdx] || rawTick).replace(/"/g, '').trim() : rawTick,
+          weight: parseFloat(rawW) || 0,
+        };
+      })
+      .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+
+    console.log(`    → ${holdings.length} equity holdings`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -275,9 +470,45 @@ async function main() {
   const spdr = await fetchSPDR();
   if (spdr) results['XSD'] = spdr;
 
+  console.log('\n[Wedbush]');
+  for (const etf of WEDBUSH_ETFS) {
+    const h = await fetchWedbush(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(600);
+  }
+
+  console.log('\n[Tema]');
+  const volt = await fetchTema();
+  if (volt) results['VOLT'] = volt;
+
+  console.log('\n[Roundhill]');
+  results['MAGS'] = fetchMAGS();
+
+  console.log('\n[First Trust]');
+  for (const etf of FIRSTTRUST_ETFS) {
+    const h = await fetchFirstTrust(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(800);
+  }
+
+  console.log('\n[VistaShares]');
+  for (const etf of VISTASHARES_ETFS) {
+    const h = await fetchVistaShares(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(800);
+  }
+
   const fetched = Object.keys(results);
-  const all     = [...ISHARES_ETFS.map(e=>e.ticker), ...INVESCO_ETFS.map(e=>e.ticker), 'ARKK', 'ALAI', 'XSD'];
-  const failed  = all.filter(t => !fetched.includes(t));
+  const all = [
+    ...ISHARES_ETFS.map(e => e.ticker),
+    ...INVESCO_ETFS.map(e => e.ticker),
+    'ARKK', 'ALAI', 'XSD',
+    ...WEDBUSH_ETFS.map(e => e.ticker),
+    'VOLT', 'MAGS',
+    ...FIRSTTRUST_ETFS.map(e => e.ticker),
+    ...VISTASHARES_ETFS.map(e => e.ticker),
+  ];
+  const failed = all.filter(t => !fetched.includes(t));
 
   console.log(`\n=== Summary ===`);
   console.log(`Fetched (${fetched.length}): ${fetched.join(', ')}`);
