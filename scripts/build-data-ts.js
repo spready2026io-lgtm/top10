@@ -117,8 +117,8 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
     return { ticker, name: data.name, easyScore, proScore, etfPresence };
   });
 
-  // Sort: easyScore desc, proScore desc
-  scored.sort((a, b) => b.easyScore - a.easyScore || b.proScore - a.proScore);
+  // Sort: proScore (Weight Score) desc, easyScore as tiebreaker
+  scored.sort((a, b) => b.proScore - a.proScore || b.easyScore - a.easyScore);
 
   return { equities: scored.slice(0, TOP_N), etfCount: availableEtfs.length };
 }

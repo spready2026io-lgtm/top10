@@ -18,28 +18,48 @@ import {
   INDEX_CHART_DATA,
 } from '@/lib/data';
 
-// ── Ticker → domain map for Clearbit logos ────────────────────────────────────
+// ── Ticker → domain map for Google favicon logos ─────────────────────────────
 const TICKER_DOMAINS: Record<string, string> = {
-  NVDA: 'nvidia.com',    AVGO: 'broadcom.com',       AMD: 'amd.com',
-  INTC: 'intel.com',     MU:   'micron.com',          LRCX: 'lamresearch.com',
-  AMAT: 'appliedmaterials.com', TXN: 'ti.com',        KLAC: 'kla.com',
-  QCOM: 'qualcomm.com',  ADI:  'analog.com',          SNPS: 'synopsys.com',
-  JPM:  'jpmorgan.com',  'BRK.B': 'berkshirehathaway.com', BAC: 'bankofamerica.com',
-  WFC:  'wellsfargo.com', GS:  'goldmansachs.com',    MS:   'morganstanley.com',
-  AXP:  'americanexpress.com', BLK: 'blackrock.com', SCHW: 'schwab.com',
-  MCO:  'moodys.com',
-  XOM:  'exxonmobil.com', CVX: 'chevron.com',         COP:  'conocophillips.com',
-  EOG:  'eogresources.com', SLB: 'slb.com',           MPC:  'marathonpetroleum.com',
-  PSX:  'phillips66.com', VLO: 'valero.com',          OXY:  'oxy.com',
-  HAL:  'halliburton.com',
-  LLY:  'lilly.com',     UNH: 'unitedhealthgroup.com', JNJ: 'jnj.com',
-  ABBV: 'abbvie.com',    MRK: 'merck.com',            TMO:  'thermofisher.com',
-  DHR:  'danaher.com',   AMGN: 'amgen.com',           ABT:  'abbott.com',
-  PFE:  'pfizer.com',
-  GE:   'ge.com',        RTX: 'rtx.com',              HON:  'honeywell.com',
-  CAT:  'caterpillar.com', DE: 'deere.com',            LMT:  'lockheedmartin.com',
-  ETN:  'eaton.com',     UPS: 'ups.com',              NOC:  'northropgrumman.com',
-  EMR:  'emerson.com',
+  // Semiconductors & chip design
+  NVDA: 'nvidia.com',    AVGO: 'broadcom.com',       AMD:  'amd.com',
+  INTC: 'intel.com',     MU:   'micron.com',          TXN:  'ti.com',
+  ADI:  'analog.com',    MCHP: 'microchip.com',       ON:   'onsemi.com',
+  MPWR: 'monolithicpower.com', MTSI: 'macom.com',     SWKS: 'skyworks.com',
+  MXL:  'maxlinear.com', LRCX: 'lamresearch.com',     AMAT: 'appliedmaterials.com',
+  KLAC: 'kla.com',       QCOM: 'qualcomm.com',        SNPS: 'synopsys.com',
+  // AI & Cloud infrastructure
+  CRWV: 'coreweave.com', ALAB: 'asteralabs.com',      ANET: 'arista.com',
+  PLTR: 'palantir.com',  CRDO: 'credotech.com',       CLS:  'celestica.com',
+  // Mega-cap tech
+  GOOGL: 'google.com',   MSFT: 'microsoft.com',       AAPL: 'apple.com',
+  AMZN: 'amazon.com',    META: 'meta.com',             TSLA: 'tesla.com',
+  // Storage & memory
+  WDC:  'westerndigital.com', STX: 'seagate.com',
+  // Electrification & energy
+  POWL: 'powellind.com', PWR:  'quantaservices.com',  BELFB: 'belfuse.com',
+  BE:   'bloomenergy.com', HUBB: 'hubbell.com',        AEIS: 'advanced-energy.com',
+  SEDG: 'solaredge.com', ENPH: 'enphase.com',         ITRI: 'itron.com',
+  ETN:  'eaton.com',     GEV:  'gevernova.com',        NEE:  'nexteraenergy.com',
+  // Industrials & construction
+  STRL: 'sterlinginfrastructure.com', FIX: 'comfortsystemsusa.com',
+  AGX:  'argan.com',     MTZ:  'mastec.com',           DY:   'dycomind.com',
+  CLH:  'cleanharbors.com', GVA: 'graniteconstruction.com', R: 'ryder.com',
+  ECG:  'everus.com',    SPXC: 'spx.com',             KRMN: 'karman.space',
+  // Additional tech & cloud
+  DELL: 'dell.com',     AKAM: 'akamai.com',           HPE:  'hpe.com',
+  GOOG: 'google.com',   SNDK: 'sandisk.com',           MRVL: 'marvell.com',
+  RKLB: 'rocketlabusa.com', SATS: 'echostar.com',     ARM:  'arm.com',
+  OHB:  'ohb.de',       PL:   'planet.com',            VICR: 'vicr.com',
+  // Energy & utilities
+  OGE:  'oge.com',      ET:   'energytransfer.com',   ETR:  'entergy.com',
+  VRT:  'vertiv.com',   NVT:  'nvent.com',
+  // Industrial services
+  TTMI: 'ttm.com',      EME:  'emcorgroup.com',       SAIA: 'saia.com',
+  CHRW: 'chrobinson.com', JBL: 'jabil.com',
+  // Legacy map entries (kept for any residual references)
+  GE:   'ge.com',        RTX:  'rtx.com',             HON:  'honeywell.com',
+  CAT:  'caterpillar.com', DE:  'deere.com',           LMT:  'lockheedmartin.com',
+  UPS:  'ups.com',       NOC:  'northropgrumman.com',  EMR:  'emerson.com',
 };
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────
