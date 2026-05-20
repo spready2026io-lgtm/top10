@@ -2,8 +2,6 @@ name: Scrape ETF Holdings
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 8 * * 1-5'  # 08:00 UTC Mon-Fri
 
 jobs:
   scrape:
