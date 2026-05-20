@@ -42,7 +42,7 @@ const THEME_ETFS = {
   'Industrials':    ['AIRR', 'PRN'],
 };
 
-const TOP_N = 12; // equities to show per theme
+const TOP_N = 20; // equities to show per theme
 
 // ── Yahoo Finance ─────────────────────────────────────────────────────────────
 

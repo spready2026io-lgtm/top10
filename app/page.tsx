@@ -554,6 +554,85 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   );
 }
 
+// ── Compact row (list view) ───────────────────────────────────────────────────
+function CompactRow({
+  equity, etfs, maxScore, rank, expanded, onToggle,
+}: {
+  equity: Equity; etfs: string[]; maxScore: number;
+  rank: number; expanded: boolean; onToggle: () => void;
+}) {
+  const domain     = TICKER_DOMAINS[equity.ticker];
+  const logoUrl    = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+  const positive   = equity.weeklyChange >= 0;
+  const changeColor = positive ? 'text-emerald-400' : 'text-rose-400';
+
+  return (
+    <div>
+      {/* Compact row */}
+      <div
+        className={`flex items-center gap-3 px-3 py-2 rounded-xl border cursor-pointer transition-colors ${
+          expanded
+            ? 'border-emerald-700 bg-slate-900'
+            : 'border-slate-800 bg-slate-900 hover:border-slate-600'
+        }`}
+        onClick={onToggle}
+      >
+        {/* Rank */}
+        <span className="text-slate-600 text-xs tabular-nums w-5 flex-shrink-0 text-right">{rank}</span>
+
+        {/* Logo */}
+        <div className="w-5 h-5 flex-shrink-0 flex items-center justify-center">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} width={18} height={18} className="rounded flex-shrink-0 bg-white"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }} alt="" />
+          ) : (
+            <div className="w-4 h-4 rounded bg-slate-700" />
+          )}
+        </div>
+
+        {/* Ticker */}
+        <span className="text-white font-bold text-xs font-mono w-14 flex-shrink-0">{equity.ticker}</span>
+
+        {/* Name */}
+        <span className="text-slate-400 text-xs truncate flex-1 min-w-0 hidden sm:block">{equity.name}</span>
+
+        {/* Price */}
+        <span className="text-white font-bold text-xs tabular-nums flex-shrink-0 w-16 text-right">
+          ${equity.price >= 1000
+            ? equity.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            : equity.price.toFixed(2)}
+        </span>
+
+        {/* Weekly change */}
+        <span className={`text-xs font-semibold tabular-nums flex-shrink-0 w-14 text-right ${changeColor}`}>
+          {positive ? '+' : ''}{equity.weeklyChange.toFixed(1)}%
+        </span>
+
+        {/* Weight score */}
+        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden sm:block">
+          {equity.proScore.toFixed(1)}% wt
+        </span>
+
+        {/* Easy score badge */}
+        <div className="flex-shrink-0">
+          <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+        </div>
+
+        {/* Expand chevron */}
+        <span className="text-slate-600 text-xs flex-shrink-0 w-4 text-center">{expanded ? '▲' : '▼'}</span>
+      </div>
+
+      {/* Expanded full tile */}
+      {expanded && (
+        <div className="mt-2 mb-1 px-2">
+          <EquityTile equity={equity} etfs={etfs} maxScore={maxScore} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Welcome modal ─────────────────────────────────────────────────────────────
 function WelcomeModal({ onClose }: { onClose: () => void }) {
   return (
@@ -625,10 +704,13 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [theme,  setTheme]  = useState<Theme>('AI & ML');
+  const [theme,   setTheme]   = useState<Theme>('AI & ML');
   const [period,  setPeriod]  = useState<Period>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
+  const [layout,  setLayout]  = useState<'grid' | 'compact'>('grid');
+  const [showAll, setShowAll] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setTagline(true), 300);
@@ -640,6 +722,9 @@ export default function Home() {
     const seen = localStorage.getItem('top10_welcomed');
     if (!seen) setWelcome(true);
   }, []);
+
+  // Reset pagination + expanded when switching theme or layout
+  useEffect(() => { setShowAll(false); setExpanded(null); }, [theme, layout]);
 
   const closeWelcome = () => {
     setWelcome(false);
@@ -750,7 +835,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Legend + score explanation */}
+            {/* Legend + score explanation + layout toggle */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
                 <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">x/{maxScore}</span>
@@ -764,15 +849,71 @@ export default function Home() {
                 <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">x/{maxScore}</span>
                 ≥40%
               </span>
-              <span className="text-slate-600 text-xs ml-auto hidden sm:block">Weight Score = avg weight in holding ETFs</span>
+
+              {/* Layout toggle */}
+              <div className="ml-auto flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
+                <button
+                  onClick={() => setLayout('grid')}
+                  title="Grid view — 10 tiles, then next 10"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    layout === 'grid'
+                      ? 'bg-slate-600 text-white'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  ⊞ Grid
+                </button>
+                <button
+                  onClick={() => setLayout('compact')}
+                  title="Compact list — all 20, click to expand"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    layout === 'compact'
+                      ? 'bg-slate-600 text-white'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  ≡ List
+                </button>
+              </div>
             </div>
 
-            {/* Tile grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {equities.map(eq => (
-                <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} />
-              ))}
-            </div>
+            {/* Grid layout: first 10, then Next 10 button */}
+            {layout === 'grid' && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {(showAll ? equities : equities.slice(0, 10)).map(eq => (
+                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} />
+                  ))}
+                </div>
+                {!showAll && equities.length > 10 && (
+                  <div className="mt-5 text-center">
+                    <button
+                      onClick={() => setShowAll(true)}
+                      className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-slate-700 bg-slate-900 hover:border-slate-500 hover:bg-slate-800 text-slate-300 hover:text-white text-sm font-semibold transition-all"
+                    >
+                      Next {equities.length - 10} →
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Compact list layout: all 20, click to expand */}
+            {layout === 'compact' && (
+              <div className="flex flex-col gap-1.5">
+                {equities.map((eq, i) => (
+                  <CompactRow
+                    key={eq.ticker}
+                    equity={eq}
+                    etfs={etfs}
+                    maxScore={maxScore}
+                    rank={i + 1}
+                    expanded={expanded === eq.ticker}
+                    onToggle={() => setExpanded(t => t === eq.ticker ? null : eq.ticker)}
+                  />
+                ))}
+              </div>
+            )}
           </>
         ) : (
           <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-12 text-center">
