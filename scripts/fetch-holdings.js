@@ -181,7 +181,7 @@ async function fetchAlger() {
       const rows  = text.split(/\r?\n/).map(parseCSVLine);
       const hdrs  = rows[0].map(h => h.toLowerCase().trim());
       const tIdx  = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
-      const nIdx  = hdrs.findIndex(h => h.includes('name') || h.includes('security') || h.includes('holding'));
+      const nIdx  = hdrs.findIndex(h => !h.includes('product') && (h.includes('description') || h.includes('security') || h.includes('name') || h.includes('holding')));
       const wIdx  = hdrs.findIndex(h => h.includes('weight') || h.includes('% of') || h.includes('pct'));
 
       if (tIdx === -1) continue;

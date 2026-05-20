@@ -179,18 +179,18 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
   // ── AI & ML ─────────────────────
   'AI & ML': [
     {
-      ticker: 'DELL', name: 'ALAI', easyScore: 2, proScore: 44.55,
+      ticker: 'DELL', name: 'Dell Technologies, Inc. Class C', easyScore: 2, proScore: 44.55,
       price: 235.26, weeklyPrices: [228.20, 230.55, 231.73, 233.61, 235.26], weeklyChange: -1.16, sortRank: 0,
       marketCap: '$153B', pe: 27.1, revenueGrowth: 40, eps: 8.68, grossMargin: 20, dividendYield: 1.07,
       etfPresence: { AIS: false, ARTY: false, BAI: false, IVEP: false, IGPT: false, IVES: false, ALAI: true, CHAT: true },
-      tonyNote: 'ALAI appears in 2 of 8 AI & ML ETFs (25% coverage) with average weight 44.5% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
+      tonyNote: 'Dell Technologies, Inc. Class C appears in 2 of 8 AI & ML ETFs (25% coverage) with average weight 44.5% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'AKAM', name: 'ALAI', easyScore: 2, proScore: 27.14,
+      ticker: 'AKAM', name: 'Akamai Technologies, Inc.', easyScore: 2, proScore: 27.14,
       price: 141.34, weeklyPrices: [137.10, 138.51, 139.22, 140.35, 141.34], weeklyChange: -6.25, sortRank: 0,
       marketCap: '$21B', pe: 47.9, revenueGrowth: 6, eps: 2.95, grossMargin: 58, dividendYield: null,
       etfPresence: { AIS: false, ARTY: false, BAI: false, IVEP: false, IGPT: false, IVES: false, ALAI: true, CHAT: true },
-      tonyNote: 'ALAI appears in 2 of 8 AI & ML ETFs (25% coverage) with average weight 27.1% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
+      tonyNote: 'Akamai Technologies, Inc. appears in 2 of 8 AI & ML ETFs (25% coverage) with average weight 27.1% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
       ticker: 'CLS', name: 'Celestica Inc', easyScore: 4, proScore: 23.05,
@@ -214,11 +214,11 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'NVIDIA Corp appears in 7 of 8 AI & ML ETFs (88% coverage) with average weight 6.6% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'GOOG', name: 'ALAI', easyScore: 1, proScore: 6.56,
+      ticker: 'GOOG', name: 'Alphabet Inc. Class C', easyScore: 1, proScore: 6.56,
       price: 384.9, weeklyPrices: [373.35, 377.20, 379.13, 382.21, 384.90], weeklyChange: -2.09, sortRank: 0,
       marketCap: '$4.7T', pe: 29.3, revenueGrowth: 22, eps: 13.13, grossMargin: 60, dividendYield: 0.23,
       etfPresence: { AIS: false, ARTY: false, BAI: false, IVEP: false, IGPT: false, IVES: false, ALAI: true, CHAT: false },
-      tonyNote: 'ALAI appears in 1 of 8 AI & ML ETFs (13% coverage) with average weight 6.6% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
+      tonyNote: 'Alphabet Inc. Class C appears in 1 of 8 AI & ML ETFs (13% coverage) with average weight 6.6% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
       ticker: 'GOOGL', name: 'ALPHABET INC CLASS A', easyScore: 4, proScore: 5.81,
