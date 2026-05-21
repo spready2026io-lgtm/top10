@@ -72,14 +72,11 @@ const TILE_XLABELS: Record<Period, string[]> = {
 };
 
 // ── Generate deterministic price path for a tile chart ───────────────────────
-const PERIOD_SCALE: Record<Period, number> = { '1W': 1, '1M': 3.4, '6M': 10.5, '1Y': 19 };
-
-function makeTilePrices(ticker: string, currentPrice: number, weeklyChange: number, period: Period): number[] {
+function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: Period): number[] {
   const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const nMap:  Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
-  const n           = nMap[period];
-  const finalReturn = weeklyChange * PERIOD_SCALE[period];
-  const startPrice  = currentPrice / (1 + finalReturn / 100);
+  const n          = nMap[period];
+  const startPrice = currentPrice / (1 + periodReturn / 100);
   const pts: number[] = [startPrice];
   let cur = startPrice;
   for (let i = 1; i < n; i++) {
@@ -531,9 +528,9 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [wtOpen,      setWtOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
 
-  const tilePrices   = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
+  const periodReturn = tilePeriod === '1W' ? equity.weeklyChange : equity.periodReturns[tilePeriod];
+  const tilePrices   = makeTilePrices(equity.ticker, equity.price, periodReturn, tilePeriod);
   const positive     = tilePrices[tilePrices.length - 1] >= tilePrices[0];
-  const periodReturn = equity.weeklyChange * PERIOD_SCALE[tilePeriod];
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
