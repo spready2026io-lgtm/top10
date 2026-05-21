@@ -448,8 +448,35 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <p className="text-white font-bold text-xl tabular-nums">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none">
-              {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
+            <span className="relative group" onClick={e => e.stopPropagation()}>
+              <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-help">
+                {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
+              </span>
+              {/* Tooltip: ETF weight breakdown */}
+              <div className="absolute right-0 top-full mt-1.5 w-44 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
+                <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
+                <div className="space-y-1.5">
+                  {etfs.map(etf => {
+                    const val = equity.etfPresence[etf];
+                    const held = val !== false && val !== 0;
+                    return (
+                      <div key={etf} className="flex items-center justify-between">
+                        <span className={`text-xs font-mono font-bold ${held ? 'text-slate-300' : 'text-slate-600 line-through'}`}>
+                          {etf}
+                        </span>
+                        {held ? (
+                          <span className="text-emerald-400 text-xs font-bold tabular-nums">{(val as number).toFixed(1)}%</span>
+                        ) : (
+                          <span className="text-slate-600 text-xs">—</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="border-t border-slate-800 mt-2 pt-2">
+                  <p className="text-slate-500 text-[10px] leading-relaxed">Avg across ETFs that hold this stock</p>
+                </div>
+              </div>
             </span>
           </div>
 
