@@ -443,23 +443,23 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
           </div>
 
-          {/* Price + weekly change */}
+          {/* Price + Weight Score */}
           <div className="flex items-baseline justify-between flex-shrink-0 mt-3">
             <p className="text-white font-bold text-xl tabular-nums">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            <span className={`text-xs font-semibold tabular-nums ${changeColor}`}>
-              {changeSign}{equity.weeklyChange.toFixed(1)}% wk
+            <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none">
+              {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
             </span>
           </div>
 
           {/* Divider */}
           <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
-          {/* Weight Score */}
+          {/* Weekly change */}
           <div className="flex-shrink-0">
-            <p className="text-slate-500 text-xs leading-none mb-0.5">Weight Score</p>
-            <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}% avg wt</p>
+            <p className="text-slate-500 text-xs leading-none mb-0.5">Weekly change</p>
+            <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{equity.weeklyChange.toFixed(1)}% wk</p>
           </div>
 
           {/* Chart — fills all remaining vertical space */}
