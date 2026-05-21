@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
   Theme,
@@ -390,11 +391,145 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
   );
 }
 
+// ── Tony's full thesis modal ─────────────────────────────────────────────────
+function ThesisModal({ equity, etfs, maxScore, onClose }: {
+  equity: Equity; etfs: string[]; maxScore: number; onClose: () => void;
+}) {
+  const domain  = TICKER_DOMAINS[equity.ticker];
+  const logoUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+
+  const holdingEtfs = etfs.filter(etf => {
+    const v = equity.etfPresence[etf];
+    return v !== false && v !== 0;
+  });
+  const maxWeight = Math.max(...holdingEtfs.map(etf => equity.etfPresence[etf] as number), 0.1);
+
+  // Strip the placeholder "check back" ending from the note
+  const cleanNote = equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim();
+
+  const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
+  const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
+  const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+      style={{ backgroundColor: 'rgba(2,6,23,0.90)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl overflow-hidden"
+        style={{ maxHeight: '88vh', animation: 'modalIn 0.25s ease forwards' }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="overflow-y-auto" style={{ maxHeight: '88vh' }}>
+
+          {/* Sticky header */}
+          <div className="sticky top-0 z-10 flex items-center justify-between px-5 pt-5 pb-3 bg-slate-900 border-b border-slate-800">
+            <div className="flex items-center gap-3 min-w-0">
+              {logoUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={logoUrl} width={28} height={28}
+                  className="rounded-lg flex-shrink-0 bg-white"
+                  onError={e => { e.currentTarget.style.display = 'none'; }} alt="" />
+              )}
+              <div className="min-w-0">
+                <p className="text-white font-bold text-sm leading-tight truncate">{equity.name}</p>
+                <p className="text-slate-500 text-xs font-mono">{equity.ticker}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+              <button onClick={onClose} className="text-slate-500 hover:text-white text-xl leading-none ml-1 w-6 h-6 flex items-center justify-center">×</button>
+            </div>
+          </div>
+
+          <div className="px-5 pt-4 pb-6 space-y-5">
+
+            {/* Score summary */}
+            <div className="flex gap-3">
+              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-xs mb-1">Weight Score</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
+              </div>
+              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-xs mb-1">Easy Score</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.easyScore}/{maxScore}</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">ETFs holding</p>
+              </div>
+            </div>
+
+            {/* ETF conviction bars */}
+            <div>
+              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">ETF Conviction</p>
+              <div className="space-y-2.5">
+                {holdingEtfs.map(etf => {
+                  const w = equity.etfPresence[etf] as number;
+                  const barPct = (w / maxWeight) * 100;
+                  return (
+                    <div key={etf}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-slate-300 text-xs font-mono font-bold">{etf}</span>
+                        <span className="text-emerald-400 text-xs font-bold tabular-nums">{w.toFixed(1)}%</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-500/60 rounded-full" style={{ width: `${barPct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Key financials */}
+            <div>
+              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Key Financials</p>
+              <div className="grid grid-cols-3 gap-1.5">
+                <Stat label="Mkt Cap"    value={equity.marketCap} />
+                <Stat label="P/E"        value={peStr} />
+                <Stat label="Rev Growth" value={revStr} highlight={equity.revenueGrowth > 15} />
+                <Stat label="EPS"        value={`$${equity.eps.toFixed(2)}`} />
+                <Stat label="Grs Margin" value={`${equity.grossMargin}%`} highlight={equity.grossMargin > 55} />
+                <Stat label="Dividend"   value={divStr} />
+              </div>
+            </div>
+
+            {/* Tony's analysis */}
+            <div>
+              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Tony&apos;s Analysis</p>
+              <div className="bg-slate-800/40 rounded-xl px-3 py-3">
+                <p className="text-slate-300 text-xs leading-relaxed">{cleanNote}</p>
+              </div>
+            </div>
+
+            {/* Coming soon */}
+            <div>
+              <p className="text-slate-600 text-[10px] uppercase tracking-wider mb-2">Coming soon</p>
+              <div className="flex flex-wrap gap-2">
+                {['Velocity Score', 'Technical Analysis', 'Price Target'].map(label => (
+                  <span key={label} className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-slate-800 text-slate-700">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // ── Equity tile ───────────────────────────────────────────────────────────────
 function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]; maxScore: number }) {
-  const [flipped,    setFlipped]    = useState(false);
-  const [tilePeriod, setTilePeriod] = useState<Period>('1W');
-  const [wtOpen,     setWtOpen]     = useState(false);
+  const [flipped,     setFlipped]     = useState(false);
+  const [tilePeriod,  setTilePeriod]  = useState<Period>('1W');
+  const [wtOpen,      setWtOpen]      = useState(false);
+  const [thesisOpen,  setThesisOpen]  = useState(false);
 
   const tilePrices   = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
   const positive     = tilePrices[tilePrices.length - 1] >= tilePrices[0];
@@ -410,6 +545,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const logoUrl  = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
 
   return (
+    <>
     <div
       className="relative cursor-pointer"
       style={{ perspective: '1000px', height: '520px' }}
@@ -578,11 +714,25 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             </div>
           </div>
 
-          <p className="text-slate-700 text-xs text-right flex-shrink-0">flip back →</p>
+          {/* Footer: full thesis button + flip hint */}
+          <div className="flex items-center justify-between flex-shrink-0 pt-1">
+            <button
+              className="text-emerald-600 hover:text-emerald-400 text-xs font-semibold transition-colors"
+              onClick={e => { e.stopPropagation(); setThesisOpen(true); }}
+            >
+              Tony&apos;s full thesis →
+            </button>
+            <span className="text-slate-700 text-xs">flip back →</span>
+          </div>
         </div>
 
       </div>
     </div>
+
+    {thesisOpen && (
+      <ThesisModal equity={equity} etfs={etfs} maxScore={maxScore} onClose={() => setThesisOpen(false)} />
+    )}
+    </>
   );
 }
 
