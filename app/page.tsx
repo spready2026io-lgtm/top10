@@ -71,12 +71,13 @@ const TILE_XLABELS: Record<Period, string[]> = {
 };
 
 // ── Generate deterministic price path for a tile chart ───────────────────────
+const PERIOD_SCALE: Record<Period, number> = { '1W': 1, '1M': 3.4, '6M': 10.5, '1Y': 19 };
+
 function makeTilePrices(ticker: string, currentPrice: number, weeklyChange: number, period: Period): number[] {
   const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const nMap:  Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
-  const scale: Record<Period, number> = { '1W': 1, '1M': 3.4, '6M': 10.5, '1Y': 19 };
   const n           = nMap[period];
-  const finalReturn = weeklyChange * scale[period];
+  const finalReturn = weeklyChange * PERIOD_SCALE[period];
   const startPrice  = currentPrice / (1 + finalReturn / 100);
   const pts: number[] = [startPrice];
   let cur = startPrice;
@@ -395,10 +396,11 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [tilePeriod, setTilePeriod] = useState<Period>('1W');
   const [wtOpen,     setWtOpen]     = useState(false);
 
-  const tilePrices  = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
-  const positive    = tilePrices[tilePrices.length - 1] >= tilePrices[0];
-  const changeColor = equity.weeklyChange >= 0 ? 'text-emerald-400' : 'text-rose-400';
-  const changeSign  = equity.weeklyChange >= 0 ? '+' : '';
+  const tilePrices   = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
+  const positive     = tilePrices[tilePrices.length - 1] >= tilePrices[0];
+  const periodReturn = equity.weeklyChange * PERIOD_SCALE[tilePeriod];
+  const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
+  const changeSign   = periodReturn >= 0 ? '+' : '';
 
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
   const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
@@ -480,14 +482,14 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           {/* Divider */}
           <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
-          {/* Weekly change */}
+          {/* Period change — synced to chart */}
           <div className="flex-shrink-0">
-            <p className="text-slate-500 text-xs leading-none mb-0.5">Weekly change</p>
-            <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{equity.weeklyChange.toFixed(1)}% wk</p>
+            <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
+            <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
           </div>
 
           {/* Chart — fills all remaining vertical space */}
-          <div className="flex-1 min-h-0 -mx-1 mt-2">
+          <div className="flex-1 min-h-0 -mx-1 mt-1">
             <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
           </div>
 
