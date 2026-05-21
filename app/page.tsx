@@ -393,6 +393,7 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
 function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]; maxScore: number }) {
   const [flipped,    setFlipped]    = useState(false);
   const [tilePeriod, setTilePeriod] = useState<Period>('1W');
+  const [wtOpen,     setWtOpen]     = useState(false);
 
   const tilePrices  = makeTilePrices(equity.ticker, equity.price, equity.weeklyChange, tilePeriod);
   const positive    = tilePrices[tilePrices.length - 1] >= tilePrices[0];
@@ -448,12 +449,12 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <p className="text-white font-bold text-xl tabular-nums">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            <span className="relative group" onClick={e => e.stopPropagation()}>
-              <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-help">
+            <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); }}>
+              <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
                 {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
               </span>
               {/* Tooltip: ETF weight breakdown */}
-              <div className="absolute right-0 top-full mt-1.5 w-44 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
+              <div className={`absolute right-0 top-full mt-1.5 w-44 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                 <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
                 <div className="space-y-1.5">
                   {etfs.filter(etf => {
