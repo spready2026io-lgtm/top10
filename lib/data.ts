@@ -209,7 +209,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
     },
     {
       ticker: 'MU', name: 'Micron Technology Inc', easyScore: 5, proScore: 4.8,
-      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 30, '6M': 254, '1Y': 280 },
+      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 67, '6M': 254, '1Y': 280 },
       marketCap: '$827B', pe: 34.7, revenueGrowth: 196, eps: 21.15, grossMargin: 58, dividendYield: 0.08,
       etfPresence: { AIS: 7.22, ARTY: 6.29, BAI: 4.24, IVEP: false, IGPT: false, IVES: false, ALAI: 1.01, CHAT: 5.24 },
       tonyNote: 'Micron Technology Inc appears in 5 of 6 AI & ML ETFs (83% coverage) with average weight 4.8% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
@@ -339,14 +339,14 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
     },
     {
       ticker: 'MU', name: 'MICRON TECHNOLOGY INC', easyScore: 3, proScore: 5.89,
-      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 30, '6M': 254, '1Y': 280 },
+      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 67, '6M': 254, '1Y': 280 },
       marketCap: '$827B', pe: 34.7, revenueGrowth: 196, eps: 21.15, grossMargin: 58, dividendYield: 0.08,
       etfPresence: { SOXX: 9.58, PSI: false, XSD: 2.83, DRAM: 5.27 },
       tonyNote: 'MICRON TECHNOLOGY INC appears in 3 of 3 Semiconductors ETFs (100% coverage) with average weight 5.9% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
       ticker: 'INTC', name: 'INTEL CORPORATION CORP', easyScore: 2, proScore: 5.53,
-      price: 115.89, weeklyPrices: [112.41, 113.57, 114.15, 115.08, 115.89], weeklyChange: -2.58, sortRank: 0, periodReturns: { '1M': -5, '6M': -18, '1Y': -30 },
+      price: 115.89, weeklyPrices: [112.41, 113.57, 114.15, 115.08, 115.89], weeklyChange: -2.58, sortRank: 0, periodReturns: { '1M': -5, '6M': -18, '1Y': 470 },
       marketCap: '$582B', pe: null, revenueGrowth: 7, eps: -0.59, grossMargin: 37, dividendYield: null,
       etfPresence: { SOXX: 7.04, PSI: false, XSD: 4.01, DRAM: false },
       tonyNote: 'INTEL CORPORATION CORP appears in 2 of 3 Semiconductors ETFs (67% coverage) with average weight 5.5% — high conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
@@ -518,7 +518,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
     },
     {
       ticker: 'INTC', name: 'INTEL CORP', easyScore: 1, proScore: 7.33,
-      price: 115.89, weeklyPrices: [112.41, 113.57, 114.15, 115.08, 115.89], weeklyChange: -2.58, sortRank: 0, periodReturns: { '1M': -5, '6M': -18, '1Y': -30 },
+      price: 115.89, weeklyPrices: [112.41, 113.57, 114.15, 115.08, 115.89], weeklyChange: -2.58, sortRank: 0, periodReturns: { '1M': -5, '6M': -18, '1Y': 470 },
       marketCap: '$582B', pe: null, revenueGrowth: 7, eps: -0.59, grossMargin: 37, dividendYield: null,
       etfPresence: { QQQ: false, QQQA: 7.33, PTF: false, WCLD: false, MAGS: false, IGV: false, FDTX: false, GTEK: false, ARKK: false, MARS: false },
       tonyNote: 'INTEL CORP appears in 1 of 6 Broad Tech ETFs (17% coverage) with average weight 7.3% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
@@ -574,7 +574,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
     },
     {
       ticker: 'MU', name: 'Micron Technology Inc', easyScore: 1, proScore: 5.89,
-      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 30, '6M': 254, '1Y': 280 },
+      price: 733.48, weeklyPrices: [711.48, 718.81, 722.48, 728.35, 733.48], weeklyChange: 0.2, sortRank: 0, periodReturns: { '1M': 67, '6M': 254, '1Y': 280 },
       marketCap: '$827B', pe: 34.7, revenueGrowth: 196, eps: 21.15, grossMargin: 58, dividendYield: 0.08,
       etfPresence: { QQQ: false, QQQA: false, PTF: false, WCLD: false, MAGS: false, IGV: false, FDTX: 5.89, GTEK: false, ARKK: false, MARS: false },
       tonyNote: 'Micron Technology Inc appears in 1 of 6 Broad Tech ETFs (17% coverage) with average weight 5.9% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',

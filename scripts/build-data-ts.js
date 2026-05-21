@@ -55,6 +55,48 @@ function formatMarketCap(n) {
   return `$${(n / 1e6).toFixed(0)}M`;
 }
 
+async function fetchChartReturns(ticker) {
+  try {
+    const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1y&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
+    const res = await fetch(url, {
+      headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const result = data.chart?.result?.[0];
+    if (!result) throw new Error('No chart result');
+
+    const timestamps = result.timestamp;
+    const closes     = result.indicators.quote[0].close;
+
+    const valid = timestamps
+      .map((ts, i) => ({ ts, close: closes[i] }))
+      .filter(d => d.close != null);
+
+    if (valid.length < 10) throw new Error('Insufficient data');
+
+    const last         = valid[valid.length - 1];
+    const currentClose = last.close;
+    const nowTs        = last.ts;
+
+    const closest = targetTs => valid.reduce((best, d) =>
+      Math.abs(d.ts - targetTs) < Math.abs(best.ts - targetTs) ? d : best
+    ).close;
+
+    const ret = (startClose) =>
+      parseFloat(((currentClose / startClose - 1) * 100).toFixed(1));
+
+    return {
+      '1M': ret(closest(nowTs - 30  * 86400)),
+      '6M': ret(closest(nowTs - 182 * 86400)),
+      '1Y': ret(valid[0].close),
+    };
+  } catch (e) {
+    console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
+    return { '1M': 0, '6M': 0, '1Y': 0 };
+  }
+}
+
 async function fetchFinancials(ticker) {
   await yfInit();
   try {
@@ -80,7 +122,10 @@ async function fetchFinancials(ticker) {
     const weeklyChange  = parseFloat(((r.price?.regularMarketChangePercent?.raw ?? 0) * 100).toFixed(2));
     const weeklyPrices  = [];
 
-    return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
+    const periodReturns = await fetchChartReturns(ticker);
+
+    return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, periodReturns, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
+
   } catch (e) {
     console.warn(`  [Yahoo] ${ticker} failed: ${e.message}`);
     return null;
@@ -163,6 +208,7 @@ function genEquity(eq, financials, totalEtfs, themeName) {
   const grossMargin   = f.grossMargin ?? 0;
   const revenueGrowth = f.revenueGrowth ?? 0;
   const divYield      = f.dividendYield ?? null;
+  const pr            = f.periodReturns ?? { '1M': 0, '6M': 0, '1Y': 0 };
   const tonyNote      = makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.proScore, themeName);
 
   const presenceEntries = Object.entries(eq.etfPresence)
@@ -174,7 +220,7 @@ function genEquity(eq, financials, totalEtfs, themeName) {
   return [
     `    {`,
     `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore},`,
-    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0,`,
+    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
     `      etfPresence: { ${presenceEntries} },`,
     `      tonyNote: '${escapeStr(tonyNote)}',`,
