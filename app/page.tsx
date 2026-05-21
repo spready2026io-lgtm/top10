@@ -456,19 +456,15 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               <div className="absolute right-0 top-full mt-1.5 w-44 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
                 <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
                 <div className="space-y-1.5">
-                  {etfs.map(etf => {
+                  {etfs.filter(etf => {
                     const val = equity.etfPresence[etf];
-                    const held = val !== false && val !== 0;
+                    return val !== false && val !== 0;
+                  }).map(etf => {
+                    const val = equity.etfPresence[etf] as number;
                     return (
                       <div key={etf} className="flex items-center justify-between">
-                        <span className={`text-xs font-mono font-bold ${held ? 'text-slate-300' : 'text-slate-600 line-through'}`}>
-                          {etf}
-                        </span>
-                        {held ? (
-                          <span className="text-emerald-400 text-xs font-bold tabular-nums">{(val as number).toFixed(1)}%</span>
-                        ) : (
-                          <span className="text-slate-600 text-xs">—</span>
-                        )}
+                        <span className="text-xs font-mono font-bold text-slate-300">{etf}</span>
+                        <span className="text-emerald-400 text-xs font-bold tabular-nums">{val.toFixed(1)}%</span>
                       </div>
                     );
                   })}
