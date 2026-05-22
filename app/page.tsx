@@ -451,9 +451,9 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
               <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
-                <p className="text-slate-500 text-xs mb-1">Coverage [TEST]</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.coverage !== undefined ? `${(equity.coverage * 100).toFixed(0)}%` : 'undefined'}</p>
-                <p className="text-slate-600 text-[10px] mt-0.5">of available ETFs</p>
+                <p className="text-slate-500 text-xs mb-1">Coverage</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{(equity.coverage * 100).toFixed(0)}%</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
               </div>
               <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Easy Score</p>
@@ -594,7 +594,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                 {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
               </span>
               {/* Tooltip: ETF weight breakdown */}
-              <div className={`absolute right-0 top-full mt-1.5 w-44 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
+              <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                 <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
                 <div className="space-y-1.5">
                   {etfs.filter(etf => {
@@ -610,8 +610,16 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                     );
                   })}
                 </div>
-                <div className="border-t border-slate-800 mt-2 pt-2">
-                  <p className="text-slate-500 text-[10px] leading-relaxed">Avg across ETFs that hold this stock</p>
+                <div className="border-t border-slate-800 mt-2 pt-2 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 text-[10px]">Coverage</span>
+                    <span className="text-slate-300 text-[10px] font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 text-[10px]">Confidence coeff</span>
+                    <span className="text-slate-300 text-[10px] font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+                  </div>
+                  <p className="text-slate-600 text-[10px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
                 </div>
               </div>
             </span>
@@ -662,7 +670,13 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               <p className="text-white font-bold text-sm">{equity.ticker}</p>
               <p className="text-slate-500 text-xs truncate">{equity.name}</p>
             </div>
-            <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}%</p>
+                <p className="text-slate-500 text-[10px]">Coverage: {(equity.coverage * 100).toFixed(0)}% · coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
+              </div>
+              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+            </div>
           </div>
 
           {/* ETF presence */}
