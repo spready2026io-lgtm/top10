@@ -93,6 +93,8 @@ export type Equity = {
   dividendYield: number | null;
   etfPresence: Record<string, number | false>;
   tonyNote: string;
+  velocityScore?: { '1D': number | null; '1W': number | null; '1M': number | null; '6M': number | null };
+  isNew?: boolean;
 };
 
 // ── Theme configuration ───────────────────────────────────────────────────────

@@ -29,9 +29,10 @@ async function yfInit() {
   console.log(`[Yahoo] crumb obtained`);
 }
 
-const RAW_PATH    = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
-const DATA_PATH   = path.join(__dirname, '..', 'lib', 'data.ts');
-const REPORT_PATH = path.join(__dirname, '..', 'lib', 'scan-report.json');
+const RAW_PATH     = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
+const DATA_PATH    = path.join(__dirname, '..', 'lib', 'data.ts');
+const REPORT_PATH  = path.join(__dirname, '..', 'lib', 'scan-report.json');
+const HISTORY_PATH = path.join(__dirname, '..', 'lib', 'history.json');
 
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
@@ -48,6 +49,52 @@ const TOP_N = 20; // equities to show per theme
 // ── Yahoo Finance ─────────────────────────────────────────────────────────────
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Velocity Score helpers ────────────────────────────────────────────────────
+
+function offsetDate(dateStr, days) {
+  const d = new Date(dateStr + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+function findClosestHistoryDate(history, targetDateStr, toleranceDays, excludeDate) {
+  const target = new Date(targetDateStr + 'T12:00:00Z').getTime();
+  let best = null;
+  let bestDiff = Infinity;
+  for (const d of Object.keys(history)) {
+    if (d === excludeDate) continue;
+    const diff = Math.abs(new Date(d + 'T12:00:00Z').getTime() - target);
+    if (diff < bestDiff && diff <= toleranceDays * 86400000) {
+      bestDiff = diff;
+      best = d;
+    }
+  }
+  return best;
+}
+
+// Returns { '1D': number|null, '1W': number|null, '1M': number|null, '6M': number|null }
+// Uses history BEFORE today's snapshot is appended (todayStr is excluded).
+function calcVelocityScore(history, todayStr, theme, ticker, currentScore) {
+  const PERIODS = { '1D': [1, 2], '1W': [7, 3], '1M': [30, 5], '6M': [182, 14] };
+  const result = {};
+  for (const [period, [daysBack, tolerance]] of Object.entries(PERIODS)) {
+    const targetDate  = offsetDate(todayStr, -daysBack);
+    const closestDate = findClosestHistoryDate(history, targetDate, tolerance, todayStr);
+    if (!closestDate) { result[period] = null; continue; }
+    const pastScore = history[closestDate]?.[theme]?.[ticker];
+    if (!pastScore) { result[period] = null; continue; }
+    result[period] = parseFloat(((currentScore / pastScore - 1) * 100).toFixed(1));
+  }
+  return result;
+}
+
+// A ticker is "new" if it was NOT in the most recent previous snapshot for this theme.
+function isNewEntrant(history, todayStr, theme, ticker) {
+  const prevDates = Object.keys(history).filter(d => d < todayStr).sort().reverse();
+  if (prevDates.length === 0) return false;
+  return !(ticker in (history[prevDates[0]]?.[theme] ?? {}));
+}
 
 function formatMarketCap(n) {
   if (!n || isNaN(n)) return 'N/A';
@@ -214,7 +261,7 @@ function escapeStr(s) {
   return String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
-function genEquity(eq, financials, totalEtfs, themeName) {
+function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const f = financials || {};
   const price         = f.price ?? 0;
   const weeklyChange  = f.weeklyChange ?? 0;
@@ -236,10 +283,14 @@ function genEquity(eq, financials, totalEtfs, themeName) {
 
   const wpStr = '[' + weeklyPrices.map(p => p.toFixed(2)).join(', ') + ']';
 
+  const vsObj = vs || { '1D': null, '1W': null, '1M': null, '6M': null };
+  const v = (x) => x === null ? 'null' : x;
+
   return [
     `    {`,
     `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
     `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
+    `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
     `      etfPresence: { ${presenceEntries} },`,
     `      tonyNote: '${escapeStr(tonyNote)}',`,
@@ -247,13 +298,14 @@ function genEquity(eq, financials, totalEtfs, themeName) {
   ].join('\n');
 }
 
-function genSampleData(themeEquities, financialsMap, etfCounts) {
+function genSampleData(themeEquities, financialsMap, etfCounts, velocityMap, isNewMap) {
   const themeBlocks = Object.entries(themeEquities).map(([theme, equities]) => {
-    const etfs = THEME_ETFS[theme];
     const totalEtfs = etfCounts[theme];
-    const eqBlocks = equities.map(eq =>
-      genEquity(eq, financialsMap[eq.ticker], totalEtfs, theme)
-    ).join('\n');
+    const eqBlocks = equities.map(eq => {
+      const vs    = velocityMap?.[theme]?.[eq.ticker] ?? null;
+      const isNew = isNewMap?.[theme]?.[eq.ticker] ?? false;
+      return genEquity(eq, financialsMap[eq.ticker], totalEtfs, theme, vs, isNew);
+    }).join('\n');
     return `  // ── ${theme} ─────────────────────\n  '${theme}': [\n${eqBlocks}\n  ],`;
   });
 
@@ -338,6 +390,42 @@ async function main() {
     console.log(`[${theme}] ${equities.length} equities from ${etfCount}/${etfs.length} ETFs`);
   }
 
+  // ── Velocity Score — load history, compute VS/isNew, append today, save ──────
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const history  = fs.existsSync(HISTORY_PATH)
+    ? JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf8'))
+    : {};
+
+  // Calculate VS and isNew BEFORE appending today (compare against previous runs)
+  const velocityMap = {};
+  const isNewMap    = {};
+  for (const [theme, equities] of Object.entries(themeEquities)) {
+    velocityMap[theme] = {};
+    isNewMap[theme]    = {};
+    for (const eq of equities) {
+      velocityMap[theme][eq.ticker] = calcVelocityScore(history, todayStr, theme, eq.ticker, eq.proScore);
+      isNewMap[theme][eq.ticker]    = isNewEntrant(history, todayStr, theme, eq.ticker);
+    }
+  }
+
+  // Append today's snapshot
+  history[todayStr] = {};
+  for (const [theme, equities] of Object.entries(themeEquities)) {
+    history[todayStr][theme] = {};
+    for (const eq of equities) {
+      history[todayStr][theme][eq.ticker] = eq.proScore;
+    }
+  }
+
+  // Prune entries older than 200 days to keep the file small
+  const cutoff = offsetDate(todayStr, -200);
+  for (const d of Object.keys(history)) {
+    if (d < cutoff) delete history[d];
+  }
+
+  fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2), 'utf8');
+  console.log(`[History] ${todayStr} snapshot saved (${Object.keys(history).length} days stored)\n`);
+
   // Build ETF scan results — which ETFs have holdings, which are missing
   const allDefinedEtfs = [...new Set(Object.values(THEME_ETFS).flat())];
   const etfScanResults = {};
@@ -397,7 +485,7 @@ async function main() {
 
   // Generate TypeScript blocks
   const newEtfCount   = genThemeEtfCount(etfCounts);
-  const newSampleData = genSampleData(themeEquities, financialsMap, etfCounts);
+  const newSampleData = genSampleData(themeEquities, financialsMap, etfCounts, velocityMap, isNewMap);
   const newTimestamp  = genScanTimestamp(isoTs, nyTs);
 
   // Patch data.ts

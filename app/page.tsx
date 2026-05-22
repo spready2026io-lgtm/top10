@@ -365,6 +365,21 @@ function ValidationStrip({ equities, theme }: { equities: Equity[]; theme: Theme
   );
 }
 
+// ── Velocity Score badge ──────────────────────────────────────────────────────
+function VsBadge({ vs, period }: { vs: number | null; period: string }) {
+  if (vs === null || vs === undefined) return null;
+  const pos = vs >= 0;
+  return (
+    <span className={`inline-flex items-center gap-0.5 text-xs font-bold tabular-nums px-2 py-0.5 rounded-full border whitespace-nowrap ${
+      pos
+        ? 'bg-amber-500/15 border-amber-500/35 text-amber-400'
+        : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+    }`}>
+      {pos ? '▲' : '▼'} {pos ? '+' : ''}{vs.toFixed(1)}% {period}
+    </span>
+  );
+}
+
 // ── Easy score badge ──────────────────────────────────────────────────────────
 function EasyScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
   const pct = maxScore > 0 ? score / maxScore : 0;
@@ -445,22 +460,31 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
           <div className="px-5 pt-4 pb-6 space-y-5">
 
             {/* Score summary */}
-            <div className="flex gap-3">
-              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+            <div className="flex gap-3 flex-wrap">
+              <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Weight Score</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
-              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+              <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Coverage</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{(equity.coverage * 100).toFixed(0)}%</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
               </div>
-              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+              <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Easy Score</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.easyScore}/{maxScore}</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">ETFs holding</p>
               </div>
+              {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
+                <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
+                  <p className="text-slate-500 text-xs mb-1">Velocity</p>
+                  <p className={`font-bold text-2xl tabular-nums ${(equity.velocityScore['1W'] ?? 0) >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+                    {(equity.velocityScore['1W'] ?? 0) >= 0 ? '+' : ''}{equity.velocityScore['1W']?.toFixed(1)}%
+                  </p>
+                  <p className="text-slate-600 text-[10px] mt-0.5">1W wt score</p>
+                </div>
+              )}
             </div>
 
             {/* ETF conviction bars */}
@@ -510,7 +534,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
             <div>
               <p className="text-slate-600 text-[10px] uppercase tracking-wider mb-2">Coming soon</p>
               <div className="flex flex-wrap gap-2">
-                {['Velocity Score', 'Technical Analysis', 'Price Target'].map(label => (
+                {['Technical Analysis', 'Price Target'].map(label => (
                   <span key={label} className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-slate-800 text-slate-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
                     {label}
@@ -582,7 +606,14 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                 <p className="text-slate-500 text-xs font-mono mt-0.5">{equity.ticker}</p>
               </div>
             </div>
-            <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+            <div className="flex flex-col items-end gap-1 flex-shrink-0">
+              {equity.isNew && (
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 leading-none">
+                  NEW
+                </span>
+              )}
+              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+            </div>
           </div>
 
           {/* Price + Weight Score */}
@@ -630,10 +661,26 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
           {/* Period change — synced to chart */}
-          <div className="flex-shrink-0">
-            <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
-            <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
-          </div>
+          {(() => {
+            const vsPeriod = tilePeriod === '1Y' ? '1M' : tilePeriod as '1D' | '1W' | '1M' | '6M';
+            const vsVal    = equity.velocityScore?.[vsPeriod] ?? null;
+            return (
+              <div className="flex items-start justify-between flex-shrink-0">
+                <div>
+                  <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
+                  <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
+                </div>
+                {vsVal !== null && (
+                  <div className="text-right">
+                    <p className="text-slate-500 text-xs leading-none mb-0.5">VS {vsPeriod}</p>
+                    <p className={`font-bold text-sm tabular-nums ${vsVal >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+                      {vsVal >= 0 ? '▲+' : '▼'}{vsVal.toFixed(1)}%
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Chart — fills all remaining vertical space */}
           <div className="flex-1 min-h-0 -mx-1 mt-1">
@@ -674,12 +721,18 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               </div>
               <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
-            <div className="flex items-center gap-2 mt-1.5 tabular-nums">
+            <div className="flex items-center gap-2 mt-1.5 tabular-nums flex-wrap">
               <span className="text-emerald-400 font-bold text-sm">{equity.proScore.toFixed(1)}% wt</span>
               <span className="text-slate-700">|</span>
               <span className="text-slate-200 font-semibold text-xs">{(equity.coverage * 100).toFixed(0)}% coverage</span>
               <span className="text-slate-700">|</span>
               <span className="text-slate-200 font-semibold text-xs">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+              {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
+                <>
+                  <span className="text-slate-700">|</span>
+                  <VsBadge vs={equity.velocityScore['1W']} period="VS 1W" />
+                </>
+              )}
             </div>
           </div>
 
@@ -815,6 +868,18 @@ function CompactRow({
         <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden sm:block" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
           {equity.proScore.toFixed(1)}% wt
         </span>
+
+        {/* Velocity Score 1W */}
+        {(() => {
+          const vs1w = equity.velocityScore?.['1W'] ?? null;
+          return vs1w !== null ? (
+            <span className={`text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden md:block ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+              {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+            </span>
+          ) : (
+            <span className="text-slate-700 text-xs flex-shrink-0 w-16 text-right hidden md:block">—</span>
+          );
+        })()}
 
         {/* Easy score badge */}
         <div className="flex-shrink-0">

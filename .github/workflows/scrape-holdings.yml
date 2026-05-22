@@ -42,7 +42,7 @@ jobs:
           cp /tmp/holdings-raw.json lib/holdings-raw.json
           cp /tmp/data.ts           lib/data.ts
           [ -f /tmp/scan-report.json ] && cp /tmp/scan-report.json lib/scan-report.json || true
-          git add lib/holdings-raw.json lib/data.ts lib/scan-report.json
+          git add lib/holdings-raw.json lib/data.ts lib/scan-report.json lib/history.json
           git diff --staged --quiet || git commit -m "data: ETF holdings update $(date -u +%Y-%m-%d)"
           git push
 
