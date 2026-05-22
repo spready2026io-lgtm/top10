@@ -451,8 +451,8 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
               <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
-                <p className="text-slate-500 text-xs mb-1">Coverage</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{(equity.coverage * 100).toFixed(0)}%</p>
+                <p className="text-slate-500 text-xs mb-1">Coverage [TEST]</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.coverage !== undefined ? `${(equity.coverage * 100).toFixed(0)}%` : 'undefined'}</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">of available ETFs</p>
               </div>
               <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
