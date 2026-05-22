@@ -79,7 +79,17 @@ async function fetchChartReturns(ticker, currentPrice) {
 
     if (valid.length < 10) throw new Error('Insufficient data');
 
-    const nowTs = valid[valid.length - 1].ts;
+    const lastTs   = valid[valid.length - 1].ts;
+    const lastDate = new Date(lastTs * 1000);
+
+    // Calendar-aware lookback: avoids fixed-day approximations that land on the
+    // wrong trading day (e.g. Nov→May is 181 days, not 182, causing 6M to be off).
+    const calTs = (months, years = 0) => {
+      const d = new Date(lastDate);
+      d.setMonth(d.getMonth() - months);
+      d.setFullYear(d.getFullYear() - years);
+      return Math.floor(d.getTime() / 1000);
+    };
 
     const closest = targetTs => valid.reduce((best, d) =>
       Math.abs(d.ts - targetTs) < Math.abs(best.ts - targetTs) ? d : best
@@ -89,9 +99,9 @@ async function fetchChartReturns(ticker, currentPrice) {
       parseFloat(((currentPrice / startClose - 1) * 100).toFixed(1));
 
     return {
-      '1M': ret(closest(nowTs - 30  * 86400)),
-      '6M': ret(closest(nowTs - 182 * 86400)),
-      '1Y': ret(closest(nowTs - 365 * 86400)),
+      '1M': ret(closest(calTs(1))),
+      '6M': ret(closest(calTs(6))),
+      '1Y': ret(closest(calTs(0, 1))),
     };
   } catch (e) {
     console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
