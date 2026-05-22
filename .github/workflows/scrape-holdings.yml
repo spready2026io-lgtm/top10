@@ -31,9 +31,19 @@ jobs:
         run: |
           git config user.name "top10-bot"
           git config user.email "bot@spready.io"
+          # Save generated outputs before resetting — these are always the authoritative versions
+          cp lib/holdings-raw.json /tmp/holdings-raw.json
+          cp lib/data.ts           /tmp/data.ts
+          [ -f lib/scan-report.json ] && cp lib/scan-report.json /tmp/scan-report.json || true
+          # Reset to the absolute latest origin/master to avoid rebase conflicts
+          git fetch origin master
+          git reset --hard origin/master
+          # Restore generated files on top of latest master
+          cp /tmp/holdings-raw.json lib/holdings-raw.json
+          cp /tmp/data.ts           lib/data.ts
+          [ -f /tmp/scan-report.json ] && cp /tmp/scan-report.json lib/scan-report.json || true
           git add lib/holdings-raw.json lib/data.ts lib/scan-report.json
           git diff --staged --quiet || git commit -m "data: ETF holdings update $(date -u +%Y-%m-%d)"
-          git pull --rebase origin master
           git push
 
       - name: Send daily report email
