@@ -552,7 +552,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
     <div
       className="relative cursor-pointer"
       style={{ perspective: '1000px', height: '520px' }}
-      onClick={() => setFlipped(f => !f)}
+      onClick={() => { setFlipped(f => !f); setWtOpen(false); }}
     >
       <div
         className="absolute inset-0 transition-transform duration-500"
