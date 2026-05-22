@@ -665,20 +665,20 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between flex-shrink-0">
-            <div>
-              <p className="text-white font-bold text-sm">{equity.ticker}</p>
-              <p className="text-slate-500 text-xs truncate">{equity.name}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 text-xs tabular-nums">
-                <span className="text-emerald-400 font-bold">{equity.proScore.toFixed(1)}% wt</span>
-                <span className="text-slate-600">·</span>
-                <span className="text-slate-300 font-semibold">{(equity.coverage * 100).toFixed(0)}% cov</span>
-                <span className="text-slate-600">·</span>
-                <span className="text-slate-300 font-semibold">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+          <div className="flex-shrink-0">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-white font-bold text-sm">{equity.ticker}</p>
+                <p className="text-slate-500 text-xs truncate">{equity.name}</p>
               </div>
               <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+            </div>
+            <div className="flex items-center gap-2 mt-1.5 tabular-nums">
+              <span className="text-emerald-400 font-bold text-xs">{equity.proScore.toFixed(1)}% wt</span>
+              <span className="text-slate-700">|</span>
+              <span className="text-slate-200 font-semibold text-xs">{(equity.coverage * 100).toFixed(0)}% coverage</span>
+              <span className="text-slate-700">|</span>
+              <span className="text-slate-200 font-semibold text-xs">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</span>
             </div>
           </div>
 
