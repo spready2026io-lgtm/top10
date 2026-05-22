@@ -510,6 +510,66 @@ async function fetchGoldmanSachs(ctx, ticker) {
   }
 }
 
+// ── Invesco (Playwright fallback for QQQ, IGPT, PSI, PTF, PBD, PBW, PRN) ──────
+// Used when dng-api.invesco.com is blocked. Scrapes the Invesco product page,
+// which loads holdings data via an internal API we can intercept.
+
+const INVESCO_PW_ETFS = ['QQQ', 'IGPT', 'PSI', 'PTF', 'PBD', 'PBW', 'PRN'];
+
+async function fetchInvescoPW(ctx, ticker) {
+  const url = `https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Advisor&ticker=${ticker}`;
+  console.log(`  [Invesco PW] ${ticker}...`);
+  const page = await ctx.newPage();
+  try {
+    const getCapturedJSON = setupJSONInterception(page, false);
+
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await sleep(5000);
+
+    // Try clicking Holdings tab
+    for (const label of ['Holdings', 'All Holdings', 'Fund Holdings', 'Portfolio']) {
+      try {
+        const btn = page.getByRole('tab', { name: label })
+          .or(page.getByText(label, { exact: true }));
+        if (await btn.count() > 0) { await btn.first().click({ force: true }); await sleep(3000); break; }
+      } catch {}
+    }
+
+    // 1. JSON API interception
+    const candidates = getCapturedJSON();
+    if (candidates.length > 0) {
+      const h = parseJSONHoldings(candidates);
+      if (h) { console.log(`    → ${h.length} equity holdings (API)`); return h; }
+    }
+
+    // 2. Direct download link
+    const csvText = await tryDOMFileLink(page);
+    if (csvText) {
+      const h = parseCSVHoldings(csvText);
+      if (h) { console.log(`    → ${h.length} equity holdings (CSV link)`); return h; }
+    }
+
+    // 3. DOM table
+    const rows = await page.evaluate(() => {
+      const out = [];
+      document.querySelectorAll('table tr').forEach(row => {
+        const cells = [...row.querySelectorAll('td, th')].map(c => c.innerText.trim());
+        if (cells.length >= 2) out.push(cells);
+      });
+      return out;
+    });
+    const h = parseTableRows(rows);
+    if (h) console.log(`    → ${h.length} equity holdings (DOM table)`);
+    else console.error('    ✗ No holdings found');
+    return h;
+  } catch (e) {
+    console.error(`    ✗ ${e.message.split('\n')[0]}`);
+    return null;
+  } finally {
+    try { await page.close(); } catch {}
+  }
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -538,18 +598,29 @@ async function main() {
     console.log('\n[WisdomTree]');
     const wcld = await fetchWisdomTree(ctx, 'WCLD');
     if (wcld) results['WCLD'] = wcld;
-    else delete results['WCLD']; // never persist stale data
+    // on failure: keep last good data (no delete)
 
     console.log('\n[Goldman Sachs]');
     const gtek = await fetchGoldmanSachs(ctx, 'GTEK');
     if (gtek) results['GTEK'] = gtek;
-    else delete results['GTEK']; // never persist stale data
+    // on failure: keep last good data (no delete)
+
+    // Invesco fallback: scrape product pages for any ETF that failed phase 1
+    const invescoMissing = INVESCO_PW_ETFS.filter(t => !results[t]);
+    if (invescoMissing.length > 0) {
+      console.log(`\n[Invesco PW fallback] Missing: ${invescoMissing.join(', ')}`);
+      for (const ticker of invescoMissing) {
+        const h = await fetchInvescoPW(ctx, ticker);
+        if (h) results[ticker] = h;
+        await sleep(2000);
+      }
+    }
 
   } finally {
     await browser.close();
   }
 
-  const phase2  = ['CHAT', 'DRAM', 'MARS', 'WCLD', 'GTEK'];
+  const phase2  = ['CHAT', 'DRAM', 'MARS', 'WCLD', 'GTEK', ...INVESCO_PW_ETFS];
   const fetched = phase2.filter(t => results[t]);
   const failed  = phase2.filter(t => !results[t]);
 
