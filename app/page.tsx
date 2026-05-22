@@ -671,9 +671,12 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               <p className="text-slate-500 text-xs truncate">{equity.name}</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="text-right">
-                <p className="text-emerald-400 font-bold text-sm tabular-nums">{equity.proScore.toFixed(1)}%</p>
-                <p className="text-slate-500 text-[10px]">Coverage: {(equity.coverage * 100).toFixed(0)}% · coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
+              <div className="flex items-center gap-1.5 text-xs tabular-nums">
+                <span className="text-emerald-400 font-bold">{equity.proScore.toFixed(1)}% wt</span>
+                <span className="text-slate-600">·</span>
+                <span className="text-slate-300 font-semibold">{(equity.coverage * 100).toFixed(0)}% cov</span>
+                <span className="text-slate-600">·</span>
+                <span className="text-slate-300 font-semibold">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
               </div>
               <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
