@@ -56,7 +56,10 @@ function formatMarketCap(n) {
   return `$${(n / 1e6).toFixed(0)}M`;
 }
 
-async function fetchChartReturns(ticker) {
+// currentPrice = regularMarketPrice from quoteSummary — used as the return numerator
+// so that percentages match what Yahoo Finance displays (today's price vs. historical close),
+// not yesterday's close vs. historical close (which is what last.close would give mid-session).
+async function fetchChartReturns(ticker, currentPrice) {
   try {
     const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1y&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
     const res = await fetch(url, {
@@ -76,21 +79,19 @@ async function fetchChartReturns(ticker) {
 
     if (valid.length < 10) throw new Error('Insufficient data');
 
-    const last         = valid[valid.length - 1];
-    const currentClose = last.close;
-    const nowTs        = last.ts;
+    const nowTs = valid[valid.length - 1].ts;
 
     const closest = targetTs => valid.reduce((best, d) =>
       Math.abs(d.ts - targetTs) < Math.abs(best.ts - targetTs) ? d : best
     ).close;
 
     const ret = (startClose) =>
-      parseFloat(((currentClose / startClose - 1) * 100).toFixed(1));
+      parseFloat(((currentPrice / startClose - 1) * 100).toFixed(1));
 
     return {
       '1M': ret(closest(nowTs - 30  * 86400)),
       '6M': ret(closest(nowTs - 182 * 86400)),
-      '1Y': ret(valid[0].close),
+      '1Y': ret(closest(nowTs - 365 * 86400)),
     };
   } catch (e) {
     console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
@@ -123,7 +124,7 @@ async function fetchFinancials(ticker) {
     const weeklyChange  = parseFloat(((r.price?.regularMarketChangePercent?.raw ?? 0) * 100).toFixed(2));
     const weeklyPrices  = [];
 
-    const periodReturns = await fetchChartReturns(ticker);
+    const periodReturns = await fetchChartReturns(ticker, price);
 
     return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, periodReturns, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
 
