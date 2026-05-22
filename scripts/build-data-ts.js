@@ -167,7 +167,7 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
       const match = data.etfs.find(e => e.etf === etf);
       etfPresence[etf] = match ? parseFloat(match.weight.toFixed(2)) : false;
     }
-    return { ticker, name: data.name, easyScore, proScore, etfPresence };
+    return { ticker, name: data.name, easyScore, proScore, coverage, etfPresence };
   });
 
   // Sort: proScore desc, easyScore as tiebreaker
@@ -226,7 +226,7 @@ function genEquity(eq, financials, totalEtfs, themeName) {
 
   return [
     `    {`,
-    `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore},`,
+    `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
     `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
     `      etfPresence: { ${presenceEntries} },`,

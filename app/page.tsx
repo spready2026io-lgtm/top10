@@ -451,6 +451,11 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
               <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-xs mb-1">Coverage</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{(equity.coverage * 100).toFixed(0)}%</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">of available ETFs</p>
+              </div>
+              <div className="flex-1 bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Easy Score</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.easyScore}/{maxScore}</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">ETFs holding</p>
@@ -789,7 +794,7 @@ function CompactRow({
         </span>
 
         {/* Weight score */}
-        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden sm:block">
+        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden sm:block" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
           {equity.proScore.toFixed(1)}% wt
         </span>
 

@@ -1,0 +1,31 @@
+=== fetch-holdings-playwright.js ===
+
+Browser launched.
+
+[VistaShares]
+  [VistaShares] AIS...
+    ✗ No holdings found
+  [VistaShares] POW...
+    ✗ No holdings found
+
+[Roundhill]
+  [Roundhill] CHAT...
+    → 30 equity holdings (download)
+  [Roundhill] DRAM...
+    → 5 equity holdings (download)
+  [Roundhill] MARS...
+    → 24 equity holdings (download)
+
+[WisdomTree]
+  [WisdomTree] WCLD...
+    ✗ No holdings found
+
+[Goldman Sachs]
+  [Goldman Sachs] GTEK...
+    → 5 equity holdings (DOM table)
+
+=== Phase 2 Summary ===
+Fetched (4): CHAT, DRAM, MARS, GTEK
+Failed  (3): AIS, POW, WCLD
+
+Written → C:\Users\gadih\Documents\Private GH\Obdisian Vault\Claude_O2\ETF1\W-web\top10\lib\holdings-raw.json
