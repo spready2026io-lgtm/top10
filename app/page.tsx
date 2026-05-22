@@ -17,6 +17,7 @@ import {
   SPY_RET,
   SAMPLE_DATA,
   INDEX_CHART_DATA,
+  SCAN_TIMESTAMP_NY,
 } from '@/lib/data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
@@ -1123,6 +1124,15 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      {SCAN_TIMESTAMP_NY && (
+        <footer className="border-t border-slate-800 mt-8 py-4 px-4">
+          <p className="text-center text-slate-600 text-xs">
+            Last updated: <span className="text-slate-500">{SCAN_TIMESTAMP_NY}</span>
+          </p>
+        </footer>
+      )}
 
     </main>
   );

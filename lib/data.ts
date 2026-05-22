@@ -99,6 +99,12 @@ export type Equity = {
 
 export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Electrification', 'Industrials'];
 
+// Last scan timestamp — patched by build-data-ts.js after each run
+// @@GENERATED:SCAN_TIMESTAMP@@
+export const SCAN_TIMESTAMP    = '';
+export const SCAN_TIMESTAMP_NY = '';
+// @@END_GENERATED:SCAN_TIMESTAMP@@
+
 // Number of ETFs per theme — denominator for relative Easy Score display
 // @@GENERATED:THEME_ETF_COUNT@@
 export const THEME_ETF_COUNT: Record<Theme, number> = {

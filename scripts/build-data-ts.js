@@ -29,8 +29,9 @@ async function yfInit() {
   console.log(`[Yahoo] crumb obtained`);
 }
 
-const RAW_PATH  = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
-const DATA_PATH = path.join(__dirname, '..', 'lib', 'data.ts');
+const RAW_PATH    = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
+const DATA_PATH   = path.join(__dirname, '..', 'lib', 'data.ts');
+const REPORT_PATH = path.join(__dirname, '..', 'lib', 'scan-report.json');
 
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
@@ -256,18 +257,43 @@ function genSampleData(themeEquities, financialsMap, etfCounts) {
   ].join('\n');
 }
 
+// ── Timestamp helpers ─────────────────────────────────────────────────────────
+
+function getNyTimestamp() {
+  const now = new Date();
+  return now.toLocaleString('en-US', {
+    timeZone:  'America/New_York',
+    month:     'long',
+    day:       'numeric',
+    year:      'numeric',
+    hour:      'numeric',
+    minute:    '2-digit',
+    hour12:    true,
+  }) + ' ET';
+}
+
+function genScanTimestamp(isoTs, nyTs) {
+  return [
+    '// @@GENERATED:SCAN_TIMESTAMP@@',
+    `export const SCAN_TIMESTAMP    = '${isoTs}';`,
+    `export const SCAN_TIMESTAMP_NY = '${nyTs}';`,
+    '// @@END_GENERATED:SCAN_TIMESTAMP@@',
+  ].join('\n');
+}
+
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
-  // Replace THEME_ETF_COUNT block
+  src = src.replace(
+    /\/\/ @@GENERATED:SCAN_TIMESTAMP@@[\s\S]*?\/\/ @@END_GENERATED:SCAN_TIMESTAMP@@/,
+    newTimestamp
+  );
   src = src.replace(
     /\/\/ @@GENERATED:THEME_ETF_COUNT@@[\s\S]*?\/\/ @@END_GENERATED:THEME_ETF_COUNT@@/,
     newEtfCount
   );
-
-  // Replace SAMPLE_DATA block
   src = src.replace(
     /\/\/ @@GENERATED:SAMPLE_DATA@@[\s\S]*?\/\/ @@END_GENERATED:SAMPLE_DATA@@/,
     newSampleData
@@ -301,6 +327,16 @@ async function main() {
     console.log(`[${theme}] ${equities.length} equities from ${etfCount}/${etfs.length} ETFs`);
   }
 
+  // Build ETF scan results — which ETFs have holdings, which are missing
+  const allDefinedEtfs = [...new Set(Object.values(THEME_ETFS).flat())];
+  const etfScanResults = {};
+  for (const etf of allDefinedEtfs) {
+    const holdings = holdingsMap[etf];
+    etfScanResults[etf] = holdings
+      ? { ok: true,  count: holdings.length }
+      : { ok: false, count: 0 };
+  }
+
   // Collect unique tickers
   const allTickers = [...new Set(
     Object.values(themeEquities).flatMap(eqs => eqs.map(e => e.ticker))
@@ -308,23 +344,58 @@ async function main() {
   console.log(`\nFetching financials for ${allTickers.length} unique tickers...`);
 
   const financialsMap = {};
+  const yfSucceeded   = [];
+  const yfFailed      = [];
+
   for (const ticker of allTickers) {
     process.stdout.write(`  ${ticker}... `);
     const fin = await fetchFinancials(ticker);
     financialsMap[ticker] = fin;
-    console.log(fin ? `$${fin.price}` : 'FAILED');
+    if (fin) {
+      yfSucceeded.push({ ticker, price: fin.price });
+      console.log(`$${fin.price}`);
+    } else {
+      yfFailed.push(ticker);
+      console.log('FAILED');
+    }
     await sleep(600);
   }
 
+  // Timestamps
+  const isoTs = new Date().toISOString();
+  const nyTs  = getNyTimestamp();
+
+  // Write scan-report.json for the email sender
+  const scanReport = {
+    scanTimestamp:   isoTs,
+    scanTimestampNY: nyTs,
+    etfScan: {
+      results:  etfScanResults,
+      total:    allDefinedEtfs.length,
+      ok:       Object.values(etfScanResults).filter(r => r.ok).length,
+      failed:   allDefinedEtfs.filter(e => !etfScanResults[e].ok),
+    },
+    yfScan: {
+      total:     allTickers.length,
+      succeeded: yfSucceeded.length,
+      failed:    yfFailed,
+    },
+  };
+  fs.writeFileSync(REPORT_PATH, JSON.stringify(scanReport, null, 2), 'utf8');
+  console.log(`\n[Report] scan-report.json written`);
+
   // Generate TypeScript blocks
-  const newEtfCount  = genThemeEtfCount(etfCounts);
+  const newEtfCount   = genThemeEtfCount(etfCounts);
   const newSampleData = genSampleData(themeEquities, financialsMap, etfCounts);
+  const newTimestamp  = genScanTimestamp(isoTs, nyTs);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp);
 
   console.log('\n=== data.ts updated ===');
-  console.log(`Last updated: ${raw.lastUpdated}`);
+  console.log(`Timestamp: ${nyTs}`);
+  console.log(`ETFs: ${scanReport.etfScan.ok}/${scanReport.etfScan.total} ok`);
+  console.log(`Yahoo Finance: ${yfSucceeded.length}/${allTickers.length} ok`);
   console.log(`Themes: ${Object.entries(themeEquities).map(([t,e]) => `${t}(${e.length})`).join(', ')}`);
 }
 
