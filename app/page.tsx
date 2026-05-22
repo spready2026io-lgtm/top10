@@ -564,6 +564,10 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
+  // Map tile period to a velocityScore key ('1Y' has no VS, fall back to '1M')
+  const tileVsPeriod = tilePeriod === '6M' ? '6M' : tilePeriod === '1M' ? '1M' : '1W';
+  const tileVsVal    = equity.velocityScore?.[tileVsPeriod] ?? null;
+
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
   const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
   const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
@@ -661,26 +665,20 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
           {/* Period change — synced to chart */}
-          {(() => {
-            const vsPeriod = tilePeriod === '1Y' ? '1M' : tilePeriod as '1D' | '1W' | '1M' | '6M';
-            const vsVal    = equity.velocityScore?.[vsPeriod] ?? null;
-            return (
-              <div className="flex items-start justify-between flex-shrink-0">
-                <div>
-                  <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
-                  <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
-                </div>
-                {vsVal !== null && (
-                  <div className="text-right">
-                    <p className="text-slate-500 text-xs leading-none mb-0.5">VS {vsPeriod}</p>
-                    <p className={`font-bold text-sm tabular-nums ${vsVal >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
-                      {vsVal >= 0 ? '▲+' : '▼'}{vsVal.toFixed(1)}%
-                    </p>
-                  </div>
-                )}
+          <div className="flex items-start justify-between flex-shrink-0">
+            <div>
+              <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
+              <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
+            </div>
+            {tileVsVal !== null && (
+              <div className="text-right">
+                <p className="text-slate-500 text-xs leading-none mb-0.5">VS {tileVsPeriod}</p>
+                <p className={`font-bold text-sm tabular-nums ${tileVsVal >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+                  {tileVsVal >= 0 ? '▲+' : '▼'}{tileVsVal.toFixed(1)}%
+                </p>
               </div>
-            );
-          })()}
+            )}
+          </div>
 
           {/* Chart — fills all remaining vertical space */}
           <div className="flex-1 min-h-0 -mx-1 mt-1">
@@ -820,6 +818,7 @@ function CompactRow({
   const logoUrl    = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
   const positive   = equity.weeklyChange >= 0;
   const changeColor = positive ? 'text-emerald-400' : 'text-rose-400';
+  const vs1w = equity.velocityScore?.['1W'] ?? null;
 
   return (
     <div>
@@ -870,16 +869,13 @@ function CompactRow({
         </span>
 
         {/* Velocity Score 1W */}
-        {(() => {
-          const vs1w = equity.velocityScore?.['1W'] ?? null;
-          return vs1w !== null ? (
-            <span className={`text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden md:block ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
-              {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
-            </span>
-          ) : (
-            <span className="text-slate-700 text-xs flex-shrink-0 w-16 text-right hidden md:block">—</span>
-          );
-        })()}
+        {vs1w !== null ? (
+          <span className={`text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden md:block ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+            {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+          </span>
+        ) : (
+          <span className="text-slate-700 text-xs flex-shrink-0 w-16 text-right hidden md:block">&mdash;</span>
+        )}
 
         {/* Easy score badge */}
         <div className="flex-shrink-0">
