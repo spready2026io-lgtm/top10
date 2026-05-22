@@ -1,0 +1,138 @@
+{
+  "scanTimestamp": "2026-05-22T15:31:19.378Z",
+  "scanTimestampNY": "May 22, 2026 at 11:31 AM ET",
+  "etfScan": {
+    "results": {
+      "AIS": {
+        "ok": true,
+        "count": 39
+      },
+      "ARTY": {
+        "ok": true,
+        "count": 34
+      },
+      "BAI": {
+        "ok": true,
+        "count": 32
+      },
+      "IVEP": {
+        "ok": true,
+        "count": 30
+      },
+      "IGPT": {
+        "ok": false,
+        "count": 0
+      },
+      "IVES": {
+        "ok": true,
+        "count": 30
+      },
+      "ALAI": {
+        "ok": true,
+        "count": 67
+      },
+      "CHAT": {
+        "ok": true,
+        "count": 31
+      },
+      "SOXX": {
+        "ok": true,
+        "count": 30
+      },
+      "PSI": {
+        "ok": false,
+        "count": 0
+      },
+      "XSD": {
+        "ok": true,
+        "count": 43
+      },
+      "DRAM": {
+        "ok": true,
+        "count": 4
+      },
+      "QQQ": {
+        "ok": false,
+        "count": 0
+      },
+      "QQQA": {
+        "ok": true,
+        "count": 21
+      },
+      "PTF": {
+        "ok": false,
+        "count": 0
+      },
+      "WCLD": {
+        "ok": false,
+        "count": 0
+      },
+      "MAGS": {
+        "ok": true,
+        "count": 7
+      },
+      "IGV": {
+        "ok": true,
+        "count": 110
+      },
+      "FDTX": {
+        "ok": true,
+        "count": 40
+      },
+      "GTEK": {
+        "ok": false,
+        "count": 0
+      },
+      "ARKK": {
+        "ok": true,
+        "count": 43
+      },
+      "MARS": {
+        "ok": true,
+        "count": 23
+      },
+      "POW": {
+        "ok": true,
+        "count": 40
+      },
+      "VOLT": {
+        "ok": true,
+        "count": 30
+      },
+      "PBD": {
+        "ok": false,
+        "count": 0
+      },
+      "PBW": {
+        "ok": false,
+        "count": 0
+      },
+      "AIRR": {
+        "ok": true,
+        "count": 51
+      },
+      "PRN": {
+        "ok": false,
+        "count": 0
+      }
+    },
+    "total": 28,
+    "ok": 19,
+    "failed": [
+      "IGPT",
+      "PSI",
+      "QQQ",
+      "PTF",
+      "WCLD",
+      "GTEK",
+      "PBD",
+      "PBW",
+      "PRN"
+    ]
+  },
+  "yfScan": {
+    "total": 77,
+    "succeeded": 77,
+    "failed": []
+  }
+}
