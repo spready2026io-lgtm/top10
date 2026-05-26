@@ -529,6 +529,42 @@ async function fetchWisdomTree() {
   return null;
 }
 
+// ── StockAnalysis.com (HTTP fallback for blocked providers) ──────────────────
+// SvelteKit __data.json endpoint serialises the top ~20–25 weighted holdings.
+// Not a complete dataset for large ETFs, but covers the positions that drive
+// scoring.  Used as a last-resort HTTP fallback for QQQ, WCLD, and GTEK.
+//
+// Parse pattern inside the flat 'data' blob:  $TICKER  weight%
+// e.g.  "NVIDIA Corporation $NVDA 8.75%  189,153,377"
+
+async function fetchStockAnalysis(ticker) {
+  const url = `https://stockanalysis.com/etf/${ticker.toLowerCase()}/holdings/__data.json`;
+  console.log(`  [StockAnalysis] ${ticker}...`);
+  try {
+    const d = await fetchJSON(url, {
+      'Accept': 'application/json, */*',
+      'Referer': 'https://stockanalysis.com/',
+    });
+    const blob = String((d.nodes && d.nodes[2] && d.nodes[2].data) || '');
+    if (!blob) throw new Error('No data blob in nodes[2]');
+
+    const matches = [...blob.matchAll(/\$([A-Z]{1,5})\s+([\d.]+)%/g)];
+    if (matches.length === 0) throw new Error('No $TICKER weight% patterns found');
+
+    const holdings = matches
+      .map(m => ({ ticker: m[1], name: m[1], weight: parseFloat(m[2]) }))
+      .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+
+    const totalStr = blob.match(/(\d+) individual holdings/);
+    const note = totalStr ? ` (top ${holdings.length} of ${totalStr[1]})` : '';
+    console.log(`    → ${holdings.length} equity holdings${note}`);
+    return holdings.length > 0 ? holdings : null;
+  } catch (e) {
+    console.error(`    ✗ ${e.message}`);
+    return null;
+  }
+}
+
 // ── VistaShares (AIS, POW — direct CSV endpoint found by inspection) ──────────
 // URL discovered: vistashares.com/csv/top-holdings/?etf={TICKER}
 // CSV columns: Date, Account, StockTicker, CUSIP, SecurityName, Shares, Price, MarketValue, Weightings, ..., MoneyMarketFlag
@@ -654,12 +690,25 @@ async function main() {
     await sleep(600);
   }
 
+  // ── StockAnalysis fallback — only runs for tickers that still failed above ──
+  // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
+  // GTEK (Goldman Sachs blocks Playwright).  Yields top ~8–25 holdings each.
+  const saNeed = ['QQQ', 'WCLD', 'GTEK'].filter(t => !results[t]);
+  if (saNeed.length > 0) {
+    console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
+    for (const ticker of saNeed) {
+      const h = await fetchStockAnalysis(ticker);
+      if (h) results[ticker] = h;
+      await sleep(800);
+    }
+  }
+
   const fetched = Object.keys(results);
   const all = [
     ...ISHARES_ETFS.map(e => e.ticker),
     ...INVESCO_ETFS.map(e => e.ticker),
     'ARKK', 'ALAI', 'XSD',
-    'WCLD',
+    'WCLD', 'GTEK',
     ...WEDBUSH_ETFS.map(e => e.ticker),
     'VOLT', 'MAGS',
     ...FIRSTTRUST_ETFS.map(e => e.ticker),

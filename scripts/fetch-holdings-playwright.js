@@ -600,14 +600,22 @@ async function main() {
     }
 
     console.log('\n[WisdomTree]');
-    const wcld = await fetchWisdomTree(ctx, 'WCLD');
-    if (wcld) results['WCLD'] = wcld;
-    // on failure: keep last good data (no delete)
+    if (results['WCLD']) {
+      console.log('  WCLD already fetched by Phase 1 — skipping Playwright');
+    } else {
+      const wcld = await fetchWisdomTree(ctx, 'WCLD');
+      if (wcld) results['WCLD'] = wcld;
+      // on failure: keep last good data (no delete)
+    }
 
     console.log('\n[Goldman Sachs]');
-    const gtek = await fetchGoldmanSachs(ctx, 'GTEK');
-    if (gtek) results['GTEK'] = gtek;
-    // on failure: keep last good data (no delete)
+    if (results['GTEK']) {
+      console.log('  GTEK already fetched by Phase 1 — skipping Playwright');
+    } else {
+      const gtek = await fetchGoldmanSachs(ctx, 'GTEK');
+      if (gtek) results['GTEK'] = gtek;
+      // on failure: keep last good data (no delete)
+    }
 
     // Invesco fallback: scrape product pages for any ETF that failed phase 1
     const invescoMissing = INVESCO_PW_ETFS.filter(t => !results[t]);
