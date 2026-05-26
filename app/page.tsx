@@ -859,12 +859,12 @@ function CompactRow({
         </span>
 
         {/* Weekly change */}
-        <span className={`text-xs font-semibold tabular-nums flex-shrink-0 w-14 text-right ${changeColor}`}>
+        <span className={`text-xs font-semibold tabular-nums flex-shrink-0 w-14 text-right hidden sm:block ${changeColor}`}>
           {positive ? '+' : ''}{equity.weeklyChange.toFixed(1)}%
         </span>
 
         {/* Weight score */}
-        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden sm:block" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
+        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
           {equity.proScore.toFixed(1)}% wt
         </span>
 
