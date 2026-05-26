@@ -93,28 +93,28 @@ export default function About() {
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">5/5</span>
-                <h3 className="text-white font-semibold">Easy Score</h3>
+                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">8/8</span>
+                <h3 className="text-white font-semibold">Coverage Score</h3>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
-                How many of the 5 tracked ETFs hold this stock. Scored out of 5.
+                The fraction of tracked ETFs in this theme that hold the stock, shown as x/n and as a percentage. A stock held by 7 of 8 ETFs has 87% coverage.
               </p>
               <ul className="space-y-1 text-sm">
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">5/5</span>
-                  <span className="text-slate-400">All 5 ETFs hold this stock. Maximum conviction across the sector.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">8/8</span>
+                  <span className="text-slate-400">100% coverage. Every ETF in the theme holds this stock. Maximum breadth.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">4/5</span>
-                  <span className="text-slate-400">Strong. One ETF is out. Usually still a high-confidence name.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">6/8</span>
+                  <span className="text-slate-400">Strong. 75% coverage. One or two ETFs are out. Still a high-conviction name.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">3/5</span>
-                  <span className="text-slate-400">Moderate. Held by a majority but not universal. More niche exposure.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">4/8</span>
+                  <span className="text-slate-400">Moderate. 50% coverage. Held by half the theme. More specialised exposure.</span>
                 </li>
               </ul>
               <p className="text-slate-500 text-xs mt-3">
-                A 5/5 means every major sector ETF has conviction in this name, regardless of how much they own.
+                Coverage is used as a confidence coefficient in the Weight Score formula: avgWeight × √coverage. Higher coverage amplifies the weight signal.
               </p>
             </div>
 
@@ -132,8 +132,8 @@ export default function About() {
                 That is an active bet.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed">
-                A stock can have an Easy Score of 5/5 but a low Weight Score (owned by everyone, but
-                only as a small position). A high Weight Score with a lower Easy Score (owned by fewer
+                A stock can have 100% coverage but a low Weight Score (held by everyone, but
+                only as a small position). A high Weight Score with lower coverage (held by fewer
                 funds but in size) is often the more interesting signal.
               </p>
             </div>
@@ -199,7 +199,7 @@ export default function About() {
               <ul className="space-y-1.5 text-sm text-slate-400">
                 <li><span className="text-slate-300 font-medium">Logo and name.</span> Company identity at a glance.</li>
                 <li><span className="text-slate-300 font-medium">Ticker.</span> The stock symbol.</li>
-                <li><span className="text-slate-300 font-medium">Easy Score badge.</span> ETF ownership breadth (out of 5).</li>
+                <li><span className="text-slate-300 font-medium">Coverage badge.</span> ETF ownership breadth (x/n, relative to theme).</li>
                 <li><span className="text-slate-300 font-medium">Price and weekly change.</span> Current price and 1-week return.</li>
                 <li><span className="text-slate-300 font-medium">Weight Score.</span> Average ETF weighting across holders.</li>
                 <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / 6M / 1Y.</li>
@@ -242,7 +242,7 @@ export default function About() {
               { n: '1', title: 'Pick your sector.', body: 'Use the toggle in the header to switch between Technology, Financials, Energy, Healthcare, and Industrials.' },
               { n: '2', title: 'Check the chart.', body: 'See how the Top10 selection is performing versus the S&P500. Use the time toggle to change the period.' },
               { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
-              { n: '4', title: 'Check the scores.', body: 'Easy Score tells you how many ETFs own it. Weight Score tells you how much they own. Both high means maximum conviction.' },
+              { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Both high means maximum conviction.' },
               { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full financials and Tony\'s qualitative analysis note.' },
               { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
             ].map(({ n, title, body }) => (

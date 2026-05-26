@@ -107,7 +107,7 @@ export const SCAN_TIMESTAMP    = '2026-05-26T14:28:12.471Z';
 export const SCAN_TIMESTAMP_NY = 'May 26, 2026 at 10:28 AM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
-// Number of ETFs per theme — denominator for relative Easy Score display
+// Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
 // @@GENERATED:THEME_ETF_COUNT@@
 export const THEME_ETF_COUNT: Record<Theme, number> = {
   'AI & ML':         8,

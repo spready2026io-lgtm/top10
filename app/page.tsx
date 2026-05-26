@@ -380,8 +380,8 @@ function VsBadge({ vs, period }: { vs: number | null; period: string }) {
   );
 }
 
-// ── Easy score badge ──────────────────────────────────────────────────────────
-function EasyScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
+// ── Coverage score badge ──────────────────────────────────────────────────────
+function CoverageScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
   const pct = maxScore > 0 ? score / maxScore : 0;
   const color = pct >= 0.8 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
               : pct >= 0.6 ? 'bg-sky-500/20 border-sky-500/40 text-sky-300'
@@ -452,7 +452,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
               </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+              <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
               <button onClick={onClose} className="text-slate-500 hover:text-white text-xl leading-none ml-1 w-6 h-6 flex items-center justify-center">×</button>
             </div>
           </div>
@@ -472,7 +472,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-slate-600 text-[10px] mt-0.5">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
-                <p className="text-slate-500 text-xs mb-1">Easy Score</p>
+                <p className="text-slate-500 text-xs mb-1">ETF Count</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.easyScore}/{maxScore}</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">ETFs holding</p>
               </div>
@@ -616,7 +616,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                   NEW
                 </span>
               )}
-              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+              <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
           </div>
 
@@ -717,7 +717,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                 <p className="text-white font-bold text-sm">{equity.ticker}</p>
                 <p className="text-slate-500 text-xs truncate">{equity.name}</p>
               </div>
-              <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+              <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
             <div className="flex items-center gap-2 mt-1.5 tabular-nums flex-wrap">
               <span className="text-emerald-400 font-bold text-sm">{equity.proScore.toFixed(1)}% wt</span>
@@ -877,9 +877,9 @@ function CompactRow({
           <span className="text-slate-700 text-xs flex-shrink-0 w-16 text-right hidden md:block">&mdash;</span>
         )}
 
-        {/* Easy score badge */}
+        {/* Coverage score badge */}
         <div className="flex-shrink-0">
-          <EasyScoreBadge score={equity.easyScore} maxScore={maxScore} />
+          <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
         </div>
 
         {/* Expand chevron */}
@@ -929,7 +929,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
         {/* Three key points */}
         <div className="space-y-2.5 mb-6">
           {[
-            { icon: '◆', label: 'Easy Score', desc: 'How many ETFs in this theme hold this stock (x/n, relative to the theme).' },
+            { icon: '◆', label: 'Coverage Score', desc: 'How many ETFs in this theme hold this stock (x/n), expressed as a percentage of the theme.' },
             { icon: '◆', label: 'Weight Score', desc: 'Average weighting across all holding ETFs.' },
             { icon: '◆', label: "Tony's Analysis", desc: 'Thesis, risks, and what to watch. Flip any tile.' },
           ].map(({ icon, label, desc }) => (
