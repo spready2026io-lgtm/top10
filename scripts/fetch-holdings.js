@@ -534,8 +534,9 @@ async function fetchWisdomTree() {
 // Not a complete dataset for large ETFs, but covers the positions that drive
 // scoring.  Used as a last-resort HTTP fallback for QQQ, WCLD, and GTEK.
 //
-// Parse pattern inside the flat 'data' blob:  $TICKER  weight%
-// e.g.  "NVIDIA Corporation $NVDA 8.75%  189,153,377"
+// Parse pattern: the SvelteKit data is a flat array; JSON.stringify(nodes[2])
+// produces strings like  "$NVDA","8.75%"  adjacent in the JSON text.
+// Regex: /"(\$[A-Z]{1,5})","([\d.]+)%"/g
 
 async function fetchStockAnalysis(ticker) {
   const url = `https://stockanalysis.com/etf/${ticker.toLowerCase()}/holdings/__data.json`;
@@ -545,17 +546,18 @@ async function fetchStockAnalysis(ticker) {
       'Accept': 'application/json, */*',
       'Referer': 'https://stockanalysis.com/',
     });
-    const blob = String((d.nodes && d.nodes[2] && d.nodes[2].data) || '');
-    if (!blob) throw new Error('No data blob in nodes[2]');
+    const blob = JSON.stringify((d.nodes && d.nodes[2]) || {});
+    if (!blob || blob === '{}') throw new Error('No data in nodes[2]');
 
-    const matches = [...blob.matchAll(/\$([A-Z]{1,5})\s+([\d.]+)%/g)];
-    if (matches.length === 0) throw new Error('No $TICKER weight% patterns found');
+    // Adjacent string values in the SvelteKit flat array: "$NVDA","8.75%"
+    const matches = [...blob.matchAll(/"(\$[A-Z]{1,5})","([\d.]+)%"/g)];
+    if (matches.length === 0) throw new Error('No "$TICKER","weight%" patterns found');
 
     const holdings = matches
-      .map(m => ({ ticker: m[1], name: m[1], weight: parseFloat(m[2]) }))
+      .map(m => ({ ticker: m[1].replace('$', ''), name: m[1].replace('$', ''), weight: parseFloat(m[2]) }))
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
-    const totalStr = blob.match(/(\d+) individual holdings/);
+    const totalStr = blob.match(/"(\d+) individual holdings"/);
     const note = totalStr ? ` (top ${holdings.length} of ${totalStr[1]})` : '';
     console.log(`    → ${holdings.length} equity holdings${note}`);
     return holdings.length > 0 ? holdings : null;
