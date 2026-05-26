@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-05-26T14:28:12.471Z",
-  "scanTimestampNY": "May 26, 2026 at 10:28 AM ET",
+  "scanTimestamp": "2026-05-26T14:56:35.650Z",
+  "scanTimestampNY": "May 26, 2026 at 10:56 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -126,7 +126,11 @@
   },
   "yfScan": {
     "total": 72,
-    "succeeded": 72,
-    "failed": []
+    "succeeded": 69,
+    "failed": [
+      "NBIS",
+      "ALAB",
+      "EME"
+    ]
   }
 }
