@@ -118,7 +118,10 @@ async function fetchInvesco({ ticker, id, idType }) {
   const url = `https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/${id}/holdings/fund?idType=${idType}&productType=ETF`;
   console.log(`  [Invesco] ${ticker}...`);
   try {
-    const d = await fetchJSON(url);
+    const d = await fetchJSON(url, {
+      'Accept': 'application/json, */*',
+      'Referer': 'https://www.invesco.com/',
+    });
     const rows = d.holdings;
     if (!Array.isArray(rows)) throw new Error('No holdings array');
 
@@ -478,6 +481,54 @@ async function fetchFidelity({ ticker }) {
   }
 }
 
+// ── WisdomTree (WCLD — direct document download) ─────────────────────────────
+// WisdomTree's website blocks headless browsers, but the document-library
+// CSV endpoint sometimes responds to plain HTTP with the right headers.
+// Playwright fallback in fetch-holdings-playwright.js handles CI failures.
+
+const WISDOMTREE_CSV_URLS = [
+  'https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv',
+  'https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/WCLD.csv',
+  'https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv',
+];
+
+async function fetchWisdomTree() {
+  console.log('  [WisdomTree] WCLD...');
+  for (const url of WISDOMTREE_CSV_URLS) {
+    try {
+      const text = await fetchText(url, {
+        'Accept': 'text/csv,text/plain,*/*',
+        'Referer': 'https://www.wisdomtree.com/investments/etfs/technology/wcld',
+        'Origin': 'https://www.wisdomtree.com',
+      });
+      if (!text || text.trim().startsWith('<!') || text.trim().startsWith('<html')) continue;
+      const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+      if (rows.length < 2) continue;
+      const hdrs = rows[0].map(h => h.toLowerCase().trim());
+      const tIdx = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
+      const nIdx = hdrs.findIndex(h => h === 'name' || h.includes('description') || h.includes('security'));
+      const wIdx = hdrs.findIndex(h => h.includes('weight') || h.includes('% of'));
+      if (tIdx === -1 || wIdx === -1) continue;
+
+      const holdings = rows.slice(1)
+        .filter(r => isEquityTicker(r[tIdx]))
+        .map(r => ({
+          ticker: r[tIdx].trim(),
+          name:   nIdx >= 0 ? (r[nIdx] || r[tIdx]).trim() : r[tIdx].trim(),
+          weight: parseFloat((r[wIdx] || '0').replace('%', '')) || 0,
+        }))
+        .filter(r => r.weight > 0);
+
+      if (holdings.length > 0) {
+        console.log(`    → ${holdings.length} equity holdings`);
+        return holdings;
+      }
+    } catch {}
+  }
+  console.error('    ✗ All WisdomTree HTTP URLs failed (Playwright fallback will retry)');
+  return null;
+}
+
 // ── VistaShares (AIS, POW — direct CSV endpoint found by inspection) ──────────
 // URL discovered: vistashares.com/csv/top-holdings/?etf={TICKER}
 // CSV columns: Date, Account, StockTicker, CUSIP, SecurityName, Shares, Price, MarketValue, Weightings, ..., MoneyMarketFlag
@@ -557,6 +608,10 @@ async function main() {
   const spdr = await fetchSPDR();
   if (spdr) results['XSD'] = spdr;
 
+  console.log('\n[WisdomTree]');
+  const wcld = await fetchWisdomTree();
+  if (wcld) results['WCLD'] = wcld;
+
   console.log('\n[Wedbush]');
   for (const etf of WEDBUSH_ETFS) {
     const h = await fetchWedbush(etf);
@@ -604,6 +659,7 @@ async function main() {
     ...ISHARES_ETFS.map(e => e.ticker),
     ...INVESCO_ETFS.map(e => e.ticker),
     'ARKK', 'ALAI', 'XSD',
+    'WCLD',
     ...WEDBUSH_ETFS.map(e => e.ticker),
     'VOLT', 'MAGS',
     ...FIRSTTRUST_ETFS.map(e => e.ticker),

@@ -445,7 +445,11 @@ async function fetchGoldmanSachs(ctx, ticker) {
     const getCapturedJSON = setupJSONInterception(page, true);
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await sleep(8000); // give Next.js time to hydrate and fire API calls
+    await sleep(20000); // give Next.js time to hydrate and fire API calls in CI
+    // Scroll to trigger lazy-loaded content (GS uses viewport-based rendering)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2)).catch(() => null);
+    await sleep(2000);
+    await page.evaluate(() => window.scrollTo(0, 0)).catch(() => null);
 
     // 1. Try to click Holdings tab (try multiple label variants)
     try {
