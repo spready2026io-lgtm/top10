@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-05-26T14:56:35.650Z",
-  "scanTimestampNY": "May 26, 2026 at 10:56 AM ET",
+  "scanTimestamp": "2026-05-26T18:03:50.647Z",
+  "scanTimestampNY": "May 26, 2026 at 2:03 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -52,8 +52,8 @@
         "count": 4
       },
       "QQQ": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 22
       },
       "QQQA": {
         "ok": true,
@@ -64,8 +64,8 @@
         "count": 10
       },
       "WCLD": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 19
       },
       "MAGS": {
         "ok": true,
@@ -80,8 +80,8 @@
         "count": 40
       },
       "GTEK": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 8
       },
       "ARKK": {
         "ok": true,
@@ -117,20 +117,12 @@
       }
     },
     "total": 28,
-    "ok": 25,
-    "failed": [
-      "QQQ",
-      "WCLD",
-      "GTEK"
-    ]
+    "ok": 28,
+    "failed": []
   },
   "yfScan": {
     "total": 72,
-    "succeeded": 69,
-    "failed": [
-      "NBIS",
-      "ALAB",
-      "EME"
-    ]
+    "succeeded": 72,
+    "failed": []
   }
 }
