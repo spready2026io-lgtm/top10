@@ -646,16 +646,16 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                     );
                   })}
                 </div>
-                <div className="border-t border-slate-800 mt-2 pt-2 space-y-1">
+                <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-[10px]">Coverage</span>
-                    <span className="text-slate-300 text-[10px] font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
+                    <span className="text-slate-400 text-xs">Coverage</span>
+                    <span className="text-slate-100 text-xs font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-[10px]">Confidence coeff</span>
-                    <span className="text-slate-300 text-[10px] font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+                    <span className="text-slate-400 text-xs">Confidence coeff</span>
+                    <span className="text-slate-100 text-xs font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
                   </div>
-                  <p className="text-slate-600 text-[10px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
+                  <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
                 </div>
               </div>
             </span>
