@@ -50,6 +50,73 @@ const TOP_N = 20; // equities to show per theme
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// ── US market calendar ────────────────────────────────────────────────────────
+
+// Returns NYSE observed holiday dates for a given year as [month, day] pairs.
+function usMarketHolidays(year) {
+  const out = [];
+
+  // Shift fixed-date holiday to observed trading day (Sat→Fri, Sun→Mon)
+  function observed(mo, dy) {
+    const dt = new Date(Date.UTC(year, mo - 1, dy));
+    const dow = dt.getUTCDay();
+    if (dow === 6) dt.setUTCDate(dy - 1);
+    else if (dow === 0) dt.setUTCDate(dy + 1);
+    return [dt.getUTCMonth() + 1, dt.getUTCDate()];
+  }
+
+  // nth weekday of month (n>0 from start, n<0 from end). weekday: 0=Sun…6=Sat
+  function nthWeekday(mo, weekday, n) {
+    if (n > 0) {
+      const first = new Date(Date.UTC(year, mo - 1, 1));
+      const diff  = (weekday - first.getUTCDay() + 7) % 7;
+      return 1 + diff + (n - 1) * 7;
+    }
+    const last = new Date(Date.UTC(year, mo, 0));
+    const diff = (last.getUTCDay() - weekday + 7) % 7;
+    return last.getUTCDate() - diff;
+  }
+
+  // Good Friday — 2 days before Easter (Anonymous Gregorian algorithm)
+  function goodFriday() {
+    const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+    const d = Math.floor(b / 4), e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4), k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m2 = Math.floor((a + 11 * h + 22 * l) / 451);
+    const emo = Math.floor((h + l - 7 * m2 + 114) / 31);
+    const edy = ((h + l - 7 * m2 + 114) % 31) + 1;
+    const easter = new Date(Date.UTC(year, emo - 1, edy));
+    easter.setUTCDate(easter.getUTCDate() - 2);
+    return [easter.getUTCMonth() + 1, easter.getUTCDate()];
+  }
+
+  out.push(observed(1, 1));                    // New Year's Day
+  out.push([1, nthWeekday(1, 1, 3)]);          // MLK Day (3rd Mon Jan)
+  out.push([2, nthWeekday(2, 1, 3)]);          // Presidents' Day (3rd Mon Feb)
+  out.push(goodFriday());                       // Good Friday
+  out.push([5, nthWeekday(5, 1, -1)]);         // Memorial Day (last Mon May)
+  if (year >= 2022) out.push(observed(6, 19)); // Juneteenth
+  out.push(observed(7, 4));                     // Independence Day
+  out.push([9, nthWeekday(9, 1, 1)]);          // Labor Day (1st Mon Sep)
+  out.push([11, nthWeekday(11, 4, 4)]);        // Thanksgiving (4th Thu Nov)
+  out.push(observed(12, 25));                   // Christmas Day
+  return out;
+}
+
+// Returns true only on NYSE trading days (excludes weekends and US market holidays).
+function isUSMarketDay(dateStr) {
+  const dt  = new Date(dateStr + 'T12:00:00Z');
+  const dow = dt.getUTCDay();
+  if (dow === 0 || dow === 6) return false;
+  const mo  = dt.getUTCMonth() + 1;
+  const dy  = dt.getUTCDate();
+  return !usMarketHolidays(dt.getUTCFullYear()).some(([hm, hd]) => hm === mo && hd === dy);
+}
+
 // ── Velocity Score helpers ────────────────────────────────────────────────────
 
 function offsetDate(dateStr, days) {
@@ -408,23 +475,28 @@ async function main() {
     }
   }
 
-  // Append today's snapshot
-  history[todayStr] = {};
-  for (const [theme, equities] of Object.entries(themeEquities)) {
-    history[todayStr][theme] = {};
-    for (const eq of equities) {
-      history[todayStr][theme][eq.ticker] = eq.proScore;
+  // Only append snapshot on US trading days — stale prices on weekends/holidays
+  // would pollute VS calculations with duplicate data points.
+  if (isUSMarketDay(todayStr)) {
+    history[todayStr] = {};
+    for (const [theme, equities] of Object.entries(themeEquities)) {
+      history[todayStr][theme] = {};
+      for (const eq of equities) {
+        history[todayStr][theme][eq.ticker] = eq.proScore;
+      }
     }
-  }
 
-  // Prune entries older than 200 days to keep the file small
-  const cutoff = offsetDate(todayStr, -200);
-  for (const d of Object.keys(history)) {
-    if (d < cutoff) delete history[d];
-  }
+    // Prune entries older than 200 days to keep the file small
+    const cutoff = offsetDate(todayStr, -200);
+    for (const d of Object.keys(history)) {
+      if (d < cutoff) delete history[d];
+    }
 
-  fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2), 'utf8');
-  console.log(`[History] ${todayStr} snapshot saved (${Object.keys(history).length} days stored)\n`);
+    fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2), 'utf8');
+    console.log(`[History] ${todayStr} snapshot saved (${Object.keys(history).length} days stored)\n`);
+  } else {
+    console.log(`[History] ${todayStr} is not a US trading day — snapshot skipped\n`);
+  }
 
   // Build ETF scan results — which ETFs have holdings, which are missing
   const allDefinedEtfs = [...new Set(Object.values(THEME_ETFS).flat())];
