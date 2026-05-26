@@ -781,7 +781,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               Tony&apos;s Analysis
             </p>
             <div className="flex-1 overflow-y-auto rounded-lg bg-slate-800/40 px-2.5 py-2 scrollbar-thin scrollbar-thumb-slate-700">
-              <p className="text-slate-300 text-xs leading-relaxed">{equity.tonyNote}</p>
+              <p className="text-slate-300 text-xs leading-relaxed">{equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim()}</p>
             </div>
           </div>
 
