@@ -906,19 +906,19 @@ function CompactRow({
           {positive ? '+' : ''}{equity.weeklyChange.toFixed(1)}%
         </span>
 
-        {/* Weight score */}
-        <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
-          {equity.proScore.toFixed(1)}% wt
-        </span>
-
-        {/* Velocity Score 1W */}
-        {vs1w !== null ? (
-          <span className={`text-xs font-bold tabular-nums flex-shrink-0 w-16 text-right hidden md:block ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
-            {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+        {/* Weight score + Velocity Score stacked */}
+        <div className="flex flex-col items-end flex-shrink-0 w-16 gap-0.5" title={`Weight Score: ${equity.proScore.toFixed(1)}% | Coverage: ${(equity.coverage * 100).toFixed(0)}%`}>
+          <span className="text-emerald-400 text-xs font-bold tabular-nums leading-none">
+            {equity.proScore.toFixed(1)}% wt
           </span>
-        ) : (
-          <span className="text-slate-700 text-xs flex-shrink-0 w-16 text-right hidden md:block">&mdash;</span>
-        )}
+          {vs1w !== null ? (
+            <span className={`text-xs font-bold tabular-nums leading-none ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+              {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+            </span>
+          ) : (
+            <span className="text-slate-700 text-[10px] leading-none">&mdash;</span>
+          )}
+        </div>
 
         {/* Coverage score badge */}
         <div className="flex-shrink-0">
