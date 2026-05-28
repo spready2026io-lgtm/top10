@@ -694,8 +694,9 @@ async function main() {
 
   // ── StockAnalysis fallback — only runs for tickers that still failed above ──
   // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
-  // GTEK (Goldman Sachs blocks Playwright).  Yields top ~8–25 holdings each.
-  const saNeed = ['QQQ', 'WCLD', 'GTEK'].filter(t => !results[t]);
+  // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
+  // Yields top ~8–25 holdings each.
+  const saNeed = ['QQQ', 'WCLD', 'GTEK', 'ALAI'].filter(t => !results[t]);
   if (saNeed.length > 0) {
     console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
     for (const ticker of saNeed) {
