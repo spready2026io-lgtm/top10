@@ -559,6 +559,14 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
 
+  // Close any open tooltip on the next click anywhere in the document (mobile fix)
+  useEffect(() => {
+    if (!wtOpen && !vsOpen) return;
+    const close = () => { setWtOpen(false); setVsOpen(false); };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, [wtOpen, vsOpen]);
+
   const rawHistory   = equity.priceHistory?.[tilePeriod];
   const baseReturn   = tilePeriod === '1W' ? equity.weeklyChange : equity.periodReturns[tilePeriod];
   const tilePrices   = (rawHistory && rawHistory.length >= 2)
@@ -632,7 +640,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             <p className="text-white font-bold text-xl tabular-nums mt-1">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            <div className="flex flex-col items-end gap-0">
+            <div className="flex flex-col items-end gap-1.5">
               {/* avg wt */}
               <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); }}>
                 <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
