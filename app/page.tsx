@@ -1040,7 +1040,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           ))}
         </div>
       ),
-      pointer: <span className="text-violet-500/60 text-xs mt-1 flex items-center gap-1">▲ <span className="text-slate-500">theme tabs above</span></span>,
+      pointer: <span className="text-violet-500/60 text-xs mt-1 flex items-center gap-1">▲ <span className="text-slate-300">theme tabs above</span></span>,
     },
     {
       n: '3',
@@ -1054,7 +1054,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           <span className="text-amber-400 font-bold text-sm tabular-nums leading-none">▲+4.6<span className="text-xs font-medium text-amber-400/60 ml-0.5">% VS 1W</span></span>
         </div>
       ),
-      pointer: <span className="text-emerald-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">on every tile</span></span>,
+      pointer: <span className="text-emerald-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-300">on every tile</span></span>,
     },
     {
       n: '4',
@@ -1068,7 +1068,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           <span className="bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[10px] font-semibold px-2 py-0.5 rounded-md">▲ Velocity</span>
         </div>
       ),
-      pointer: <span className="text-amber-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">sort controls below</span></span>,
+      pointer: <span className="text-amber-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-300">sort controls below</span></span>,
     },
     {
       n: '5',
@@ -1089,7 +1089,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           </div>
         </div>
       ),
-      pointer: <span className="text-slate-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">tile grid below</span></span>,
+      pointer: <span className="text-slate-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-300">tile grid below</span></span>,
     },
   ];
 
@@ -1099,7 +1099,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="text-emerald-400 font-bold text-sm">How Top10 Works</span>
-          <span className="text-slate-600 text-xs hidden sm:inline">— follow the steps below then explore the tiles</span>
+          <span className="text-slate-400 text-xs hidden sm:inline">— follow the steps below then explore the tiles</span>
         </div>
         <button
           onClick={onClose}
@@ -1124,7 +1124,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
                 <span className={`text-sm font-bold ${step.color}`}>{step.label}</span>
               </div>
               {/* Description */}
-              <p className="text-slate-400 text-xs leading-relaxed flex-1">{step.desc}</p>
+              <p className="text-slate-200 text-xs leading-relaxed flex-1">{step.desc}</p>
               {/* Mini visual */}
               {step.visual}
               {/* Pointer arrow */}
@@ -1136,11 +1136,11 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
               <>
                 {/* Desktop: horizontal arrow to the right */}
                 <div className="hidden md:flex items-center justify-center w-6 flex-shrink-0 pt-8">
-                  <span className="text-slate-600 text-base">→</span>
+                  <span className="text-slate-400 text-base">→</span>
                 </div>
                 {/* Mobile: vertical arrow downward */}
                 <div className="md:hidden flex justify-center py-1">
-                  <span className="text-slate-600 text-sm">↓</span>
+                  <span className="text-slate-400 text-sm">↓</span>
                 </div>
               </>
             )}
