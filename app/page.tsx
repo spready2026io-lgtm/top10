@@ -556,6 +556,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [flipped,     setFlipped]     = useState(false);
   const [tilePeriod,  setTilePeriod]  = useState<Period>('1W');
   const [wtOpen,      setWtOpen]      = useState(false);
+  const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
 
   const rawHistory   = equity.priceHistory?.[tilePeriod];
@@ -626,64 +627,92 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             </div>
           </div>
 
-          {/* Price + Weight Score */}
-          <div className="flex items-baseline justify-between flex-shrink-0 mt-3">
-            <p className="text-white font-bold text-xl tabular-nums">
+          {/* Price + Weight Score + VS */}
+          <div className="flex items-start justify-between flex-shrink-0 mt-3">
+            <p className="text-white font-bold text-xl tabular-nums mt-1">
               ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); }}>
-              <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
-                {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
+            <div className="flex flex-col items-end gap-0">
+              {/* avg wt */}
+              <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); }}>
+                <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
+                  {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
+                </span>
+                {/* Tooltip: ETF weight breakdown */}
+                <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
+                  <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
+                  <div className="space-y-1.5">
+                    {etfs.filter(etf => {
+                      const val = equity.etfPresence[etf];
+                      return val !== false && val !== 0;
+                    }).map(etf => {
+                      const val = equity.etfPresence[etf] as number;
+                      return (
+                        <div key={etf} className="flex items-center justify-between">
+                          <span className="text-xs font-mono font-bold text-slate-300">{etf}</span>
+                          <span className="text-emerald-400 text-xs font-bold tabular-nums">{val.toFixed(1)}%</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400 text-xs">Coverage</span>
+                      <span className="text-slate-100 text-xs font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400 text-xs">Confidence coeff</span>
+                      <span className="text-slate-100 text-xs font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+                    </div>
+                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
+                  </div>
+                </div>
               </span>
-              {/* Tooltip: ETF weight breakdown */}
-              <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
-                <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
-                <div className="space-y-1.5">
-                  {etfs.filter(etf => {
-                    const val = equity.etfPresence[etf];
-                    return val !== false && val !== 0;
-                  }).map(etf => {
-                    const val = equity.etfPresence[etf] as number;
-                    return (
-                      <div key={etf} className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-bold text-slate-300">{etf}</span>
-                        <span className="text-emerald-400 text-xs font-bold tabular-nums">{val.toFixed(1)}%</span>
+
+              {/* VS — same size as avg wt, directly below */}
+              {tileVsVal !== null && (() => {
+                const pastScore = equity.proScore / (1 + tileVsVal / 100);
+                const vsColor   = tileVsVal >= 0 ? 'text-amber-400' : 'text-rose-400';
+                const vsSign    = tileVsVal >= 0 ? '▲+' : '▼';
+                return (
+                  <span className="relative group" onClick={e => { e.stopPropagation(); setVsOpen(o => !o); setWtOpen(false); }}>
+                    <span className={`${vsColor} font-bold text-2xl tabular-nums leading-none cursor-pointer`}>
+                      {vsSign}{Math.abs(tileVsVal).toFixed(1)}<span className="text-sm font-medium ml-0.5 opacity-70">% VS {tileVsPeriod}</span>
+                    </span>
+                    {/* Tooltip: VS calculation */}
+                    <div className={`absolute right-0 top-full mt-1.5 w-52 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${vsOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
+                      <p className="text-slate-400 text-xs font-semibold mb-2">Velocity Score — {tileVsPeriod} window</p>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400 text-xs">Weight Score now</span>
+                          <span className="text-emerald-400 text-xs font-bold tabular-nums">{equity.proScore.toFixed(2)}%</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400 text-xs">Weight Score {tileVsPeriod} ago</span>
+                          <span className="text-slate-300 text-xs font-bold tabular-nums">{pastScore.toFixed(2)}%</span>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-                <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Coverage</span>
-                    <span className="text-slate-100 text-xs font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Confidence coeff</span>
-                    <span className="text-slate-100 text-xs font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
-                  </div>
-                  <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
-                </div>
-              </div>
-            </span>
+                      <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400 text-xs">Change</span>
+                          <span className={`text-xs font-bold tabular-nums ${vsColor}`}>{tileVsVal >= 0 ? '+' : ''}{tileVsVal.toFixed(1)}%</span>
+                        </div>
+                        <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">VS = (now ÷ then − 1) × 100</p>
+                      </div>
+                    </div>
+                  </span>
+                );
+              })()}
+            </div>
           </div>
 
           {/* Divider */}
           <div className="border-t border-slate-800 my-2 flex-shrink-0" />
 
           {/* Period change — synced to chart */}
-          <div className="flex items-start justify-between flex-shrink-0">
-            <div>
-              <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
-              <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
-            </div>
-            {tileVsVal !== null && (
-              <div className="text-right">
-                <p className="text-slate-500 text-xs leading-none mb-0.5">VS {tileVsPeriod}</p>
-                <p className={`font-bold text-sm tabular-nums ${tileVsVal >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
-                  {tileVsVal >= 0 ? '▲+' : '▼'}{tileVsVal.toFixed(1)}%
-                </p>
-              </div>
-            )}
+          <div className="flex-shrink-0">
+            <p className="text-slate-500 text-xs leading-none mb-0.5">{tilePeriod} change</p>
+            <p className={`font-semibold text-sm tabular-nums ${changeColor}`}>{changeSign}{periodReturn.toFixed(1)}%</p>
           </div>
 
           {/* Chart — fills all remaining vertical space */}
