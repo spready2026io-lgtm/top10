@@ -1015,6 +1015,7 @@ export default function Home() {
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
   const [layout,  setLayout]  = useState<'grid' | 'compact'>('grid');
+  const [sortBy,  setSortBy]  = useState<'wt' | 'vs'>('wt');
   const [showAll, setShowAll] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -1029,8 +1030,8 @@ export default function Home() {
     if (!seen) setWelcome(true);
   }, []);
 
-  // Reset pagination + expanded when switching theme or layout
-  useEffect(() => { setShowAll(false); setExpanded(null); }, [theme, layout]);
+  // Reset pagination + expanded when switching theme, layout, or sort
+  useEffect(() => { setShowAll(false); setExpanded(null); }, [theme, layout, sortBy]);
 
   const closeWelcome = () => {
     setWelcome(false);
@@ -1038,6 +1039,13 @@ export default function Home() {
   };
 
   const equities = SAMPLE_DATA[theme];
+  const sortedEquities = sortBy === 'wt'
+    ? equities
+    : [...equities].sort((a, b) => {
+        const va = a.velocityScore?.['1W'] ?? -Infinity;
+        const vb = b.velocityScore?.['1W'] ?? -Infinity;
+        return vb - va;
+      });
   const etfs     = THEME_ETFS[theme];
   const maxScore = THEME_ETF_COUNT[theme];
 
@@ -1141,7 +1149,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Legend + score explanation + layout toggle */}
+            {/* Legend + sort toggle + layout toggle */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
                 <span className="border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">x/{maxScore}</span>
@@ -1156,8 +1164,34 @@ export default function Home() {
                 ≥40%
               </span>
 
-              {/* Layout toggle */}
+              {/* Sort toggle */}
               <div className="ml-auto flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
+                <button
+                  onClick={() => setSortBy('wt')}
+                  title="Sort by Weight Score (avg ETF weighting × coverage)"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    sortBy === 'wt'
+                      ? 'bg-slate-600 text-white'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  Avg Wt
+                </button>
+                <button
+                  onClick={() => setSortBy('vs')}
+                  title="Sort by Velocity Score — fastest-rising Weight Scores first"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    sortBy === 'vs'
+                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/30'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  ▲ Velocity
+                </button>
+              </div>
+
+              {/* Layout toggle */}
+              <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
                 <button
                   onClick={() => setLayout('grid')}
                   title="Grid view — 10 tiles, then next 10"
@@ -1187,17 +1221,17 @@ export default function Home() {
             {layout === 'grid' && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {(showAll ? equities : equities.slice(0, 10)).map(eq => (
+                  {(showAll ? sortedEquities : sortedEquities.slice(0, 10)).map(eq => (
                     <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} />
                   ))}
                 </div>
-                {!showAll && equities.length > 10 && (
+                {!showAll && sortedEquities.length > 10 && (
                   <div className="mt-5 text-center">
                     <button
                       onClick={() => setShowAll(true)}
                       className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-slate-700 bg-slate-900 hover:border-slate-500 hover:bg-slate-800 text-slate-300 hover:text-white text-sm font-semibold transition-all"
                     >
-                      Next {equities.length - 10} →
+                      Next {sortedEquities.length - 10} →
                     </button>
                   </div>
                 )}
@@ -1207,7 +1241,7 @@ export default function Home() {
             {/* Compact list layout: all 20, click to expand */}
             {layout === 'compact' && (
               <div className="flex flex-col gap-1.5">
-                {equities.map((eq, i) => (
+                {sortedEquities.map((eq, i) => (
                   <CompactRow
                     key={eq.ticker}
                     equity={eq}
