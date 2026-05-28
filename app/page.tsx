@@ -433,6 +433,138 @@ function getTonyVsNote(equity: Equity): { text: string; positive: boolean } | nu
   return { text, positive };
 }
 
+// ── New Entrants modal ────────────────────────────────────────────────────────
+function NewEntrantsModal({ onClose, onSelectTheme }: {
+  onClose: () => void;
+  onSelectTheme: (t: Theme) => void;
+}) {
+  type EntrantRow = { equity: Equity; theme: Theme; maxScore: number };
+
+  const newEntrants: EntrantRow[] = [];
+  for (const t of THEMES) {
+    for (const eq of SAMPLE_DATA[t]) {
+      if (eq.isNew) newEntrants.push({ equity: eq, theme: t, maxScore: THEME_ETF_COUNT[t] });
+    }
+  }
+
+  // Group by theme, preserve THEMES order
+  const byTheme = Object.fromEntries(THEMES.map(t => [t, [] as EntrantRow[]])) as Record<Theme, EntrantRow[]>;
+  for (const row of newEntrants) byTheme[row.theme].push(row);
+  const themesWithNew = THEMES.filter(t => byTheme[t].length > 0);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+      style={{ backgroundColor: 'rgba(2,6,23,0.90)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-lg rounded-2xl border border-amber-500/25 bg-slate-900 shadow-2xl overflow-hidden"
+        style={{ maxHeight: '85vh', animation: 'modalIn 0.25s ease forwards' }}
+        onClick={e => e.stopPropagation()}
+      >
+
+        {/* Sticky header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between px-5 pt-5 pb-3 bg-slate-900 border-b border-slate-800">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-amber-300 font-bold text-sm">✦ New Entrants</span>
+            <span className="bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full tabular-nums">
+              {newEntrants.length}
+            </span>
+            <span className="text-slate-500 text-xs hidden sm:inline">first time in the Top 20 today</span>
+          </div>
+          <button onClick={onClose}
+            className="text-slate-500 hover:text-white text-xl leading-none w-6 h-6 flex items-center justify-center flex-shrink-0">
+            ×
+          </button>
+        </div>
+
+        <div className="overflow-y-auto" style={{ maxHeight: 'calc(85vh - 64px)' }}>
+          {newEntrants.length === 0 ? (
+            <div className="px-5 py-12 text-center">
+              <p className="text-slate-400 text-sm">No new entrants today.</p>
+              <p className="text-slate-600 text-xs mt-1">All current Top 20 equities were already ranked yesterday.</p>
+            </div>
+          ) : (
+            <div className="px-5 py-4 space-y-5">
+              {themesWithNew.map(theme => (
+                <div key={theme}>
+
+                  {/* Theme section header */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{theme}</p>
+                    <span className="text-slate-600 text-xs">· {byTheme[theme].length} new</span>
+                  </div>
+
+                  {/* Rows */}
+                  <div className="space-y-1.5">
+                    {byTheme[theme].map(({ equity, maxScore }) => {
+                      const domain  = TICKER_DOMAINS[equity.ticker];
+                      const logoUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+                      const vs1w    = equity.velocityScore?.['1W'] ?? null;
+                      return (
+                        <button
+                          key={equity.ticker}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/30 hover:bg-amber-500/5 transition-colors text-left"
+                          onClick={() => { onSelectTheme(theme); onClose(); }}
+                        >
+                          {/* Logo */}
+                          <div className="w-6 h-6 flex-shrink-0 flex items-center justify-center">
+                            {logoUrl ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={logoUrl} width={20} height={20}
+                                className="rounded flex-shrink-0 bg-white"
+                                onError={e => { e.currentTarget.style.display = 'none'; }} alt="" />
+                            ) : (
+                              <div className="w-5 h-5 rounded bg-slate-700" />
+                            )}
+                          </div>
+
+                          {/* Ticker + name */}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white font-bold text-xs font-mono leading-tight">{equity.ticker}</p>
+                            <p className="text-slate-400 text-xs truncate leading-tight">{equity.name}</p>
+                          </div>
+
+                          {/* NEW badge */}
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 leading-none flex-shrink-0">
+                            NEW
+                          </span>
+
+                          {/* VS 1W (if available) */}
+                          {vs1w !== null && (
+                            <span className={`text-xs font-bold tabular-nums flex-shrink-0 ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+                              {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+                            </span>
+                          )}
+
+                          {/* Weight Score */}
+                          <span className="text-emerald-400 text-xs font-bold tabular-nums flex-shrink-0">
+                            {equity.proScore.toFixed(1)}% wt
+                          </span>
+
+                          {/* Coverage badge */}
+                          <div className="flex-shrink-0">
+                            <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
+                          </div>
+
+                          {/* Navigate arrow */}
+                          <span className="text-slate-600 text-xs flex-shrink-0">→</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // ── Tony's full thesis modal ─────────────────────────────────────────────────
 function ThesisModal({ equity, etfs, maxScore, onClose }: {
   equity: Equity; etfs: string[]; maxScore: number; onClose: () => void;
@@ -1211,6 +1343,7 @@ export default function Home() {
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
   const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
   const [showGuide, setShowGuide] = useState(false);
+  const [showNew,   setShowNew]   = useState(false);
   const [showAll,   setShowAll]   = useState(false);
   const [expanded,  setExpanded]  = useState<string | null>(null);
 
@@ -1240,6 +1373,8 @@ export default function Home() {
     localStorage.setItem('top10_guide_done', '1');
   };
 
+  const newCount = THEMES.reduce((sum, t) => sum + SAMPLE_DATA[t].filter(e => e.isNew).length, 0);
+
   const equities = SAMPLE_DATA[theme];
   const sortedEquities = sortBy === 'wt'
     ? equities
@@ -1254,6 +1389,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       {welcome && <WelcomeModal onClose={closeWelcome} />}
+      {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
@@ -1369,11 +1505,29 @@ export default function Home() {
                 ≥40%
               </span>
 
+              {/* New Entrants button — shown when new equities exist */}
+              {newCount > 0 && (
+                <button
+                  onClick={() => setShowNew(n => !n)}
+                  title="New entrants — first time in the Top 20 today"
+                  className={`ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
+                    showNew
+                      ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
+                      : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/20'
+                  }`}
+                >
+                  ✦ New
+                  <span className="bg-amber-500/30 border border-amber-500/40 text-amber-200 text-[10px] font-bold px-1.5 py-0.5 rounded-full tabular-nums leading-none">
+                    {newCount}
+                  </span>
+                </button>
+              )}
+
               {/* Guide re-open button */}
               <button
                 onClick={() => setShowGuide(g => !g)}
                 title={showGuide ? 'Hide guide' : 'How it works'}
-                className={`ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
+                className={`${newCount === 0 ? 'ml-auto' : ''} flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
                   showGuide
                     ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
                     : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500'
