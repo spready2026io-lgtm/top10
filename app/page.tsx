@@ -404,6 +404,35 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
   );
 }
 
+// ── Tony's VS commentary (data-driven, per-stock) ────────────────────────────
+function getTonyVsNote(equity: Equity): { text: string; positive: boolean } | null {
+  const vs1w = equity.velocityScore?.['1W'] ?? null;
+  const vs1m = equity.velocityScore?.['1M'] ?? null;
+  if (vs1w === null) return null;
+
+  const { ticker, proScore } = equity;
+  const positive = vs1w >= 0;
+  const mCtx = vs1m !== null
+    ? ` Looking at the past month, Weight Score is ${vs1m >= 0 ? 'up' : 'down'} ${Math.abs(vs1m).toFixed(1)}% — ${Math.abs(vs1w) > Math.abs(vs1m) ? 'the weekly move is outpacing the monthly trend, suggesting acceleration' : 'broadly consistent with the recent trend'}.`
+    : '';
+
+  let text: string;
+  if (vs1w >= 50) {
+    text = `Exceptional accumulation this week. ${ticker}'s Weight Score surged +${vs1w.toFixed(1)}% — a move of this magnitude reflects a coordinated increase across multiple ETF managers simultaneously, not just passive price drift. At ${proScore.toFixed(1)}% average weighting the absolute conviction is already high; this acceleration suggests it has further to run.${mCtx}`;
+  } else if (vs1w >= 20) {
+    text = `Strong positive momentum. Weight Score is up +${vs1w.toFixed(1)}% this week, signalling that ETF managers are actively building their ${ticker} positions — increasing portfolio weight, not just riding price.${mCtx}`;
+  } else if (vs1w >= 5) {
+    text = `Gradual accumulation. ${ticker}'s Weight Score nudged up +${vs1w.toFixed(1)}% this week. A steady drip of adds across the ETF basket — conviction is growing, not plateauing.${mCtx}`;
+  } else if (vs1w >= -5) {
+    text = `Conviction is stable. Weight Score moved ${vs1w >= 0 ? '+' : ''}${vs1w.toFixed(1)}% this week — no meaningful adds or trims at the ETF level. ${ticker} is holding its place in the institutional allocation.${mCtx}`;
+  } else if (vs1w >= -20) {
+    text = `Slight fading. Weight Score slipped ${vs1w.toFixed(1)}% this week. Some ETF managers appear to be trimming ${ticker} at the margin. The stock remains broadly held, but the short-term momentum is not in its favour.${mCtx}`;
+  } else {
+    text = `Notable de-weighting. Weight Score fell ${vs1w.toFixed(1)}% this week — a sharp move that suggests active trimming across the ETF basket, not just price-driven rebalancing. Whether this is tactical profit-taking or a shift in longer-term conviction around ${ticker} warrants watching closely.${mCtx}`;
+  }
+  return { text, positive };
+}
+
 // ── Tony's full thesis modal ─────────────────────────────────────────────────
 function ThesisModal({ equity, etfs, maxScore, onClose }: {
   equity: Equity; etfs: string[]; maxScore: number; onClose: () => void;
@@ -529,6 +558,28 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-slate-300 text-xs leading-relaxed">{cleanNote}</p>
               </div>
             </div>
+
+            {/* Tony on Velocity */}
+            {(() => {
+              const vsNote = getTonyVsNote(equity);
+              if (!vsNote) return null;
+              const accentBg    = vsNote.positive ? 'bg-amber-500/8 border-amber-500/25'  : 'bg-rose-500/8 border-rose-500/20';
+              const accentLabel = vsNote.positive ? 'text-amber-400' : 'text-rose-400';
+              const arrow       = vsNote.positive ? '▲' : '▼';
+              return (
+                <div>
+                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+                    Tony on Velocity
+                  </p>
+                  <div className={`rounded-xl border px-3 py-3 ${accentBg}`}>
+                    <div className="flex items-start gap-2">
+                      <span className={`${accentLabel} text-sm flex-shrink-0 mt-0.5`}>{arrow}</span>
+                      <p className="text-slate-300 text-xs leading-relaxed">{vsNote.text}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Coming soon */}
             <div>
