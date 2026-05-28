@@ -83,10 +83,10 @@ export default function About() {
 
         {/* The scores */}
         <section>
-          <h2 className="text-xl font-bold text-white mb-4">The Two Scores</h2>
+          <h2 className="text-xl font-bold text-white mb-4">The Scores</h2>
           <p className="text-slate-400 text-sm leading-relaxed mb-5">
-            Each stock tile shows two scores. Together they tell you how much institutional conviction
-            sits behind a name.
+            Each stock tile shows three scores. Together they tell you how much institutional conviction
+            sits behind a name, and whether that conviction is growing.
           </p>
 
           <div className="space-y-4">
@@ -125,6 +125,9 @@ export default function About() {
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
                 The average portfolio weight across all ETFs that hold this stock, expressed as a percentage.
+                The full formula is: <span className="text-slate-300 font-mono text-xs">avgWeight × √coverage</span>.
+                The square root of coverage acts as a confidence multiplier — a stock held by more funds gets a
+                higher coefficient, amplifying a genuine broad-market bet while discounting a stock held by only one fund.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
                 This is the signal that separates a filler position from a conviction bet. An ETF might
@@ -135,6 +138,37 @@ export default function About() {
                 A stock can have 100% coverage but a low Weight Score (held by everyone, but
                 only as a small position). A high Weight Score with lower coverage (held by fewer
                 funds but in size) is often the more interesting signal.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-flex items-center gap-1 bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full">▲ +45% VS</span>
+                <h3 className="text-white font-semibold">Velocity Score</h3>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed mb-2">
+                The percentage change in a stock&apos;s Weight Score over a given period (1D, 1W, 1M, or 6M).
+                A Velocity Score of +45% over 1W means institutional funds collectively increased their
+                weighted conviction in this stock by 45% in a week.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed mb-2">
+                Velocity Score is the early-detection layer. A stock can rank 8th today but be moving
+                fast toward the top. If its Weight Score is accelerating, Velocity Score will catch that
+                before the ranking changes.
+              </p>
+              <ul className="space-y-1 text-sm mt-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold flex-shrink-0 mt-0.5">▲</span>
+                  <span className="text-slate-400">Positive VS (amber). Conviction is growing. Funds are adding or weighting up.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-rose-400 font-bold flex-shrink-0 mt-0.5">▼</span>
+                  <span className="text-slate-400">Negative VS (red). Conviction is fading. Funds are trimming or dropping the stock.</span>
+                </li>
+              </ul>
+              <p className="text-slate-500 text-xs mt-3">
+                Velocity Score requires at least one prior snapshot to calculate. New entrants to the Top 10 list
+                show a &ldquo;NEW&rdquo; badge instead of a VS until the next daily run.
               </p>
             </div>
           </div>
@@ -200,8 +234,9 @@ export default function About() {
                 <li><span className="text-slate-300 font-medium">Logo and name.</span> Company identity at a glance.</li>
                 <li><span className="text-slate-300 font-medium">Ticker.</span> The stock symbol.</li>
                 <li><span className="text-slate-300 font-medium">Coverage badge.</span> ETF ownership breadth (x/n, relative to theme).</li>
-                <li><span className="text-slate-300 font-medium">Price and weekly change.</span> Current price and 1-week return.</li>
+                <li><span className="text-slate-300 font-medium">Price and period return.</span> Current price and return for the selected period.</li>
                 <li><span className="text-slate-300 font-medium">Weight Score.</span> Average ETF weighting across holders.</li>
+                <li><span className="text-slate-300 font-medium">Velocity Score badge.</span> Amber ▲ or red ▼ showing how fast Weight Score is changing.</li>
                 <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / 6M / 1Y.</li>
               </ul>
             </div>
@@ -242,7 +277,7 @@ export default function About() {
               { n: '1', title: 'Pick your sector.', body: 'Use the toggle in the header to switch between Technology, Financials, Energy, Healthcare, and Industrials.' },
               { n: '2', title: 'Check the chart.', body: 'See how the Top10 selection is performing versus the S&P500. Use the time toggle to change the period.' },
               { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
-              { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Both high means maximum conviction.' },
+              { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Velocity Score tells you if that conviction is growing. All three high means maximum and accelerating conviction.' },
               { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full financials and Tony\'s qualitative analysis note.' },
               { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
             ].map(({ n, title, body }) => (

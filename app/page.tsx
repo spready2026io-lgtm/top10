@@ -558,8 +558,14 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [wtOpen,      setWtOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
 
-  const periodReturn = tilePeriod === '1W' ? equity.weeklyChange : equity.periodReturns[tilePeriod];
-  const tilePrices   = makeTilePrices(equity.ticker, equity.price, periodReturn, tilePeriod);
+  const rawHistory   = equity.priceHistory?.[tilePeriod];
+  const baseReturn   = tilePeriod === '1W' ? equity.weeklyChange : equity.periodReturns[tilePeriod];
+  const tilePrices   = (rawHistory && rawHistory.length >= 2)
+                       ? rawHistory
+                       : makeTilePrices(equity.ticker, equity.price, baseReturn, tilePeriod);
+  const periodReturn = (rawHistory && rawHistory.length >= 2)
+                       ? parseFloat(((rawHistory[rawHistory.length - 1] / rawHistory[0] - 1) * 100).toFixed(1))
+                       : baseReturn;
   const positive     = tilePrices[tilePrices.length - 1] >= tilePrices[0];
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';

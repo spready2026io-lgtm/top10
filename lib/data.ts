@@ -84,6 +84,7 @@ export type Equity = {
   weeklyPrices: number[];
   weeklyChange: number;
   periodReturns: { '1M': number; '6M': number; '1Y': number };
+  priceHistory?: { '1W': number[]; '1M': number[]; '6M': number[]; '1Y': number[] };
   sortRank: number;
   marketCap: string;
   pe: number | null;

@@ -212,14 +212,45 @@ async function fetchChartReturns(ticker, currentPrice) {
     const ret = (startClose) =>
       parseFloat(((currentPrice / startClose - 1) * 100).toFixed(1));
 
+    // Downsample an array of {ts, close} points to exactly n price values.
+    // The last point is always anchored to currentPrice so the chart ends on today.
+    function sample(arr, n) {
+      if (arr.length === 0) return [];
+      const pts = arr.length <= n
+        ? arr.map(d => parseFloat(d.close.toFixed(2)))
+        : Array.from({ length: n }, (_, i) => {
+            const idx = Math.min(Math.round(i * (arr.length - 1) / (n - 1)), arr.length - 1);
+            return parseFloat(arr[idx].close.toFixed(2));
+          });
+      pts[pts.length - 1] = parseFloat(currentPrice.toFixed(2));
+      return pts;
+    }
+
+    const last1W = valid.slice(-5);
+    const last1M = valid.filter(d => d.ts >= calTs(1));
+    const last6M = valid.filter(d => d.ts >= calTs(6));
+
+    const weeklyReturn = last1W.length >= 2
+      ? parseFloat(((currentPrice / last1W[0].close - 1) * 100).toFixed(2))
+      : 0;
+
+    const priceHistory = {
+      '1W': sample(last1W, 5),
+      '1M': sample(last1M, 21),
+      '6M': sample(last6M, 26),
+      '1Y': sample(valid,  52),
+    };
+
     return {
       '1M': ret(closest(calTs(1))),
       '6M': ret(closest(calTs(6))),
       '1Y': ret(closest(calTs(0, 1))),
+      priceHistory,
+      weeklyReturn,
     };
   } catch (e) {
     console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
-    return { '1M': 0, '6M': 0, '1Y': 0 };
+    return { '1M': 0, '6M': 0, '1Y': 0, priceHistory: null, weeklyReturn: 0 };
   }
 }
 
@@ -245,12 +276,16 @@ async function fetchFinancials(ticker) {
     const revenueGrowth = Math.round((r.financialData?.revenueGrowth?.raw ?? 0) * 100);
     const divYield      = r.summaryDetail?.dividendYield?.raw != null
                           ? parseFloat((r.summaryDetail.dividendYield.raw * 100).toFixed(2)) : null;
-    const weeklyChange  = parseFloat(((r.price?.regularMarketChangePercent?.raw ?? 0) * 100).toFixed(2));
     const weeklyPrices  = [];
 
-    const periodReturns = await fetchChartReturns(ticker, price);
+    const chartData     = await fetchChartReturns(ticker, price);
+    const periodReturns = { '1M': chartData['1M'], '6M': chartData['6M'], '1Y': chartData['1Y'] };
+    const priceHistory  = chartData.priceHistory;
+    const weeklyChange  = (priceHistory?.['1W']?.length >= 2)
+                          ? chartData.weeklyReturn
+                          : parseFloat(((r.price?.regularMarketChangePercent?.raw ?? 0) * 100).toFixed(2));
 
-    return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, periodReturns, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
+    return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, periodReturns, priceHistory, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
 
   } catch (e) {
     console.warn(`  [Yahoo] ${ticker} failed: ${e.message}`);
@@ -350,6 +385,11 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
 
   const wpStr = '[' + weeklyPrices.map(p => p.toFixed(2)).join(', ') + ']';
 
+  const ph = f.priceHistory;
+  const phStr = ph
+    ? `{ '1W': [${ph['1W'].join(', ')}], '1M': [${ph['1M'].join(', ')}], '6M': [${ph['6M'].join(', ')}], '1Y': [${ph['1Y'].join(', ')}] }`
+    : 'undefined';
+
   const vsObj = vs || { '1D': null, '1W': null, '1M': null, '6M': null };
   const v = (x) => x === null ? 'null' : x;
 
@@ -357,6 +397,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
     `    {`,
     `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
     `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
+    `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
     `      etfPresence: { ${presenceEntries} },`,
