@@ -1328,7 +1328,7 @@ export default function Home() {
                     : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500'
                 }`}
               >
-                ? Guide
+                Guide ?
               </button>
 
               {/* Sort toggle */}
