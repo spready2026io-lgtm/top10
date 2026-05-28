@@ -1094,7 +1094,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
   ];
 
   return (
-    <div className="rounded-xl border border-slate-700 bg-slate-900 mb-6 overflow-hidden">
+    <div className="rounded-xl border border-slate-700 bg-slate-900 flex-1 flex flex-col overflow-hidden">
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
@@ -1110,7 +1110,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Steps */}
-      <div className="flex flex-col md:flex-row px-4 py-4 gap-4 md:gap-0">
+      <div className="flex flex-col md:flex-row px-4 py-4 gap-3 md:gap-2 flex-1">
         {steps.map((step, i) => (
           <div key={step.n} className="flex md:flex-col flex-1 min-w-0">
 
@@ -1292,16 +1292,16 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {equities.length > 0 ? (
           <>
-            {/* Index chart + ETF summary tile */}
+            {/* Index chart OR guide + ETF summary tile */}
             <div className="flex items-stretch gap-4 mb-6">
-              <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
+              {showGuide
+                ? <GuideStrip onClose={closeGuide} />
+                : <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
+              }
               <div className="hidden sm:block flex-shrink-0 h-full">
                 <EtfPerfTile theme={theme} period={period} />
               </div>
             </div>
-
-            {/* How It Works guide */}
-            {showGuide && <GuideStrip onClose={closeGuide} />}
 
             {/* Legend + sort toggle + layout toggle */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
