@@ -1008,16 +1008,160 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+// ── How It Works guide ────────────────────────────────────────────────────────
+function GuideStrip({ onClose }: { onClose: () => void }) {
+  const steps = [
+    {
+      n: '1',
+      label: 'ETF Holdings',
+      color: 'text-sky-400',
+      borderColor: 'border-sky-500/30',
+      desc: 'Every day we read the published holdings of 28 major sector ETFs. These funds manage billions in real capital — their holdings are public record.',
+      visual: (
+        <div className="flex flex-wrap gap-1 mt-2">
+          {['ARTY','BAI','SOXX','QQQ','AIRR'].map(t => (
+            <span key={t} className="bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded">{t}</span>
+          ))}
+          <span className="text-slate-600 text-[10px] self-center">+23 more</span>
+        </div>
+      ),
+      pointer: null,
+    },
+    {
+      n: '2',
+      label: 'Pick a Theme',
+      color: 'text-violet-400',
+      borderColor: 'border-violet-500/30',
+      desc: 'Choose a sector. Each theme groups 2–10 related ETFs. Top10 then ranks every stock those ETFs collectively hold.',
+      visual: (
+        <div className="flex flex-wrap gap-1 mt-2">
+          {['AI & ML','Semis','Broad Tech'].map(t => (
+            <span key={t} className={`border text-[10px] font-semibold px-2 py-0.5 rounded-full ${t === 'AI & ML' ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' : 'bg-slate-800 border-slate-700 text-slate-400'}`}>{t}</span>
+          ))}
+        </div>
+      ),
+      pointer: <span className="text-violet-500/60 text-xs mt-1 flex items-center gap-1">▲ <span className="text-slate-500">theme tabs above</span></span>,
+    },
+    {
+      n: '3',
+      label: 'The Scores',
+      color: 'text-emerald-400',
+      borderColor: 'border-emerald-500/30',
+      desc: 'Weight Score = avg ETF weighting × √coverage. Velocity Score = how fast that conviction is growing week over week.',
+      visual: (
+        <div className="flex flex-col mt-2 gap-0.5">
+          <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-emerald-500/70 ml-0.5">% avg wt</span></span>
+          <span className="text-amber-400 font-bold text-sm tabular-nums leading-none">▲+4.6<span className="text-xs font-medium text-amber-400/60 ml-0.5">% VS 1W</span></span>
+        </div>
+      ),
+      pointer: <span className="text-emerald-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">on every tile</span></span>,
+    },
+    {
+      n: '4',
+      label: 'Sort & Rank',
+      color: 'text-amber-400',
+      borderColor: 'border-amber-500/30',
+      desc: 'Default: highest conviction first (Avg Wt). Switch to Velocity to surface fast-movers climbing the list before they reach #1.',
+      visual: (
+        <div className="flex gap-1 mt-2">
+          <span className="bg-slate-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-500">Avg Wt</span>
+          <span className="bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[10px] font-semibold px-2 py-0.5 rounded-md">▲ Velocity</span>
+        </div>
+      ),
+      pointer: <span className="text-amber-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">sort controls below</span></span>,
+    },
+    {
+      n: '5',
+      label: 'The Tile',
+      color: 'text-slate-300',
+      borderColor: 'border-slate-600/50',
+      desc: 'Front face: scores, live price chart, period toggle. Tap to flip. Back face: ETF presence, key financials, Tony\'s analysis note.',
+      visual: (
+        <div className="flex gap-2 mt-2">
+          <div className="flex-1 rounded border border-slate-700 bg-slate-800/60 px-2 py-1.5">
+            <p className="text-[9px] text-slate-500 leading-none mb-0.5">FRONT</p>
+            <p className="text-[10px] text-white font-bold leading-none">Score + Chart</p>
+          </div>
+          <span className="text-slate-600 self-center text-xs">↩</span>
+          <div className="flex-1 rounded border border-emerald-900 bg-slate-800/60 px-2 py-1.5">
+            <p className="text-[9px] text-slate-500 leading-none mb-0.5">BACK</p>
+            <p className="text-[10px] text-white font-bold leading-none">ETFs + Thesis</p>
+          </div>
+        </div>
+      ),
+      pointer: <span className="text-slate-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-500">tile grid below</span></span>,
+    },
+  ];
+
+  return (
+    <div className="rounded-xl border border-slate-700 bg-slate-900 mb-6 overflow-hidden">
+      {/* Header bar */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
+        <div className="flex items-center gap-2">
+          <span className="text-emerald-400 font-bold text-sm">How Top10 Works</span>
+          <span className="text-slate-600 text-xs hidden sm:inline">— follow the steps below then explore the tiles</span>
+        </div>
+        <button
+          onClick={onClose}
+          className="text-slate-500 hover:text-white text-xs font-semibold px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors"
+        >
+          Got it ✕
+        </button>
+      </div>
+
+      {/* Steps */}
+      <div className="flex flex-col md:flex-row px-4 py-4 gap-4 md:gap-0">
+        {steps.map((step, i) => (
+          <div key={step.n} className="flex md:flex-col flex-1 min-w-0">
+
+            {/* Step card */}
+            <div className={`flex-1 rounded-lg border ${step.borderColor} bg-slate-800/40 p-3 flex flex-col`}>
+              {/* Number + label */}
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                  {step.n}
+                </span>
+                <span className={`text-sm font-bold ${step.color}`}>{step.label}</span>
+              </div>
+              {/* Description */}
+              <p className="text-slate-400 text-xs leading-relaxed flex-1">{step.desc}</p>
+              {/* Mini visual */}
+              {step.visual}
+              {/* Pointer arrow */}
+              {step.pointer}
+            </div>
+
+            {/* Connector arrow — right side on md+, bottom on mobile (except last) */}
+            {i < steps.length - 1 && (
+              <>
+                {/* Desktop: horizontal arrow to the right */}
+                <div className="hidden md:flex items-center justify-center w-6 flex-shrink-0 pt-8">
+                  <span className="text-slate-600 text-base">→</span>
+                </div>
+                {/* Mobile: vertical arrow downward */}
+                <div className="md:hidden flex justify-center py-1">
+                  <span className="text-slate-600 text-sm">↓</span>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [theme,   setTheme]   = useState<Theme>('AI & ML');
   const [period,  setPeriod]  = useState<Period>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
-  const [layout,  setLayout]  = useState<'grid' | 'compact'>('grid');
-  const [sortBy,  setSortBy]  = useState<'wt' | 'vs'>('wt');
-  const [showAll, setShowAll] = useState(false);
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
+  const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
+  const [showGuide, setShowGuide] = useState(false);
+  const [showAll,   setShowAll]   = useState(false);
+  const [expanded,  setExpanded]  = useState<string | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setTagline(true), 300);
@@ -1028,6 +1172,8 @@ export default function Home() {
     if (typeof window === 'undefined') return;
     const seen = localStorage.getItem('top10_welcomed');
     if (!seen) setWelcome(true);
+    const guideDone = localStorage.getItem('top10_guide_done');
+    if (!guideDone) setShowGuide(true);
   }, []);
 
   // Reset pagination + expanded when switching theme, layout, or sort
@@ -1036,6 +1182,11 @@ export default function Home() {
   const closeWelcome = () => {
     setWelcome(false);
     localStorage.setItem('top10_welcomed', '1');
+  };
+
+  const closeGuide = () => {
+    setShowGuide(false);
+    localStorage.setItem('top10_guide_done', '1');
   };
 
   const equities = SAMPLE_DATA[theme];
@@ -1149,6 +1300,9 @@ export default function Home() {
               </div>
             </div>
 
+            {/* How It Works guide */}
+            {showGuide && <GuideStrip onClose={closeGuide} />}
+
             {/* Legend + sort toggle + layout toggle */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
@@ -1164,8 +1318,21 @@ export default function Home() {
                 ≥40%
               </span>
 
+              {/* Guide re-open button */}
+              <button
+                onClick={() => setShowGuide(g => !g)}
+                title={showGuide ? 'Hide guide' : 'How it works'}
+                className={`ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
+                  showGuide
+                    ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                    : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500'
+                }`}
+              >
+                ? Guide
+              </button>
+
               {/* Sort toggle */}
-              <div className="ml-auto flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
+              <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
                 <button
                   onClick={() => setSortBy('wt')}
                   title="Sort by Weight Score (avg ETF weighting × coverage)"
