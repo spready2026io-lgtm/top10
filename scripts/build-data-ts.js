@@ -293,16 +293,14 @@ async function fetchFinancials(ticker) {
   }
 }
 
-// ── ETF return fetcher ───────────────────────────────────────────────────────
+// ── ETF data fetcher ─────────────────────────────────────────────────────────
 
-// Fetch 1W / 1M / 6M / 1Y returns for a single ETF ticker using the chart API.
-// Uses the same calendar-aware lookback logic as fetchChartReturns for equities.
-// Returns null on failure (caller keeps existing value).
-async function fetchEtfReturns(ticker) {
+// Fetch returns AND normalized price paths for a single ETF/index ticker.
+// paths: each period indexed to 100 at the start of that period, downsampled to N pts.
+// Returns null on failure so caller can keep the existing value.
+async function fetchEtfData(ticker) {
   await yfInit();
   try {
-    // quoteSummary gives us the current price (regularMarketPrice) — same approach
-    // as equities so our % change numerator is today's live price, not yesterday's close.
     const qUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price&crumb=${encodeURIComponent(_yfCrumb)}`;
     const qRes = await fetch(qUrl, {
       headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' },
@@ -340,22 +338,46 @@ async function fetchEtfReturns(ticker) {
     const closest = targetTs => valid.reduce((best, d) =>
       Math.abs(d.ts - targetTs) < Math.abs(best.ts - targetTs) ? d : best
     ).close;
-    const ret = (startClose) =>
-      parseFloat(((currentPrice / startClose - 1) * 100).toFixed(1));
+    const ret = startClose => parseFloat(((currentPrice / startClose - 1) * 100).toFixed(1));
 
     const last1W = valid.slice(-5);
+    const last1M = valid.filter(d => d.ts >= calTs(1));
+    const last6M = valid.filter(d => d.ts >= calTs(6));
+
     const w1Return = last1W.length >= 2
       ? parseFloat(((currentPrice / last1W[0].close - 1) * 100).toFixed(1))
       : 0;
 
-    return {
+    const returns = {
       '1W': w1Return,
       '1M': ret(closest(calTs(1))),
       '6M': ret(closest(calTs(6))),
       '1Y': ret(closest(calTs(0, 1))),
     };
+
+    // Normalize arr to 100 at arr[0], replace last point with live price, downsample to n pts.
+    const normAndSample = (arr, n) => {
+      if (arr.length === 0) return null;
+      const base = arr[0].close;
+      const raw = arr.map(d => d.close / base * 100);
+      raw[raw.length - 1] = currentPrice / base * 100; // anchor end to live price
+      if (raw.length <= n) return raw.map(v => parseFloat(v.toFixed(2)));
+      return Array.from({ length: n }, (_, i) => {
+        const idx = Math.min(Math.round(i * (raw.length - 1) / (n - 1)), raw.length - 1);
+        return parseFloat(raw[idx].toFixed(2));
+      });
+    };
+
+    const paths = {
+      '1W': normAndSample(last1W, 5),
+      '1M': normAndSample(last1M, 21),
+      '6M': normAndSample(last6M, 26),
+      '1Y': normAndSample(valid,  52),
+    };
+
+    return { returns, paths };
   } catch (e) {
-    console.warn(`  [ETF Chart] ${ticker} failed: ${e.message}`);
+    console.warn(`  [ETF Data] ${ticker} failed: ${e.message}`);
     return null;
   }
 }
@@ -519,6 +541,92 @@ function genScanTimestamp(isoTs, nyTs) {
   ].join('\n');
 }
 
+// ── Index chart helpers ───────────────────────────────────────────────────────
+
+// Average n normalized path arrays point-by-point. Only ETFs with a full-length
+// path for the period are included so short-history funds don't distort the line.
+function averagePaths(pathArrays, n) {
+  const full = pathArrays.filter(p => p && p.length === n);
+  if (full.length === 0) return Array.from({ length: n }, () => 100);
+  return Array.from({ length: n }, (_, i) => {
+    const vals = full.map(p => p[i]);
+    return parseFloat((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2));
+  });
+}
+
+// Generate date-aware x-axis labels for each period based on today's date.
+function genXLabels(period, todayStr) {
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const d = new Date(todayStr + 'T12:00:00Z');
+
+  if (period === '1W') return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
+  if (period === '1M') {
+    return Array.from({ length: 5 }, (_, i) => {
+      const dt = new Date(d);
+      dt.setUTCDate(dt.getUTCDate() - 28 + i * 7);
+      return `${MONTHS[dt.getUTCMonth()]} ${dt.getUTCDate()}`;
+    });
+  }
+
+  if (period === '6M') {
+    return Array.from({ length: 7 }, (_, i) => {
+      const dt = new Date(d);
+      dt.setUTCMonth(dt.getUTCMonth() - 6 + i);
+      return MONTHS[dt.getUTCMonth()];
+    });
+  }
+
+  // 1Y — 5 quarterly labels
+  return Array.from({ length: 5 }, (_, i) => {
+    const dt = new Date(d);
+    dt.setUTCMonth(dt.getUTCMonth() - 12 + i * 3);
+    return `${MONTHS[dt.getUTCMonth()]} '${String(dt.getUTCFullYear()).slice(2)}`;
+  });
+}
+
+// Build the full INDEX_CHART_DATA block from real ETF price paths and SPY.
+function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
+  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const PERIODS  = ['1W', '1M', '6M', '1Y'];
+
+  const themeBlocks = Object.entries(themeEtfs).map(([theme, tickers]) => {
+    const periodBlocks = PERIODS.map(period => {
+      const n = PERIOD_N[period];
+
+      // Average normalized paths across all ETFs in the theme that have full data
+      const etfPaths = tickers.map(t => etfDataMap[t]?.paths?.[period] ?? null);
+      const top10    = averagePaths(etfPaths, n);
+
+      // SPY path — fall back to flat 100-line if unavailable
+      const spyPath  = (spyData?.paths?.[period]?.length === n)
+        ? spyData.paths[period]
+        : Array.from({ length: n }, () => 100);
+
+      // Returns: average across ETFs that succeeded, with SPY return
+      const etfRets   = tickers.map(t => etfDataMap[t]?.returns?.[period]).filter(v => v != null);
+      const top10Ret  = etfRets.length > 0
+        ? parseFloat((etfRets.reduce((a, b) => a + b, 0) / etfRets.length).toFixed(1))
+        : 0;
+      const spyRet    = spyData?.returns?.[period] ?? 0;
+
+      const xLabels   = genXLabels(period, todayStr).map(l => `'${l}'`).join(', ');
+
+      return `    '${period}': { top10: [${top10.join(', ')}], spy: [${spyPath.join(', ')}], top10Return: ${top10Ret}, spyReturn: ${spyRet}, xLabels: [${xLabels}] },`;
+    });
+
+    return `  '${theme}': {\n${periodBlocks.join('\n')}\n  },`;
+  });
+
+  return [
+    '// @@GENERATED:INDEX_CHART_DATA@@',
+    'export const INDEX_CHART_DATA: Record<Theme, Record<Period, ChartPeriodData>> = {',
+    ...themeBlocks,
+    '};',
+    '// @@END_GENERATED:INDEX_CHART_DATA@@',
+  ].join('\n');
+}
+
 // ── ETF returns & SPY generators ─────────────────────────────────────────────
 
 function genEtfReturns(etfReturnsMap, themeEtfs) {
@@ -585,7 +693,7 @@ function genSpyRet(r) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -616,6 +724,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:SPY_RET@@[\s\S]*?\/\/ @@END_GENERATED:SPY_RET@@/,
       newSpyRet
+    );
+  }
+  if (newIndexChart) {
+    src = src.replace(
+      /\/\/ @@GENERATED:INDEX_CHART_DATA@@[\s\S]*?\/\/ @@END_GENERATED:INDEX_CHART_DATA@@/,
+      newIndexChart
     );
   }
 
@@ -722,16 +836,20 @@ async function main() {
     await sleep(600);
   }
 
-  // ── Fetch real ETF returns (all themes) + SPY benchmark ─────────────────────
+  // ── Fetch real ETF data (returns + price paths) for all themes + SPY ─────────
   const allEtfTickers = [...new Set(Object.values(THEME_ETFS).flat())];
-  console.log(`\nFetching ETF returns for ${allEtfTickers.length} ETFs + SPY...`);
+  console.log(`\nFetching ETF data for ${allEtfTickers.length} ETFs + SPY...`);
 
-  const etfReturnsMap = {};
+  const etfDataMap    = {}; // ticker → { returns, paths }
+  const etfReturnsMap = {}; // ticker → returns (flat, for genEtfReturns / genTop10Ret)
+
   for (const ticker of allEtfTickers) {
     process.stdout.write(`  ${ticker}... `);
-    const r = await fetchEtfReturns(ticker);
-    if (r) {
-      etfReturnsMap[ticker] = r;
+    const data = await fetchEtfData(ticker);
+    if (data) {
+      etfDataMap[ticker]    = data;
+      etfReturnsMap[ticker] = data.returns;
+      const r = data.returns;
       console.log(`1W:${r['1W']}% 1M:${r['1M']}% 6M:${r['6M']}% 1Y:${r['1Y']}%`);
     } else {
       console.log('FAILED — keeping previous value');
@@ -741,7 +859,8 @@ async function main() {
 
   // SPY benchmark
   process.stdout.write(`  SPY... `);
-  const spyRet = await fetchEtfReturns('SPY');
+  const spyData = await fetchEtfData('SPY');
+  const spyRet  = spyData?.returns ?? null;
   if (spyRet) {
     console.log(`1W:${spyRet['1W']}% 1M:${spyRet['1M']}% 6M:${spyRet['6M']}% 1Y:${spyRet['1Y']}%`);
   } else {
@@ -775,18 +894,20 @@ async function main() {
   const newEtfCount   = genThemeEtfCount(etfCounts);
   const newSampleData = genSampleData(themeEquities, financialsMap, etfCounts, velocityMap, isNewMap);
   const newTimestamp  = genScanTimestamp(isoTs, nyTs);
-  const newEtfReturns = genEtfReturns(etfReturnsMap, THEME_ETFS);
-  const newTop10Ret   = genTop10Ret(etfReturnsMap, THEME_ETFS);
-  const newSpyRet     = spyRet ? genSpyRet(spyRet) : null;
+  const newEtfReturns    = genEtfReturns(etfReturnsMap, THEME_ETFS);
+  const newTop10Ret      = genTop10Ret(etfReturnsMap, THEME_ETFS);
+  const newSpyRet        = spyRet ? genSpyRet(spyRet) : null;
+  const newIndexChart    = genIndexChartData(THEME_ETFS, etfDataMap, spyData, todayStr);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart);
 
-  const etfRetOk = Object.keys(etfReturnsMap).length;
+  const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');
   console.log(`Timestamp: ${nyTs}`);
   console.log(`ETFs: ${scanReport.etfScan.ok}/${scanReport.etfScan.total} ok`);
-  console.log(`ETF returns: ${etfRetOk}/${allEtfTickers.length} ok${spyRet ? ' + SPY' : ' (SPY FAILED)'}`);
+  console.log(`ETF data (returns+paths): ${etfDataOk}/${allEtfTickers.length} ok${spyRet ? ' + SPY' : ' (SPY FAILED)'}`);
+  console.log(`Index chart: real historical paths written for all 5 themes`);
   console.log(`Yahoo Finance: ${yfSucceeded.length}/${allTickers.length} ok`);
   console.log(`Themes: ${Object.entries(themeEquities).map(([t,e]) => `${t}(${e.length})`).join(', ')}`);
 }
