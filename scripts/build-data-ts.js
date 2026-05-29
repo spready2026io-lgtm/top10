@@ -610,7 +610,7 @@ function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
         : 0;
       const spyRet    = spyData?.returns?.[period] ?? 0;
 
-      const xLabels   = genXLabels(period, todayStr).map(l => `'${l}'`).join(', ');
+      const xLabels   = genXLabels(period, todayStr).map(l => `"${l}"`).join(', ');
 
       return `    '${period}': { top10: [${top10.join(', ')}], spy: [${spyPath.join(', ')}], top10Return: ${top10Ret}, spyReturn: ${spyRet}, xLabels: [${xLabels}] },`;
     });
