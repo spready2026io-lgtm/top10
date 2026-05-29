@@ -1,0 +1,274 @@
+{
+  "scanTimestamp": "2026-05-29T05:33:51.523Z",
+  "brokers": {
+    "ig-world": {
+      "status": "ok",
+      "spreads": {
+        "EUR/USD": {
+          "value": 0.6,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 0.9,
+          "unit": "pips"
+        },
+        "USD/JPY": {
+          "value": 0.7,
+          "unit": "pips"
+        },
+        "UK100": {
+          "value": 1,
+          "unit": "pts"
+        },
+        "US500": {
+          "value": 0.4,
+          "unit": "pts"
+        },
+        "GER40": {
+          "value": 1.4,
+          "unit": "pts"
+        },
+        "XAU/USD": {
+          "value": 0.3,
+          "unit": "USD"
+        },
+        "WTI/USD": {
+          "value": 2.8,
+          "unit": "pts"
+        }
+      }
+    },
+    "saxo-world": {
+      "status": "ok",
+      "spreads": {
+        "EUR/USD": {
+          "value": 1,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 1.1,
+          "unit": "pips"
+        },
+        "EUR/JPY": {
+          "value": 1.5,
+          "unit": "pips"
+        },
+        "USD/JPY": {
+          "value": 1.2,
+          "unit": "pips"
+        },
+        "AUD/USD": {
+          "value": 0.6,
+          "unit": "pips"
+        },
+        "XAU/USD": {
+          "value": 34,
+          "unit": "USD"
+        }
+      }
+    },
+    "interactive-brokers": {
+      "status": "empty",
+      "spreads": {}
+    },
+    "exness": {
+      "status": "ok",
+      "spreads": {
+        "XAU/USD": {
+          "value": 19.6,
+          "unit": "USD"
+        },
+        "WTI/USD": {
+          "value": 1.4,
+          "unit": "pts"
+        },
+        "EUR/USD": {
+          "value": 0.6,
+          "unit": "pips"
+        },
+        "US30": {
+          "value": 1.5,
+          "unit": "pts"
+        }
+      }
+    },
+    "fp-markets": {
+      "status": "empty",
+      "spreads": {}
+    },
+    "oanda": {
+      "status": "empty",
+      "spreads": {}
+    },
+    "thinkmarkets": {
+      "status": "empty",
+      "spreads": {}
+    },
+    "blackbull-markets": {
+      "status": "ok",
+      "spreads": {
+        "EUR/USD": {
+          "value": 0.1,
+          "unit": "pips"
+        },
+        "USD/JPY": {
+          "value": 0.1,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 0.1,
+          "unit": "pips"
+        },
+        "AUD/USD": {
+          "value": 0.1,
+          "unit": "pips"
+        },
+        "EUR/JPY": {
+          "value": 0.7,
+          "unit": "pips"
+        },
+        "XAU/USD": {
+          "value": 0.12,
+          "unit": "USD"
+        },
+        "WTI/USD": {
+          "value": 0.104,
+          "unit": "pts"
+        },
+        "NAS100": {
+          "value": 1,
+          "unit": "pts"
+        },
+        "US30": {
+          "value": 3,
+          "unit": "pts"
+        },
+        "US500": {
+          "value": 0.6,
+          "unit": "pts"
+        },
+        "UK100": {
+          "value": 1.8,
+          "unit": "pts"
+        },
+        "ASX200": {
+          "value": 1,
+          "unit": "pts"
+        }
+      }
+    },
+    "fxtm": {
+      "status": "timeout",
+      "spreads": {}
+    },
+    "xm": {
+      "status": "ok",
+      "spreads": {
+        "USD/JPY": {
+          "value": 1.3,
+          "unit": "pips"
+        },
+        "EUR/USD": {
+          "value": 1.1,
+          "unit": "pips"
+        },
+        "AUD/USD": {
+          "value": 1.4,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 1.3,
+          "unit": "pips"
+        },
+        "EUR/JPY": {
+          "value": 2.3,
+          "unit": "pips"
+        }
+      }
+    },
+    "easymarkets-world": {
+      "status": "ok",
+      "spreads": {
+        "WTI/USD": {
+          "value": 3,
+          "unit": "pts"
+        },
+        "US30": {
+          "value": 2,
+          "unit": "pts"
+        },
+        "US500": {
+          "value": 0.7,
+          "unit": "pts"
+        },
+        "BTC/USD": {
+          "value": 45,
+          "unit": "USD"
+        }
+      }
+    },
+    "avatrade-world": {
+      "status": "ok",
+      "spreads": {
+        "BTC/USD": {
+          "value": 1001,
+          "unit": "USD"
+        },
+        "EUR/USD": {
+          "value": 1.16408,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 1.34377,
+          "unit": "pips"
+        }
+      }
+    },
+    "ic-markets-world": {
+      "status": "empty",
+      "spreads": {}
+    },
+    "pepperstone-world": {
+      "status": "ok",
+      "spreads": {
+        "AUD/USD": {
+          "value": 1.1,
+          "unit": "pips"
+        },
+        "EUR/USD": {
+          "value": 1.1,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 1.3,
+          "unit": "pips"
+        },
+        "USD/JPY": {
+          "value": 1.3,
+          "unit": "pips"
+        }
+      }
+    },
+    "swissquote": {
+      "status": "404",
+      "spreads": {}
+    },
+    "forex-com": {
+      "status": "ok",
+      "spreads": {
+        "EUR/USD": {
+          "value": 1.164,
+          "unit": "pips"
+        },
+        "GBP/USD": {
+          "value": 1.34369,
+          "unit": "pips"
+        },
+        "AUD/USD": {
+          "value": 0.71643,
+          "unit": "pips"
+        }
+      }
+    }
+  }
+}
