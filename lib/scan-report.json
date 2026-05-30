@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-05-29T13:34:48.020Z",
-  "scanTimestampNY": "May 29, 2026 at 9:34 AM ET",
+  "scanTimestamp": "2026-05-30T13:34:32.487Z",
+  "scanTimestampNY": "May 30, 2026 at 9:34 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 39
       },
       "ARTY": {
         "ok": true,
@@ -29,11 +29,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 71
+        "count": 72
       },
       "CHAT": {
         "ok": true,
-        "count": 29
+        "count": 30
       },
       "SOXX": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "MAGS": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 8
+        "count": 7
       },
       "ARKK": {
         "ok": true,
@@ -92,8 +92,8 @@
         "count": 23
       },
       "POW": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 40
       },
       "VOLT": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 6
+        "count": 7
       },
       "PBW": {
         "ok": true,
@@ -117,11 +117,8 @@
       }
     },
     "total": 28,
-    "ok": 26,
-    "failed": [
-      "AIS",
-      "POW"
-    ]
+    "ok": 28,
+    "failed": []
   },
   "yfScan": {
     "total": 75,
