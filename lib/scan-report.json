@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-05-31T13:34:52.426Z",
-  "scanTimestampNY": "May 31, 2026 at 9:34 AM ET",
+  "scanTimestamp": "2026-05-31T14:53:42.259Z",
+  "scanTimestampNY": "May 31, 2026 at 10:53 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -122,15 +122,19 @@
       "MEME": {
         "ok": true,
         "count": 19
+      },
+      "RKNG": {
+        "ok": true,
+        "count": 24
       }
     },
-    "total": 30,
-    "ok": 30,
+    "total": 31,
+    "ok": 31,
     "failed": []
   },
   "yfScan": {
-    "total": 88,
-    "succeeded": 88,
+    "total": 87,
+    "succeeded": 87,
     "failed": []
   }
 }
