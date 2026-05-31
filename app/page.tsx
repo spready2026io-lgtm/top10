@@ -1443,7 +1443,7 @@ export default function Home() {
               <span className="text-emerald-400">Top</span>10
             </h1>
             <div
-              className="mt-1.5"
+              className="mt-2.5 sm:mt-1.5"
               style={{
                 opacity:   tagline ? 1 : 0,
                 transform: tagline ? 'translateY(0)' : 'translateY(6px)',
@@ -1473,8 +1473,8 @@ export default function Home() {
                 ★ All-Theme Top 10
               </button>
             </nav>
-            <div className="hidden sm:flex justify-end">
-              <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700">
+            <div className="hidden sm:flex justify-end max-w-full overflow-x-auto scrollbar-none">
+              <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 flex-shrink-0">
                 {THEMES.map(s => (
                   <button
                     key={s}
