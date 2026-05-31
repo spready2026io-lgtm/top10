@@ -699,10 +699,20 @@ async function main() {
   // ── Meme theme (BUZZ, MEME) — sourced via StockAnalysis ──────────────────────
   // No clean issuer holdings API: VanEck (BUZZ) and Roundhill (MEME) both block
   // bots, but stockanalysis.com exposes the full weighted holdings list.
+  // Retry up to 3× with backoff: the theme has only 2 ETFs, so a single transient
+  // network failure would otherwise drop half the theme.
   console.log('\n[Meme ETFs]');
   for (const ticker of MEME_ETFS) {
-    const h = await fetchStockAnalysis(ticker);
+    let h = null;
+    for (let attempt = 1; attempt <= 3 && !h; attempt++) {
+      if (attempt > 1) {
+        console.log(`    ↻ retry ${attempt}/3 for ${ticker}`);
+        await sleep(1500 * attempt);
+      }
+      h = await fetchStockAnalysis(ticker);
+    }
     if (h) results[ticker] = h;
+    else console.error(`    ✗✗ ${ticker} failed after 3 attempts — Meme theme will be incomplete`);
     await sleep(800);
   }
 
