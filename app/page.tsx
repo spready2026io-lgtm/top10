@@ -18,6 +18,7 @@ import {
   SAMPLE_DATA,
   INDEX_CHART_DATA,
   SCAN_TIMESTAMP_NY,
+  CROSS_THEME_TOP10,
 } from '@/lib/data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
@@ -1302,6 +1303,73 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
+// ── Top 10 Across All Themes — cross-theme breadth board ─────────────────────
+function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void }) {
+  const rows = CROSS_THEME_TOP10;
+  return (
+    <div className="max-w-7xl mx-auto px-4 pb-16 pt-4">
+      <div className="mb-6">
+        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <span className="text-amber-300">★</span> Top 10 Across All Themes
+        </h2>
+        <p className="text-slate-500 text-xs mt-1 max-w-2xl">
+          Ranked by cross-theme breadth — the stocks held across the most institutional theme
+          baskets. The widest-conviction names in the entire tracked universe. Meme theme excluded.
+        </p>
+      </div>
+
+      {rows.length === 0 ? (
+        <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-12 text-center">
+          <p className="text-slate-400 text-sm">Cross-theme ranking is being generated.</p>
+          <p className="text-slate-600 text-xs mt-2">Refreshes on the next data run.</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {rows.map((e, i) => {
+            const pos = e.weeklyChange >= 0;
+            return (
+              <div
+                key={e.ticker}
+                className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3"
+              >
+                <span className="text-slate-500 font-bold tabular-nums w-6 text-right flex-shrink-0">{i + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-white font-mono">{e.ticker}</span>
+                    <span className="text-slate-400 text-sm truncate">{e.name}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                    {e.themes.map(t => (
+                      <button
+                        key={t}
+                        onClick={() => onSelectTheme(t)}
+                        className="bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-semibold px-2 py-0.5 rounded-full hover:border-emerald-500/50 hover:text-emerald-300 transition-colors"
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex-shrink-0 text-right">
+                  <span className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded-full tabular-nums whitespace-nowrap">
+                    {e.themeCount} themes
+                  </span>
+                  <div className="mt-1 text-xs tabular-nums">
+                    <span className="text-slate-400">${e.price.toFixed(2)}</span>
+                    <span className={`ml-2 font-bold ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {pos ? '+' : ''}{e.weeklyChange.toFixed(2)}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [theme,   setTheme]   = useState<Theme>('AI & ML');
   const [period,  setPeriod]  = useState<Period>('6M');
@@ -1313,6 +1381,7 @@ export default function Home() {
   const [showNew,   setShowNew]   = useState(false);
   const [showAll,   setShowAll]   = useState(false);
   const [expanded,  setExpanded]  = useState<string | null>(null);
+  const [crossView, setCrossView] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setTagline(true), 300);
@@ -1386,6 +1455,17 @@ export default function Home() {
             <nav className="flex items-center gap-4 text-sm flex-shrink-0">
               <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
               <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+              <button
+                onClick={() => setCrossView(v => !v)}
+                title="Top 10 stocks ranked across all themes by breadth"
+                className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
+                  crossView
+                    ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
+                    : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
+                }`}
+              >
+                ★ All-Theme Top 10
+              </button>
             </nav>
             <div className="hidden sm:flex justify-end">
               <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700">
@@ -1430,6 +1510,10 @@ export default function Home() {
         </div>
       </div>
 
+      {crossView ? (
+        <CrossThemeBoard onSelectTheme={(t) => { setCrossView(false); setTheme(t); }} />
+      ) : (
+      <>
       {/* ETF badges row */}
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center gap-2 flex-wrap">
@@ -1601,6 +1685,8 @@ export default function Home() {
           </div>
         )}
       </div>
+      </>
+      )}
 
       {/* Footer */}
       {SCAN_TIMESTAMP_NY && (

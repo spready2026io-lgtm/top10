@@ -42,7 +42,13 @@ const THEME_ETFS = {
   'Broad Tech':     ['QQQ', 'QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN'],
+  'Meme':           ['BUZZ', 'MEME'],
 };
+
+// Themes excluded from the cross-theme "Top 10 Across All Themes" breadth ranking.
+// Meme is speculative/retail-sentiment driven and would pollute the institutional
+// conviction board, so it is kept to its own tab only.
+const CROSS_THEME_EXCLUDE = new Set(['Meme']);
 
 const TOP_N = 20; // equities to show per theme
 
@@ -708,6 +714,7 @@ const BENCHMARK_ETF = {
   'Broad Tech':      'QQQ',
   'Electrification': 'PBD',
   'Industrials':     'AIRR',
+  'Meme':            'BUZZ',
 };
 
 function genThemeBenchmarks(etfReturnsMap) {
@@ -719,13 +726,57 @@ function genThemeBenchmarks(etfReturnsMap) {
     const pad = ' '.repeat(Math.max(0, 16 - theme.length));
     lines.push(`  '${theme}':${pad}${ret},`);
   }
-  if (!allFound || lines.length < 5) return null; // keep existing if any benchmark ETF failed
+  if (!allFound || lines.length < 6) return null; // keep existing if any benchmark ETF failed
   return [
     '// @@GENERATED:THEME_BENCHMARKS@@',
     'export const THEME_BENCHMARKS: Record<Theme, number> = {',
     ...lines,
     '};',
     '// @@END_GENERATED:THEME_BENCHMARKS@@',
+  ].join('\n');
+}
+
+// ── Cross-theme breadth ranking — "Top 10 Across All Themes" ─────────────────
+// Ranks equities by how many themes they appear in (institutional breadth), so
+// the names with the widest conviction across the whole tracked universe rise to
+// the top. Ties broken by aggregate proScore, then best single proScore.
+// Meme is excluded (CROSS_THEME_EXCLUDE) to keep this an institutional board.
+function genCrossThemeTop10(themeEquities, financialsMap) {
+  const byTicker = {};
+  for (const [theme, equities] of Object.entries(themeEquities)) {
+    if (CROSS_THEME_EXCLUDE.has(theme)) continue;
+    for (const eq of equities) {
+      const e = byTicker[eq.ticker] || (byTicker[eq.ticker] = {
+        ticker: eq.ticker, name: eq.name, themes: [], aggregateScore: 0, bestProScore: 0,
+      });
+      e.themes.push(theme);
+      e.aggregateScore += eq.proScore;
+      if (eq.proScore > e.bestProScore) e.bestProScore = eq.proScore;
+      if (eq.name && eq.name.length > e.name.length) e.name = eq.name;
+    }
+  }
+
+  const ranked = Object.values(byTicker)
+    .sort((a, b) =>
+      b.themes.length - a.themes.length ||
+      b.aggregateScore - a.aggregateScore ||
+      b.bestProScore - a.bestProScore)
+    .slice(0, 10);
+
+  const lines = ranked.map(e => {
+    const f = financialsMap[e.ticker] || {};
+    const price        = Number(f.price ?? 0).toFixed(2);
+    const weeklyChange = Number(f.weeklyChange ?? 0).toFixed(2);
+    const themesArr    = e.themes.map(t => `'${escapeStr(t)}'`).join(', ');
+    return `  { ticker: '${safeTicker(e.ticker)}', name: \`${escapeStr(e.name)}\`, themeCount: ${e.themes.length}, themes: [${themesArr}], aggregateScore: ${e.aggregateScore.toFixed(2)}, bestProScore: ${e.bestProScore.toFixed(2)}, price: ${price}, weeklyChange: ${weeklyChange} },`;
+  });
+
+  return [
+    '// @@GENERATED:CROSS_THEME_TOP10@@',
+    'export const CROSS_THEME_TOP10: CrossThemeEntry[] = [',
+    ...lines,
+    '];',
+    '// @@END_GENERATED:CROSS_THEME_TOP10@@',
   ].join('\n');
 }
 
@@ -739,7 +790,7 @@ function genSpyRet(r) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -782,6 +833,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:THEME_BENCHMARKS@@[\s\S]*?\/\/ @@END_GENERATED:THEME_BENCHMARKS@@/,
       newThemeBenchmarks
+    );
+  }
+  if (newCrossTheme) {
+    src = src.replace(
+      /\/\/ @@GENERATED:CROSS_THEME_TOP10@@[\s\S]*?\/\/ @@END_GENERATED:CROSS_THEME_TOP10@@/,
+      newCrossTheme
     );
   }
 
@@ -951,9 +1008,10 @@ async function main() {
   const newSpyRet          = spyRet ? genSpyRet(spyRet) : null;
   const newIndexChart      = genIndexChartData(THEME_ETFS, etfDataMap, spyData, todayStr);
   const newThemeBenchmarks = genThemeBenchmarks(etfReturnsMap);
+  const newCrossTheme      = genCrossThemeTop10(themeEquities, financialsMap);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');

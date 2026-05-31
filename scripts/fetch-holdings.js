@@ -576,6 +576,10 @@ const VISTASHARES_ETFS = [
   { ticker: 'POW' },
 ];
 
+// ── Meme theme — sourced via StockAnalysis (issuers block bots) ───────────────
+// BUZZ = VanEck Social Sentiment ETF, MEME = Roundhill Meme Stock ETF.
+const MEME_ETFS = ['BUZZ', 'MEME'];
+
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;
   console.log(`  [VistaShares] ${ticker}...`);
@@ -692,6 +696,16 @@ async function main() {
     await sleep(600);
   }
 
+  // ── Meme theme (BUZZ, MEME) — sourced via StockAnalysis ──────────────────────
+  // No clean issuer holdings API: VanEck (BUZZ) and Roundhill (MEME) both block
+  // bots, but stockanalysis.com exposes the full weighted holdings list.
+  console.log('\n[Meme ETFs]');
+  for (const ticker of MEME_ETFS) {
+    const h = await fetchStockAnalysis(ticker);
+    if (h) results[ticker] = h;
+    await sleep(800);
+  }
+
   // ── StockAnalysis fallback — only runs for tickers that still failed above ──
   // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
   // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
@@ -718,6 +732,7 @@ async function main() {
     ...VISTASHARES_ETFS.map(e => e.ticker),
     ...PROSHARES_ETFS.map(e => e.ticker),
     ...FIDELITY_ETFS.map(e => e.ticker),
+    ...MEME_ETFS,
   ];
   const failed = all.filter(t => !fetched.includes(t));
 

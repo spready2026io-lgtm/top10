@@ -42,11 +42,12 @@ const TOP10_RET: Record<Theme, Record<Period, number>> = {
   'Broad Tech':      { '1W': 5.4, '1M': 19.4, '6M': 30.6, '1Y': 49.5 },
   'Electrification': { '1W': 1.9, '1M': 9.4, '6M': 41.7, '1Y': 90.4 },
   'Industrials':     { '1W': 3.5, '1M': 9, '6M': 36.5, '1Y': 67.2 },
+  'Meme':            { '1W': 0, '1M': 0, '6M': 0, '1Y': 0 },
 };
 // @@END_GENERATED:TOP10_RET@@
 
 const THEME_SEED: Record<Theme, number> = {
-  'AI & ML': 7, 'Semiconductors': 19, 'Broad Tech': 31, 'Electrification': 43, 'Industrials': 57,
+  'AI & ML': 7, 'Semiconductors': 19, 'Broad Tech': 31, 'Electrification': 43, 'Industrials': 57, 'Meme': 71,
 };
 
 // @@GENERATED:INDEX_CHART_DATA@@
@@ -81,12 +82,19 @@ export const INDEX_CHART_DATA: Record<Theme, Record<Period, ChartPeriodData>> = 
     '6M': { top10: [100, 102.69, 103.37, 106.19, 103.64, 108.33, 113.21, 117.4, 116.53, 115.31, 122.91, 124.65, 125.02, 117.28, 113.35, 115.57, 113.8, 117.47, 126.38, 126.41, 132.11, 134.09, 136.88, 140.97, 133.49, 139.31], spy: [100, 100.49, 100.07, 100.67, 100.99, 101.37, 101.48, 100.75, 102.23, 100.87, 101.72, 100.62, 101.33, 100.15, 97.91, 96.99, 94.83, 96.41, 99.88, 103.14, 104.14, 105.64, 107.54, 109.98, 109.18, 111.2], top10Return: 36.5, spyReturn: 10.7, xLabels: ["Nov", "Dec", "Jan", "Mar", "Mar", "Apr", "May"] },
     '1Y': { top10: [100, 103.39, 101.5, 103.36, 106.15, 107.16, 108.94, 108.63, 113, 110.95, 112.83, 114.19, 114.93, 114.45, 113.88, 117.4, 121.05, 119.99, 123.94, 122.85, 124.03, 126.62, 127.11, 124.69, 115.5, 118.73, 120.35, 123.51, 124.37, 127.66, 124.63, 130.29, 136.19, 141.02, 139.97, 138.69, 147.95, 149.95, 150.31, 141.07, 136.32, 138.99, 136.82, 141.25, 151.89, 155.69, 158.74, 161.09, 164.41, 169.2, 160.25, 167.18], spy: [100, 101.65, 101.29, 101.83, 104.83, 105.25, 106.01, 106.68, 108.07, 107.09, 107.89, 109.15, 109.01, 108.63, 110.34, 111.98, 113.14, 112.6, 113.95, 112.5, 113.9, 116.26, 115.94, 115.62, 112.94, 113.46, 115.42, 115.99, 115.5, 116.19, 116.56, 117, 117.13, 116.9, 117.76, 114.97, 117.4, 116.13, 116.95, 115.6, 113.01, 111.95, 109.45, 111.27, 115.28, 120.49, 120.2, 121.93, 124.12, 126.94, 126.02, 128.35], top10Return: 67.2, spyReturn: 28.3, xLabels: ["May '25", "Aug '25", "Nov '25", "Mar '26", "May '26"] },
   },
+  // Placeholder — overwritten with real BUZZ/MEME price paths on next build run.
+  'Meme': {
+    '1W': { top10: [100, 100], spy: [100, 100], top10Return: 0, spyReturn: 0, xLabels: ["Mon", "Fri"] },
+    '1M': { top10: [100, 100], spy: [100, 100], top10Return: 0, spyReturn: 0, xLabels: ["May 2", "May 30"] },
+    '6M': { top10: [100, 100], spy: [100, 100], top10Return: 0, spyReturn: 0, xLabels: ["Nov", "May"] },
+    '1Y': { top10: [100, 100], spy: [100, 100], top10Return: 0, spyReturn: 0, xLabels: ["May '25", "May '26"] },
+  },
 };
 // @@END_GENERATED:INDEX_CHART_DATA@@
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type Theme = 'AI & ML' | 'Semiconductors' | 'Broad Tech' | 'Electrification' | 'Industrials';
+export type Theme = 'AI & ML' | 'Semiconductors' | 'Broad Tech' | 'Electrification' | 'Industrials' | 'Meme';
 
 export type Equity = {
   ticker: string;
@@ -112,9 +120,23 @@ export type Equity = {
   isNew?: boolean;
 };
 
+// One row in the cross-theme "Top 10 Across All Themes" breadth ranking.
+// Ranked by how many themes a stock appears in (institutional conviction breadth).
+// Meme theme is excluded from this board.
+export type CrossThemeEntry = {
+  ticker: string;
+  name: string;
+  themeCount: number;        // number of themes this stock appears in
+  themes: Theme[];           // which themes
+  aggregateScore: number;    // sum of proScore across all themes it appears in
+  bestProScore: number;      // highest single-theme proScore
+  price: number;
+  weeklyChange: number;
+};
+
 // ── Theme configuration ───────────────────────────────────────────────────────
 
-export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Electrification', 'Industrials'];
+export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Electrification', 'Industrials', 'Meme'];
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
@@ -130,6 +152,7 @@ export const THEME_ETF_COUNT: Record<Theme, number> = {
   'Broad Tech':      10,
   'Electrification': 4,
   'Industrials':     2,
+  'Meme':            2,
 };
 // @@END_GENERATED:THEME_ETF_COUNT@@
 
@@ -139,6 +162,7 @@ export const THEME_ETFS: Record<Theme, string[]> = {
   'Broad Tech':     ['QQQ', 'QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN'],
+  'Meme':           ['BUZZ', 'MEME'],
 };
 
 // Primary benchmark ETF per theme — shown in validation strip
@@ -148,6 +172,7 @@ export const THEME_BENCHMARK_ETF: Record<Theme, string> = {
   'Broad Tech':     'QQQ',
   'Electrification':'PBD',
   'Industrials':    'AIRR',
+  'Meme':           'BUZZ',
 };
 
 // Weekly return of the primary benchmark ETF
@@ -158,8 +183,15 @@ export const THEME_BENCHMARKS: Record<Theme, number> = {
   'Broad Tech':     1.4,
   'Electrification':1.0,
   'Industrials':    1.3,
+  'Meme':           0,
 };
 // @@END_GENERATED:THEME_BENCHMARKS@@
+
+// Top 10 stocks across ALL themes, ranked by cross-theme breadth (excludes Meme).
+// Populated by build-data-ts.js on each run.
+// @@GENERATED:CROSS_THEME_TOP10@@
+export const CROSS_THEME_TOP10: CrossThemeEntry[] = [];
+// @@END_GENERATED:CROSS_THEME_TOP10@@
 
 // @@GENERATED:ETF_RETURNS@@
 // Multi-period returns per ETF ticker
@@ -942,6 +974,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
   ],
 
   // ── Industrials ─────────────────────
+  'Meme': [],
   'Industrials': [
     {
       ticker: 'STRL', name: 'Sterling Infrastructure, Inc.', easyScore: 2, proScore: 5.38, coverage: 1,
