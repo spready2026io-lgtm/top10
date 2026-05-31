@@ -1173,7 +1173,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
   // ── Meme ─────────────────────
   'Meme': [
     {
-      ticker: 'ASTS', name: 'ASTS', easyScore: 2, proScore: 5.21, coverage: 1,
+      ticker: 'ASTS', name: 'AST SpaceMobile', easyScore: 2, proScore: 5.21, coverage: 1,
       price: 113.41, weeklyPrices: [105.86, 119.70, 129.60, 133.09, 113.41], weeklyChange: 7.13, sortRank: 0, periodReturns: { '1M': 62.4, '6M': 101.8, '1Y': 391.6 },
       priceHistory: { '1W': [105.86, 119.7, 129.6, 133.09, 113.41], '1M': [69.85, 73.9, 70.89, 68.43, 63.87, 70.68, 65.35, 75.05, 82.55, 72.96, 83.01, 83.67, 86.83, 88.1, 89.58, 96.23, 105.86, 119.7, 129.6, 133.09, 113.41], '6M': [52.61, 74, 67.81, 86.48, 74.68, 85.73, 95.22, 103.5, 121.23, 103.5, 96.92, 86.4, 85.76, 93.86, 87.09, 94.09, 87.86, 92.62, 94.9, 90.94, 78.75, 73.9, 65.35, 83.01, 96.23, 113.41], '1Y': [23.07, 31.19, 38.37, 50.2, 46.73, 45.46, 47.86, 56.67, 54.22, 51.38, 45.92, 48.16, 50.01, 48.76, 36.91, 40.43, 48.85, 48.84, 72.9, 90.5, 82.81, 79.45, 71.14, 68.7, 56.6, 55, 52.61, 74, 67.81, 86.48, 74.68, 85.73, 95.22, 116.37, 122.09, 93.27, 96.92, 86.4, 85.76, 93.86, 87.09, 94.09, 87.86, 92.62, 94.9, 85.53, 78.75, 73.9, 65.35, 83.01, 96.23, 113.41] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1182,7 +1182,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'ASTS appears in 2 of 2 Meme ETFs (100% coverage) with average weight 5.2% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'RDW', name: 'RDW', easyScore: 1, proScore: 5.2, coverage: 0.5,
+      ticker: 'RDW', name: 'Redwire', easyScore: 1, proScore: 5.2, coverage: 0.5,
       price: 24.57, weeklyPrices: [17.49, 22.04, 24.00, 25.90, 24.57], weeklyChange: 40.48, sortRank: 0, periodReturns: { '1M': 185.7, '6M': 345.9, '1Y': 71.7 },
       priceHistory: { '1W': [17.49, 22.04, 24, 25.9, 24.57], '1M': [8.6, 9.19, 9.34, 8.64, 8.69, 9.64, 9.2, 11.07, 12.16, 11.56, 13.99, 14.06, 13.96, 13.91, 14.77, 15.35, 17.49, 22.04, 24, 25.9, 24.57], '6M': [5.12, 6.82, 6.89, 8.52, 7.94, 9.83, 11.02, 10.2, 13.29, 10.03, 9.01, 8.6, 9.55, 9.07, 9.48, 9.63, 8.87, 9.73, 9.29, 11.22, 10.04, 9.19, 9.2, 13.99, 15.35, 24.57], '1Y': [14.31, 18.45, 19.08, 15.36, 16.3, 15.15, 17.73, 17.37, 15.47, 14.77, 8.82, 9.04, 8.94, 8.92, 8.16, 9, 8.11, 8.93, 11.22, 9.06, 8.25, 8.24, 7.37, 6.17, 5.47, 5.39, 5.12, 6.82, 6.89, 8.52, 7.94, 9.83, 11.02, 11.98, 12.81, 8.8, 9.01, 8.6, 9.55, 9.07, 9.48, 9.63, 8.87, 9.73, 9.29, 10.34, 10.04, 9.19, 9.2, 13.99, 15.35, 24.57] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1191,7 +1191,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'RDW appears in 1 of 2 Meme ETFs (50% coverage) with average weight 5.2% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'AAOI', name: 'AAOI', easyScore: 1, proScore: 4.81, coverage: 0.5,
+      ticker: 'AAOI', name: 'Applied Optoelectronics', easyScore: 1, proScore: 4.81, coverage: 0.5,
       price: 158.41, weeklyPrices: [181.49, 177.62, 179.83, 169.02, 158.41], weeklyChange: -12.72, sortRank: 0, periodReturns: { '1M': 3.7, '6M': 491.5, '1Y': 927.3 },
       priceHistory: { '1W': [181.49, 177.62, 179.83, 169.02, 158.41], '1M': [152.83, 164.36, 183.51, 172.98, 180.57, 178.54, 157.55, 148.94, 184.9, 188.28, 203.57, 190.36, 173.26, 171.33, 165.26, 176.81, 181.49, 177.62, 179.83, 169.02, 158.41], '6M': [26.53, 27.84, 29.9, 39.1, 36.02, 38.06, 34.47, 38.38, 45.23, 39.9, 48.4, 46.98, 53.69, 101.14, 106.19, 101.92, 97.42, 103.91, 150.6, 157.32, 137.73, 164.36, 157.55, 203.57, 176.81, 158.41], '1Y': [15.42, 16.83, 15.47, 22.57, 25.69, 26.88, 29.5, 28.23, 25.22, 22.19, 20.86, 26.13, 24.34, 23.35, 23.72, 28.93, 30.54, 25.94, 33.79, 29.1, 34.14, 37.22, 33.04, 25.42, 21.63, 22.47, 26.53, 27.84, 29.9, 39.1, 36.02, 38.06, 34.47, 38.15, 39.57, 38.13, 48.4, 46.98, 53.69, 101.14, 106.19, 101.92, 97.42, 103.91, 150.6, 159.42, 137.73, 164.36, 157.55, 203.57, 176.81, 158.41] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1200,7 +1200,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'AAOI appears in 1 of 2 Meme ETFs (50% coverage) with average weight 4.8% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'LUNR', name: 'LUNR', easyScore: 1, proScore: 4.5, coverage: 0.5,
+      ticker: 'LUNR', name: 'Intuitive Machines', easyScore: 1, proScore: 4.5, coverage: 0.5,
       price: 43.83, weeklyPrices: [38.26, 34.86, 40.34, 45.70, 43.83], weeklyChange: 14.56, sortRank: 0, periodReturns: { '1M': 76.8, '6M': 361.4, '1Y': 284.1 },
       priceHistory: { '1W': [38.26, 34.86, 40.34, 45.7, 43.83], '1M': [24.79, 25.35, 25.62, 25.35, 24.8, 26.33, 24.11, 28.97, 32.42, 32.09, 36.52, 33.89, 33.59, 32.46, 33.67, 34.24, 38.26, 34.86, 40.34, 45.7, 43.83], '6M': [9.26, 11.63, 11.12, 16.69, 15.94, 18.62, 19.76, 19.6, 22.81, 16.61, 17.04, 18.19, 17.67, 17.67, 17.64, 18.91, 19.23, 23.99, 23.57, 27.28, 27.56, 25.35, 24.11, 36.52, 34.24, 43.83], '1Y': [11.41, 11.71, 10.45, 10, 10.87, 10.68, 11.07, 11.25, 12.83, 11.2, 10.15, 9.08, 8.86, 8.71, 8.41, 9.15, 10.13, 10.26, 11.98, 12.25, 12.89, 12.79, 11.58, 9.87, 8.73, 9, 9.26, 11.63, 11.12, 16.69, 15.94, 18.62, 19.76, 20.61, 20.99, 14.79, 17.04, 18.19, 17.67, 17.67, 17.64, 18.91, 19.23, 23.99, 23.57, 27.58, 27.56, 25.35, 24.11, 36.52, 34.24, 43.83] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1209,7 +1209,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'LUNR appears in 1 of 2 Meme ETFs (50% coverage) with average weight 4.5% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'IREN', name: 'IREN', easyScore: 2, proScore: 4.38, coverage: 1,
+      ticker: 'IREN', name: 'IREN Ltd', easyScore: 2, proScore: 4.38, coverage: 1,
       price: 63.54, weeklyPrices: [56.83, 59.78, 67.84, 64.05, 63.54], weeklyChange: 11.81, sortRank: 0, periodReturns: { '1M': 48.3, '6M': 32.9, '1Y': 657.3 },
       priceHistory: { '1W': [56.83, 59.78, 67.84, 64.05, 63.54], '1M': [42.86, 45.51, 45.66, 49.48, 54.74, 60.98, 56.85, 61.2, 55.15, 56.56, 58.4, 52.94, 50.46, 47.74, 52.71, 58.06, 56.83, 59.78, 67.84, 64.05, 63.54], '6M': [48.49, 46.34, 35.48, 42.04, 38.3, 43.63, 52.88, 53.48, 62.94, 44.94, 42.67, 43.29, 44.24, 40.13, 41.37, 41.66, 37.45, 34.77, 39.32, 47.7, 52.02, 45.51, 56.85, 58.4, 58.06, 63.54], '1Y': [8.39, 9.75, 9.83, 10.66, 14.57, 16.89, 17.28, 18.15, 16.58, 16.48, 17.97, 20.7, 23.12, 29.11, 30.19, 36.45, 41.9, 45.93, 57.75, 64.14, 59.22, 64.99, 67.75, 60.17, 47.41, 48.49, 48.49, 46.34, 35.48, 42.04, 38.3, 43.63, 52.88, 52.26, 59.84, 39.79, 42.67, 43.29, 44.24, 40.13, 41.37, 41.66, 37.45, 34.77, 39.32, 48.12, 52.02, 45.51, 56.85, 58.4, 58.06, 63.54] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1218,7 +1218,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'IREN appears in 2 of 2 Meme ETFs (100% coverage) with average weight 4.4% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'NBIS', name: 'NBIS', easyScore: 2, proScore: 4.16, coverage: 1,
+      ticker: 'NBIS', name: 'Nebius Group', easyScore: 2, proScore: 4.16, coverage: 1,
       price: 231.09, weeklyPrices: [214.77, 208.06, 208.37, 226.34, 231.09], weeklyChange: 7.6, sortRank: 0, periodReturns: { '1M': 63.7, '6M': 143.6, '1Y': 528.8 },
       priceHistory: { '1W': [214.77, 208.06, 208.37, 226.34, 231.09], '1M': [141.19, 138.23, 154.49, 176.42, 175.92, 195.09, 184.77, 177.05, 186.1, 179.11, 221.15, 219.94, 199.86, 197.73, 191.82, 219.93, 214.77, 208.06, 208.37, 226.34, 231.09], '6M': [100.15, 100.33, 81.14, 93.23, 85.17, 96.21, 101.98, 98.87, 100.43, 82.39, 88.61, 107.61, 104.88, 95.65, 108.04, 121.52, 105.97, 108.82, 144.97, 165.34, 157.08, 138.23, 184.77, 221.15, 219.93, 231.09], '1Y': [36.75, 48.28, 47.13, 47.48, 55.33, 47.1, 51.95, 52.37, 52.75, 54.17, 70.24, 72.54, 70.02, 65.72, 95.72, 89.43, 106.6, 110.22, 124.94, 135.46, 109, 125.43, 120.47, 109.95, 85.98, 91.9, 100.15, 100.33, 81.14, 93.23, 85.17, 96.21, 101.98, 96.85, 94.91, 73.87, 88.61, 107.61, 104.88, 95.65, 108.04, 121.52, 105.97, 108.82, 144.97, 157.14, 157.08, 138.23, 184.77, 221.15, 219.93, 231.09] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1227,7 +1227,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'NBIS appears in 2 of 2 Meme ETFs (100% coverage) with average weight 4.2% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'BE', name: 'BE', easyScore: 1, proScore: 4.12, coverage: 0.5,
+      ticker: 'BE', name: 'Bloom Energy', easyScore: 1, proScore: 4.12, coverage: 0.5,
       price: 285, weeklyPrices: [302.49, 302.40, 293.80, 290.01, 285.00], weeklyChange: -5.78, sortRank: 0, periodReturns: { '1M': -1, '6M': 160.9, '1Y': 1443 },
       priceHistory: { '1W': [302.49, 302.4, 293.8, 290.01, 285], '1M': [287.97, 283.36, 290.52, 288.64, 295.25, 285.47, 258.64, 261.03, 283.92, 280.69, 303.41, 275.95, 258.71, 261.34, 282.31, 307.88, 302.49, 302.4, 293.8, 290.01, 285], '6M': [98.93, 111.79, 89.58, 92.26, 87.26, 108, 133.46, 150.56, 165.39, 147.35, 155.54, 159, 168.57, 159.99, 157.17, 166.69, 133.52, 135.63, 166.7, 210.06, 237.57, 283.36, 258.64, 303.41, 307.88, 285], '1Y': [18.47, 21.78, 21.95, 22.56, 23.92, 24.3, 25.96, 25.36, 34.78, 36.1, 37.65, 46.5, 49.35, 51.35, 55, 73.29, 86.27, 73.6, 86.97, 109.91, 109.06, 108.53, 142.37, 139.23, 107.11, 95.56, 98.93, 111.79, 89.58, 92.26, 87.26, 108, 133.46, 145.63, 156.51, 136.6, 155.54, 159, 168.57, 159.99, 157.17, 166.69, 133.52, 135.63, 166.7, 207.86, 237.57, 283.36, 258.64, 303.41, 307.88, 285] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1236,7 +1236,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'BE appears in 1 of 2 Meme ETFs (50% coverage) with average weight 4.1% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'QBTS', name: 'QBTS', easyScore: 1, proScore: 4.03, coverage: 0.5,
+      ticker: 'QBTS', name: 'D-Wave Quantum', easyScore: 1, proScore: 4.03, coverage: 0.5,
       price: 30.14, weeklyPrices: [29.40, 27.82, 27.48, 29.49, 30.14], weeklyChange: 2.52, sortRank: 0, periodReturns: { '1M': 65, '6M': 33, '1Y': 84.6 },
       priceHistory: { '1W': [29.4, 27.82, 27.48, 29.49, 30.14], '1M': [18.27, 20.28, 20.49, 20.92, 21.54, 23.83, 21.99, 22.57, 24.03, 22.35, 22.13, 20.35, 19.06, 18.19, 19.3, 25.74, 29.4, 27.82, 27.48, 29.49, 30.14], '6M': [21.42, 28.44, 23.74, 32.19, 26.25, 30.2, 30.15, 26.04, 24.97, 20.11, 19.64, 19.38, 20.14, 18.83, 17.83, 16.1, 14.65, 14.32, 14.25, 21.52, 19.31, 20.28, 21.99, 22.13, 25.74, 30.14], '1Y': [16.33, 18.62, 15.17, 14.94, 14.64, 15.99, 15.83, 18.39, 18.35, 17.18, 17.37, 16.56, 15.02, 15.85, 16.15, 18.98, 25.67, 25.31, 35.02, 40.62, 34.4, 35.04, 33.09, 29.37, 22.83, 23.11, 21.42, 28.44, 23.74, 32.19, 26.25, 30.2, 30.15, 27.43, 23.22, 17.21, 19.64, 19.38, 20.14, 18.83, 17.83, 16.1, 14.65, 14.32, 14.25, 21.69, 19.31, 20.28, 21.99, 22.13, 25.74, 30.14] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1245,7 +1245,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'QBTS appears in 1 of 2 Meme ETFs (50% coverage) with average weight 4.0% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'ONDS', name: 'ONDS', easyScore: 1, proScore: 3.99, coverage: 0.5,
+      ticker: 'ONDS', name: 'Ondas Holdings', easyScore: 1, proScore: 3.99, coverage: 0.5,
       price: 13.22, weeklyPrices: [9.06, 9.77, 10.80, 13.25, 13.22], weeklyChange: 45.92, sortRank: 0, periodReturns: { '1M': 39.3, '6M': 67.3, '1Y': 983.6 },
       priceHistory: { '1W': [9.06, 9.77, 10.8, 13.25, 13.22], '1M': [9.49, 10.04, 10.32, 9.73, 9.33, 9.34, 8.89, 9.06, 9.42, 9.04, 11.21, 10.62, 9.7, 9.13, 9.36, 9.18, 9.06, 9.77, 10.8, 13.25, 13.22], '6M': [7.58, 9.02, 7.69, 9.27, 8.99, 12.18, 13.56, 12.55, 12.27, 9.68, 9.23, 11.39, 10.45, 10.49, 10.33, 10.75, 9.44, 9.6, 9.13, 10.2, 10.54, 10.04, 8.89, 11.21, 9.18, 13.22], '1Y': [1.22, 1.7, 1.82, 1.43, 1.92, 1.79, 2.31, 2.25, 2, 2.67, 3.43, 4.01, 4.85, 5.46, 5.45, 6.09, 7.26, 7.87, 10.66, 10.81, 7.77, 7.53, 6.15, 5.88, 6.26, 8.72, 7.58, 9.02, 7.69, 9.27, 8.99, 12.18, 13.56, 12.62, 11.27, 8.48, 9.23, 11.39, 10.45, 10.49, 10.33, 10.75, 9.44, 9.6, 9.13, 10, 10.54, 10.04, 8.89, 11.21, 9.18, 13.22] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1254,7 +1254,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'ONDS appears in 1 of 2 Meme ETFs (50% coverage) with average weight 4.0% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'APLD', name: 'APLD', easyScore: 2, proScore: 3.89, coverage: 1,
+      ticker: 'APLD', name: 'Applied Digital', easyScore: 2, proScore: 3.89, coverage: 1,
       price: 47.28, weeklyPrices: [45.87, 45.14, 48.98, 49.65, 47.28], weeklyChange: 3.07, sortRank: 0, periodReturns: { '1M': 44.7, '6M': 74.5, '1Y': 592.2 },
       priceHistory: { '1W': [45.87, 45.14, 48.98, 49.65, 47.28], '1M': [32.69, 34.25, 33.55, 35.63, 39.88, 44.24, 41.53, 41.25, 44.59, 43.93, 46.71, 42.56, 39.14, 36.62, 39.52, 48.02, 45.87, 45.14, 48.98, 49.65, 47.28], '6M': [28.21, 32.11, 22.98, 27.78, 24.08, 29.56, 36.1, 35.06, 40.22, 31.54, 36.6, 31.53, 28.65, 28.09, 27.48, 26.7, 25.72, 24.56, 26.26, 30.09, 36.35, 34.25, 41.53, 46.71, 48.02, 47.28], '1Y': [6.83, 13.86, 11.18, 9.87, 10.07, 9.22, 9.52, 11.09, 10.58, 13.95, 14.03, 16.34, 15.95, 15.26, 15.2, 19.46, 24.45, 22.15, 27.71, 34.24, 35.9, 34.35, 32.87, 31.44, 22.93, 23.79, 28.21, 32.11, 22.98, 27.78, 24.08, 29.56, 36.1, 34.74, 38.07, 27.84, 36.6, 31.53, 28.65, 28.09, 27.48, 26.7, 25.72, 24.56, 26.26, 31.53, 36.35, 34.25, 41.53, 46.71, 48.02, 47.28] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1263,7 +1263,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'APLD appears in 2 of 2 Meme ETFs (100% coverage) with average weight 3.9% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'SNDK', name: 'SNDK', easyScore: 1, proScore: 3.89, coverage: 0.5,
+      ticker: 'SNDK', name: 'Sandisk', easyScore: 1, proScore: 3.89, coverage: 0.5,
       price: 1694.98, weeklyPrices: [1478.69, 1589.55, 1589.94, 1641.64, 1694.98], weeklyChange: 14.63, sortRank: 0, periodReturns: { '1M': 59.3, '6M': 659.1, '1Y': 4397.2 },
       priceHistory: { '1W': [1478.69, 1589.55, 1589.94, 1641.64, 1694.98], '1M': [1064.21, 1096.51, 1187, 1255.86, 1406.32, 1409.98, 1339.96, 1562.34, 1547.56, 1452.02, 1382.72, 1407.61, 1333.01, 1383.29, 1392.56, 1542.24, 1478.69, 1589.55, 1589.94, 1641.64, 1694.98], '6M': [210.17, 225.47, 201.87, 241.05, 240.22, 353.56, 387.81, 501.29, 527.63, 584.55, 599.34, 621.09, 651.9, 565.59, 618.82, 772.09, 603.17, 701.59, 851.77, 919.47, 932.43, 1096.51, 1339.96, 1382.72, 1542.24, 1694.98], '1Y': [37.69, 39.15, 42.5, 46.95, 45.35, 46.17, 42.48, 41.61, 41.89, 42.51, 43.37, 45.52, 46.78, 51.07, 70.51, 91.55, 102.92, 113.5, 121.17, 134.61, 148.04, 176.49, 207.01, 267.95, 265.88, 226.96, 210.17, 225.47, 201.87, 241.05, 240.22, 353.56, 387.81, 503.44, 539.3, 576.2, 599.34, 621.09, 651.9, 565.59, 618.82, 772.09, 603.17, 701.59, 851.77, 920.99, 932.43, 1096.51, 1339.96, 1382.72, 1542.24, 1694.98] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1272,7 +1272,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'SNDK appears in 1 of 2 Meme ETFs (50% coverage) with average weight 3.9% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'IONQ', name: 'IONQ', easyScore: 2, proScore: 3.85, coverage: 1,
+      ticker: 'IONQ', name: 'IonQ', easyScore: 2, proScore: 3.85, coverage: 1,
       price: 72.07, weeklyPrices: [63.64, 63.62, 65.40, 70.14, 72.07], weeklyChange: 13.25, sortRank: 0, periodReturns: { '1M': 71.1, '6M': 46.2, '1Y': 78.7 },
       priceHistory: { '1W': [63.64, 63.62, 65.4, 70.14, 72.07], '1M': [42.11, 45.12, 46.2, 45.75, 48, 52.57, 47.68, 49.24, 56.89, 55.87, 57.47, 51.95, 49.31, 48.44, 52.47, 58.89, 63.64, 63.62, 65.4, 70.14, 72.07], '6M': [47.12, 54.36, 46.07, 53.86, 45.31, 49.78, 50.88, 48.33, 45.8, 35.34, 33.61, 33.43, 40.88, 36.02, 33.03, 31.9, 29.84, 29.3, 28.79, 44.68, 43.63, 45.12, 47.68, 57.47, 58.89, 72.07], '1Y': [40.34, 39.02, 37.84, 41.14, 42.97, 44.97, 42.41, 44.43, 42.34, 39.86, 44.94, 40.23, 38.68, 42.99, 44, 62.26, 71.94, 64.26, 78.99, 82.09, 59.94, 62.8, 58.4, 55.37, 47.79, 46.76, 47.12, 54.36, 46.07, 53.86, 45.31, 49.78, 50.88, 49.33, 43.24, 30.43, 33.61, 33.43, 40.88, 36.02, 33.03, 31.9, 29.84, 29.3, 28.79, 46.09, 43.63, 45.12, 47.68, 57.47, 58.89, 72.07] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1281,7 +1281,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'IONQ appears in 2 of 2 Meme ETFs (100% coverage) with average weight 3.9% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'RKLB', name: 'RKLB', easyScore: 2, proScore: 3.8, coverage: 1,
+      ticker: 'RKLB', name: 'Rocket Lab', easyScore: 2, proScore: 3.8, coverage: 1,
       price: 143.48, weeklyPrices: [135.76, 143.20, 150.23, 148.03, 143.48], weeklyChange: 5.69, sortRank: 0, periodReturns: { '1M': 86.3, '6M': 240.5, '1Y': 435.6 },
       priceHistory: { '1W': [135.76, 143.2, 150.23, 148.03, 143.48], '1M': [77.02, 82.51, 78.81, 80.31, 78.76, 84.65, 78.58, 105.47, 117.35, 117.56, 132.55, 124.77, 131.16, 127.31, 134.28, 125.45, 135.76, 143.2, 150.23, 148.03, 143.48], '6M': [40.37, 51.56, 55.41, 77.55, 70.45, 84.08, 91.8, 87.82, 88.57, 73.11, 69.62, 76.58, 72.65, 70, 68.37, 71.93, 65.94, 67.73, 68.05, 82.93, 84.6, 82.51, 78.58, 132.55, 125.45, 143.48], '1Y': [26.79, 28.92, 25.41, 32.78, 35.77, 38.74, 43.21, 47.19, 45.11, 44.54, 45.02, 44.97, 47.22, 49.31, 47.03, 47.24, 49.81, 47.01, 58.5, 65.42, 67.35, 65.62, 61.34, 51.9, 43.31, 42.45, 40.37, 51.56, 55.41, 77.55, 70.45, 84.08, 91.8, 87.98, 85.68, 66.32, 69.62, 76.58, 72.65, 70, 68.37, 71.93, 65.94, 67.73, 68.05, 84.8, 84.6, 82.51, 78.58, 132.55, 125.45, 143.48] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1290,7 +1290,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'RKLB appears in 2 of 2 Meme ETFs (100% coverage) with average weight 3.8% — highest conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'TE', name: 'TE', easyScore: 1, proScore: 3.58, coverage: 0.5,
+      ticker: 'TE', name: 'T1 Energy', easyScore: 1, proScore: 3.58, coverage: 0.5,
       price: 10.56, weeklyPrices: [8.08, 10.45, 10.96, 10.82, 10.56], weeklyChange: 30.69, sortRank: 0, periodReturns: { '1M': 116, '6M': 156.3, '1Y': 868.8 },
       priceHistory: { '1W': [8.08, 10.45, 10.96, 10.82, 10.56], '1M': [4.89, 4.8, 5.15, 5.1, 5.34, 5.27, 5.15, 6.16, 6.04, 5.85, 5.73, 5.67, 7, 6.88, 8.7, 8.72, 8.08, 10.45, 10.96, 10.82, 10.56], '6M': [4.47, 6.02, 5.06, 7.3, 6.5, 7.28, 7.86, 7.82, 9.49, 7.73, 6.85, 6.31, 7.29, 6.81, 7.74, 7.71, 6.28, 4.19, 4.69, 4.99, 5.39, 4.8, 5.15, 5.73, 8.72, 10.56], '1Y': [1.09, 1.2, 1.33, 1.32, 1.23, 1.5, 1.4, 1.53, 1.4, 1.24, 1.24, 1.55, 1.62, 1.89, 1.94, 1.75, 2.03, 2.33, 2.8, 3.5, 4.76, 3.83, 3.42, 4.5, 3.18, 3.14, 4.47, 6.02, 5.06, 7.3, 6.5, 7.28, 7.86, 8.37, 8.88, 7.27, 6.85, 6.31, 7.29, 6.81, 7.74, 7.71, 6.28, 4.19, 4.69, 5.03, 5.39, 4.8, 5.15, 5.73, 8.72, 10.56] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1299,7 +1299,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'TE appears in 1 of 2 Meme ETFs (50% coverage) with average weight 3.6% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'AXTI', name: 'AXTI', easyScore: 1, proScore: 3.05, coverage: 0.5,
+      ticker: 'AXTI', name: 'AXT Inc', easyScore: 1, proScore: 3.05, coverage: 0.5,
       price: 103.16, weeklyPrices: [140.83, 132.60, 122.77, 115.70, 103.16], weeklyChange: -26.75, sortRank: 0, periodReturns: { '1M': 45.2, '6M': 864.1, '1Y': 6731.8 },
       priceHistory: { '1W': [140.83, 132.6, 122.77, 115.7, 103.16], '1M': [71.07, 79.22, 96, 106, 107.55, 104.83, 108.42, 116.36, 125.81, 122.9, 114.98, 123.78, 105.88, 112.88, 104.61, 121.02, 140.83, 132.6, 122.77, 115.7, 103.16], '6M': [10.79, 12.71, 14.83, 15.22, 15.8, 24.11, 22.1, 19.78, 16.83, 18.75, 26.8, 23.81, 37.12, 38.8, 46.73, 58.09, 58.51, 52.84, 64.18, 81.78, 75.27, 79.22, 108.42, 114.98, 121.02, 103.16], '1Y': [1.51, 1.78, 2.16, 1.86, 2.09, 2.37, 2.32, 2.32, 2.44, 2.11, 2.18, 2.07, 2.84, 3.28, 3.04, 4.01, 5.14, 4.89, 5.4, 4.6, 4.91, 6.19, 8.46, 10.44, 10.25, 9.34, 10.79, 12.71, 14.83, 15.22, 15.8, 24.11, 22.1, 17.92, 16.38, 20.43, 26.8, 23.81, 37.12, 38.8, 46.73, 58.09, 58.51, 52.84, 64.18, 82.56, 75.27, 79.22, 108.42, 114.98, 121.02, 103.16] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1308,7 +1308,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'AXTI appears in 1 of 2 Meme ETFs (50% coverage) with average weight 3.0% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'NVTS', name: 'NVTS', easyScore: 1, proScore: 2.67, coverage: 0.5,
+      ticker: 'NVTS', name: 'Navitas Semiconductor', easyScore: 1, proScore: 2.67, coverage: 0.5,
       price: 26.6, weeklyPrices: [29.25, 31.79, 28.88, 28.51, 26.60], weeklyChange: -9.06, sortRank: 0, periodReturns: { '1M': 71.8, '6M': 204.3, '1Y': 421.6 },
       priceHistory: { '1W': [29.25, 31.79, 28.88, 28.51, 26.6], '1M': [15.48, 16.5, 17.45, 15.92, 17.55, 16.68, 15.79, 18.2, 22.65, 19.25, 22.32, 21.32, 19.67, 19.43, 22.99, 24.38, 29.25, 31.79, 28.88, 28.51, 26.6], '6M': [8.3, 9.6, 7.96, 7.9, 7.24, 10.31, 10.04, 9.76, 10.19, 8.2, 8.76, 8.08, 9.51, 8.96, 9.98, 9.17, 9.02, 8.8, 9.54, 12.37, 18.51, 16.5, 15.79, 22.32, 24.38, 26.6], '1Y': [5.1, 6.18, 7.32, 6.52, 6.55, 6.58, 5.87, 8.47, 8.56, 8.05, 6.6, 6.77, 6.2, 5.76, 5.76, 5.89, 7.16, 7.19, 8.13, 9.97, 17.1, 13.91, 12.25, 9.6, 7.73, 8.29, 8.3, 9.6, 7.96, 7.9, 7.24, 10.31, 10.04, 11.29, 9.46, 7.43, 8.76, 8.08, 9.51, 8.96, 9.98, 9.17, 9.02, 8.8, 9.54, 12.32, 18.51, 16.5, 15.79, 22.32, 24.38, 26.6] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,
@@ -1317,7 +1317,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       tonyNote: 'NVTS appears in 1 of 2 Meme ETFs (50% coverage) with average weight 2.7% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
     {
-      ticker: 'WOLF', name: 'WOLF', easyScore: 1, proScore: 2.64, coverage: 0.5,
+      ticker: 'WOLF', name: 'Wolfspeed', easyScore: 1, proScore: 2.64, coverage: 0.5,
       price: 59.28, weeklyPrices: [69.89, 73.50, 63.26, 65.05, 59.28], weeklyChange: -15.18, sortRank: 0, periodReturns: { '1M': 131.3, '6M': 192.3, '1Y': 168.2 },
       priceHistory: { '1W': [69.89, 73.5, 63.26, 65.05, 59.28], '1M': [25.63, 29.53, 36.76, 35.94, 36.63, 43.08, 45.16, 46.6, 50.31, 53.72, 69.96, 62.13, 59.35, 58.83, 58.62, 69.5, 69.89, 73.5, 63.26, 65.05, 59.28], '6M': [22.11, 22.91, 17.74, 18.38, 17.12, 19.68, 19.49, 19.48, 17.46, 17.2, 18.03, 19.06, 20.21, 18.94, 16.97, 17.06, 16.82, 17.47, 23.22, 26.54, 27.55, 29.53, 45.16, 69.96, 69.5, 59.28], '1Y': [22.1, 24.69, 30.36, 32.57, 32.44, 30.08, 30.89, 26.16, 21.9, 17.95, 18.19, 17.59, 17.18, 20.28, 21.87, 22.91, 19.86, 17.15, 18.38, 17.95, 17.41, 19.68, 18.42, 19.92, 19.18, 18, 15.66, 17.2, 15.8, 17.74, 19.06, 20.47, 21.21, 18.94, 16.58, 18.34, 17.06, 16.67, 15.44, 17.47, 20.56, 24.15, 25.56, 27.75, 29.67, 29.53, 43.08, 50.31, 69.96, 58.83, 73.5, 59.28] },
       velocityScore: { '1D': null, '1W': null, '1M': null, '6M': null }, isNew: true,

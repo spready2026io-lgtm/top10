@@ -50,6 +50,29 @@ const THEME_ETFS = {
 // conviction board, so it is kept to its own tab only.
 const CROSS_THEME_EXCLUDE = new Set(['Meme']);
 
+// Company-name fallback. Some sources (e.g. StockAnalysis __data.json) only
+// expose ticker + weight, leaving name === ticker. Filling proper names here
+// keeps display consistent across themes (the UI also maps these tickers to a
+// logo domain in app/page.tsx). Applied only when the scraped name is blank
+// or equals the ticker, so real source names always win.
+const COMPANY_NAMES = {
+  ASTS: 'AST SpaceMobile',        RDW:  'Redwire',
+  AAOI: 'Applied Optoelectronics', LUNR: 'Intuitive Machines',
+  IREN: 'IREN Ltd',                NBIS: 'Nebius Group',
+  QBTS: 'D-Wave Quantum',          ONDS: 'Ondas Holdings',
+  APLD: 'Applied Digital',         IONQ: 'IonQ',
+  RKLB: 'Rocket Lab',              TE:   'T1 Energy',
+  AXTI: 'AXT Inc',                 NVTS: 'Navitas Semiconductor',
+  WOLF: 'Wolfspeed',               BE:   'Bloom Energy',
+  SNDK: 'Sandisk',
+};
+
+function resolveName(ticker, rawName) {
+  const n = (rawName || '').trim();
+  if (!n || n === ticker) return COMPANY_NAMES[ticker] || ticker;
+  return n;
+}
+
 const TOP_N = 20; // equities to show per theme
 
 // ── Yahoo Finance ─────────────────────────────────────────────────────────────
@@ -400,7 +423,7 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
   for (const etf of availableEtfs) {
     for (const holding of holdingsMap[etf]) {
       const t = holding.ticker;
-      if (!equityMap[t]) equityMap[t] = { name: holding.name, etfs: [] };
+      if (!equityMap[t]) equityMap[t] = { name: resolveName(t, holding.name), etfs: [] };
       equityMap[t].etfs.push({ etf, weight: holding.weight });
     }
   }

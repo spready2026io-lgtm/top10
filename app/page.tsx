@@ -63,6 +63,12 @@ const TICKER_DOMAINS: Record<string, string> = {
   GE:   'ge.com',        RTX:  'rtx.com',             HON:  'honeywell.com',
   CAT:  'caterpillar.com', DE:  'deere.com',           LMT:  'lockheedmartin.com',
   UPS:  'ups.com',       NOC:  'northropgrumman.com',  EMR:  'emerson.com',
+  // Meme theme (space, quantum, AI-infra and high-momentum retail names)
+  ASTS: 'ast-science.com', RDW:  'redwirespace.com',   AAOI: 'ao-inc.com',
+  LUNR: 'intuitivemachines.com', IREN: 'iren.com',     NBIS: 'nebius.com',
+  QBTS: 'dwavequantum.com', ONDS: 'ondas.com',         APLD: 'applieddigital.com',
+  IONQ: 'ionq.com',      TE:   't1energy.com',         AXTI: 'axt.com',
+  NVTS: 'navitassemi.com', WOLF: 'wolfspeed.com',
 };
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────
