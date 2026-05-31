@@ -30,13 +30,6 @@ function makePath(n: number, finalReturn: number, seed: number): number[] {
 
 const N: Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
 
-const XLABELS: Record<Period, string[]> = {
-  '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-  '1M': ['May 1', 'May 8', 'May 15', 'May 22', 'Jun 1'],
-  '6M': ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
-  '1Y': ["May '25", 'Aug', 'Nov', "Feb '26", "May '26"],
-};
-
 // @@GENERATED:SPY_RET@@
 export const SPY_RET: Record<Period, number> = { '1W': 1.5, '1M': 6.3, '6M': 10.7, '1Y': 28.3 };
 // @@END_GENERATED:SPY_RET@@
@@ -158,6 +151,7 @@ export const THEME_BENCHMARK_ETF: Record<Theme, string> = {
 };
 
 // Weekly return of the primary benchmark ETF
+// @@GENERATED:THEME_BENCHMARKS@@
 export const THEME_BENCHMARKS: Record<Theme, number> = {
   'AI & ML':        1.8,
   'Semiconductors': 2.4,
@@ -165,6 +159,7 @@ export const THEME_BENCHMARKS: Record<Theme, number> = {
   'Electrification':1.0,
   'Industrials':    1.3,
 };
+// @@END_GENERATED:THEME_BENCHMARKS@@
 
 // @@GENERATED:ETF_RETURNS@@
 // Multi-period returns per ETF ticker

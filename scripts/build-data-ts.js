@@ -473,9 +473,9 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const f = financials || {};
   const price         = f.price ?? 0;
   const weeklyChange  = f.weeklyChange ?? 0;
-  const weeklyPrices  = (f.weeklyPrices && f.weeklyPrices.length > 0)
-                        ? f.weeklyPrices
-                        : [price * 0.97, price * 0.98, price * 0.985, price * 0.993, price];
+  // Use real 1W price history if available — fall back only if missing entirely
+  const ph1w = f.priceHistory?.['1W'];
+  const weeklyPrices = (ph1w && ph1w.length >= 2) ? ph1w : (price > 0 ? [price] : [0]);
   const marketCap     = f.marketCap ?? 'N/A';
   const pe            = f.pe !== undefined ? f.pe : null;
   const eps           = f.eps ?? 0;
@@ -701,6 +701,34 @@ function genTop10Ret(etfReturnsMap, themeEtfs) {
   ].join('\n');
 }
 
+// Benchmark ETF per theme — must match THEME_BENCHMARK_ETF in data.ts
+const BENCHMARK_ETF = {
+  'AI & ML':         'ARTY',
+  'Semiconductors':  'SOXX',
+  'Broad Tech':      'QQQ',
+  'Electrification': 'PBD',
+  'Industrials':     'AIRR',
+};
+
+function genThemeBenchmarks(etfReturnsMap) {
+  const lines = [];
+  let allFound = true;
+  for (const [theme, ticker] of Object.entries(BENCHMARK_ETF)) {
+    const ret = etfReturnsMap[ticker]?.['1W'];
+    if (ret == null) { allFound = false; continue; }
+    const pad = ' '.repeat(Math.max(0, 16 - theme.length));
+    lines.push(`  '${theme}':${pad}${ret},`);
+  }
+  if (!allFound || lines.length < 5) return null; // keep existing if any benchmark ETF failed
+  return [
+    '// @@GENERATED:THEME_BENCHMARKS@@',
+    'export const THEME_BENCHMARKS: Record<Theme, number> = {',
+    ...lines,
+    '};',
+    '// @@END_GENERATED:THEME_BENCHMARKS@@',
+  ].join('\n');
+}
+
 function genSpyRet(r) {
   return [
     '// @@GENERATED:SPY_RET@@',
@@ -711,7 +739,7 @@ function genSpyRet(r) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -748,6 +776,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:INDEX_CHART_DATA@@[\s\S]*?\/\/ @@END_GENERATED:INDEX_CHART_DATA@@/,
       newIndexChart
+    );
+  }
+  if (newThemeBenchmarks) {
+    src = src.replace(
+      /\/\/ @@GENERATED:THEME_BENCHMARKS@@[\s\S]*?\/\/ @@END_GENERATED:THEME_BENCHMARKS@@/,
+      newThemeBenchmarks
     );
   }
 
@@ -909,16 +943,17 @@ async function main() {
   console.log(`\n[Report] scan-report.json written`);
 
   // Generate TypeScript blocks
-  const newEtfCount   = genThemeEtfCount(etfCounts);
-  const newSampleData = genSampleData(themeEquities, financialsMap, etfCounts, velocityMap, isNewMap);
-  const newTimestamp  = genScanTimestamp(isoTs, nyTs);
-  const newEtfReturns    = genEtfReturns(etfReturnsMap, THEME_ETFS);
-  const newTop10Ret      = genTop10Ret(etfReturnsMap, THEME_ETFS);
-  const newSpyRet        = spyRet ? genSpyRet(spyRet) : null;
-  const newIndexChart    = genIndexChartData(THEME_ETFS, etfDataMap, spyData, todayStr);
+  const newEtfCount        = genThemeEtfCount(etfCounts);
+  const newSampleData      = genSampleData(themeEquities, financialsMap, etfCounts, velocityMap, isNewMap);
+  const newTimestamp       = genScanTimestamp(isoTs, nyTs);
+  const newEtfReturns      = genEtfReturns(etfReturnsMap, THEME_ETFS);
+  const newTop10Ret        = genTop10Ret(etfReturnsMap, THEME_ETFS);
+  const newSpyRet          = spyRet ? genSpyRet(spyRet) : null;
+  const newIndexChart      = genIndexChartData(THEME_ETFS, etfDataMap, spyData, todayStr);
+  const newThemeBenchmarks = genThemeBenchmarks(etfReturnsMap);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');
