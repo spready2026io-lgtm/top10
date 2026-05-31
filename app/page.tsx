@@ -1478,7 +1478,7 @@ export default function Home() {
                 {THEMES.map(s => (
                   <button
                     key={s}
-                    onClick={() => setTheme(s)}
+                    onClick={() => { setCrossView(false); setTheme(s); }}
                     className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                       theme === s
                         ? 'bg-emerald-500 text-black shadow-sm'
@@ -1502,7 +1502,7 @@ export default function Home() {
             {THEMES.map(s => (
               <button
                 key={s}
-                onClick={() => setTheme(s)}
+                onClick={() => { setCrossView(false); setTheme(s); }}
                 className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
                   theme === s
                     ? 'bg-emerald-500 text-black'
