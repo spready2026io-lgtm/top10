@@ -1306,6 +1306,16 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           </div>
         ))}
       </div>
+
+      {/* Bottom close (mobile only) — so you don't have to scroll back up */}
+      <div className="md:hidden px-4 pb-4">
+        <button
+          onClick={onClose}
+          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:border-slate-500 text-sm font-bold transition-colors"
+        >
+          Close guide ✕
+        </button>
+      </div>
     </div>
   );
 }
