@@ -450,7 +450,7 @@ const FIDELITY_ETFS = [
 ];
 
 async function fetchFidelity({ ticker }) {
-  const url = `http://research2.fidelity.com/fidelity/screeners/etf/etfholdings.asp?symbol=${ticker}&view=Holdings`;
+  const url = `https://research2.fidelity.com/fidelity/screeners/etf/etfholdings.asp?symbol=${ticker}&view=Holdings`;
   console.log(`  [Fidelity] ${ticker}...`);
   try {
     const html = await fetchText(url, {

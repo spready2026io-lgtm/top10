@@ -449,7 +449,24 @@ function genThemeEtfCount(counts) {
 }
 
 function escapeStr(s) {
-  return String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  // Escape for safe embedding in single-quoted TypeScript string literals.
+  // Strip backticks, ${ sequences, and null bytes in addition to \ and '.
+  return String(s ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/`/g, '')
+    .replace(/\$\{/g, '')
+    .replace(/\0/g, '');
+}
+
+function safeTicker(t) {
+  // Tickers must be 1-5 uppercase letters. Reject anything else.
+  const cleaned = String(t ?? '').trim().toUpperCase();
+  if (!/^[A-Z]{1,5}$/.test(cleaned)) {
+    console.warn(`[security] Rejecting unexpected ticker format: ${JSON.stringify(t)}`);
+    return 'UNKNOWN';
+  }
+  return cleaned;
 }
 
 function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
@@ -482,9 +499,10 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const vsObj = vs || { '1D': null, '1W': null, '1M': null, '6M': null };
   const v = (x) => x === null ? 'null' : x;
 
+  const ticker = safeTicker(eq.ticker);
   return [
     `    {`,
-    `      ticker: '${eq.ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
+    `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
     `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
