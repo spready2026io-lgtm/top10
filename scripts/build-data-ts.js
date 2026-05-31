@@ -42,7 +42,7 @@ const THEME_ETFS = {
   'Broad Tech':     ['QQQ', 'QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN'],
-  'Meme':           ['BUZZ', 'MEME'],
+  'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 
 // Themes excluded from the cross-theme "Top 10 Across All Themes" breadth ranking.

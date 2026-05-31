@@ -578,7 +578,7 @@ const VISTASHARES_ETFS = [
 
 // ── Meme theme — sourced via StockAnalysis (issuers block bots) ───────────────
 // BUZZ = VanEck Social Sentiment ETF, MEME = Roundhill Meme Stock ETF.
-const MEME_ETFS = ['BUZZ', 'MEME'];
+const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;

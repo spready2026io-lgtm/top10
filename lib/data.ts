@@ -161,7 +161,7 @@ export const THEME_ETFS: Record<Theme, string[]> = {
   'Broad Tech':     ['QQQ', 'QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN'],
-  'Meme':           ['BUZZ', 'MEME'],
+  'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 
 // Primary benchmark ETF per theme — shown in validation strip
