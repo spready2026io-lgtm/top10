@@ -1531,6 +1531,17 @@ export default function Home() {
               {etf}
             </span>
           ))}
+          {/* Guide button (mobile only) — pushed to the far end, accent-coloured to
+              stand apart from the slate ETF badges. Desktop uses the controls-row button. */}
+          {!showGuide && (
+            <button
+              onClick={() => setShowGuide(true)}
+              title="How it works"
+              className="sm:hidden ml-auto flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-xs font-bold transition-colors bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25"
+            >
+              Guide ?
+            </button>
+          )}
         </div>
       </div>
 
@@ -1634,13 +1645,14 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Guide re-open button — own line above on mobile, last & separated on desktop.
-                  Hidden while the guide is open (the guide box has its own ✕). */}
+              {/* Guide re-open button (desktop) — last & clearly separated.
+                  Hidden while the guide is open (the guide box has its own ✕).
+                  Mobile uses the separate button in the ETF "Tracking" row. */}
               {!showGuide && (
                 <button
                   onClick={() => setShowGuide(true)}
                   title="How it works"
-                  className="order-first basis-full sm:order-none sm:basis-auto sm:ml-3 flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500"
+                  className="hidden sm:flex sm:ml-6 items-center justify-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500"
                 >
                   Guide ?
                 </button>
