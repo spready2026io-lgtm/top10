@@ -599,6 +599,17 @@ async function main() {
       await sleep(2000);
     }
 
+    // MEME (Roundhill-native) — Playwright fallback only if Phase 1 HTTP missed it.
+    // The Meme theme has only 2 ETFs, so a second source matters here.
+    if (results['MEME']) {
+      console.log('  MEME already fetched by Phase 1 — skipping Playwright');
+    } else {
+      console.log('  MEME missing from Phase 1 — trying Roundhill fallback');
+      const meme = await fetchRoundhill(ctx, 'MEME');
+      if (meme) results['MEME'] = meme;
+      await sleep(2000);
+    }
+
     console.log('\n[WisdomTree]');
     if (results['WCLD']) {
       console.log('  WCLD already fetched by Phase 1 — skipping Playwright');
@@ -632,7 +643,7 @@ async function main() {
     await browser.close();
   }
 
-  const phase2  = ['CHAT', 'DRAM', 'MARS', 'WCLD', 'GTEK', ...INVESCO_PW_ETFS];
+  const phase2  = ['CHAT', 'DRAM', 'MARS', 'MEME', 'WCLD', 'GTEK', ...INVESCO_PW_ETFS];
   const fetched = phase2.filter(t => results[t]);
   const failed  = phase2.filter(t => !results[t]);
 
