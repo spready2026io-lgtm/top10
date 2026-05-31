@@ -1260,9 +1260,11 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
         </div>
         <button
           onClick={onClose}
-          className="text-slate-500 hover:text-white text-xs font-semibold px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors"
+          aria-label="Close guide"
+          title="Close guide"
+          className="text-slate-400 hover:text-white text-lg font-black leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-colors flex-shrink-0"
         >
-          Got it ✕
+          ✕
         </button>
       </div>
 
@@ -1580,21 +1582,8 @@ export default function Home() {
                 </button>
               )}
 
-              {/* Guide re-open button */}
-              <button
-                onClick={() => setShowGuide(g => !g)}
-                title={showGuide ? 'Hide guide' : 'How it works'}
-                className={`${newCount === 0 ? 'ml-auto' : ''} flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
-                  showGuide
-                    ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                    : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500'
-                }`}
-              >
-                Guide ?
-              </button>
-
               {/* Sort toggle */}
-              <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
+              <div className={`${newCount === 0 ? 'sm:ml-auto' : ''} flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5`}>
                 <button
                   onClick={() => setSortBy('wt')}
                   title="Sort by Weight Score (avg ETF weighting × coverage)"
@@ -1644,6 +1633,18 @@ export default function Home() {
                   ≡ List
                 </button>
               </div>
+
+              {/* Guide re-open button — own line above on mobile, last & separated on desktop.
+                  Hidden while the guide is open (the guide box has its own ✕). */}
+              {!showGuide && (
+                <button
+                  onClick={() => setShowGuide(true)}
+                  title="How it works"
+                  className="order-first basis-full sm:order-none sm:basis-auto sm:ml-3 flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500"
+                >
+                  Guide ?
+                </button>
+              )}
             </div>
 
             {/* Grid layout: first 10, then Next 10 button */}
