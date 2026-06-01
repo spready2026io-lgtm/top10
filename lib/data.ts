@@ -161,7 +161,7 @@ export const THEME_ETFS: Record<Theme, string[]> = {
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
   'Broad Tech':     ['QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
-  'Industrials':    ['AIRR', 'PRN'],
+  'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 
@@ -238,6 +238,9 @@ export const ETF_RETURNS: Record<string, Record<Period, number>> = {
   // Industrials
   AIRR: { '1W': 3.3, '1M': 6.3, '6M': 30.6, '1Y': 68.7 },
   PRN:  { '1W': 3.7, '1M': 11.7, '6M': 42.3, '1Y': 65.7 },
+  RSHO: { '1W': 0, '1M': 0, '6M': 0, '1Y': 0 },  // placeholder — updated at next build
+  IDEF: { '1W': 0, '1M': 0, '6M': 0, '1Y': 0 },  // placeholder — updated at next build
+  BILT: { '1W': 0, '1M': 0, '6M': 0, '1Y': 0 },  // placeholder — updated at next build
   // Meme
   BUZZ: { '1W': 7.5, '1M': 21.9, '6M': 21.6, '1Y': 51 },
   MEME: { '1W': 4.8, '1M': 44.3, '6M': 73, '1Y': 16.1 },

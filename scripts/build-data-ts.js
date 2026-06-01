@@ -46,7 +46,7 @@ const THEME_ETFS = {
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
   'Broad Tech':     ['PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
-  'Industrials':    ['AIRR', 'PRN'],
+  'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 

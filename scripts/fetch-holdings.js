@@ -6,7 +6,7 @@
  * Fetches ETF holdings for 15 ETFs via public JSON/CSV/Excel APIs.
  *
  * Providers and methods:
- *   iShares  (ARTY, BAI, SOXX, IGV)  — Blackrock varnish JSON API
+ *   iShares  (ARTY, BAI, SOXX, IGV, IDEF, BILT) — Blackrock varnish JSON API
  *   Invesco  (IGPT, PSI, PTF, PBD, PBW, PRN) — dng-api.invesco.com JSON
  *   Invesco  (QQQ)                    — dng-api ticker-based JSON
  *   ARK      (ARKK)                   — public daily CSV
@@ -69,6 +69,8 @@ const ISHARES_ETFS = [
   { ticker: 'BAI',  id: '339081' },
   { ticker: 'SOXX', id: '239705' },
   { ticker: 'IGV',  id: '239771' },
+  { ticker: 'IDEF', id: '343529' },  // iShares Defense Industrials Active ETF
+  { ticker: 'BILT', id: '345073' },  // iShares Infrastructure Active ETF
 ];
 
 async function fetchIShares({ ticker, id }) {
@@ -720,7 +722,9 @@ async function main() {
   // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
   // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
   // Yields top ~8–25 holdings each.
-  const saNeed = ['QQQ', 'WCLD', 'GTEK', 'ALAI'].filter(t => !results[t]);
+  // RSHO (Tema) has no public API — StockAnalysis is the primary source.
+  // WCLD, GTEK, ALAI are fallbacks in case their primary scrapers fail.
+  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI'].filter(t => !results[t]);
   if (saNeed.length > 0) {
     console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
     for (const ticker of saNeed) {
@@ -743,6 +747,7 @@ async function main() {
     ...PROSHARES_ETFS.map(e => e.ticker),
     ...FIDELITY_ETFS.map(e => e.ticker),
     ...MEME_ETFS,
+    'RSHO',
   ];
   const failed = all.filter(t => !fetched.includes(t));
 
