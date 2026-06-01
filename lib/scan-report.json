@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-01T09:20:45.792Z",
-  "scanTimestampNY": "June 1, 2026 at 5:20 AM ET",
+  "scanTimestamp": "2026-06-01T13:22:40.334Z",
+  "scanTimestampNY": "June 1, 2026 at 9:22 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -21,7 +21,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 66
       },
       "IVES": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 72
+        "count": 21
       },
       "CHAT": {
         "ok": true,
@@ -41,7 +41,7 @@
       },
       "PSI": {
         "ok": true,
-        "count": 10
+        "count": 30
       },
       "XSD": {
         "ok": true,
@@ -53,7 +53,7 @@
       },
       "PTF": {
         "ok": true,
-        "count": 10
+        "count": 38
       },
       "WCLD": {
         "ok": true,
@@ -93,11 +93,11 @@
       },
       "PBD": {
         "ok": true,
-        "count": 7
+        "count": 58
       },
       "PBW": {
         "ok": true,
-        "count": 10
+        "count": 61
       },
       "AIRR": {
         "ok": true,
@@ -105,7 +105,19 @@
       },
       "PRN": {
         "ok": true,
-        "count": 10
+        "count": 37
+      },
+      "RSHO": {
+        "ok": true,
+        "count": 23
+      },
+      "IDEF": {
+        "ok": true,
+        "count": 85
+      },
+      "BILT": {
+        "ok": true,
+        "count": 50
       },
       "BUZZ": {
         "ok": true,
@@ -120,13 +132,13 @@
         "count": 24
       }
     },
-    "total": 29,
-    "ok": 29,
+    "total": 32,
+    "ok": 32,
     "failed": []
   },
   "yfScan": {
-    "total": 86,
-    "succeeded": 86,
+    "total": 88,
+    "succeeded": 88,
     "failed": []
   }
 }
