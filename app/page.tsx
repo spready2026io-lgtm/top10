@@ -1210,7 +1210,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'The Scores',
       color: 'text-emerald-400',
       borderColor: 'border-emerald-500/30',
-      desc: 'Weight Score = avg ETF weighting × √coverage. Velocity Score = how fast that conviction is growing week over week.',
+      desc: 'Weight Score tells you how much of their portfolio professional ETF managers put into this stock — on average, across every ETF that holds it. A 5.5% score means the average fund dedicates 5.5 cents of every dollar to this name. The more ETFs that hold it, the stronger the score — one ETF betting big counts less than eight ETFs all agreeing. Velocity Score shows whether that conviction is growing or fading week over week.',
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-emerald-500/70 ml-0.5">% avg wt</span></span>
