@@ -29,10 +29,15 @@ async function yfInit() {
   console.log(`[Yahoo] crumb obtained`);
 }
 
-const RAW_PATH     = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
-const DATA_PATH    = path.join(__dirname, '..', 'lib', 'data.ts');
-const REPORT_PATH  = path.join(__dirname, '..', 'lib', 'scan-report.json');
-const HISTORY_PATH = path.join(__dirname, '..', 'lib', 'history.json');
+const RAW_PATH        = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
+const DATA_PATH       = path.join(__dirname, '..', 'lib', 'data.ts');
+const REPORT_PATH     = path.join(__dirname, '..', 'lib', 'scan-report.json');
+const HISTORY_PATH    = path.join(__dirname, '..', 'lib', 'history.json');
+const TONY_NOTES_PATH = path.join(__dirname, '..', 'lib', 'tony-notes.json');
+
+// Load Tony's hand-written notes — keyed by ticker (applies across all themes).
+// Auto-generated placeholder is used only when no entry exists for a ticker.
+const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(TONY_NOTES_PATH, 'utf8')) : {};
 
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
@@ -512,7 +517,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const revenueGrowth = f.revenueGrowth ?? 0;
   const divYield      = f.dividendYield ?? null;
   const pr            = f.periodReturns ?? { '1M': 0, '6M': 0, '1Y': 0 };
-  const tonyNote      = makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.avgWeight, eq.proScore, themeName);
+  const tonyNote      = TONY_NOTES[eq.ticker] || makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.avgWeight, eq.proScore, themeName);
 
   const presenceEntries = Object.entries(eq.etfPresence)
     .map(([etf, val]) => `${etf}: ${val === false ? 'false' : val}`)
