@@ -551,6 +551,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
     return v !== false && v !== 0;
   });
   const maxWeight = Math.max(...holdingEtfs.map(etf => equity.etfPresence[etf] as number), 0.1);
+  const avgWt = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / Math.sqrt(equity.coverage) : equity.proScore);
 
   // Strip the placeholder "check back" ending from the note
   const cleanNote = equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim();
@@ -597,14 +598,14 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
             {/* Score summary */}
             <div className="flex gap-3 flex-wrap">
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
-                <p className="text-slate-500 text-xs mb-1">Weight Score</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
+                <p className="text-slate-500 text-xs mb-1">Avg Weight</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{avgWt.toFixed(1)}%</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
-                <p className="text-slate-500 text-xs mb-1">Coverage</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{(equity.coverage * 100).toFixed(0)}%</p>
-                <p className="text-slate-600 text-[10px] mt-0.5">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</p>
+                <p className="text-slate-500 text-xs mb-1">Weight Score</p>
+                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">avg × √{(equity.coverage * 100).toFixed(0)}%</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">ETF Count</p>
@@ -743,6 +744,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
   const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
   const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
+  const avgWt  = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / Math.sqrt(equity.coverage) : equity.proScore);
 
   const domain   = TICKER_DOMAINS[equity.ticker];
   const logoUrl  = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
@@ -821,6 +823,10 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                     })}
                   </div>
                   <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400 text-xs">Avg weight</span>
+                      <span className="text-emerald-400 text-xs font-bold tabular-nums">{avgWt.toFixed(2)}%</span>
+                    </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400 text-xs">Coverage</span>
                       <span className="text-slate-100 text-xs font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>

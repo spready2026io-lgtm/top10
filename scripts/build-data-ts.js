@@ -446,7 +446,7 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
       const match = data.etfs.find(e => e.etf === etf);
       etfPresence[etf] = match ? parseFloat(match.weight.toFixed(2)) : false;
     }
-    return { ticker, name: data.name, easyScore, proScore, coverage, etfPresence };
+    return { ticker, name: data.name, easyScore, avgWeight: parseFloat(avgWeight.toFixed(2)), proScore, coverage, etfPresence };
   });
 
   // Sort: proScore desc, easyScore as tiebreaker
@@ -457,10 +457,10 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
 
 // ── Tony note generator (placeholder until real notes are written) ──────────
 
-function makeTonyNote(ticker, name, easyScore, totalEtfs, proScore, themeName) {
+function makeTonyNote(ticker, name, easyScore, totalEtfs, avgWeight, proScore, themeName) {
   const pct = Math.round((easyScore / totalEtfs) * 100);
   const conviction = pct >= 80 ? 'highest conviction' : pct >= 60 ? 'high conviction' : pct >= 40 ? 'moderate conviction' : 'selective';
-  return `${name} appears in ${easyScore} of ${totalEtfs} ${themeName} ETFs (${pct}% coverage) with average weight ${proScore.toFixed(1)}% — ${conviction} across the institutional products tracked. Analysis pending — check back for Tony's full thesis.`;
+  return `${name} appears in ${easyScore} of ${totalEtfs} ${themeName} ETFs (${pct}% coverage) with average weight ${avgWeight.toFixed(1)}% — ${conviction} across the institutional products tracked. Analysis pending — check back for Tony's full thesis.`;
 }
 
 // ── TypeScript code generators ───────────────────────────────────────────────
@@ -512,7 +512,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const revenueGrowth = f.revenueGrowth ?? 0;
   const divYield      = f.dividendYield ?? null;
   const pr            = f.periodReturns ?? { '1M': 0, '6M': 0, '1Y': 0 };
-  const tonyNote      = makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.proScore, themeName);
+  const tonyNote      = makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.avgWeight, eq.proScore, themeName);
 
   const presenceEntries = Object.entries(eq.etfPresence)
     .map(([etf, val]) => `${etf}: ${val === false ? 'false' : val}`)
@@ -531,7 +531,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const ticker = safeTicker(eq.ticker);
   return [
     `    {`,
-    `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
+    `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, avgWeight: ${eq.avgWeight}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
     `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
