@@ -31,14 +31,14 @@ export default function About() {
         <section>
           <h2 className="text-2xl font-bold text-white mb-3">What is Top10?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Top10 is an ETF holdings analyser. It reads the holdings of major U.S. sector ETFs every day,
-            ranks every stock by how much conviction those ETFs have in it, and surfaces the Top 10 names
-            per sector.
+            Top10 is an ETF holdings analyser. It reads the holdings of 40 actively managed ETFs
+            across 6 investment themes every day, ranks every stock by how much conviction those
+            ETFs have in it, and surfaces the Top 10 names per theme.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed">
-            The idea is simple. When five serious ETFs all own the same stock and all give it a large
-            weighting, that is a signal worth paying attention to. Top10 makes that signal visible at
-            a glance.
+            The idea is simple. When multiple serious ETFs all own the same stock and give it a
+            large weighting, that is a signal worth paying attention to. Top10 makes that signal
+            visible at a glance.
           </p>
         </section>
 
@@ -46,38 +46,52 @@ export default function About() {
         <section>
           <h2 className="text-xl font-bold text-white mb-4">What is an ETF?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            An ETF (Exchange-Traded Fund) is a basket of stocks that trades on an exchange like a single
-            share. A sector ETF owns many companies within one industry. For example, XLK (the Technology
-            Select Sector SPDR Fund) holds around 70 technology companies, weighted by market cap and
-            rules set by the fund manager.
+            An ETF (Exchange-Traded Fund) is a basket of stocks that trades on an exchange like a
+            single share. A thematic ETF owns many companies within one investment theme. For
+            example, ARTY (iShares Artificial Intelligence ETF) holds around 30 companies involved
+            in AI, weighted by the fund manager&apos;s active conviction.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
-            These funds manage billions of dollars of real capital. Their holdings are published daily.
-            When an ETF increases its weighting in a stock, it is buying more of that stock. When multiple
-            ETFs do that simultaneously, it means institutional money is concentrating in one name.
+            These funds manage billions of dollars of real capital. Their holdings are published
+            daily. When an ETF increases its weighting in a stock, it is buying more of that stock.
+            When multiple ETFs do that simultaneously, it means institutional money is concentrating
+            in one name.
           </p>
-          <p className="text-slate-400 text-sm leading-relaxed">
-            Top10 tracks 5 ETFs per sector across 5 sectors, giving you a view across 25 institutional
-            products simultaneously.
+          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            Top10 tracks <span className="text-slate-200 font-semibold">40 actively managed ETFs</span> across
+            6 themes, giving you a view across 40 institutional products simultaneously.
+            All ETFs in the universe are discretionary, actively managed funds. Index trackers are
+            excluded — passive index construction reflects mechanical rules, not manager conviction.
           </p>
 
           {/* ETF table */}
           <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
-            <div className="px-4 py-3 border-b border-slate-800">
-              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs</p>
+            <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs — 40 active funds</p>
+              <p className="text-slate-500 text-xs">last updated June 2026</p>
             </div>
             {[
-              { sector: 'Technology',  etfs: 'XLK, VGT, QQQ, IYW, SMH' },
-              { sector: 'Financials',  etfs: 'XLF, VFH, KBWB, IYF, FNCL' },
-              { sector: 'Energy',      etfs: 'XLE, VDE, FENY, IYE, OIH' },
-              { sector: 'Healthcare',  etfs: 'XLV, VHT, RSPH, IYH, FHLC' },
-              { sector: 'Industrials', etfs: 'XLI, VIS, PAVE, IYJ, FIDU' },
-            ].map(({ sector, etfs }, i) => (
-              <div key={sector} className={`flex items-center justify-between px-4 py-2.5 text-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'}`}>
-                <span className="text-slate-300 font-medium w-28 flex-shrink-0">{sector}</span>
+              { theme: 'AI & ML',        count: '11', etfs: 'AIS, ARTY, BAI, IVEP, IGPT, IVES, ALAI, CHAT, AIFD, SPRX, AOTG' },
+              { theme: 'Semiconductors', count: '4',  etfs: 'SOXX, PSI, XSD, DRAM' },
+              { theme: 'Broad Tech',     count: '13', etfs: 'PTF, WCLD, MAGS, IGV, FDTX, GTEK, ARKK, MARS, FRWD, BCTK, FWD, CBSE, FCUS' },
+              { theme: 'Electrification',count: '4',  etfs: 'POW, VOLT, PBD, PBW' },
+              { theme: 'Industrials',    count: '5',  etfs: 'AIRR, PRN, RSHO, IDEF, BILT' },
+              { theme: 'Meme',           count: '3',  etfs: 'BUZZ, MEME, RKNG' },
+            ].map(({ theme, count, etfs }, i) => (
+              <div key={theme} className={`px-4 py-3 text-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'}`}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-slate-200 font-semibold w-36 flex-shrink-0">{theme}</span>
+                  <span className="text-slate-500 text-xs">{count} ETFs</span>
+                </div>
                 <span className="text-slate-500 text-xs font-mono">{etfs}</span>
               </div>
             ))}
+            <div className="px-4 py-3 border-t border-slate-800 bg-slate-950">
+              <p className="text-slate-500 text-xs">
+                Previously tracked and removed: QQQ, QQQA (index trackers — Nasdaq-100 and Nasdaq-100 Dorsey Wright Momentum).
+                Removed 2026-05-19 following active-only principle adoption.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -93,45 +107,49 @@ export default function About() {
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">8/8</span>
+                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">10/11</span>
                 <h3 className="text-white font-semibold">Coverage Score</h3>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
-                The fraction of tracked ETFs in this theme that hold the stock, shown as x/n and as a percentage. A stock held by 7 of 8 ETFs has 87% coverage.
+                The fraction of tracked ETFs in this theme that hold the stock, shown as x/n and as a
+                percentage. The denominator n varies by theme — AI &amp; ML scores out of 11, Broad Tech
+                out of 13, Semiconductors and Electrification out of 4, and so on. A stock held by
+                10 of 11 AI &amp; ML ETFs has 91% coverage.
               </p>
               <ul className="space-y-1 text-sm">
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">8/8</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">11/11</span>
                   <span className="text-slate-400">100% coverage. Every ETF in the theme holds this stock. Maximum breadth.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">6/8</span>
-                  <span className="text-slate-400">Strong. 75% coverage. One or two ETFs are out. Still a high-conviction name.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">8/11</span>
+                  <span className="text-slate-400">Strong. ~73% coverage. A few ETFs are out. Still a high-conviction name.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">4/8</span>
-                  <span className="text-slate-400">Moderate. 50% coverage. Held by half the theme. More specialised exposure.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">5/11</span>
+                  <span className="text-slate-400">Moderate. ~45% coverage. Held by roughly half the theme. More specialised exposure.</span>
                 </li>
               </ul>
               <p className="text-slate-500 text-xs mt-3">
-                Coverage is used as a confidence coefficient in the Weight Score formula: avgWeight × √coverage. Higher coverage amplifies the weight signal.
+                Coverage is used as a confidence coefficient in the Weight Score formula: avgWeight x sqrt(coverage).
+                Higher coverage amplifies the weight signal.
               </p>
             </div>
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-emerald-400 font-bold text-sm">16.2% avg wt</span>
+                <span className="text-emerald-400 font-bold text-sm">6.16% avg wt</span>
                 <h3 className="text-white font-semibold">Weight Score</h3>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
                 The average portfolio weight across all ETFs that hold this stock, expressed as a percentage.
-                The full formula is: <span className="text-slate-300 font-mono text-xs">avgWeight × √coverage</span>.
+                The full formula is: <span className="text-slate-300 font-mono text-xs">avgWeight x sqrt(coverage)</span>.
                 The square root of coverage acts as a confidence multiplier — a stock held by more funds gets a
                 higher coefficient, amplifying a genuine broad-market bet while discounting a stock held by only one fund.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
                 This is the signal that separates a filler position from a conviction bet. An ETF might
-                hold 80 stocks, but if it gives one stock a 16% weighting, that is not passive exposure.
+                hold 40 stocks, but if it gives one stock a 13% weighting, that is not passive exposure.
                 That is an active bet.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed">
@@ -178,14 +196,14 @@ export default function About() {
         <section>
           <h2 className="text-xl font-bold text-white mb-4">Top10 vs S&P500 Chart</h2>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
-            At the top of each sector view you will see a performance chart. It compares two things:
+            At the top of each theme view you will see a performance chart. It compares two things:
           </p>
           <ul className="space-y-2 mb-4">
             <li className="flex items-start gap-2">
               <div className="w-4 h-0.5 bg-emerald-400 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <span className="text-slate-200 text-sm font-semibold">Top10 line (green).</span>
-                <span className="text-slate-400 text-sm"> The equal-weighted average return of the 10 highest-conviction names in this sector.</span>
+                <span className="text-slate-400 text-sm"> The equal-weighted average return of the 10 highest-conviction names in this theme.</span>
               </div>
             </li>
             <li className="flex items-start gap-2">
@@ -208,15 +226,15 @@ export default function About() {
 
         {/* ETF performance tile */}
         <section>
-          <h2 className="text-xl font-bold text-white mb-4">Sector ETF Performance Tile</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Theme ETF Performance Tile</h2>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
-            Beside the chart (on desktop) you will see a tile ranking the 5 tracked ETFs for that
-            sector by return over the selected period.
+            Beside the chart (on desktop) you will see a tile ranking the tracked ETFs for that
+            theme by return over the selected period.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed">
-            This lets you see at a glance which ETF has been performing strongest within the sector.
-            For example in Technology, SMH (semiconductor-focused) often diverges sharply from XLK
-            (broad tech). That divergence tells you where the sector momentum is concentrated.
+            This lets you see at a glance which ETF has been performing strongest within the theme.
+            For example in AI &amp; ML, a concentrated fund like ARTY often diverges from a broader
+            fund like ALAI. That divergence tells you where the theme momentum is concentrated.
           </p>
         </section>
 
@@ -274,11 +292,11 @@ export default function About() {
           <h2 className="text-xl font-bold text-white mb-4">How to Use Top10</h2>
           <ol className="space-y-3">
             {[
-              { n: '1', title: 'Pick your sector.', body: 'Use the toggle in the header to switch between Technology, Financials, Energy, Healthcare, and Industrials.' },
+              { n: '1', title: 'Pick your theme.', body: 'Use the toggle in the header to switch between AI & ML, Semiconductors, Broad Tech, Electrification, Industrials, and Meme.' },
               { n: '2', title: 'Check the chart.', body: 'See how the Top10 selection is performing versus the S&P500. Use the time toggle to change the period.' },
               { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
               { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Velocity Score tells you if that conviction is growing. All three high means maximum and accelerating conviction.' },
-              { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full financials and Tony\'s qualitative analysis note.' },
+              { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full ETF breakdown, financials and Tony\'s qualitative analysis note.' },
               { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
             ].map(({ n, title, body }) => (
               <li key={n} className="flex items-start gap-3">
@@ -294,12 +312,13 @@ export default function About() {
           </ol>
         </section>
 
-        {/* Data */}
+        {/* The data */}
         <section>
           <h2 className="text-xl font-bold text-white mb-4">The Data</h2>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
-            ETF holdings are published daily by the fund providers (iShares, Vanguard, SPDR, Invesco).
-            Top10 scrapes these published holdings every day and rebuilds the rankings automatically.
+            ETF holdings are published daily by the fund providers (iShares, Invesco, ARK, Alger,
+            Wedbush, Tema, Roundhill, VistaShares, First Trust, Fidelity, WisdomTree, and others).
+            Top10 fetches these published holdings every day and rebuilds the rankings automatically.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
             Fundamentals (P/E, revenue growth, EPS, gross margin) come from public market data sources.
