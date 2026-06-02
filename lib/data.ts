@@ -140,8 +140,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Elec
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-06-02T11:11:33.168Z';
-export const SCAN_TIMESTAMP_NY = 'June 2, 2026 at 7:11 AM ET';
+export const SCAN_TIMESTAMP    = '2026-06-02T11:21:55.082Z';
+export const SCAN_TIMESTAMP_NY = 'June 2, 2026 at 7:21 AM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
@@ -157,9 +157,9 @@ export const THEME_ETF_COUNT: Record<Theme, number> = {
 // @@END_GENERATED:THEME_ETF_COUNT@@
 
 export const THEME_ETFS: Record<Theme, string[]> = {
-  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT'],
+  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['QQQA', 'PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
+  'Broad Tech':     ['PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
