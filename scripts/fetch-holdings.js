@@ -585,7 +585,11 @@ const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 // ── New additions (2026-06-02) — all sourced via StockAnalysis ────────────────
 // AI & ML:    AIFD (TCW), SPRX (Spear), AOTG (AOT)
 // Broad Tech: FRWD (Nomura), BCTK (Baron), FWD (AB), CBSE (Clough), FCUS (Pinnacle)
-const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS'];
+// Previously failed Roundhill ETFs (same issuer as BUZZ/MEME/RKNG):
+//   CHAT (AI & ML) — Roundhill Generative AI & Technology ETF
+//   DRAM (Semiconductors) — Roundhill Memory ETF (launched Apr 2026; ~4 US equities after foreign filter)
+//   MARS (Broad Tech) — Roundhill Space & Technology ETF (launched Mar 2026)
+const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS'];
 
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;

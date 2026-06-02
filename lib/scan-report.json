@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-02T11:11:33.168Z",
-  "scanTimestampNY": "June 2, 2026 at 7:11 AM ET",
+  "scanTimestamp": "2026-06-02T11:37:56.188Z",
+  "scanTimestampNY": "June 2, 2026 at 7:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -32,8 +32,8 @@
         "count": 61
       },
       "CHAT": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 18
       },
       "AIFD": {
         "ok": true,
@@ -60,8 +60,8 @@
         "count": 43
       },
       "DRAM": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 4
       },
       "PTF": {
         "ok": true,
@@ -92,8 +92,8 @@
         "count": 43
       },
       "MARS": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 15
       },
       "FRWD": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PRN": {
         "ok": true,
-        "count": 37
+        "count": 36
       },
       "RSHO": {
         "ok": true,
@@ -165,16 +165,12 @@
       }
     },
     "total": 40,
-    "ok": 37,
-    "failed": [
-      "CHAT",
-      "DRAM",
-      "MARS"
-    ]
+    "ok": 40,
+    "failed": []
   },
   "yfScan": {
-    "total": 91,
-    "succeeded": 91,
+    "total": 89,
+    "succeeded": 89,
     "failed": []
   }
 }
