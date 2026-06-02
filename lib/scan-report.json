@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-01T13:35:22.774Z",
-  "scanTimestampNY": "June 1, 2026 at 9:35 AM ET",
+  "scanTimestamp": "2026-06-02T11:11:33.168Z",
+  "scanTimestampNY": "June 2, 2026 at 7:11 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -21,7 +21,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 66
       },
       "IVES": {
         "ok": true,
@@ -29,11 +29,23 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 72
+        "count": 61
       },
       "CHAT": {
+        "ok": false,
+        "count": 0
+      },
+      "AIFD": {
         "ok": true,
-        "count": 30
+        "count": 23
+      },
+      "SPRX": {
+        "ok": true,
+        "count": 25
+      },
+      "AOTG": {
+        "ok": true,
+        "count": 23
       },
       "SOXX": {
         "ok": true,
@@ -41,19 +53,19 @@
       },
       "PSI": {
         "ok": true,
-        "count": 10
+        "count": 30
       },
       "XSD": {
         "ok": true,
         "count": 43
       },
       "DRAM": {
-        "ok": true,
-        "count": 4
+        "ok": false,
+        "count": 0
       },
       "PTF": {
         "ok": true,
-        "count": 10
+        "count": 38
       },
       "WCLD": {
         "ok": true,
@@ -69,7 +81,7 @@
       },
       "FDTX": {
         "ok": true,
-        "count": 40
+        "count": 34
       },
       "GTEK": {
         "ok": true,
@@ -80,6 +92,26 @@
         "count": 43
       },
       "MARS": {
+        "ok": false,
+        "count": 0
+      },
+      "FRWD": {
+        "ok": true,
+        "count": 22
+      },
+      "BCTK": {
+        "ok": true,
+        "count": 25
+      },
+      "FWD": {
+        "ok": true,
+        "count": 17
+      },
+      "CBSE": {
+        "ok": true,
+        "count": 19
+      },
+      "FCUS": {
         "ok": true,
         "count": 23
       },
@@ -93,11 +125,11 @@
       },
       "PBD": {
         "ok": true,
-        "count": 7
+        "count": 58
       },
       "PBW": {
         "ok": true,
-        "count": 10
+        "count": 61
       },
       "AIRR": {
         "ok": true,
@@ -105,7 +137,7 @@
       },
       "PRN": {
         "ok": true,
-        "count": 10
+        "count": 37
       },
       "RSHO": {
         "ok": true,
@@ -132,13 +164,17 @@
         "count": 24
       }
     },
-    "total": 32,
-    "ok": 32,
-    "failed": []
+    "total": 40,
+    "ok": 37,
+    "failed": [
+      "CHAT",
+      "DRAM",
+      "MARS"
+    ]
   },
   "yfScan": {
-    "total": 86,
-    "succeeded": 86,
+    "total": 91,
+    "succeeded": 91,
     "failed": []
   }
 }

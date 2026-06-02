@@ -42,9 +42,9 @@ const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(T
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
 const THEME_ETFS = {
-  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT'],
+  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS'],
+  'Broad Tech':     ['PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],

@@ -582,6 +582,11 @@ const VISTASHARES_ETFS = [
 // BUZZ = VanEck Social Sentiment ETF, MEME = Roundhill Meme Stock ETF.
 const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 
+// ── New additions (2026-06-02) — all sourced via StockAnalysis ────────────────
+// AI & ML:    AIFD (TCW), SPRX (Spear), AOTG (AOT)
+// Broad Tech: FRWD (Nomura), BCTK (Baron), FWD (AB), CBSE (Clough), FCUS (Pinnacle)
+const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS'];
+
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;
   console.log(`  [VistaShares] ${ticker}...`);
@@ -698,6 +703,22 @@ async function main() {
     await sleep(600);
   }
 
+  // ── New ETFs (2026-06-02) — AI & ML + Broad Tech additions ──────────────────
+  console.log('\n[New ETFs — StockAnalysis]');
+  for (const ticker of NEW_SA_ETFS) {
+    let h = null;
+    for (let attempt = 1; attempt <= 3 && !h; attempt++) {
+      if (attempt > 1) {
+        console.log(`    ↻ retry ${attempt}/3 for ${ticker}`);
+        await sleep(1500 * attempt);
+      }
+      h = await fetchStockAnalysis(ticker);
+    }
+    if (h) results[ticker] = h;
+    else console.error(`    ✗✗ ${ticker} failed after 3 attempts`);
+    await sleep(800);
+  }
+
   // ── Meme theme (BUZZ, MEME) — sourced via StockAnalysis ──────────────────────
   // No clean issuer holdings API: VanEck (BUZZ) and Roundhill (MEME) both block
   // bots, but stockanalysis.com exposes the full weighted holdings list.
@@ -748,6 +769,7 @@ async function main() {
     ...FIDELITY_ETFS.map(e => e.ticker),
     ...MEME_ETFS,
     'RSHO',
+    ...NEW_SA_ETFS,
   ];
   const failed = all.filter(t => !fetched.includes(t));
 
