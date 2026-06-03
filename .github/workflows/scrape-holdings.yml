@@ -2,6 +2,13 @@ name: Scrape ETF Holdings
 
 on:
   workflow_dispatch:
+  # Backup trigger. cron-job.org is the PRIMARY trigger (fires at 13:35 UTC via
+  # the dispatches API). This GitHub-native schedule is a fallback ~15 min later
+  # so a cron-job.org outage or a transient GitHub 500 on dispatch doesn't cost a
+  # whole day. GitHub cron often runs late, which is fine for a backup. The commit
+  # step is idempotent (commits only on diff), so a double-fire is harmless.
+  schedule:
+    - cron: '50 13 * * *'   # 13:50 UTC backup (primary cron-job.org is 13:35 UTC)
 
 jobs:
   scrape:
