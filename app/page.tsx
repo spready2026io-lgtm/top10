@@ -19,6 +19,7 @@ import {
   INDEX_CHART_DATA,
   SCAN_TIMESTAMP_NY,
   CROSS_THEME_TOP10,
+  ETF_TOP_HOLDINGS,
 } from '@/lib/data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
@@ -307,18 +308,26 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
       {/* Header */}
       <div>
         <p className="text-white font-semibold text-sm">{theme} ETFs</p>
-        <p className="text-slate-500 text-xs">{etfCount} tracked · ranked by {period} return</p>
+        <p className="text-slate-500 text-xs flex items-center flex-wrap gap-x-1">
+          {etfCount} tracked · ranked by
+          <span className="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[11px] font-bold border border-emerald-500/40 tabular-nums leading-none">{period}</span>
+          return
+        </p>
+        <p className="text-slate-600 text-[10px] mt-1 flex items-center gap-1">
+          <span aria-hidden className="text-emerald-500/70">⇄</span> synced with chart timeframe
+        </p>
       </div>
 
       {/* ETF rows */}
       <div className="flex flex-col gap-1.5">
         {rows.map(({ ticker, ret }) => {
-          const pos    = ret >= 0;
-          const barPct = (Math.abs(ret) / maxAbs) * 100;
+          const pos      = ret >= 0;
+          const barPct   = (Math.abs(ret) / maxAbs) * 100;
+          const holdings = ETF_TOP_HOLDINGS[ticker] ?? [];
           return (
-            <div key={ticker}>
-              <div className="flex items-center justify-between mb-0.5">
-                <span className="text-slate-300 text-xs font-mono font-bold">{ticker}</span>
+            <div key={ticker} className="relative group/etf">
+              <div className="flex items-center justify-between mb-0.5 cursor-default">
+                <span className="text-slate-300 text-xs font-mono font-bold border-b border-dotted border-slate-700 group-hover/etf:border-emerald-500/60">{ticker}</span>
                 <span className={`text-xs font-bold tabular-nums ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {pos ? '+' : ''}{ret.toFixed(1)}%
                 </span>
@@ -329,6 +338,21 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
                   style={{ width: `${barPct}%` }}
                 />
               </div>
+
+              {/* Top-holdings tooltip, appears to the left so it never clips the right edge */}
+              {holdings.length > 0 && (
+                <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-2 z-50 hidden group-hover/etf:block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
+                  <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">{ticker} top holdings</p>
+                  <div className="flex flex-col gap-1">
+                    {holdings.map(h => (
+                      <div key={h.t} className="flex items-center justify-between text-[11px]">
+                        <span className="text-slate-300 font-mono">{h.t}</span>
+                        <span className="text-slate-400 tabular-nums">{h.w.toFixed(1)}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}

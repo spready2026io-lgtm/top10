@@ -73,7 +73,7 @@ export default function About() {
             {[
               { theme: 'AI & ML',        count: '11', etfs: 'AIS, ARTY, BAI, IVEP, IGPT, IVES, ALAI, CHAT, AIFD, SPRX, AOTG' },
               { theme: 'Semiconductors', count: '4',  etfs: 'SOXX, PSI, XSD, DRAM' },
-              { theme: 'Broad Tech',     count: '13', etfs: 'PTF, WCLD, MAGS, IGV, FDTX, GTEK, ARKK, MARS, FRWD, BCTK, FWD, CBSE, FCUS' },
+              { theme: 'Broad Tech',     count: '13', etfs: 'PTF, WCLD, IGV, FDTX, GTEK, ARKK, MARS, FRWD, BCTK, FWD, CBSE, FCUS, WGMI' },
               { theme: 'Electrification',count: '4',  etfs: 'POW, VOLT, PBD, PBW' },
               { theme: 'Industrials',    count: '5',  etfs: 'AIRR, PRN, RSHO, IDEF, BILT' },
               { theme: 'Meme',           count: '3',  etfs: 'BUZZ, MEME, RKNG' },

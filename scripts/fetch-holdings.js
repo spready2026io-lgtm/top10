@@ -333,24 +333,6 @@ async function fetchTema() {
   }
 }
 
-// ── MAGS (hardcoded — always equal-weight Magnificent 7) ─────────────────────
-
-function fetchMAGS() {
-  console.log('  [Roundhill] MAGS (hardcoded equal-weight)...');
-  const weight = parseFloat((100 / 7).toFixed(4));
-  const holdings = [
-    { ticker: 'AAPL', name: 'Apple Inc' },
-    { ticker: 'MSFT', name: 'Microsoft Corp' },
-    { ticker: 'GOOGL', name: 'Alphabet Inc-Cl A' },
-    { ticker: 'AMZN', name: 'Amazon.com Inc' },
-    { ticker: 'META', name: 'Meta Platforms Inc' },
-    { ticker: 'NVDA', name: 'Nvidia Corp' },
-    { ticker: 'TSLA', name: 'Tesla Inc' },
-  ].map(s => ({ ...s, weight }));
-  console.log(`    → ${holdings.length} equity holdings`);
-  return holdings;
-}
-
 // ── First Trust (AIRR — HTML table parse) ────────────────────────────────────
 
 async function fetchFirstTrust({ ticker }) {
@@ -589,7 +571,7 @@ const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 //   CHAT (AI & ML) — Roundhill Generative AI & Technology ETF
 //   DRAM (Semiconductors) — Roundhill Memory ETF (launched Apr 2026; ~4 US equities after foreign filter)
 //   MARS (Broad Tech) — Roundhill Space & Technology ETF (launched Mar 2026)
-const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS'];
+const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI'];
 
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;
@@ -675,9 +657,6 @@ async function main() {
   console.log('\n[Tema]');
   const volt = await fetchTema();
   if (volt) results['VOLT'] = volt;
-
-  console.log('\n[Roundhill]');
-  results['MAGS'] = fetchMAGS();
 
   console.log('\n[First Trust]');
   for (const etf of FIRSTTRUST_ETFS) {
@@ -766,7 +745,7 @@ async function main() {
     'ARKK', 'ALAI', 'XSD',
     'WCLD', 'GTEK',
     ...WEDBUSH_ETFS.map(e => e.ticker),
-    'VOLT', 'MAGS',
+    'VOLT',
     ...FIRSTTRUST_ETFS.map(e => e.ticker),
     ...VISTASHARES_ETFS.map(e => e.ticker),
     ...PROSHARES_ETFS.map(e => e.ticker),

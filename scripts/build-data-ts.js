@@ -44,7 +44,7 @@ const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(T
 const THEME_ETFS = {
   'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['PTF', 'WCLD', 'MAGS', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS'],
+  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
@@ -816,9 +816,31 @@ function genSpyRet(r) {
   ].join('\n');
 }
 
+// Top N holdings per ETF (by weight). Feeds the ETF-row hover tooltip on the dashboard.
+function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
+  const allEtfs = [...new Set(Object.values(themeEtfs).flat())];
+  const lines = [];
+  for (const etf of allEtfs) {
+    const h = holdingsMap[etf];
+    if (!h || h.length === 0) continue;
+    const top = [...h]
+      .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
+      .slice(0, topN)
+      .map(x => `{ t: '${safeTicker(x.ticker)}', w: ${Number(x.weight ?? 0).toFixed(1)} }`);
+    lines.push(`  ${etf}: [${top.join(', ')}],`);
+  }
+  return [
+    '// @@GENERATED:ETF_TOP_HOLDINGS@@',
+    'export const ETF_TOP_HOLDINGS: Record<string, EtfHolding[]> = {',
+    ...lines,
+    '};',
+    '// @@END_GENERATED:ETF_TOP_HOLDINGS@@',
+  ].join('\n');
+}
+
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -867,6 +889,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:CROSS_THEME_TOP10@@[\s\S]*?\/\/ @@END_GENERATED:CROSS_THEME_TOP10@@/,
       newCrossTheme
+    );
+  }
+  if (newEtfTopHoldings) {
+    src = src.replace(
+      /\/\/ @@GENERATED:ETF_TOP_HOLDINGS@@[\s\S]*?\/\/ @@END_GENERATED:ETF_TOP_HOLDINGS@@/,
+      newEtfTopHoldings
     );
   }
 
@@ -1037,9 +1065,10 @@ async function main() {
   const newIndexChart      = genIndexChartData(THEME_ETFS, etfDataMap, spyData, todayStr);
   const newThemeBenchmarks = genThemeBenchmarks(etfReturnsMap);
   const newCrossTheme      = genCrossThemeTop10(themeEquities, financialsMap);
+  const newEtfTopHoldings  = genEtfTopHoldings(holdingsMap, THEME_ETFS);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');
