@@ -296,6 +296,10 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
   const etfs = THEME_ETFS[theme];
   const etfCount = THEME_ETF_COUNT[theme];
 
+  // Which row's holdings tooltip is open. Mouse hover drives it on desktop;
+  // tap toggles it on touch devices (which never fire :hover).
+  const [openEtf, setOpenEtf] = useState<string | null>(null);
+
   const rows = etfs
     .map(ticker => ({ ticker, ret: ETF_RETURNS[ticker]?.[period] ?? 0 }))
     .sort((a, b) => b.ret - a.ret);
@@ -324,10 +328,17 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
           const pos      = ret >= 0;
           const barPct   = (Math.abs(ret) / maxAbs) * 100;
           const holdings = ETF_TOP_HOLDINGS[ticker] ?? [];
+          const open     = openEtf === ticker;
           return (
-            <div key={ticker} className="relative group/etf">
-              <div className="flex items-center justify-between mb-0.5 cursor-default">
-                <span className="text-slate-300 text-xs font-mono font-bold border-b border-dotted border-slate-700 group-hover/etf:border-emerald-500/60">{ticker}</span>
+            <div
+              key={ticker}
+              className="relative cursor-pointer select-none"
+              onPointerEnter={e => { if (e.pointerType === 'mouse') setOpenEtf(ticker); }}
+              onPointerLeave={e => { if (e.pointerType === 'mouse') setOpenEtf(null); }}
+              onClick={() => setOpenEtf(prev => (prev === ticker ? null : ticker))}
+            >
+              <div className="flex items-center justify-between mb-0.5">
+                <span className={`text-xs font-mono font-bold border-b border-dotted ${open ? 'text-white border-emerald-500/60' : 'text-slate-300 border-slate-700'}`}>{ticker}</span>
                 <span className={`text-xs font-bold tabular-nums ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {pos ? '+' : ''}{ret.toFixed(1)}%
                 </span>
@@ -340,8 +351,8 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
               </div>
 
               {/* Top-holdings tooltip, appears to the left so it never clips the right edge */}
-              {holdings.length > 0 && (
-                <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-2 z-50 hidden group-hover/etf:block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
+              {holdings.length > 0 && open && (
+                <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-2 z-50 block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
                   <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">{ticker} top holdings</p>
                   <div className="flex flex-col gap-1">
                     {holdings.map(h => (
