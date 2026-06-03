@@ -5104,82 +5104,82 @@
       {
         "ticker": "CIFR",
         "name": "CIFR",
-        "weight": 15.43
+        "weight": 15.1
       },
       {
         "ticker": "IREN",
         "name": "IREN",
-        "weight": 13.48
+        "weight": 13.35
       },
       {
         "ticker": "WULF",
         "name": "WULF",
-        "weight": 9.02
+        "weight": 8.73
       },
       {
         "ticker": "CORZ",
         "name": "CORZ",
-        "weight": 7.14
+        "weight": 7.32
       },
       {
         "ticker": "KEEL",
         "name": "KEEL",
-        "weight": 6.98
+        "weight": 7.22
       },
       {
         "ticker": "HUT",
         "name": "HUT",
-        "weight": 6.44
+        "weight": 6.58
       },
       {
         "ticker": "RIOT",
         "name": "RIOT",
-        "weight": 5.24
+        "weight": 5.26
       },
       {
         "ticker": "CLSK",
         "name": "CLSK",
-        "weight": 5.18
+        "weight": 5.14
       },
       {
         "ticker": "BTDR",
         "name": "BTDR",
-        "weight": 4.73
+        "weight": 4.82
       },
       {
         "ticker": "MARA",
         "name": "MARA",
-        "weight": 4.71
+        "weight": 4.69
       },
       {
         "ticker": "APLD",
         "name": "APLD",
-        "weight": 3.99
+        "weight": 3.89
       },
       {
         "ticker": "NVDA",
         "name": "NVDA",
-        "weight": 2.05
+        "weight": 2.1
       },
       {
         "ticker": "NBIS",
         "name": "NBIS",
-        "weight": 1.43
+        "weight": 1.58
       },
       {
         "ticker": "WYFI",
         "name": "WYFI",
-        "weight": 1.33
+        "weight": 1.36
       },
       {
         "ticker": "CHRN",
         "name": "CHRN",
-        "weight": 1.19
+        "weight": 1.06
       },
       {
         "ticker": "CRWV",
         "name": "CRWV",
-        "weight": 0.86
+        "weight": 0.94
       },
       {
         "ticker": "GLXY",
@@ -5194,44 +5194,69 @@
       {
         "ticker": "XYZ",
         "name": "XYZ",
-        "weight": 0.55
+        "weight": 0.53
       },
       {
         "ticker": "AIRJ",
         "name": "AIRJ",
-        "weight": 0.46
+        "weight": 0.51
+      },
+      {
+        "ticker": "CAN",
+        "name": "CAN",
+        "weight": 0.31
       },
       {
         "ticker": "CANG",
         "name": "CANG",
-        "weight": 0.22
+        "weight": 0.21
       }
     ],
     "BUZZ": [
       {
-        "ticker": "ASTS",
-        "name": "ASTS",
-        "weight": 4.51
+        "ticker": "NOW",
+        "name": "NOW",
+        "weight": 3.93
       },
       {
         "ticker": "SMCI",
         "name": "SMCI",
-        "weight": 3.51
+        "weight": 3.9
       },
       {
         "ticker": "MU",
         "name": "MU",
-        "weight": 3.35
+        "weight": 3.68
+      },
+      {
+        "ticker": "ASTS",
+        "name": "ASTS",
+        "weight": 3.51
+      },
+      {
+        "ticker": "PLTR",
+        "name": "PLTR",
+        "weight": 3.31
+      },
+      {
+        "ticker": "NBIS",
+        "name": "NBIS",
+        "weight": 3.29
+      },
+      {
+        "ticker": "SOFI",
+        "name": "SOFI",
+        "weight": 3.2
       },
       {
         "ticker": "AMD",
         "name": "AMD",
-        "weight": 3.23
+        "weight": 3.12
       },
       {
-        "ticker": "NOW",
-        "name": "NOW",
-        "weight": 3.2
+        "ticker": "MSFT",
+        "name": "MSFT",
+        "weight": 3.09
       },
       {
         "ticker": "IREN",
@@ -5239,89 +5264,79 @@
         "weight": 3.08
       },
       {
-        "ticker": "PLTR",
-        "name": "PLTR",
-        "weight": 3.01
-      },
-      {
-        "ticker": "SOFI",
-        "name": "SOFI",
-        "weight": 2.98
-      },
-      {
-        "ticker": "MSFT",
-        "name": "MSFT",
-        "weight": 2.92
-      },
-      {
-        "ticker": "NBIS",
-        "name": "NBIS",
-        "weight": 2.87
-      },
-      {
         "ticker": "GME",
         "name": "GME",
-        "weight": 2.82
-      },
-      {
-        "ticker": "META",
-        "name": "META",
-        "weight": 2.8
+        "weight": 2.73
       },
       {
         "ticker": "AAPL",
         "name": "AAPL",
-        "weight": 2.76
-      },
-      {
-        "ticker": "IBRX",
-        "name": "IBRX",
-        "weight": 2.66
-      },
-      {
-        "ticker": "APLD",
-        "name": "APLD",
-        "weight": 2.57
+        "weight": 2.65
       },
       {
         "ticker": "NVDA",
         "name": "NVDA",
-        "weight": 2.55
+        "weight": 2.62
       },
       {
-        "ticker": "RKLB",
-        "name": "RKLB",
-        "weight": 2.41
+        "ticker": "META",
+        "name": "META",
+        "weight": 2.6
+      },
+      {
+        "ticker": "INTC",
+        "name": "INTC",
+        "weight": 2.59
+      },
+      {
+        "ticker": "TSLA",
+        "name": "TSLA",
+        "weight": 2.58
       },
       {
         "ticker": "HOOD",
         "name": "HOOD",
-        "weight": 2.39
+        "weight": 2.51
+      },
+      {
+        "ticker": "IBRX",
+        "name": "IBRX",
+        "weight": 2.45
+      },
+      {
+        "ticker": "APLD",
+        "name": "APLD",
+        "weight": 2.43
       },
       {
         "ticker": "NFLX",
         "name": "NFLX",
-        "weight": 2.24
+        "weight": 2.19
       },
       {
         "ticker": "IONQ",
         "name": "IONQ",
-        "weight": 2.1
+        "weight": 2.03
       },
       {
-        "ticker": "AMZN",
-        "name": "AMZN",
+        "ticker": "RKLB",
+        "name": "RKLB",
         "weight": 1.96
       },
       {
         "ticker": "MSTR",
         "name": "MSTR",
-        "weight": 1.94
+        "weight": 1.88
       },
       {
-        "ticker": "GOOGL",
-        "name": "GOOGL",
-        "weight": 1.55
+        "ticker": "AMZN",
+        "name": "AMZN",
+        "weight": 1.83
+      },
+      {
+        "ticker": "ORCL",
+        "name": "ORCL",
+        "weight": 1.72
       }
     ],
     "MEME": [
