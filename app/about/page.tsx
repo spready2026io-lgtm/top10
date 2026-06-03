@@ -131,8 +131,8 @@ export default function About() {
                 </li>
               </ul>
               <p className="text-slate-500 text-xs mt-3">
-                Coverage is used as a confidence coefficient in the Weight Score formula: avgWeight x sqrt(coverage).
-                Higher coverage amplifies the weight signal.
+                Coverage is used as a linear coefficient in the Weight Score formula: avgWeight x coverage.
+                Higher coverage amplifies the weight signal in direct proportion.
               </p>
             </div>
 
@@ -142,10 +142,10 @@ export default function About() {
                 <h3 className="text-white font-semibold">Weight Score</h3>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
-                The average portfolio weight across all ETFs that hold this stock, expressed as a percentage.
-                The full formula is: <span className="text-slate-300 font-mono text-xs">avgWeight x sqrt(coverage)</span>.
-                The square root of coverage acts as a confidence multiplier — a stock held by more funds gets a
-                higher coefficient, amplifying a genuine broad-market bet while discounting a stock held by only one fund.
+                The average portfolio weight this stock receives across every theme ETF, counting funds that do not
+                hold it as 0%. The full formula is: <span className="text-slate-300 font-mono text-xs">avgWeight x coverage</span>.
+                Multiplying by coverage scales the raw average by how broadly the stock is held, so a genuine broad-market
+                bet rises while a stock held by only one fund is discounted in direct proportion to its narrowness.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
                 This is the signal that separates a filler position from a conviction bet. An ETF might

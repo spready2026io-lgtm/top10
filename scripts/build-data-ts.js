@@ -434,9 +434,10 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
   }
 
   // Score each equity
-  // proScore = avgWeight × sqrt(coverage%) — Option A confidence-adjusted average.
-  // Breadth (how many ETFs hold it) damps the raw average via square-root scaling:
-  // held by 100% of ETFs → full average; held by 25% → half the average.
+  // proScore = avgWeight × coverage — linear breadth weighting.
+  // Equals totalWeight / totalAvailable, i.e. the true average portfolio weight
+  // across every theme ETF counting non-holders as 0%. A stock in 1 ETF at 13%
+  // scores far below one held by 7 ETFs at 5%, so breadth genuinely drives rank.
   // Coverage is relative to availableEtfs (ETFs with real data), not the full
   // theme definition, so failed scrapers (WCLD, GTEK) don't penalise equities.
   const totalAvailable = availableEtfs.length;
@@ -445,7 +446,7 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
     const easyScore  = data.etfs.length;
     const avgWeight  = data.etfs.reduce((s, e) => s + e.weight, 0) / easyScore;
     const coverage   = easyScore / totalAvailable;          // 0–1
-    const proScore   = parseFloat((avgWeight * Math.sqrt(coverage)).toFixed(2));
+    const proScore   = parseFloat((avgWeight * coverage).toFixed(2));
     const etfPresence = {};
     for (const etf of themeEtfs) {
       const match = data.etfs.find(e => e.etf === etf);

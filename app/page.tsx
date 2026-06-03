@@ -586,7 +586,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
     return v !== false && v !== 0;
   });
   const maxWeight = Math.max(...holdingEtfs.map(etf => equity.etfPresence[etf] as number), 0.1);
-  const avgWt = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / Math.sqrt(equity.coverage) : equity.proScore);
+  const avgWt = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / equity.coverage : equity.proScore);
 
   // Strip the placeholder "check back" ending from the note
   const cleanNote = equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim();
@@ -640,7 +640,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Weight Score</p>
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
-                <p className="text-slate-600 text-[10px] mt-0.5">avg × √{(equity.coverage * 100).toFixed(0)}%</p>
+                <p className="text-slate-600 text-[10px] mt-0.5">avg × {(equity.coverage * 100).toFixed(0)}%</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">ETF Count</p>
@@ -779,7 +779,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
   const divStr = equity.dividendYield !== null ? `${equity.dividendYield.toFixed(1)}%` : 'None';
   const revStr = `${equity.revenueGrowth > 0 ? '+' : ''}${equity.revenueGrowth}%`;
-  const avgWt  = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / Math.sqrt(equity.coverage) : equity.proScore);
+  const avgWt  = equity.avgWeight ?? (equity.coverage > 0 ? equity.proScore / equity.coverage : equity.proScore);
 
   const domain   = TICKER_DOMAINS[equity.ticker];
   const logoUrl  = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
@@ -867,10 +867,10 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                       <span className="text-slate-100 text-xs font-bold tabular-nums">{(equity.coverage * 100).toFixed(0)}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Confidence coeff</span>
-                      <span className="text-slate-100 text-xs font-bold tabular-nums">×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+                      <span className="text-slate-400 text-xs">Coverage coeff</span>
+                      <span className="text-slate-100 text-xs font-bold tabular-nums">×{equity.coverage.toFixed(2)}</span>
                     </div>
-                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × √coverage</p>
+                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × coverage</p>
                   </div>
                 </div>
               </span>
@@ -965,7 +965,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               <span className="text-slate-700">|</span>
               <span className="text-slate-200 font-semibold text-xs">{(equity.coverage * 100).toFixed(0)}% coverage</span>
               <span className="text-slate-700">|</span>
-              <span className="text-slate-200 font-semibold text-xs">coeff ×{Math.sqrt(equity.coverage).toFixed(2)}</span>
+              <span className="text-slate-200 font-semibold text-xs">coeff ×{equity.coverage.toFixed(2)}</span>
               {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
                 <>
                   <span className="text-slate-700">|</span>
