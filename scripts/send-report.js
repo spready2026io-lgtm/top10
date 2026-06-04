@@ -42,7 +42,7 @@ const STATUS_FAIL = '<span style="color:#f87171;font-weight:700;">&#10007;</span
 function etfRows() {
   return Object.entries(etfScan.results).map(([etf, r]) => {
     const status = r.ok ? STATUS_OK : STATUS_FAIL;
-    const count  = r.ok ? `${r.count} holdings` : 'no data';
+    const count  = r.ok ? `${r.count} holdings` : (r.error ? `no data (${r.error})` : 'no data');
     return `<tr>
       <td style="padding:5px 12px;font-family:monospace;font-size:13px;color:#f1f5f9;">${etf}</td>
       <td style="padding:5px 12px;font-size:13px;color:#94a3b8;">${count}</td>

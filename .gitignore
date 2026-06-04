@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# transient scrape handoff (errors are folded into scan-report.json by build-data-ts.js)
+/lib/scan-errors.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

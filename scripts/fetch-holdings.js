@@ -19,30 +19,53 @@ const path = require('path');
 const XLSX = require('xlsx');
 
 const OUT_PATH = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
+const SCAN_ERRORS_PATH = path.join(__dirname, '..', 'lib', 'scan-errors.json');
+
+// Network failures captured during this run (url + final error message). Mapped
+// to tickers at the end so the scan report can show WHY an ETF dropped
+// (HTTP 403 = IP block, timeout = transient, etc.).
+const fetchFailures = [];
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
+
+// Fetch with retry. Datacenter IPs (GitHub Actions) occasionally get a one-off
+// WAF block, rate-limit, or network blip from a provider. Without retries a
+// single failure drops that ETF for the whole day. A couple of backed-off
+// retries recover it. Body is read by the caller, so we return the Response only
+// on success and make a fresh request each attempt.
+async function fetchWithRetry(url, headers = {}, attempts = 3) {
+  let lastErr;
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      const res = await fetch(url, { headers: { 'User-Agent': UA, ...headers } });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res;
+    } catch (e) {
+      lastErr = e;
+      if (i < attempts) {
+        console.warn(`    retry ${i}/${attempts - 1} for ${url} (${e.message})`);
+        await sleep(1500 * i);
+      }
+    }
+  }
+  fetchFailures.push({ url, error: lastErr.message });
+  throw lastErr;
+}
+
 async function fetchJSON(url, headers = {}) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', ...headers },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  const res = await fetchWithRetry(url, headers);
   return res.json();
 }
 
 async function fetchBuf(url, headers = {}) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', ...headers },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const res = await fetchWithRetry(url, headers);
   return Buffer.from(await res.arrayBuffer());
 }
 
 async function fetchText(url, headers = {}) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', ...headers },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const res = await fetchWithRetry(url, headers);
   return res.text();
 }
 
@@ -763,6 +786,22 @@ async function main() {
   const out = { lastUpdated: new Date().toISOString().split('T')[0], etfsFetched: fetched, holdings: results };
   fs.writeFileSync(OUT_PATH, JSON.stringify(out, null, 2));
   console.log(`\nWritten → ${OUT_PATH}`);
+
+  // Map each failed ticker to its network error (when the URL carries the ticker)
+  // so build-data-ts.js can fold the reason into scan-report.json. The full
+  // failures list is kept too, for providers whose URL uses an opaque id.
+  const errorsByTicker = {};
+  for (const t of failed) {
+    const re = new RegExp('[=/]' + t + '($|[&/.?])', 'i');
+    const hit = fetchFailures.find(f => re.test(f.url));
+    if (hit) errorsByTicker[t] = hit.error;
+  }
+  fs.writeFileSync(SCAN_ERRORS_PATH, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    byTicker:    errorsByTicker,
+    failures:    fetchFailures,
+  }, null, 2));
+  console.log(`Written → ${SCAN_ERRORS_PATH} (${fetchFailures.length} fetch failures)`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

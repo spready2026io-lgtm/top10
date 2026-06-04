@@ -32,6 +32,7 @@ async function yfInit() {
 const RAW_PATH        = path.join(__dirname, '..', 'lib', 'holdings-raw.json');
 const DATA_PATH       = path.join(__dirname, '..', 'lib', 'data.ts');
 const REPORT_PATH     = path.join(__dirname, '..', 'lib', 'scan-report.json');
+const SCAN_ERRORS_PATH = path.join(__dirname, '..', 'lib', 'scan-errors.json');
 const HISTORY_PATH    = path.join(__dirname, '..', 'lib', 'history.json');
 const TONY_NOTES_PATH = path.join(__dirname, '..', 'lib', 'tony-notes.json');
 
@@ -968,14 +969,23 @@ async function main() {
     console.log(`[History] ${todayStr} is not a US trading day — snapshot skipped\n`);
   }
 
-  // Build ETF scan results — which ETFs have holdings, which are missing
+  // Build ETF scan results — which ETFs have holdings, which are missing.
+  // Fold in fetch error reasons (from scan-errors.json) so a failed ETF shows WHY.
+  let scanErrors = { byTicker: {}, failures: [] };
+  try { scanErrors = JSON.parse(fs.readFileSync(SCAN_ERRORS_PATH, 'utf8')); } catch { /* no sidecar this run */ }
+
   const allDefinedEtfs = [...new Set(Object.values(THEME_ETFS).flat())];
   const etfScanResults = {};
   for (const etf of allDefinedEtfs) {
     const holdings = holdingsMap[etf];
-    etfScanResults[etf] = holdings
-      ? { ok: true,  count: holdings.length }
-      : { ok: false, count: 0 };
+    if (holdings) {
+      etfScanResults[etf] = { ok: true, count: holdings.length };
+    } else {
+      const reason = scanErrors.byTicker && scanErrors.byTicker[etf];
+      etfScanResults[etf] = reason
+        ? { ok: false, count: 0, error: reason }
+        : { ok: false, count: 0 };
+    }
   }
 
   // Collect unique tickers
@@ -1042,10 +1052,11 @@ async function main() {
     scanTimestamp:   isoTs,
     scanTimestampNY: nyTs,
     etfScan: {
-      results:  etfScanResults,
-      total:    allDefinedEtfs.length,
-      ok:       Object.values(etfScanResults).filter(r => r.ok).length,
-      failed:   allDefinedEtfs.filter(e => !etfScanResults[e].ok),
+      results:     etfScanResults,
+      total:       allDefinedEtfs.length,
+      ok:          Object.values(etfScanResults).filter(r => r.ok).length,
+      failed:      allDefinedEtfs.filter(e => !etfScanResults[e].ok),
+      fetchErrors: scanErrors.failures || [],
     },
     yfScan: {
       total:     allTickers.length,
