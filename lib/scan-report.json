@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-06-03T18:17:22.486Z",
-  "scanTimestampNY": "June 3, 2026 at 2:17 PM ET",
+  "scanTimestamp": "2026-06-04T13:35:56.656Z",
+  "scanTimestampNY": "June 4, 2026 at 9:35 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": true,
-        "count": 41
+        "ok": false,
+        "count": 0
       },
       "ARTY": {
         "ok": true,
@@ -41,11 +41,11 @@
       },
       "SPRX": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "AOTG": {
         "ok": true,
-        "count": 25
+        "count": 22
       },
       "SOXX": {
         "ok": true,
@@ -81,11 +81,11 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 11
+        "count": 10
       },
       "ARKK": {
         "ok": true,
-        "count": 43
+        "count": 44
       },
       "MARS": {
         "ok": true,
@@ -93,7 +93,7 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "BCTK": {
         "ok": true,
@@ -109,15 +109,15 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "WGMI": {
         "ok": true,
         "count": 22
       },
       "POW": {
-        "ok": true,
-        "count": 40
+        "ok": false,
+        "count": 0
       },
       "VOLT": {
         "ok": true,
@@ -125,15 +125,15 @@
       },
       "PBD": {
         "ok": true,
-        "count": 9
+        "count": 7
       },
       "PBW": {
         "ok": true,
         "count": 10
       },
       "AIRR": {
-        "ok": true,
-        "count": 51
+        "ok": false,
+        "count": 0
       },
       "PRN": {
         "ok": true,
@@ -161,12 +161,16 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 25
+        "count": 24
       }
     },
     "total": 40,
-    "ok": 40,
-    "failed": []
+    "ok": 37,
+    "failed": [
+      "AIS",
+      "POW",
+      "AIRR"
+    ]
   },
   "yfScan": {
     "total": 90,
