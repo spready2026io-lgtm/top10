@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-05T13:37:26.041Z",
-  "scanTimestampNY": "June 5, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-06-05T16:23:18.644Z",
+  "scanTimestampNY": "June 5, 2026 at 12:23 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,7 +29,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 20
+        "count": 64
       },
       "CHAT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PRN": {
         "ok": true,
-        "count": 10
+        "count": 37
       },
       "RSHO": {
         "ok": true,
@@ -193,18 +193,6 @@
         "error": "HTTP 406"
       },
       {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -219,8 +207,8 @@
     ]
   },
   "yfScan": {
-    "total": 90,
-    "succeeded": 90,
+    "total": 91,
+    "succeeded": 91,
     "failed": []
   }
 }
