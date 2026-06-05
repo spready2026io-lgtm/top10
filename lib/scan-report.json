@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-04T16:42:11.531Z",
-  "scanTimestampNY": "June 4, 2026 at 12:42 PM ET",
+  "scanTimestamp": "2026-06-05T13:37:26.041Z",
+  "scanTimestampNY": "June 5, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 31
+        "count": 33
       },
       "IVEP": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 62
+        "count": 20
       },
       "CHAT": {
         "ok": true,
@@ -45,7 +45,7 @@
       },
       "AOTG": {
         "ok": true,
-        "count": 22
+        "count": 25
       },
       "SOXX": {
         "ok": true,
@@ -69,7 +69,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "IGV": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 10
+        "count": 11
       },
       "ARKK": {
         "ok": true,
@@ -93,11 +93,11 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "BCTK": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "FWD": {
         "ok": true,
@@ -105,11 +105,11 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 19
+        "count": 20
       },
       "FCUS": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "WGMI": {
         "ok": true,
@@ -125,7 +125,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 7
+        "count": 6
       },
       "PBW": {
         "ok": true,
@@ -145,7 +145,7 @@
       },
       "IDEF": {
         "ok": true,
-        "count": 88
+        "count": 87
       },
       "BILT": {
         "ok": true,
@@ -161,7 +161,7 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 24
+        "count": 25
       }
     },
     "total": 40,
@@ -197,6 +197,14 @@
         "error": "HTTP 406"
       },
       {
+        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
+        "error": "fetch failed"
+      },
+      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -211,8 +219,8 @@
     ]
   },
   "yfScan": {
-    "total": 91,
-    "succeeded": 91,
+    "total": 90,
+    "succeeded": 90,
     "failed": []
   }
 }
