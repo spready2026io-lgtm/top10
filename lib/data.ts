@@ -188,8 +188,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Elec
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-06-06T13:36:08.054Z';
-export const SCAN_TIMESTAMP_NY = 'June 6, 2026 at 9:36 AM ET';
+export const SCAN_TIMESTAMP    = '2026-06-06T15:07:07.803Z';
+export const SCAN_TIMESTAMP_NY = 'June 6, 2026 at 11:07 AM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
@@ -388,7 +388,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 416.67, weeklyPrices: [460.52, 441.31, 427.34, 428.05, 416.67], weeklyChange: -9.52, sortRank: 0, periodReturns: { '1M': 1.3, '6M': -13.8, '1Y': -11.4 },
       priceHistory: { '1W': [460.52, 441.31, 427.34, 428.05, 416.67], '1M': [411.38, 413.96, 420.77, 415.12, 412.66, 405.21, 409.43, 421.92, 423.54, 417.42, 421.06, 419.09, 418.57, 416.03, 412.67, 450.24, 460.52, 441.31, 427.34, 428.05, 416.67], '6M': [483.16, 478.53, 485.92, 487.1, 478.51, 470.67, 444.11, 481.63, 414.19, 404.37, 398.46, 401.72, 410.68, 404.88, 391.79, 371.04, 369.37, 373.07, 420.26, 415.75, 407.78, 420.77, 409.43, 419.09, 450.24, 416.67], '1Y': [470.38, 474.96, 486, 497.41, 496.62, 505.82, 510.06, 512.5, 535.64, 521.77, 517.1, 504.26, 505.12, 498.41, 509.04, 509.23, 514.6, 528.57, 514.05, 516.79, 531.52, 517.03, 506, 507.49, 474, 490, 491.02, 474.82, 484.92, 487.48, 483.47, 459.38, 451.14, 433.5, 393.67, 401.84, 398.46, 401.72, 410.68, 401.86, 389.02, 365.97, 373.46, 370.87, 422.79, 424.62, 407.78, 420.77, 409.43, 419.09, 450.24, 416.67] },
       velocityScore: { '1D': 2.4, '1W': -36.1, '1M': null, '6M': null }, isNew: false,
-      marketCap: '$3.1T', pe: 24.8, revenueGrowth: 18, eps: 16.78, grossMargin: 68, dividendYield: 0.87,
+      marketCap: '$3.1T', pe: 24.8, revenueGrowth: 18, eps: 16.79, grossMargin: 68, dividendYield: 0.87,
       etfPresence: { AIS: false, ARTY: 1.73, BAI: false, IVEP: false, IGPT: false, IVES: 4.81, ALAI: 5.6, CHAT: 3.06, AIFD: false, SPRX: false, AOTG: 3.77 },
       tonyNote: 'Microsoft appears in 4 of 8 AI ETFs and 2 Broad Tech ETFs at 3.7% average weight. Revenue up 18%, 68% gross margin, P/E of 27x — solid fundamentals for a $3.3T business. The -2.2% 1-year return and -8.5% 6-month return suggest the Copilot monetization narrative has stalled; ETF managers hold the position on long-term Azure and OpenAI leverage, not near-term momentum.',
     },
@@ -774,7 +774,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 416.67, weeklyPrices: [460.52, 441.31, 427.34, 428.05, 416.67], weeklyChange: -9.52, sortRank: 0, periodReturns: { '1M': 1.3, '6M': -13.8, '1Y': -11.4 },
       priceHistory: { '1W': [460.52, 441.31, 427.34, 428.05, 416.67], '1M': [411.38, 413.96, 420.77, 415.12, 412.66, 405.21, 409.43, 421.92, 423.54, 417.42, 421.06, 419.09, 418.57, 416.03, 412.67, 450.24, 460.52, 441.31, 427.34, 428.05, 416.67], '6M': [483.16, 478.53, 485.92, 487.1, 478.51, 470.67, 444.11, 481.63, 414.19, 404.37, 398.46, 401.72, 410.68, 404.88, 391.79, 371.04, 369.37, 373.07, 420.26, 415.75, 407.78, 420.77, 409.43, 419.09, 450.24, 416.67], '1Y': [470.38, 474.96, 486, 497.41, 496.62, 505.82, 510.06, 512.5, 535.64, 521.77, 517.1, 504.26, 505.12, 498.41, 509.04, 509.23, 514.6, 528.57, 514.05, 516.79, 531.52, 517.03, 506, 507.49, 474, 490, 491.02, 474.82, 484.92, 487.48, 483.47, 459.38, 451.14, 433.5, 393.67, 401.84, 398.46, 401.72, 410.68, 401.86, 389.02, 365.97, 373.46, 370.87, 422.79, 424.62, 407.78, 420.77, 409.43, 419.09, 450.24, 416.67] },
       velocityScore: { '1D': -0.8, '1W': -76, '1M': null, '6M': null }, isNew: false,
-      marketCap: '$3.1T', pe: 24.8, revenueGrowth: 18, eps: 16.78, grossMargin: 68, dividendYield: 0.87,
+      marketCap: '$3.1T', pe: 24.8, revenueGrowth: 18, eps: 16.79, grossMargin: 68, dividendYield: 0.87,
       etfPresence: { PTF: false, WCLD: false, IGV: 7.73, FDTX: 3.79, GTEK: false, ARKK: false, MARS: false, FRWD: 3.97, BCTK: false, FWD: false, CBSE: false, FCUS: false, WGMI: false },
       tonyNote: 'Microsoft appears in 4 of 8 AI ETFs and 2 Broad Tech ETFs at 3.7% average weight. Revenue up 18%, 68% gross margin, P/E of 27x — solid fundamentals for a $3.3T business. The -2.2% 1-year return and -8.5% 6-month return suggest the Copilot monetization narrative has stalled; ETF managers hold the position on long-term Azure and OpenAI leverage, not near-term momentum.',
     },
