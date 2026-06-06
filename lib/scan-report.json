@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-05T16:23:18.644Z",
-  "scanTimestampNY": "June 5, 2026 at 12:23 PM ET",
+  "scanTimestamp": "2026-06-06T13:36:08.054Z",
+  "scanTimestampNY": "June 6, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,7 +29,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 64
+        "count": 63
       },
       "CHAT": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 11
+        "count": 9
       },
       "ARKK": {
         "ok": true,
@@ -89,27 +89,27 @@
       },
       "MARS": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "BCTK": {
         "ok": true,
-        "count": 24
+        "count": 22
       },
       "FWD": {
         "ok": true,
-        "count": 16
+        "count": 14
       },
       "CBSE": {
         "ok": true,
-        "count": 20
+        "count": 18
       },
       "FCUS": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "WGMI": {
         "ok": true,
@@ -125,7 +125,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 6
+        "count": 5
       },
       "PBW": {
         "ok": true,
@@ -137,11 +137,11 @@
       },
       "PRN": {
         "ok": true,
-        "count": 37
+        "count": 10
       },
       "RSHO": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "IDEF": {
         "ok": true,
@@ -153,11 +153,11 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 25
+        "count": 22
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 19
       },
       "RKNG": {
         "ok": true,
@@ -193,6 +193,10 @@
         "error": "HTTP 406"
       },
       {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -207,8 +211,8 @@
     ]
   },
   "yfScan": {
-    "total": 91,
-    "succeeded": 91,
+    "total": 90,
+    "succeeded": 90,
     "failed": []
   }
 }
