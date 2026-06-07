@@ -1344,11 +1344,16 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 
       {/* Compact preview — shown when collapsed */}
       {!expanded && (
-        <div className="px-4 py-2 flex flex-col gap-1">
+        <div className="flex flex-col md:flex-row px-4 py-3 gap-2">
           {steps.map(s => (
-            <div key={s.n} className="flex items-baseline gap-2 min-w-0">
-              <span className={`text-xs font-bold flex-shrink-0 ${s.color}`}>{s.n}. {s.label}</span>
-              <span className="text-slate-500 text-xs truncate">{s.desc.slice(0, 80)}…</span>
+            <div key={s.n} className={`flex-1 rounded-lg border ${s.borderColor} bg-slate-800/40 px-3 py-2 flex flex-col gap-1 min-w-0`}>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                  {s.n}
+                </span>
+                <span className={`text-xs font-bold ${s.color}`}>{s.label}</span>
+              </div>
+              <p className="text-slate-400 text-[10px] leading-snug line-clamp-2">{s.desc}</p>
             </div>
           ))}
         </div>
