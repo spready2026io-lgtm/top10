@@ -1428,8 +1428,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           className="flex items-center gap-1 text-slate-500 hover:text-white text-xs font-semibold px-2 py-1 rounded-lg hover:bg-slate-800 transition-colors"
         >
-          <span>close guide</span>
-          <span className="font-black text-sm leading-none">✕</span>
+          <span className="font-black text-base leading-none">✕</span>
         </button>
       </div>
 
