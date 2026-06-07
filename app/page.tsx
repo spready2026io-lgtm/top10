@@ -70,6 +70,8 @@ const TICKER_DOMAINS: Record<string, string> = {
   QBTS: 'dwavequantum.com', ONDS: 'ondas.com',         APLD: 'applieddigital.com',
   IONQ: 'ionq.com',      TE:   't1energy.com',         AXTI: 'axt.com',
   NVTS: 'navitassemi.com', WOLF: 'wolfspeed.com',
+  // Non-US listings
+  PRY:  'prysmian.com',
 };
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────

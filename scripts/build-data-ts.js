@@ -61,6 +61,12 @@ const CROSS_THEME_EXCLUDE = new Set(['Meme']);
 // keeps display consistent across themes (the UI also maps these tickers to a
 // logo domain in app/page.tsx). Applied only when the scraped name is blank
 // or equals the ticker, so real source names always win.
+// Non-US tickers need an exchange suffix for Yahoo Finance to find them.
+// Maps the ETF holding ticker -> the Yahoo Finance symbol to use for price lookups.
+const YAHOO_TICKER_MAP = {
+  PRY: 'PRY.MI',  // Prysmian SpA — Borsa Italiana (Milan)
+};
+
 const COMPANY_NAMES = {
   ASTS: 'AST SpaceMobile',        RDW:  'Redwire',
   AAOI: 'Applied Optoelectronics', LUNR: 'Intuitive Machines',
@@ -999,8 +1005,9 @@ async function main() {
   const yfFailed      = [];
 
   for (const ticker of allTickers) {
-    process.stdout.write(`  ${ticker}... `);
-    const fin = await fetchFinancials(ticker);
+    const yfTicker = YAHOO_TICKER_MAP[ticker] || ticker;
+    process.stdout.write(`  ${ticker}${yfTicker !== ticker ? ` (${yfTicker})` : ''}... `);
+    const fin = await fetchFinancials(yfTicker);
     financialsMap[ticker] = fin;
     if (fin) {
       yfSucceeded.push({ ticker, price: fin.price });
