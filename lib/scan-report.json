@@ -1,11 +1,12 @@
 {
-  "scanTimestamp": "2026-06-06T15:07:07.803Z",
-  "scanTimestampNY": "June 6, 2026 at 11:07 AM ET",
+  "scanTimestamp": "2026-06-07T13:36:18.250Z",
+  "scanTimestampNY": "June 7, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": true,
-        "count": 39
+        "ok": false,
+        "count": 0,
+        "error": "HTTP 415"
       },
       "ARTY": {
         "ok": true,
@@ -37,11 +38,11 @@
       },
       "AIFD": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "SPRX": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AOTG": {
         "ok": true,
@@ -69,7 +70,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "IGV": {
         "ok": true,
@@ -97,7 +98,7 @@
       },
       "BCTK": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "FWD": {
         "ok": true,
@@ -109,15 +110,16 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "POW": {
-        "ok": true,
-        "count": 40
+        "ok": false,
+        "count": 0,
+        "error": "HTTP 415"
       },
       "VOLT": {
         "ok": true,
@@ -141,7 +143,7 @@
       },
       "RSHO": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "IDEF": {
         "ok": true,
@@ -153,7 +155,7 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "MEME": {
         "ok": true,
@@ -161,12 +163,15 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 25
+        "count": 24
       }
     },
     "total": 40,
-    "ok": 40,
-    "failed": [],
+    "ok": 38,
+    "failed": [
+      "AIS",
+      "POW"
+    ],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -207,6 +212,14 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
       }
     ]
   },
