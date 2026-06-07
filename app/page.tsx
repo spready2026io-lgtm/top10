@@ -646,6 +646,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                   onError={e => { e.currentTarget.style.display = 'none'; }} alt="" />
               )}
               <div className="min-w-0">
+                <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest leading-none mb-0.5">Tony&apos;s Thesis</p>
                 <p className="text-white font-bold text-sm leading-tight truncate">{equity.name}</p>
                 <p className="text-slate-500 text-xs font-mono">{equity.ticker}</p>
               </div>
