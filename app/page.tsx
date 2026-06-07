@@ -646,7 +646,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                   onError={e => { e.currentTarget.style.display = 'none'; }} alt="" />
               )}
               <div className="min-w-0">
-                <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest leading-none mb-0.5">Tony&apos;s Thesis</p>
+                <p className="text-emerald-400 text-base font-extrabold leading-tight mb-0.5">Tony&apos;s Thesis</p>
                 <p className="text-white font-bold text-sm leading-tight truncate">{equity.name}</p>
                 <p className="text-slate-500 text-xs font-mono">{equity.ticker}</p>
               </div>
@@ -993,8 +993,8 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           <div className="flex-shrink-0">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-white text-sm font-extrabold mb-0.5">Tony&apos;s Thesis</p>
-                <p className="text-slate-400 font-bold text-xs">{equity.ticker} · {equity.name}</p>
+                <p className="text-white font-bold text-sm">{equity.ticker}</p>
+                <p className="text-slate-500 text-xs truncate">{equity.name}</p>
               </div>
               <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
