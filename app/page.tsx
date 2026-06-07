@@ -1232,7 +1232,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
 // ── How It Works guide ────────────────────────────────────────────────────────
 function GuideStrip({ onClose }: { onClose: () => void }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const steps = [
     {
       n: '1',
@@ -1342,19 +1342,16 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      {/* Expand toggle — shown when collapsed */}
+      {/* Compact preview — shown when collapsed */}
       {!expanded && (
-        <button
-          onClick={() => setExpanded(true)}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 text-slate-400 hover:text-white text-xs font-semibold transition-colors border-b border-slate-800 hover:bg-slate-800/40"
-        >
-          <span className="flex gap-3">
-            {steps.map(s => (
-              <span key={s.n} className={`font-bold ${s.color}`}>{s.n}. {s.label}</span>
-            ))}
-          </span>
-          <span className="text-slate-500 ml-2">▼ expand</span>
-        </button>
+        <div className="px-4 py-2 flex flex-col gap-1">
+          {steps.map(s => (
+            <div key={s.n} className="flex items-baseline gap-2 min-w-0">
+              <span className={`text-xs font-bold flex-shrink-0 ${s.color}`}>{s.n}. {s.label}</span>
+              <span className="text-slate-500 text-xs truncate">{s.desc.slice(0, 80)}…</span>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Steps — only shown when expanded */}
