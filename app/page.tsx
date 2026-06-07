@@ -1232,7 +1232,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
 // ── How It Works guide ────────────────────────────────────────────────────────
 function GuideStrip({ onClose }: { onClose: () => void }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const steps = [
     {
       n: '1',
