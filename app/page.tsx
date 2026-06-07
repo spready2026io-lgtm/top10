@@ -1317,7 +1317,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
   ];
 
   return (
-    <div className={`rounded-xl border border-slate-700 bg-slate-900 flex flex-col overflow-hidden${expanded ? ' flex-1' : ''}`}>
+    <div className={`rounded-xl border border-slate-700 bg-slate-900 flex flex-col overflow-hidden flex-1${expanded ? '' : ' self-start w-full'}`}>
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
