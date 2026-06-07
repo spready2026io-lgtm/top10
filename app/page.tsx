@@ -1422,6 +1422,17 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
         </div>
       )}
 
+      {/* Bottom-right close — desktop only */}
+      <div className="hidden md:flex justify-end px-4 pb-3">
+        <button
+          onClick={onClose}
+          className="flex items-center gap-1 text-slate-500 hover:text-white text-xs font-semibold px-2 py-1 rounded-lg hover:bg-slate-800 transition-colors"
+        >
+          <span>close guide</span>
+          <span className="font-black text-sm leading-none">✕</span>
+        </button>
+      </div>
+
       {/* Bottom close (mobile only) — so you don't have to scroll back up */}
       <div className="md:hidden px-4 pb-4">
         <button
