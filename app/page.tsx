@@ -1032,8 +1032,9 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
 
           {/* Tony's note */}
           <div className="flex-1 min-h-0 flex flex-col">
+            <p className="text-white text-sm font-bold mb-1 flex-shrink-0">Tony&apos;s Thesis</p>
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5 flex-shrink-0">
-              Tony&apos;s Analysis
+              Analysis
             </p>
             <div className="flex-1 overflow-y-auto rounded-lg bg-slate-800/40 px-2.5 py-2 scrollbar-thin scrollbar-thumb-slate-700">
               <p className="text-slate-300 text-xs leading-relaxed">{equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim()}</p>
@@ -1046,9 +1047,9 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
               className="text-emerald-600 hover:text-emerald-400 text-xs font-semibold transition-colors"
               onClick={e => { e.stopPropagation(); setThesisOpen(true); }}
             >
-              Tony&apos;s full thesis →
+              Tony&apos;s full thesis
             </button>
-            <span className="text-slate-700 text-xs">flip back →</span>
+            <span className="text-slate-700 text-xs">flip back</span>
           </div>
         </div>
 
@@ -1222,6 +1223,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
 // ── How It Works guide ────────────────────────────────────────────────────────
 function GuideStrip({ onClose }: { onClose: () => void }) {
+  const [expanded, setExpanded] = useState(false);
   const steps = [
     {
       n: '1',
@@ -1323,44 +1325,59 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
         </button>
       </div>
 
-      {/* Steps */}
-      <div className="flex flex-col md:flex-row px-4 py-4 gap-3 md:gap-2 flex-1">
-        {steps.map((step, i) => (
-          <div key={step.n} className="flex md:flex-col flex-1 min-w-0">
+      {/* Expand toggle — shown when collapsed */}
+      {!expanded && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="flex items-center justify-center gap-2 px-4 py-2.5 text-slate-400 hover:text-white text-xs font-semibold transition-colors border-b border-slate-800 hover:bg-slate-800/40"
+        >
+          <span className="flex gap-3">
+            {steps.map(s => (
+              <span key={s.n} className={`font-bold ${s.color}`}>{s.n}. {s.label}</span>
+            ))}
+          </span>
+          <span className="text-slate-500 ml-2">▼ expand</span>
+        </button>
+      )}
 
-            {/* Step card */}
-            <div className={`flex-1 rounded-lg border ${step.borderColor} bg-slate-800/40 p-3 flex flex-col`}>
-              {/* Number + label */}
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
-                  {step.n}
-                </span>
-                <span className={`text-sm font-bold ${step.color}`}>{step.label}</span>
+      {/* Steps — only shown when expanded */}
+      {expanded && (
+        <div className="flex flex-col md:flex-row px-4 py-4 gap-3 md:gap-2 flex-1">
+          {steps.map((step, i) => (
+            <div key={step.n} className="flex md:flex-col flex-1 min-w-0">
+
+              {/* Step card */}
+              <div className={`flex-1 rounded-lg border ${step.borderColor} bg-slate-800/40 p-3 flex flex-col`}>
+                {/* Number + label */}
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                    {step.n}
+                  </span>
+                  <span className={`text-sm font-bold ${step.color}`}>{step.label}</span>
+                </div>
+                {/* Description */}
+                <p className="text-slate-200 text-xs leading-relaxed flex-1">{step.desc}</p>
+                {/* Mini visual */}
+                {step.visual}
+                {/* Pointer arrow */}
+                {step.pointer}
               </div>
-              {/* Description */}
-              <p className="text-slate-200 text-xs leading-relaxed flex-1">{step.desc}</p>
-              {/* Mini visual */}
-              {step.visual}
-              {/* Pointer arrow */}
-              {step.pointer}
-            </div>
 
-            {/* Connector arrow — right side on md+, bottom on mobile (except last) */}
-            {i < steps.length - 1 && (
-              <>
-                {/* Desktop: horizontal arrow to the right */}
-                <div className="hidden md:flex items-center justify-center w-6 flex-shrink-0 pt-8">
-                  <span className="text-slate-400 text-base">→</span>
-                </div>
-                {/* Mobile: vertical arrow downward */}
-                <div className="md:hidden flex justify-center py-1">
-                  <span className="text-slate-400 text-sm">↓</span>
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
+              {/* Connector arrow */}
+              {i < steps.length - 1 && (
+                <>
+                  <div className="hidden md:flex items-center justify-center w-6 flex-shrink-0 pt-8">
+                    <span className="text-slate-400 text-base">→</span>
+                  </div>
+                  <div className="md:hidden flex justify-center py-1">
+                    <span className="text-slate-400 text-sm">↓</span>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Bottom close (mobile only) — so you don't have to scroll back up */}
       <div className="md:hidden px-4 pb-4">
@@ -1368,7 +1385,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:border-slate-500 text-sm font-bold transition-colors"
         >
-          Close guide ✕
+          Close guide
         </button>
       </div>
     </div>
@@ -1463,8 +1480,6 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const seen = localStorage.getItem('top10_welcomed');
-    if (!seen) setWelcome(true);
     const guideDone = localStorage.getItem('top10_guide_done');
     if (!guideDone) setShowGuide(true);
   }, []);
@@ -1497,7 +1512,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      {welcome && <WelcomeModal onClose={closeWelcome} />}
       {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
       {/* Header */}
@@ -1604,7 +1618,7 @@ export default function Home() {
               title="How it works"
               className="sm:hidden ml-auto flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-xs font-bold transition-colors bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25"
             >
-              Guide ?
+              Guide
             </button>
           )}
         </div>
@@ -1719,7 +1733,7 @@ export default function Home() {
                   title="How it works"
                   className="hidden sm:flex sm:ml-6 items-center justify-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500"
                 >
-                  Guide ?
+                  Guide
                 </button>
               )}
             </div>
@@ -1738,7 +1752,7 @@ export default function Home() {
                       onClick={() => setShowAll(true)}
                       className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-slate-700 bg-slate-900 hover:border-slate-500 hover:bg-slate-800 text-slate-300 hover:text-white text-sm font-semibold transition-all"
                     >
-                      Next {sortedEquities.length - 10} →
+                      Next {sortedEquities.length - 10}
                     </button>
                   </div>
                 )}
