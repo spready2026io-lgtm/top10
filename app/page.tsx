@@ -1324,14 +1324,22 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
           <span className="text-emerald-400 font-bold text-sm">How Top10 Works</span>
           <span className="text-slate-400 text-xs hidden sm:inline">— follow the steps below then explore the tiles</span>
         </div>
-        <button
-          onClick={onClose}
-          aria-label="Close guide"
-          title="Close guide"
-          className="text-slate-400 hover:text-white text-lg font-black leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-colors flex-shrink-0"
-        >
-          ✕
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="text-slate-400 hover:text-white text-xs font-semibold px-2 py-1 rounded-lg hover:bg-slate-800 transition-colors flex-shrink-0"
+          >
+            {expanded ? '▲ collapse' : '▼ expand'}
+          </button>
+          <button
+            onClick={onClose}
+            aria-label="Close guide"
+            title="Close guide"
+            className="text-slate-400 hover:text-white text-lg font-black leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-colors flex-shrink-0"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       {/* Expand toggle — shown when collapsed */}
