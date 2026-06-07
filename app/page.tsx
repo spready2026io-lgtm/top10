@@ -765,6 +765,13 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
   const [wtOpen,      setWtOpen]      = useState(false);
   const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
+  const [hinted,      setHinted]      = useState(true);
+
+  // Dismiss hover hint after 4 seconds
+  useEffect(() => {
+    const t = setTimeout(() => setHinted(false), 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   // Close any open tooltip on the next click anywhere in the document (mobile fix)
   useEffect(() => {
@@ -850,10 +857,12 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             </p>
             <div className="flex flex-col items-end gap-1.5">
               {/* avg wt */}
-              <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); }}>
+              <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); setHinted(false); }}>
+                {hinted && <span className="absolute inset-0 rounded-lg bg-emerald-400/25 animate-ping pointer-events-none" />}
                 <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
                   {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
                 </span>
+                {hinted && <p className="text-slate-500 text-[9px] text-right mt-0.5 pointer-events-none">hover scores for detail</p>}
                 {/* Tooltip: ETF weight breakdown */}
                 <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                   <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
@@ -999,7 +1008,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
                 return (
                   <span
                     key={etf}
-                    className={`inline-flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded-full border ${
+                    className={`inline-flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded-full border cursor-default select-none ${
                       held
                         ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
                         : 'bg-slate-800 border-slate-700 text-slate-600 line-through'
@@ -1234,7 +1243,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['ARTY','BAI','SOXX','QQQ','AIRR'].map(t => (
-            <span key={t} className="bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded">{t}</span>
+            <span key={t} className="bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded cursor-default select-none">{t}</span>
           ))}
           <span className="text-slate-600 text-[10px] self-center">+23 more</span>
         </div>
