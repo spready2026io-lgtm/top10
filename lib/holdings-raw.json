@@ -14,6 +14,8 @@
     "IVEP",
     "VOLT",
     "AIRR",
+    "AIS",
+    "POW",
     "QQQA",
     "FDTX",
     "AIFD",
@@ -3246,6 +3248,405 @@
         "ticker": "MWA",
         "name": "Mueller Water Products, Inc.",
         "weight": 0.43
+      }
+    ],
+    "AIS": [
+      {
+        "ticker": "MU",
+        "name": "Micron Technology Inc",
+        "weight": 7.43
+      },
+      {
+        "ticker": "AMD",
+        "name": "Advanced Micro Devices Inc",
+        "weight": 4.44
+      },
+      {
+        "ticker": "MRVL",
+        "name": "MARVELL TECHNOLOGY INC",
+        "weight": 4.4
+      },
+      {
+        "ticker": "VRT",
+        "name": "Vertiv Holdings Co",
+        "weight": 3.75
+      },
+      {
+        "ticker": "SIMO",
+        "name": "Silicon Motion Technology Corp",
+        "weight": 3.45
+      },
+      {
+        "ticker": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+        "weight": 3.27
+      },
+      {
+        "ticker": "NVTS",
+        "name": "Navitas Semiconductor Corp",
+        "weight": 3.05
+      },
+      {
+        "ticker": "INTC",
+        "name": "Intel Corp",
+        "weight": 2.87
+      },
+      {
+        "ticker": "STX",
+        "name": "Seagate Technology Holdings PLC",
+        "weight": 2.71
+      },
+      {
+        "ticker": "GEV",
+        "name": "GE Vernova Inc",
+        "weight": 2.67
+      },
+      {
+        "ticker": "VICR",
+        "name": "Vicor Corp",
+        "weight": 2.59
+      },
+      {
+        "ticker": "NVDA",
+        "name": "NVIDIA Corp",
+        "weight": 2.56
+      },
+      {
+        "ticker": "ARM",
+        "name": "ARM Holdings PLC",
+        "weight": 2.17
+      },
+      {
+        "ticker": "GLW",
+        "name": "Corning Inc",
+        "weight": 1.99
+      },
+      {
+        "ticker": "SMTC",
+        "name": "Semtech Corp",
+        "weight": 1.98
+      },
+      {
+        "ticker": "SNDK",
+        "name": "Sandisk Corp",
+        "weight": 1.82
+      },
+      {
+        "ticker": "LR",
+        "name": "Legrand SA",
+        "weight": 1.76
+      },
+      {
+        "ticker": "ALAB",
+        "name": "Astera Labs Inc",
+        "weight": 1.74
+      },
+      {
+        "ticker": "ASML",
+        "name": "ASML Holding NV",
+        "weight": 1.72
+      },
+      {
+        "ticker": "WDC",
+        "name": "Western Digital Corp",
+        "weight": 1.52
+      },
+      {
+        "ticker": "ANET",
+        "name": "Arista Networks Inc",
+        "weight": 1.41
+      },
+      {
+        "ticker": "TSEM",
+        "name": "Tower Semiconductor Ltd",
+        "weight": 1.2
+      },
+      {
+        "ticker": "CVLT",
+        "name": "Commvault Systems Inc",
+        "weight": 1.05
+      },
+      {
+        "ticker": "COHR",
+        "name": "Coherent Corp",
+        "weight": 0.98
+      },
+      {
+        "ticker": "AEIS",
+        "name": "Advanced Energy Industries Inc",
+        "weight": 0.94
+      },
+      {
+        "ticker": "PENG",
+        "name": "Penguin Solutions Inc",
+        "weight": 0.92
+      },
+      {
+        "ticker": "NTNX",
+        "name": "Nutanix Inc",
+        "weight": 0.91
+      },
+      {
+        "ticker": "NOKIA",
+        "name": "Nokia Oyj",
+        "weight": 0.81
+      },
+      {
+        "ticker": "PANW",
+        "name": "Palo Alto Networks Inc",
+        "weight": 0.74
+      },
+      {
+        "ticker": "CRDO",
+        "name": "Credo Technology Group Holding Ltd",
+        "weight": 0.73
+      },
+      {
+        "ticker": "AVGO",
+        "name": "Broadcom Inc",
+        "weight": 0.71
+      },
+      {
+        "ticker": "CSCO",
+        "name": "Cisco Systems Inc",
+        "weight": 0.64
+      },
+      {
+        "ticker": "SMCI",
+        "name": "Super Micro Computer Inc",
+        "weight": 0.57
+      },
+      {
+        "ticker": "HPE",
+        "name": "Hewlett Packard Enterprise Co",
+        "weight": 0.54
+      },
+      {
+        "ticker": "MTRS",
+        "name": "Munters Group AB",
+        "weight": 0.53
+      },
+      {
+        "ticker": "CLS",
+        "name": "Celestica Inc",
+        "weight": 0.47
+      },
+      {
+        "ticker": "CRWD",
+        "name": "Crowdstrike Holdings Inc",
+        "weight": 0.34
+      },
+      {
+        "ticker": "P",
+        "name": "Everpure Inc",
+        "weight": 0.3
+      },
+      {
+        "ticker": "ZS",
+        "name": "Zscaler Inc",
+        "weight": 0.14
+      }
+    ],
+    "POW": [
+      {
+        "ticker": "POWL",
+        "name": "Powell Industries Inc",
+        "weight": 6.58
+      },
+      {
+        "ticker": "VICR",
+        "name": "Vicor Corp",
+        "weight": 4.89
+      },
+      {
+        "ticker": "PWR",
+        "name": "Quanta Services Inc",
+        "weight": 4.82
+      },
+      {
+        "ticker": "PRY",
+        "name": "Prysmian SpA",
+        "weight": 4.46
+      },
+      {
+        "ticker": "ETN",
+        "name": "Eaton Corp PLC",
+        "weight": 4.07
+      },
+      {
+        "ticker": "NVT",
+        "name": "nVent Electric PLC",
+        "weight": 3.88
+      },
+      {
+        "ticker": "GEV",
+        "name": "GE Vernova Inc",
+        "weight": 3.29
+      },
+      {
+        "ticker": "BELFB",
+        "name": "Bel Fuse Inc",
+        "weight": 3.17
+      },
+      {
+        "ticker": "ENR",
+        "name": "Siemens Energy AG",
+        "weight": 3.07
+      },
+      {
+        "ticker": "HUBB",
+        "name": "Hubbell Inc",
+        "weight": 2.91
+      },
+      {
+        "ticker": "MTZ",
+        "name": "MasTec Inc",
+        "weight": 2.07
+      },
+      {
+        "ticker": "NEE",
+        "name": "NextEra Energy Inc",
+        "weight": 2.03
+      },
+      {
+        "ticker": "XEL",
+        "name": "Xcel Energy Inc",
+        "weight": 2.01
+      },
+      {
+        "ticker": "LFUS",
+        "name": "Littelfuse Inc",
+        "weight": 1.86
+      },
+      {
+        "ticker": "ENGI",
+        "name": "Engie SA",
+        "weight": 1.53
+      },
+      {
+        "ticker": "AEP",
+        "name": "American Electric Power Co Inc",
+        "weight": 1.42
+      },
+      {
+        "ticker": "CEG",
+        "name": "Constellation Energy Corp",
+        "weight": 1.35
+      },
+      {
+        "ticker": "ENEL",
+        "name": "Enel SpA",
+        "weight": 1.33
+      },
+      {
+        "ticker": "EXC",
+        "name": "Exelon Corp",
+        "weight": 1.26
+      },
+      {
+        "ticker": "EIX",
+        "name": "Edison International",
+        "weight": 1.19
+      },
+      {
+        "ticker": "SU",
+        "name": "Schneider Electric SE",
+        "weight": 1.18
+      },
+      {
+        "ticker": "ES",
+        "name": "Eversource Energy",
+        "weight": 1.16
+      },
+      {
+        "ticker": "ED",
+        "name": "Consolidated Edison Inc",
+        "weight": 0.98
+      },
+      {
+        "ticker": "ENS",
+        "name": "EnerSys",
+        "weight": 0.96
+      },
+      {
+        "ticker": "AEIS",
+        "name": "Advanced Energy Industries Inc",
+        "weight": 0.92
+      },
+      {
+        "ticker": "APH",
+        "name": "Amphenol Corp",
+        "weight": 0.91
+      },
+      {
+        "ticker": "PCG",
+        "name": "PG&E Corp",
+        "weight": 0.86
+      },
+      {
+        "ticker": "ENPH",
+        "name": "Enphase Energy Inc",
+        "weight": 0.8
+      },
+      {
+        "ticker": "IBE",
+        "name": "Iberdrola SA",
+        "weight": 0.77
+      },
+      {
+        "ticker": "NRG",
+        "name": "NRG Energy Inc",
+        "weight": 0.53
+      },
+      {
+        "ticker": "SEDG",
+        "name": "SolarEdge Technologies Inc",
+        "weight": 0.43
+      },
+      {
+        "ticker": "NOFR",
+        "name": "OY Nofar Energy Ltd",
+        "weight": 0.35
+      },
+      {
+        "ticker": "SO",
+        "name": "Southern Co/The",
+        "weight": 0.31
+      },
+      {
+        "ticker": "FLNC",
+        "name": "Fluence Energy Inc",
+        "weight": 0.29
+      },
+      {
+        "ticker": "RED",
+        "name": "Redeia Corp SA",
+        "weight": 0.29
+      },
+      {
+        "ticker": "DUK",
+        "name": "Duke Energy Corp",
+        "weight": 0.19
+      },
+      {
+        "ticker": "NXT",
+        "name": "Nextpower Inc",
+        "weight": 0.18
+      },
+      {
+        "ticker": "AMSC",
+        "name": "American Superconductor Corp",
+        "weight": 0.17
+      },
+      {
+        "ticker": "EUR",
+        "name": "EURO",
+        "weight": 0.04
+      },
+      {
+        "ticker": "CHF",
+        "name": "SWISS FRANC",
+        "weight": 0.02
       }
     ],
     "QQQA": [
