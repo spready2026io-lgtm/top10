@@ -313,10 +313,14 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
   // Which row's holdings tooltip is open. Mouse hover drives it on desktop;
   // tap toggles it on touch devices (which never fire :hover).
   const [openEtf, setOpenEtf] = useState<string | null>(null);
+  const [showAllEtfs, setShowAllEtfs] = useState(false);
 
   const rows = etfs
     .map(ticker => ({ ticker, ret: ETF_RETURNS[ticker]?.[period] ?? 0 }))
     .sort((a, b) => b.ret - a.ret);
+
+  const PREVIEW_COUNT = 4;
+  const visibleRows = showAllEtfs ? rows : rows.slice(0, PREVIEW_COUNT);
 
   const maxAbs = Math.max(...rows.map(r => Math.abs(r.ret)), 0.1);
 
@@ -338,7 +342,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
 
       {/* ETF rows */}
       <div className="flex flex-col gap-1.5">
-        {rows.map(({ ticker, ret }) => {
+        {visibleRows.map(({ ticker, ret }) => {
           const pos      = ret >= 0;
           const barPct   = (Math.abs(ret) / maxAbs) * 100;
           const holdings = ETF_TOP_HOLDINGS[ticker] ?? [];
@@ -382,6 +386,16 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
           );
         })}
       </div>
+
+      {/* Show more / less toggle */}
+      {rows.length > PREVIEW_COUNT && (
+        <button
+          onClick={() => setShowAllEtfs(v => !v)}
+          className="text-[10px] font-semibold text-slate-500 hover:text-emerald-400 transition-colors text-center mt-1"
+        >
+          {showAllEtfs ? '▲ show less' : `▼ show all ${rows.length} ETFs`}
+        </button>
+      )}
 
     </div>
   );
@@ -1344,19 +1358,29 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 
       {/* Compact preview — shown when collapsed */}
       {!expanded && (
-        <div className="flex flex-col md:flex-row px-4 py-3 gap-2">
-          {steps.map(s => (
-            <div key={s.n} className={`flex-1 rounded-lg border ${s.borderColor} bg-slate-800/40 px-3 py-2 flex flex-col gap-1 min-w-0`}>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
-                  {s.n}
-                </span>
-                <span className={`text-xs font-bold ${s.color}`}>{s.label}</span>
+        <>
+          <div className="flex flex-col md:flex-row px-4 py-3 gap-2">
+            {steps.map(s => (
+              <div key={s.n} className={`flex-1 rounded-lg border ${s.borderColor} bg-slate-800/40 px-3 py-2 flex flex-col gap-1 min-w-0`}>
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                    {s.n}
+                  </span>
+                  <span className={`text-xs font-bold ${s.color}`}>{s.label}</span>
+                </div>
+                <p className="text-slate-400 text-[10px] leading-snug line-clamp-2">{s.desc}</p>
               </div>
-              <p className="text-slate-400 text-[10px] leading-snug line-clamp-2">{s.desc}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          {/* Expand nudge arrow */}
+          <button
+            onClick={() => setExpanded(true)}
+            className="flex flex-col items-center gap-0.5 pb-2 text-slate-500 hover:text-emerald-400 transition-colors group"
+          >
+            <span className="text-[10px] font-semibold group-hover:text-emerald-400">expand guide</span>
+            <span className="text-base leading-none animate-bounce">▼</span>
+          </button>
+        </>
       )}
 
       {/* Steps — only shown when expanded */}
