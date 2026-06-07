@@ -58,6 +58,8 @@ function yfFailedList() {
   ).join(' ');
 }
 
+const totalHoldings = Object.values(etfScan.results).reduce((sum, r) => sum + (r.count || 0), 0);
+
 const etfStatusLine = etfScan.failed.length === 0
   ? `<span style="color:#34d399;">All ${etfScan.ok}/${etfScan.total} ETFs scraped successfully.</span>`
   : `<span style="color:#fbbf24;">${etfScan.ok}/${etfScan.total} ETFs ok. Failed: ${etfScan.failed.join(', ')}</span>`;
@@ -84,6 +86,7 @@ const html = `<!DOCTYPE html>
   <div style="background:#1e293b;border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;line-height:1.7;">
     <div>${etfStatusLine}</div>
     <div>${yfStatusLine}</div>
+    <div style="margin-top:6px;color:#64748b;">Total holdings scanned: <strong style="color:#f1f5f9;">${totalHoldings.toLocaleString()}</strong></div>
   </div>
 
   <!-- ETF Holdings Scan -->
