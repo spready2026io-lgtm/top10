@@ -992,6 +992,7 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
           <div className="flex-shrink-0">
             <div className="flex items-start justify-between">
               <div>
+                <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-0.5">Tony&apos;s Thesis</p>
                 <p className="text-white font-bold text-sm">{equity.ticker}</p>
                 <p className="text-slate-500 text-xs truncate">{equity.name}</p>
               </div>
@@ -1055,7 +1056,6 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
 
           {/* Tony's note */}
           <div className="flex-1 min-h-0 flex flex-col">
-            <p className="text-white text-sm font-bold mb-1 flex-shrink-0">Tony&apos;s Thesis</p>
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5 flex-shrink-0">
               Analysis
             </p>
