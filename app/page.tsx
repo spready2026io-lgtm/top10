@@ -774,19 +774,20 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
 }
 
 // ── Equity tile ───────────────────────────────────────────────────────────────
-function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]; maxScore: number }) {
+function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean }) {
   const [flipped,     setFlipped]     = useState(false);
   const [tilePeriod,  setTilePeriod]  = useState<Period>('1W');
   const [wtOpen,      setWtOpen]      = useState(false);
   const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
-  const [hinted,      setHinted]      = useState(true);
 
-  // Dismiss hover hint after 4 seconds
+  // Auto-open the weight tooltip on the 2nd tile for 3s to teach the hover interaction
   useEffect(() => {
-    const t = setTimeout(() => setHinted(false), 4000);
-    return () => clearTimeout(t);
-  }, []);
+    if (!autoOpen) return;
+    const open  = setTimeout(() => setWtOpen(true),  800);
+    const close = setTimeout(() => setWtOpen(false), 3800);
+    return () => { clearTimeout(open); clearTimeout(close); };
+  }, [autoOpen]);
 
   // Close any open tooltip on the next click anywhere in the document (mobile fix)
   useEffect(() => {
@@ -872,12 +873,10 @@ function EquityTile({ equity, etfs, maxScore }: { equity: Equity; etfs: string[]
             </p>
             <div className="flex flex-col items-end gap-1.5">
               {/* avg wt */}
-              <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); setHinted(false); }}>
-                {hinted && <span className="absolute inset-0 rounded-lg bg-emerald-400/25 animate-ping pointer-events-none" />}
+              <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); }}>
                 <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
                   {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
                 </span>
-                {hinted && <p className="text-slate-500 text-[9px] text-right mt-0.5 pointer-events-none">hover scores for detail</p>}
                 {/* Tooltip: ETF weight breakdown */}
                 <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                   <p className="text-slate-400 text-xs font-semibold mb-2">ETF weight breakdown</p>
@@ -1795,8 +1794,8 @@ export default function Home() {
             {layout === 'grid' && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {(showAll ? sortedEquities : sortedEquities.slice(0, 10)).map(eq => (
-                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} />
+                  {(showAll ? sortedEquities : sortedEquities.slice(0, 10)).map((eq, i) => (
+                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} autoOpen={i === 1} />
                   ))}
                 </div>
                 {!showAll && sortedEquities.length > 10 && (
