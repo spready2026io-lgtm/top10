@@ -71,7 +71,19 @@ const TICKER_DOMAINS: Record<string, string> = {
   IONQ: 'ionq.com',      TE:   't1energy.com',         AXTI: 'axt.com',
   NVTS: 'navitassemi.com', WOLF: 'wolfspeed.com',
   // Non-US listings
-  PRY:  'prysmian.com',
+  PRY:  'prysmian.com',  TSM:  'tsmc.com',        LIN:  'linde.com',
+  // Semiconductors & photonics
+  NXPI: 'nxp.com',       COHR: 'coherent.com',    LITE: 'lumentum.com',
+  // Software & cloud
+  ORCL: 'oracle.com',    PANW: 'paloaltonetworks.com', SHOP: 'shopify.com',
+  // Industrials & power
+  AEP:  'aep.com',       XEL:  'xcelenergy.com',  UNP:  'up.com',
+  GD:   'gd.com',        TKR:  'timken.com',       GTES: 'gates.com',
+  MOD:  'modine.com',    AIT:  'applied.com',      APH:  'amphenol.com',
+  CGNX: 'cognex.com',
+  // Space & energy
+  SPCE: 'virgingalactic.com', OKLO: 'oklo.com',   HYLN: 'hyliion.com',
+  CIFR: 'ciphermining.com',   RGTI: 'rigetti.com',
 };
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────

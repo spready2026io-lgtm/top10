@@ -77,6 +77,11 @@ const COMPANY_NAMES = {
   AXTI: 'AXT Inc',                 NVTS: 'Navitas Semiconductor',
   WOLF: 'Wolfspeed',               BE:   'Bloom Energy',
   SNDK: 'Sandisk',
+  // Tickers whose ETF source emits ticker-only names
+  PANW: 'Palo Alto Networks',      TKR:  'Timken Company',
+  CGNX: 'Cognex Corporation',      GTES: 'Gates Industrial',
+  LIN:  'Linde plc',               SPCE: 'Virgin Galactic Holdings',
+  OKLO: 'Oklo Inc',                RGTI: 'Rigetti Computing',
 };
 
 function resolveName(ticker, rawName) {
