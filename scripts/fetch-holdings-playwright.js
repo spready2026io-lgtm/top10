@@ -590,7 +590,20 @@ async function main() {
   console.log('Browser launched.\n');
 
   try {
-    // VistaShares (AIS, POW) are now fetched via simple HTTP in fetch-holdings.js
+    // VistaShares (AIS, POW) — HTTP fetch in Phase 1 works locally but GitHub Actions
+    // datacenter IPs get HTTP 415. Fall back to Playwright if Phase 1 missed them.
+    const VISTASHARES = ['AIS', 'POW'];
+    const vsMissing = VISTASHARES.filter(t => !results[t] || results[t].length === 0);
+    if (vsMissing.length > 0) {
+      console.log('[VistaShares — Playwright fallback]');
+      for (const ticker of vsMissing) {
+        const h = await fetchVistaShares(ctx, ticker);
+        if (h) results[ticker] = h;
+        await sleep(2000);
+      }
+    } else {
+      console.log('[VistaShares] AIS + POW already fetched by Phase 1 — skipping Playwright');
+    }
 
     console.log('[Roundhill]');
     for (const ticker of ['CHAT', 'DRAM', 'MARS']) {
