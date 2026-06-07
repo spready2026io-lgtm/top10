@@ -781,9 +781,12 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
   const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
 
-  // Auto-open the weight tooltip on the 2nd tile for 3s to teach the hover interaction
+  // Auto-open the weight tooltip on the 2nd tile for 3s — fires only once ever (localStorage flag)
   useEffect(() => {
     if (!autoOpen) return;
+    if (typeof window === 'undefined') return;
+    if (localStorage.getItem('top10_tooltip_shown')) return;
+    localStorage.setItem('top10_tooltip_shown', '1');
     const open  = setTimeout(() => setWtOpen(true),  800);
     const close = setTimeout(() => setWtOpen(false), 3800);
     return () => { clearTimeout(open); clearTimeout(close); };
