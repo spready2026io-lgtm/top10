@@ -809,7 +809,8 @@ function genCrossThemeTop10(themeEquities, financialsMap) {
     const price        = Number(f.price ?? 0).toFixed(2);
     const weeklyChange = Number(f.weeklyChange ?? 0).toFixed(2);
     const themesArr    = e.themes.map(t => `'${escapeStr(t)}'`).join(', ');
-    return `  { ticker: '${safeTicker(e.ticker)}', name: \`${escapeStr(e.name)}\`, themeCount: ${e.themes.length}, themes: [${themesArr}], aggregateScore: ${e.aggregateScore.toFixed(2)}, bestProScore: ${e.bestProScore.toFixed(2)}, price: ${price}, weeklyChange: ${weeklyChange} },`;
+    const avgProScore = (e.aggregateScore / e.themes.length).toFixed(2);
+    return `  { ticker: '${safeTicker(e.ticker)}', name: \`${escapeStr(e.name)}\`, themeCount: ${e.themes.length}, themes: [${themesArr}], aggregateScore: ${e.aggregateScore.toFixed(2)}, bestProScore: ${e.bestProScore.toFixed(2)}, avgProScore: ${avgProScore}, price: ${price}, weeklyChange: ${weeklyChange} },`;
   });
 
   return [

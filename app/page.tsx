@@ -1500,7 +1500,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                   </span>
                   <div className="mt-1 text-xs tabular-nums">
                     <span className="text-slate-400">${e.price.toFixed(2)}</span>
-                    <span className="ml-2 text-slate-400">avg wt <span className="text-white font-bold">{e.bestProScore.toFixed(1)}%</span></span>
+                    <span className="ml-2 text-slate-400">avg wt <span className="text-white font-bold">{e.avgProScore.toFixed(1)}%</span></span>
                   </div>
                 </div>
               </div>
