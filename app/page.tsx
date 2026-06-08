@@ -1459,7 +1459,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
         <p className="text-slate-500 text-xs mt-1 max-w-2xl">
           Ranked by cross-theme breadth — the stocks held across the most institutional theme
           baskets. The widest-conviction names in the entire tracked universe.
-          Ranking: ETF count first, avg weight as tiebreaker. (Meme theme excluded)
+          Ranking: ETF count first, avg weight across all themes as tiebreaker. (Meme theme excluded)
         </p>
       </div>
 
