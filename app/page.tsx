@@ -910,7 +910,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                       <span className="text-slate-400 text-xs">Coverage coeff</span>
                       <span className="text-slate-100 text-xs font-bold tabular-nums">×{equity.coverage.toFixed(2)}</span>
                     </div>
-                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Weight Score = avg × coverage</p>
+                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Rank: ETF count first, avg wt tiebreaker</p>
                   </div>
                 </div>
               </span>
@@ -1286,7 +1286,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'The Scores',
       color: 'text-emerald-400',
       borderColor: 'border-emerald-500/30',
-      desc: 'Weight Score = average portfolio weight across ETFs that hold the stock, multiplied by the fraction of theme ETFs that hold it. A 5.5% score means funds dedicate 5.5 cents of every dollar to this name, adjusted for how widely held it is. One fund betting 10% counts far less than all ETFs in the theme agreeing at 5% — broad consensus matters. A stock held by all ETFs in its theme keeps the full average weight. Held by only half, the score is cut in half. Velocity Score shows whether that conviction is growing or fading week over week.',
+      desc: 'Stocks are ranked first by how many ETFs in the theme hold them — breadth of conviction comes first. When two stocks are held by the same number of ETFs, the average portfolio weight breaks the tie. A stock held by 9 out of 11 ETFs always ranks above one held by 5, even if that 5-ETF stock carries a higher individual weight. The Weight Score shown on each tile is avg weight x coverage — a single number combining both signals. Velocity Score shows whether that conviction is growing or fading week over week.',
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-emerald-500/70 ml-0.5">% avg wt</span></span>
@@ -1733,7 +1733,7 @@ export default function Home() {
               <div className={`${newCount === 0 ? 'sm:ml-auto' : ''} flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5`}>
                 <button
                   onClick={() => setSortBy('wt')}
-                  title="Sort by ETF count (how many funds hold it), then avg weight as tiebreaker"
+                  title="Rank by ETF count (breadth first), avg weight as tiebreaker"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     sortBy === 'wt'
                       ? 'bg-slate-600 text-white'
