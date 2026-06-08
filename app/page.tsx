@@ -1555,13 +1555,15 @@ export default function Home() {
   const newCount = THEMES.reduce((sum, t) => sum + SAMPLE_DATA[t].filter(e => e.isNew).length, 0);
 
   const equities = SAMPLE_DATA[theme];
-  const sortedEquities = sortBy === 'wt'
-    ? equities
-    : [...equities].sort((a, b) => {
+  const sortedEquities = sortBy === 'vs'
+    ? [...equities].sort((a, b) => {
         const va = a.velocityScore?.['1W'] ?? -Infinity;
         const vb = b.velocityScore?.['1W'] ?? -Infinity;
         return vb - va;
-      });
+      })
+    : [...equities].sort((a, b) =>
+        b.easyScore - a.easyScore || (b.avgWeight ?? 0) - (a.avgWeight ?? 0)
+      );
   const etfs     = THEME_ETFS[theme];
   const maxScore = THEME_ETF_COUNT[theme];
 
@@ -1731,7 +1733,7 @@ export default function Home() {
               <div className={`${newCount === 0 ? 'sm:ml-auto' : ''} flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5`}>
                 <button
                   onClick={() => setSortBy('wt')}
-                  title="Sort by Weight Score (avg ETF weighting × coverage)"
+                  title="Sort by ETF count (how many funds hold it), then avg weight as tiebreaker"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     sortBy === 'wt'
                       ? 'bg-slate-600 text-white'

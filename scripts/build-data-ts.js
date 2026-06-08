@@ -467,8 +467,8 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
     return { ticker, name: data.name, easyScore, avgWeight: parseFloat(avgWeight.toFixed(2)), proScore, coverage, etfPresence };
   });
 
-  // Sort: proScore desc, easyScore as tiebreaker
-  scored.sort((a, b) => b.proScore - a.proScore || b.easyScore - a.easyScore);
+  // Sort: easyScore (ETF count) primary, avgWeight (avg weight among holders) as tiebreaker
+  scored.sort((a, b) => b.easyScore - a.easyScore || b.avgWeight - a.avgWeight);
 
   return { equities: scored.slice(0, TOP_N), etfCount: availableEtfs.length };
 }
