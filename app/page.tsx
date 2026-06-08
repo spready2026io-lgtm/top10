@@ -1286,7 +1286,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'The Scores',
       color: 'text-emerald-400',
       borderColor: 'border-emerald-500/30',
-      desc: 'Weight Score tells you how much of their portfolio professional ETF managers put into this stock — on average, across every ETF that holds it. A 5.5% score means the average fund dedicates 5.5 cents of every dollar to this name. It then applies a Coverage Coefficient: a penalty if only a few ETFs hold it. One fund betting 10% counts far less than all ETFs in the theme agreeing at 5% — broad consensus matters. A stock held by all ETFs in its theme gets the full score. Held by only half, the score is reduced by roughly 30%. Velocity Score shows whether that conviction is growing or fading week over week.',
+      desc: 'Weight Score = average portfolio weight across ETFs that hold the stock, multiplied by the fraction of theme ETFs that hold it. A 5.5% score means funds dedicate 5.5 cents of every dollar to this name, adjusted for how widely held it is. One fund betting 10% counts far less than all ETFs in the theme agreeing at 5% — broad consensus matters. A stock held by all ETFs in its theme keeps the full average weight. Held by only half, the score is cut in half. Velocity Score shows whether that conviction is growing or fading week over week.',
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-emerald-500/70 ml-0.5">% avg wt</span></span>
