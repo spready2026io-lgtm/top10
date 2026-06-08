@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-07T15:20:01.385Z",
-  "scanTimestampNY": "June 7, 2026 at 11:20 AM ET",
+  "scanTimestamp": "2026-06-08T13:36:38.850Z",
+  "scanTimestampNY": "June 8, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 33
+        "count": 32
       },
       "IVEP": {
         "ok": true,
@@ -145,7 +145,7 @@
       },
       "IDEF": {
         "ok": true,
-        "count": 87
+        "count": 86
       },
       "BILT": {
         "ok": true,
@@ -197,10 +197,6 @@
         "error": "HTTP 406"
       },
       {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -215,8 +211,105 @@
     ]
   },
   "yfScan": {
-    "total": 91,
-    "succeeded": 91,
-    "failed": []
+    "total": 96,
+    "succeeded": 0,
+    "failed": [
+      "NVDA",
+      "MU",
+      "AMD",
+      "AVGO",
+      "ANET",
+      "GOOGL",
+      "TSM",
+      "MRVL",
+      "WDC",
+      "AMZN",
+      "MSFT",
+      "META",
+      "ALAB",
+      "VRT",
+      "SNDK",
+      "CRDO",
+      "ARM",
+      "COHR",
+      "ORCL",
+      "LITE",
+      "INTC",
+      "ADI",
+      "AMAT",
+      "KLAC",
+      "LRCX",
+      "QCOM",
+      "TXN",
+      "NXPI",
+      "ON",
+      "MPWR",
+      "MCHP",
+      "MTSI",
+      "RMBS",
+      "STX",
+      "SHOP",
+      "TSLA",
+      "PANW",
+      "PLTR",
+      "GOOG",
+      "CRWD",
+      "ASML",
+      "CDNS",
+      "POWL",
+      "PWR",
+      "BELFB",
+      "ETN",
+      "GEV",
+      "NVT",
+      "BE",
+      "HUBB",
+      "NEE",
+      "AEP",
+      "APH",
+      "AEIS",
+      "XEL",
+      "BLDP",
+      "SHLS",
+      "SU",
+      "ENPH",
+      "CEG",
+      "SEDG",
+      "NRG",
+      "STRL",
+      "CAT",
+      "FIX",
+      "AGX",
+      "AIT",
+      "SPXC",
+      "HWM",
+      "BWXT",
+      "PL",
+      "KTOS",
+      "HII",
+      "RBC",
+      "WMB",
+      "KRMN",
+      "MRCY",
+      "DRS",
+      "TPC",
+      "TKR",
+      "RTX",
+      "NBIS",
+      "ASTS",
+      "APLD",
+      "RKLB",
+      "NVTS",
+      "AAOI",
+      "IREN",
+      "ONDS",
+      "OKLO",
+      "RGTI",
+      "IONQ",
+      "SPCE",
+      "RDW",
+      "QBTS",
+      "AXTI"
+    ]
   }
 }
