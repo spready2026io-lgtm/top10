@@ -1255,13 +1255,13 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'ETF Holdings',
       color: 'text-sky-400',
       borderColor: 'border-sky-500/30',
-      desc: 'Every day we read the published holdings of 28 major sector ETFs. These funds manage billions in real capital — their holdings are public record.',
+      desc: 'Every day we read the published holdings of 40 actively managed sector ETFs. These funds manage billions in real capital. Their holdings are public record.',
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
-          {['ARTY','BAI','SOXX','QQQ','AIRR'].map(t => (
+          {['ARTY','BAI','SOXX','ARKK','AIRR'].map(t => (
             <span key={t} className="bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded cursor-default select-none">{t}</span>
           ))}
-          <span className="text-slate-600 text-[10px] self-center">+23 more</span>
+          <span className="text-slate-600 text-[10px] self-center">+35 more</span>
         </div>
       ),
       pointer: null,
@@ -1271,7 +1271,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'Pick a Theme',
       color: 'text-violet-400',
       borderColor: 'border-violet-500/30',
-      desc: 'Choose a sector. Each theme groups 2–10 related ETFs. Top10 then ranks every stock those ETFs collectively hold.',
+      desc: 'Choose a sector. Each theme groups 3–13 actively managed ETFs. Top10 then ranks every stock those ETFs collectively hold.',
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['AI & ML','Semis','Broad Tech'].map(t => (
