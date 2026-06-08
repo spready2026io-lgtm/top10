@@ -82,6 +82,7 @@ const COMPANY_NAMES = {
   CGNX: 'Cognex Corporation',      GTES: 'Gates Industrial',
   LIN:  'Linde plc',               SPCE: 'Virgin Galactic Holdings',
   OKLO: 'Oklo Inc',                RGTI: 'Rigetti Computing',
+  ASML: 'ASML Holding',            CRWD: 'CrowdStrike',
 };
 
 function resolveName(ticker, rawName) {

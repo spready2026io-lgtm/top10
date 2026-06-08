@@ -72,15 +72,26 @@ const TICKER_DOMAINS: Record<string, string> = {
   NVTS: 'navitassemi.com', WOLF: 'wolfspeed.com',
   // Non-US listings
   PRY:  'prysmian.com',  TSM:  'tsmc.com',        LIN:  'linde.com',
+  ASML: 'asml.com',
   // Semiconductors & photonics
   NXPI: 'nxp.com',       COHR: 'coherent.com',    LITE: 'lumentum.com',
+  RMBS: 'rambus.com',    CDNS: 'cadence.com',
   // Software & cloud
   ORCL: 'oracle.com',    PANW: 'paloaltonetworks.com', SHOP: 'shopify.com',
+  CRWD: 'crowdstrike.com',
   // Industrials & power
   AEP:  'aep.com',       XEL:  'xcelenergy.com',  UNP:  'up.com',
   GD:   'gd.com',        TKR:  'timken.com',       GTES: 'gates.com',
   MOD:  'modine.com',    AIT:  'applied.com',      APH:  'amphenol.com',
   CGNX: 'cognex.com',
+  HWM:  'howmet.com',    BWXT: 'bwxt.com',         KTOS: 'kratosdefense.com',
+  HII:  'hii.com',       RBC:  'rbcbearings.com',  MRCY: 'mrcy.com',
+  DRS:  'leonardodrs.com', TPC: 'tutorperini.com',
+  // Energy & utilities (additional)
+  CEG:  'constellationenergy.com', NRG: 'nrg.com', WMB: 'williams.com',
+  SU:   'se.com',
+  // Clean energy
+  BLDP: 'ballard.com',   SHLS: 'shoals.com',
   // Space & energy
   SPCE: 'virgingalactic.com', OKLO: 'oklo.com',   HYLN: 'hyliion.com',
   CIFR: 'ciphermining.com',   RGTI: 'rigetti.com',
