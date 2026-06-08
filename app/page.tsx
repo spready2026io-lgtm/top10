@@ -910,7 +910,6 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                       <span className="text-slate-400 text-xs">Coverage coeff</span>
                       <span className="text-slate-100 text-xs font-bold tabular-nums">×{equity.coverage.toFixed(2)}</span>
                     </div>
-                    <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Rank: ETF count first, avg wt tiebreaker</p>
                   </div>
                 </div>
               </span>
@@ -1460,6 +1459,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
         <p className="text-slate-500 text-xs mt-1 max-w-2xl">
           Ranked by cross-theme breadth — the stocks held across the most institutional theme
           baskets. The widest-conviction names in the entire tracked universe. Meme theme excluded.
+          Ranking: ETF count first, avg weight as tiebreaker.
         </p>
       </div>
 
