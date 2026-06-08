@@ -34,6 +34,17 @@ jobs:
       - name: Fetch holdings + build data.ts
         run: node scripts/run-all.js
 
+      - name: Verify prices not all zero
+        run: |
+          ZERO_COUNT=$(grep -c 'price: 0\.00' lib/data.ts || true)
+          NONZERO_COUNT=$(grep -cP 'price: [1-9]' lib/data.ts || true)
+          echo "Zero-price entries: $ZERO_COUNT"
+          echo "Non-zero-price entries: $NONZERO_COUNT"
+          if [ "$NONZERO_COUNT" -lt 20 ]; then
+            echo "ERROR: fewer than 20 non-zero prices found. Yahoo Finance auth likely failed. Aborting commit."
+            exit 1
+          fi
+
       - name: Commit and push
         run: |
           git config user.name "top10-bot"
