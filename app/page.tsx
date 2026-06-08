@@ -1458,8 +1458,8 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
         </h2>
         <p className="text-slate-500 text-xs mt-1 max-w-2xl">
           Ranked by cross-theme breadth — the stocks held across the most institutional theme
-          baskets. The widest-conviction names in the entire tracked universe. Meme theme excluded.
-          Ranking: ETF count first, avg weight as tiebreaker.
+          baskets. The widest-conviction names in the entire tracked universe.
+          Ranking: ETF count first, avg weight as tiebreaker. (Meme theme excluded)
         </p>
       </div>
 
@@ -1471,7 +1471,6 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
       ) : (
         <div className="space-y-2">
           {rows.map((e, i) => {
-            const pos = e.weeklyChange >= 0;
             return (
               <div
                 key={e.ticker}
@@ -1501,9 +1500,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                   </span>
                   <div className="mt-1 text-xs tabular-nums">
                     <span className="text-slate-400">${e.price.toFixed(2)}</span>
-                    <span className={`ml-2 font-bold ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {pos ? '+' : ''}{e.weeklyChange.toFixed(2)}%
-                    </span>
+                    <span className="ml-2 text-slate-400">avg wt <span className="text-white font-bold">{e.bestProScore.toFixed(1)}%</span></span>
                   </div>
                 </div>
               </div>
