@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-08T13:36:38.850Z",
-  "scanTimestampNY": "June 8, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-06-08T13:51:27.954Z",
+  "scanTimestampNY": "June 8, 2026 at 9:51 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -167,149 +167,11 @@
     "total": 40,
     "ok": 40,
     "failed": [],
-    "fetchErrors": [
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V811/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G847/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V134/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
-        "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/WCLD.csv",
-        "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
-        "error": "HTTP 404"
-      }
-    ]
+    "fetchErrors": []
   },
   "yfScan": {
     "total": 96,
-    "succeeded": 0,
-    "failed": [
-      "NVDA",
-      "MU",
-      "AMD",
-      "AVGO",
-      "ANET",
-      "GOOGL",
-      "TSM",
-      "MRVL",
-      "WDC",
-      "AMZN",
-      "MSFT",
-      "META",
-      "ALAB",
-      "VRT",
-      "SNDK",
-      "CRDO",
-      "ARM",
-      "COHR",
-      "ORCL",
-      "LITE",
-      "INTC",
-      "ADI",
-      "AMAT",
-      "KLAC",
-      "LRCX",
-      "QCOM",
-      "TXN",
-      "NXPI",
-      "ON",
-      "MPWR",
-      "MCHP",
-      "MTSI",
-      "RMBS",
-      "STX",
-      "SHOP",
-      "TSLA",
-      "PANW",
-      "PLTR",
-      "GOOG",
-      "CRWD",
-      "ASML",
-      "CDNS",
-      "POWL",
-      "PWR",
-      "BELFB",
-      "ETN",
-      "GEV",
-      "NVT",
-      "BE",
-      "HUBB",
-      "NEE",
-      "AEP",
-      "APH",
-      "AEIS",
-      "XEL",
-      "BLDP",
-      "SHLS",
-      "SU",
-      "ENPH",
-      "CEG",
-      "SEDG",
-      "NRG",
-      "STRL",
-      "CAT",
-      "FIX",
-      "AGX",
-      "AIT",
-      "SPXC",
-      "HWM",
-      "BWXT",
-      "PL",
-      "KTOS",
-      "HII",
-      "RBC",
-      "WMB",
-      "KRMN",
-      "MRCY",
-      "DRS",
-      "TPC",
-      "TKR",
-      "RTX",
-      "NBIS",
-      "ASTS",
-      "APLD",
-      "RKLB",
-      "NVTS",
-      "AAOI",
-      "IREN",
-      "ONDS",
-      "OKLO",
-      "RGTI",
-      "IONQ",
-      "SPCE",
-      "RDW",
-      "QBTS",
-      "AXTI"
-    ]
+    "succeeded": 96,
+    "failed": []
   }
 }
