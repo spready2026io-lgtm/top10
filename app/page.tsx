@@ -663,12 +663,12 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
             <div className="flex gap-3 flex-wrap">
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Avg Weight</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{avgWt.toFixed(1)}%</p>
+                <p className="text-white font-bold text-2xl tabular-nums">{avgWt.toFixed(1)}%</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">avg across {holdingEtfs.length} ETFs</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                 <p className="text-slate-500 text-xs mb-1">Weight Score</p>
-                <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
+                <p className="text-white font-bold text-2xl tabular-nums">{equity.proScore.toFixed(1)}%</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">avg × {(equity.coverage * 100).toFixed(0)}%</p>
               </div>
               <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
@@ -877,8 +877,8 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             <div className="flex flex-col items-end gap-1.5">
               {/* avg wt */}
               <span className="relative group" onClick={e => { e.stopPropagation(); setWtOpen(o => !o); setVsOpen(false); }}>
-                <span className="text-emerald-400 font-bold text-2xl tabular-nums leading-none cursor-pointer">
-                  {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-emerald-500/70 ml-0.5">% avg wt</span>
+                <span className="text-white font-bold text-2xl tabular-nums leading-none cursor-pointer">
+                  {equity.proScore.toFixed(1)}<span className="text-sm font-medium text-slate-400 ml-0.5">% avg wt</span>
                 </span>
                 {/* Tooltip: ETF weight breakdown */}
                 <div className={`absolute right-0 top-full mt-1.5 w-48 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${wtOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
@@ -931,7 +931,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <span className="text-slate-400 text-xs">Weight Score now</span>
-                          <span className="text-emerald-400 text-xs font-bold tabular-nums">{equity.proScore.toFixed(2)}%</span>
+                          <span className="text-white text-xs font-bold tabular-nums">{equity.proScore.toFixed(2)}%</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-400 text-xs">Weight Score {tileVsPeriod} ago</span>
@@ -1001,7 +1001,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
             <div className="flex items-center gap-2 mt-1.5 tabular-nums flex-wrap">
-              <span className="text-emerald-400 font-bold text-sm">{equity.proScore.toFixed(1)}% wt</span>
+              <span className="text-white font-bold text-sm">{equity.proScore.toFixed(1)}% wt</span>
               <span className="text-slate-700">|</span>
               <span className="text-slate-200 font-semibold text-xs">{(equity.coverage * 100).toFixed(0)}% coverage</span>
               <span className="text-slate-700">|</span>
@@ -1289,7 +1289,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       desc: 'Stocks are ranked first by how many ETFs in the theme hold them — breadth of conviction comes first. When two stocks are held by the same number of ETFs, the average portfolio weight breaks the tie. A stock held by 9 out of 11 ETFs always ranks above one held by 5, even if that 5-ETF stock carries a higher individual weight. The Weight Score shown on each tile is avg weight x coverage — a single number combining both signals. Velocity Score shows whether that conviction is growing or fading week over week.',
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
-          <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-emerald-500/70 ml-0.5">% avg wt</span></span>
+          <span className="text-white font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-slate-400 ml-0.5">% avg wt</span></span>
           <span className="text-amber-400 font-bold text-sm tabular-nums leading-none">▲+4.6<span className="text-xs font-medium text-amber-400/60 ml-0.5">% VS 1W</span></span>
         </div>
       ),
