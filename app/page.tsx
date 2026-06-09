@@ -1597,7 +1597,7 @@ export default function Home() {
               <span className="text-emerald-400">Top</span>10
             </h1>
             <div
-              className="mt-2.5 sm:mt-1.5"
+              className="mt-5 sm:mt-1.5"
               style={{
                 opacity:   tagline ? 1 : 0,
                 transform: tagline ? 'translateY(0)' : 'translateY(6px)',
