@@ -1652,7 +1652,7 @@ export default function Home() {
       {/* Theme toggle — mobile only, full-width scrollable bar */}
       <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
         <div className="px-4 overflow-x-auto scrollbar-none">
-          <div className="flex items-center gap-1 py-2 w-max">
+          <div className="flex items-center gap-1 pt-4 pb-3 w-max">
             {THEMES.map(s => (
               <button
                 key={s}
