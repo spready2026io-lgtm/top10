@@ -1,12 +1,11 @@
 {
-  "scanTimestamp": "2026-06-08T17:04:49.126Z",
-  "scanTimestampNY": "June 8, 2026 at 1:04 PM ET",
+  "scanTimestamp": "2026-06-09T13:36:28.519Z",
+  "scanTimestampNY": "June 9, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": false,
-        "count": 0,
-        "error": "HTTP 415"
+        "ok": true,
+        "count": 40
       },
       "ARTY": {
         "ok": true,
@@ -34,7 +33,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 29
+        "count": 34
       },
       "AIFD": {
         "ok": true,
@@ -46,7 +45,7 @@
       },
       "AOTG": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "SOXX": {
         "ok": true,
@@ -106,7 +105,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 18
+        "count": 19
       },
       "FCUS": {
         "ok": true,
@@ -117,9 +116,8 @@
         "count": 21
       },
       "POW": {
-        "ok": false,
-        "count": 0,
-        "error": "HTTP 415"
+        "ok": true,
+        "count": 40
       },
       "VOLT": {
         "ok": true,
@@ -127,7 +125,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 5
+        "count": 6
       },
       "PBW": {
         "ok": true,
@@ -167,11 +165,8 @@
       }
     },
     "total": 40,
-    "ok": 38,
-    "failed": [
-      "AIS",
-      "POW"
-    ],
+    "ok": 40,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -212,20 +207,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 96,
-    "succeeded": 96,
+    "total": 97,
+    "succeeded": 97,
     "failed": []
   }
 }
