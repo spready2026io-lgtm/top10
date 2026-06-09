@@ -1589,61 +1589,80 @@ export default function Home() {
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-4">
 
-          {/* Left: logo + badge */}
-          <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="text-emerald-400">Top</span>10
-            </h1>
-            <div
-              className="mt-5 sm:mt-1.5"
-              style={{
-                opacity:   tagline ? 1 : 0,
-                transform: tagline ? 'translateY(0)' : 'translateY(6px)',
-                transition: 'opacity 0.55s ease, transform 0.55s ease',
-              }}
-            >
-              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
-                ETF Holdings Analyser
-              </span>
-            </div>
-          </div>
+          {/* Row 1: logo (left) + nav (right) — same on mobile and desktop */}
+          <div className="flex items-center justify-between gap-4">
 
-          {/* Right: nav + sector toggle (desktop only) */}
-          <div className="flex flex-col items-end gap-4 min-w-0 flex-1">
-            <nav className="flex items-center gap-4 text-sm flex-shrink-0">
-              <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
-              <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
-              <button
-                onClick={() => setCrossView(v => !v)}
-                title="Top 10 stocks ranked across all themes by breadth"
-                className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
-                  crossView
-                    ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
-                    : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
-                }`}
+            {/* Left: logo + badge (badge desktop-only here; mobile badge is row 2 below) */}
+            <div className="flex-shrink-0">
+              <h1 className="text-xl font-bold tracking-tight">
+                <span className="text-emerald-400">Top</span>10
+              </h1>
+              <div
+                className="hidden sm:block mt-1.5"
+                style={{
+                  opacity:   tagline ? 1 : 0,
+                  transform: tagline ? 'translateY(0)' : 'translateY(6px)',
+                  transition: 'opacity 0.55s ease, transform 0.55s ease',
+                }}
               >
-                ★ All-Theme Top 10
-              </button>
-            </nav>
-            <div className="hidden sm:flex justify-end max-w-full overflow-x-auto scrollbar-none">
-              <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 flex-shrink-0">
-                {THEMES.map(s => (
-                  <button
-                    key={s}
-                    onClick={() => { setCrossView(false); setTheme(s); }}
-                    className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
-                      theme === s
-                        ? 'bg-emerald-500 text-black shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+                <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
+                  ETF Holdings Analyser
+                </span>
               </div>
             </div>
+
+            {/* Right: nav + sector toggle (desktop only) */}
+            <div className="flex flex-col items-end gap-4 min-w-0 flex-1">
+              <nav className="flex items-center gap-4 text-sm flex-shrink-0">
+                <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+                <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
+                <button
+                  onClick={() => setCrossView(v => !v)}
+                  title="Top 10 stocks ranked across all themes by breadth"
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
+                    crossView
+                      ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
+                      : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
+                  }`}
+                >
+                  ★ All-Theme Top 10
+                </button>
+              </nav>
+              <div className="hidden sm:flex justify-end max-w-full overflow-x-auto scrollbar-none">
+                <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 flex-shrink-0">
+                  {THEMES.map(s => (
+                    <button
+                      key={s}
+                      onClick={() => { setCrossView(false); setTheme(s); }}
+                      className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
+                        theme === s
+                          ? 'bg-emerald-500 text-black shadow-sm'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Row 2: badge — mobile only, on its own line below logo/nav */}
+          <div
+            className="sm:hidden mt-3"
+            style={{
+              opacity:   tagline ? 1 : 0,
+              transform: tagline ? 'translateY(0)' : 'translateY(6px)',
+              transition: 'opacity 0.55s ease, transform 0.55s ease',
+            }}
+          >
+            <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
+              ETF Holdings Analyser
+            </span>
           </div>
 
         </div>
