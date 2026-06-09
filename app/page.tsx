@@ -1589,7 +1589,7 @@ export default function Home() {
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 pt-4 pb-5 sm:py-4 flex items-start justify-between gap-4">
 
           {/* Left: logo + badge */}
           <div className="flex-shrink-0">
@@ -1650,7 +1650,7 @@ export default function Home() {
       </header>
 
       {/* Theme toggle — mobile only, full-width scrollable bar */}
-      <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
+      <div className="sm:hidden border-b border-slate-800 bg-slate-900/50 mt-1">
         <div className="px-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-1 py-3 w-max">
             {THEMES.map(s => (
