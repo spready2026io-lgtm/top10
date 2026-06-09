@@ -19,7 +19,7 @@ export default function About() {
               </span>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-4">
+          <div className="flex flex-col items-end gap-4 min-w-0 overflow-hidden flex-1">
             <nav className="flex items-center gap-4 text-sm">
               <Link href="/about" className="text-emerald-400 font-medium">About</Link>
               <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>

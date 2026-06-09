@@ -12,7 +12,7 @@ export default function ThemeNav() {
   }
 
   return (
-    <div className="overflow-x-auto scrollbar-none">
+    <div className="w-full overflow-x-auto scrollbar-none">
       <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 w-max">
         {THEMES.map(theme => (
           <button
