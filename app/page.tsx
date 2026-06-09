@@ -1589,7 +1589,7 @@ export default function Home() {
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 pt-4 pb-5 sm:py-4 flex items-start justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
 
           {/* Left: logo + badge */}
           <div className="flex-shrink-0">
@@ -1610,9 +1610,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: nav + sector toggle (desktop only) */}
+          {/* Right: nav + themes toggle (both rows always in header) */}
           <div className="flex flex-col items-end gap-4 min-w-0 flex-1">
-            <nav className="flex items-center gap-4 text-sm flex-shrink-0 pt-1 sm:pt-0">
+            <nav className="flex items-center gap-4 text-sm flex-shrink-0">
               <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
               <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
               <button
@@ -1627,13 +1627,14 @@ export default function Home() {
                 ★ All-Theme Top 10
               </button>
             </nav>
-            <div className="hidden sm:flex justify-end max-w-full overflow-x-auto scrollbar-none">
+            {/* Themes toggle — always in header, scrollable on mobile */}
+            <div className="flex justify-end max-w-full overflow-x-auto scrollbar-none">
               <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 flex-shrink-0">
                 {THEMES.map(s => (
                   <button
                     key={s}
                     onClick={() => { setCrossView(false); setTheme(s); }}
-                    className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
+                    className={`px-3 sm:px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                       theme === s
                         ? 'bg-emerald-500 text-black shadow-sm'
                         : 'text-slate-400 hover:text-slate-200'
@@ -1649,8 +1650,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Theme toggle — mobile only, full-width scrollable bar */}
-      <div className="sm:hidden border-b border-slate-800 bg-slate-900/50 mt-1">
+      {/* Theme toggle — mobile only, full-width scrollable bar — REMOVED, now inside header */}
+      <div className="sm:hidden hidden">
         <div className="px-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-1 py-3 w-max">
             {THEMES.map(s => (
