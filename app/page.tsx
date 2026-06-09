@@ -1541,6 +1541,14 @@ export default function Home() {
     return () => clearTimeout(t);
   }, []);
 
+  // Read ?theme= query param set by ThemeNav on other pages
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const t = params.get('theme') as Theme | null;
+    if (t && (THEMES as readonly string[]).includes(t)) setTheme(t);
+  }, []);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const guideDone = localStorage.getItem('top10_guide_done');
@@ -1603,10 +1611,10 @@ export default function Home() {
           </div>
 
           {/* Right: nav + sector toggle (desktop only) */}
-          <div className="flex flex-col items-end gap-2 min-w-0 flex-1">
+          <div className="flex flex-col items-end gap-4 min-w-0 flex-1">
             <nav className="flex items-center gap-4 text-sm flex-shrink-0">
-              <Link href="/" className="text-emerald-400 font-medium">Dashboard</Link>
               <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+              <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
               <button
                 onClick={() => setCrossView(v => !v)}
                 title="Top 10 stocks ranked across all themes by breadth"
