@@ -78,7 +78,7 @@ const TICKER_DOMAINS: Record<string, string> = {
   RMBS: 'rambus.com',    CDNS: 'cadence.com',
   // Software & cloud
   ORCL: 'oracle.com',    PANW: 'paloaltonetworks.com', SHOP: 'shopify.com',
-  CRWD: 'crowdstrike.com',
+  CRWD: 'crowdstrike.com',  NET: 'cloudflare.com',
   // Industrials & power
   AEP:  'aep.com',       XEL:  'xcelenergy.com',  UNP:  'up.com',
   GD:   'gd.com',        TKR:  'timken.com',       GTES: 'gates.com',

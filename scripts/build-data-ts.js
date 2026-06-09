@@ -83,6 +83,7 @@ const COMPANY_NAMES = {
   LIN:  'Linde plc',               SPCE: 'Virgin Galactic Holdings',
   OKLO: 'Oklo Inc',                RGTI: 'Rigetti Computing',
   ASML: 'ASML Holding',            CRWD: 'CrowdStrike',
+  NET:  'Cloudflare',
 };
 
 function resolveName(ticker, rawName) {
