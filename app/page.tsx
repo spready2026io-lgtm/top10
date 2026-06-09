@@ -97,6 +97,29 @@ const TICKER_DOMAINS: Record<string, string> = {
   CIFR: 'ciphermining.com',   RGTI: 'rigetti.com',
 };
 
+// ── Ticker → display name fallback (used when scraped name is blank or ticker-only) ──
+const TICKER_NAMES: Record<string, string> = {
+  NET:  'Cloudflare',
+  CRWD: 'CrowdStrike',  PANW: 'Palo Alto Networks',
+  ASTS: 'AST SpaceMobile', RDW: 'Redwire',
+  AAOI: 'Applied Optoelectronics', LUNR: 'Intuitive Machines',
+  IREN: 'IREN Ltd',   NBIS: 'Nebius Group',
+  QBTS: 'D-Wave Quantum', ONDS: 'Ondas Holdings',
+  APLD: 'Applied Digital', IONQ: 'IonQ',
+  RKLB: 'Rocket Lab', TE:   'T1 Energy',
+  AXTI: 'AXT Inc',    NVTS: 'Navitas Semiconductor',
+  WOLF: 'Wolfspeed',  BE:   'Bloom Energy',
+  SNDK: 'Sandisk',    ASML: 'ASML Holding',
+  LIN:  'Linde plc',  OKLO: 'Oklo Inc',
+  RGTI: 'Rigetti Computing', TKR: 'Timken Company',
+  CGNX: 'Cognex Corporation', GTES: 'Gates Industrial',
+};
+function displayName(ticker: string, scraped: string): string {
+  const n = (scraped || '').trim();
+  if (n && n !== ticker) return n;
+  return TICKER_NAMES[ticker] ?? ticker;
+}
+
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────
 const TILE_XLABELS: Record<Period, string[]> = {
   '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
@@ -658,7 +681,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
               )}
               <div className="min-w-0">
                 <p className="text-emerald-400 text-base font-extrabold leading-tight mb-2">Tony&apos;s Thesis</p>
-                <p className="text-white font-bold text-sm leading-tight truncate">{equity.name}</p>
+                <p className="text-white font-bold text-sm leading-tight truncate">{displayName(equity.ticker, equity.name)}</p>
                 <p className="text-slate-500 text-xs font-mono">{equity.ticker}</p>
               </div>
             </div>
@@ -866,7 +889,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                 />
               )}
               <div className="min-w-0">
-                <p className="text-white font-bold text-sm leading-tight">{equity.name}</p>
+                <p className="text-white font-bold text-sm leading-tight">{displayName(equity.ticker, equity.name)}</p>
                 <p className="text-slate-500 text-xs font-mono mt-0.5">{equity.ticker}</p>
               </div>
             </div>
@@ -1006,7 +1029,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-white font-bold text-sm">{equity.ticker}</p>
-                <p className="text-slate-500 text-xs truncate">{equity.name}</p>
+                <p className="text-slate-500 text-xs truncate">{displayName(equity.ticker, equity.name)}</p>
               </div>
               <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
             </div>
@@ -1140,7 +1163,7 @@ function CompactRow({
         <span className="text-white font-bold text-xs font-mono w-14 flex-shrink-0">{equity.ticker}</span>
 
         {/* Name */}
-        <span className="text-slate-400 text-xs truncate flex-1 min-w-0 hidden sm:block">{equity.name}</span>
+        <span className="text-slate-400 text-xs truncate flex-1 min-w-0 hidden sm:block">{displayName(equity.ticker, equity.name)}</span>
 
         {/* Price */}
         <span className="text-white font-bold text-xs tabular-nums flex-shrink-0 w-16 text-right">
@@ -1491,7 +1514,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white font-mono">{e.ticker}</span>
-                    <span className="text-slate-400 text-sm truncate">{e.name}</span>
+                    <span className="text-slate-400 text-sm truncate">{displayName(e.ticker, e.name)}</span>
                   </div>
                   <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                     {e.themes.map(t => (
