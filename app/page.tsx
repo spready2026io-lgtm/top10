@@ -1016,7 +1016,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             ))}
           </div>
 
-          <p className="text-slate-700 text-xs pt-1 text-right">flip for detail →</p>
+          <p className="text-slate-700 text-xs pt-1 text-right">flip for details</p>
         </div>
 
         {/* ── BACK ── */}
