@@ -1903,9 +1903,18 @@ export default function Home() {
 
       {/* Footer */}
       {SCAN_TIMESTAMP_NY && (
-        <footer className="border-t border-slate-800 mt-8 py-4 px-4">
-          <p className="text-center text-slate-600 text-xs">
-            Last updated: <span className="text-slate-500">{SCAN_TIMESTAMP_NY}</span>
+        <footer className="border-t border-slate-800 mt-8 py-6 px-4">
+          <p className="text-center text-slate-600 text-xs mb-4">
+            Last updated: <span className="text-slate-400 font-bold">{SCAN_TIMESTAMP_NY}</span>
+          </p>
+          <p className="text-center text-slate-600 text-xs max-w-2xl mx-auto leading-relaxed mb-3">
+            Top10 is for informational purposes only. ETF holdings data is sourced from public fund
+            disclosures and updated daily. Nothing on this site constitutes investment advice, a
+            recommendation to buy or sell any security, or an offer of any kind. ETF weightings
+            reflect published data and may lag actual portfolio changes. Always do your own research.
+          </p>
+          <p className="text-center text-slate-700 text-xs">
+            &copy; {new Date().getFullYear()} Top10. All rights reserved.
           </p>
         </footer>
       )}
