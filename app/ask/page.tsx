@@ -87,7 +87,7 @@ export default function AskTonyPage() {
 
           {/* Input — prominent, above suggested questions */}
           <div className="w-full max-w-xl mb-6">
-            <form onSubmit={e => { e.preventDefault(); ask(input); }} autoComplete="off" className="grid grid-cols-[1fr_auto] gap-2">
+            <form onSubmit={e => { e.preventDefault(); ask(input); }} autoComplete="off" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
               <input
                 type="text"
                 value={input}
@@ -181,7 +181,7 @@ export default function AskTonyPage() {
             <form
               onSubmit={e => { e.preventDefault(); ask(input); }}
               autoComplete="off"
-              className="grid grid-cols-[1fr_auto] gap-2"
+              style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}
             >
               <input
                 type="text"
