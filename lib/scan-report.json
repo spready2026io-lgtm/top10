@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-11T13:36:40.943Z",
-  "scanTimestampNY": "June 11, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-06-11T17:33:45.410Z",
+  "scanTimestampNY": "June 11, 2026 at 1:33 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -153,7 +153,7 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 22
+        "count": 25
       },
       "MEME": {
         "ok": true,
@@ -195,6 +195,10 @@
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
         "error": "HTTP 406"
+      },
+      {
+        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
+        "error": "fetch failed"
       },
       {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
