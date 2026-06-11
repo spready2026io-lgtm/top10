@@ -89,7 +89,7 @@ export default function AskTonyPage() {
           <div className="w-full max-w-xl mb-6">
             <form onSubmit={e => { e.preventDefault(); ask(input); }} autoComplete="off" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
               <input
-                type="text"
+                type="search"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Ask about any stock or ETF in our universe..."
@@ -184,7 +184,7 @@ export default function AskTonyPage() {
               style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}
             >
               <input
-                type="text"
+                type="search"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Ask about any stock or ETF in our universe..."
