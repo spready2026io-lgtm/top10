@@ -95,12 +95,16 @@ export default function AskTonyPage() {
                 placeholder="Ask about any stock or ETF in our universe..."
                 maxLength={500}
                 autoFocus
-                className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
+                className="shrink-0 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
@@ -184,12 +188,16 @@ export default function AskTonyPage() {
                 onChange={e => setInput(e.target.value)}
                 placeholder="Ask about any stock or ETF in our universe..."
                 maxLength={500}
-                className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+                className="shrink-0 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
