@@ -1641,6 +1641,9 @@ export default function Home() {
               <nav className="flex items-center gap-4 text-sm flex-shrink-0">
                 <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
                 <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
+                <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors">
+                  <span>Ask Tony</span>
+                </Link>
                 <button
                   onClick={() => setCrossView(v => !v)}
                   title="Top 10 stocks ranked across all themes by breadth"
