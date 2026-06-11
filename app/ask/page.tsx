@@ -99,7 +99,7 @@ export default function AskTonyPage() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+                style={{ fontSize: '16px' }} className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-500 outline-none transition-colors"
               />
               <button
                 type="submit"
