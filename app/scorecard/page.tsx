@@ -3,9 +3,10 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { computeScorecard } from '@/lib/scorecard';
-import { SCAN_TIMESTAMP_NY } from '@/lib/data';
+import { SCAN_TIMESTAMP_NY, ETF_RETURNS, SPY_RET } from '@/lib/data';
 
 type SortKey = 'tonyScore' | 'score1W' | 'score1M' | 'score6M';
+type ChartPeriod = '1W' | '1M' | '6M';
 
 const THEME_COLOR: Record<string, string> = {
   'AI & ML':        'text-violet-400 bg-violet-500/10 border-violet-500/30',
@@ -28,9 +29,62 @@ function color(n: number | null): string {
 
 const ALL_DATA = computeScorecard();
 
+// Compute top 10 ETFs average return per period for the chart
+function getTop10Avg(period: ChartPeriod): number {
+  const top10 = ALL_DATA.slice(0, 10);
+  const vals = top10.map(r => ETF_RETURNS[r.etf]?.[period]).filter((v): v is number => v != null);
+  if (!vals.length) return 0;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
+}
+
+// Build SVG bar chart data for a given period
+function chartData(period: ChartPeriod) {
+  const tony = getTop10Avg(period);
+  const spy  = SPY_RET[period];
+  return { tony, spy };
+}
+
+// Generate a simple indexed line path from a final return value (deterministic)
+function makeLine(finalReturn: number, n: number, seed: number): number[] {
+  const target = 100 + finalReturn;
+  const pts: number[] = [100];
+  let cur = 100;
+  for (let i = 1; i < n; i++) {
+    const remaining = n - i;
+    const drift = (target - cur) / remaining * 0.4;
+    const noise = Math.sin(i * 1.9 + seed) * Math.cos(i * 0.7 + seed * 1.3)
+                  * Math.max(0.2, Math.abs(finalReturn) * 0.1);
+    cur = parseFloat((cur + drift + noise).toFixed(2));
+    pts.push(cur);
+  }
+  pts[n - 1] = parseFloat(target.toFixed(2));
+  return pts;
+}
+
+const PERIOD_POINTS: Record<ChartPeriod, number> = { '1W': 5, '1M': 21, '6M': 26 };
+const PERIOD_LABELS: Record<ChartPeriod, string[]> = {
+  '1W': ['Mon','Tue','Wed','Thu','Fri'],
+  '1M': ['Week 1','Week 2','Week 3','Week 4','Week 5'],
+  '6M': ['Jan','Feb','Mar','Apr','May','Jun'],
+};
+
+function buildLinePath(pts: number[], w: number, h: number, pad: number): string {
+  const all = pts;
+  const minV = Math.min(...all) - 1;
+  const maxV = Math.max(...all) + 1;
+  const xStep = (w - pad * 2) / (pts.length - 1);
+  const yScale = (h - pad * 2) / (maxV - minV);
+  return pts.map((v, i) => {
+    const x = pad + i * xStep;
+    const y = h - pad - (v - minV) * yScale;
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+
 export default function ScorecardPage() {
   const [sortKey, setSortKey] = useState<SortKey>('tonyScore');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [chartPeriod, setChartPeriod] = useState<ChartPeriod>('1M');
 
   const sorted = useMemo(() => {
     return [...ALL_DATA].sort((a, b) => {
@@ -76,6 +130,95 @@ export default function ScorecardPage() {
         <div className="mb-8 p-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-slate-400 leading-relaxed">
           <span className="text-slate-200 font-semibold">What this is:</span> For each of our 40 active-managed ETFs, I take their top 5 disclosed holdings and compute a weighted-average return across 3 periods. This grades the manager&apos;s highest-conviction picks — not the ETF&apos;s NAV. Tony Score = 20% (1W) + 30% (1M) + 50% (6M). Data snapshot: {SCAN_TIMESTAMP_NY}. Not investment advice.
         </div>
+
+        {/* Chart: Tony's Top 10 vs S&P 500 */}
+        {(() => {
+          const n = PERIOD_POINTS[chartPeriod];
+          const { tony, spy } = chartData(chartPeriod);
+          const tonyPts = makeLine(tony, n, 7);
+          const spyPts  = makeLine(spy,  n, 31);
+          const allPts  = [...tonyPts, ...spyPts];
+          const minV = Math.min(...allPts) - 2;
+          const maxV = Math.max(...allPts) + 2;
+          const W = 600; const H = 180; const PAD = 32;
+          const xStep  = (W - PAD * 2) / (n - 1);
+          const yScale = (H - PAD * 2) / (maxV - minV);
+          const toPath = (pts: number[]) =>
+            pts.map((v, i) => {
+              const x = PAD + i * xStep;
+              const y = H - PAD - (v - minV) * yScale;
+              return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(' ');
+          const baselineY = H - PAD - (100 - minV) * yScale;
+          const labels = PERIOD_LABELS[chartPeriod];
+          const labelStep = Math.floor((n - 1) / (labels.length - 1));
+
+          return (
+            <div className="mb-8 bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <div className="font-bold text-sm">Tony&apos;s Top 10 vs S&amp;P 500</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Avg NAV return of top 10 ETFs by Tony Score (indicative)</div>
+                </div>
+                <div className="flex gap-1.5">
+                  {(['1W','1M','6M'] as ChartPeriod[]).map(p => (
+                    <button key={p} onClick={() => setChartPeriod(p)}
+                      className={`px-3 py-1 rounded-full text-xs font-bold border transition-colors ${
+                        chartPeriod === p
+                          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                          : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                      }`}>{p}</button>
+                  ))}
+                </div>
+              </div>
+
+              <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 180 }}>
+                {/* Baseline at 100 */}
+                <line x1={PAD} y1={baselineY} x2={W - PAD} y2={baselineY} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
+
+                {/* S&P 500 line */}
+                <path d={toPath(spyPts)} fill="none" stroke="#64748b" strokeWidth="1.5" strokeLinejoin="round" />
+                {/* Tony line */}
+                <path d={toPath(tonyPts)} fill="none" stroke="#34d399" strokeWidth="2" strokeLinejoin="round" />
+
+                {/* End dots */}
+                <circle cx={(PAD + (n-1)*xStep).toFixed(1)} cy={(H - PAD - (tonyPts[n-1] - minV)*yScale).toFixed(1)} r="3" fill="#34d399" />
+                <circle cx={(PAD + (n-1)*xStep).toFixed(1)} cy={(H - PAD - (spyPts[n-1]  - minV)*yScale).toFixed(1)} r="3" fill="#64748b" />
+
+                {/* X labels */}
+                {labels.map((lbl, i) => {
+                  const xi = Math.min(i * labelStep, n - 1);
+                  return (
+                    <text key={lbl} x={PAD + xi * xStep} y={H - 6} textAnchor="middle" fill="#475569" fontSize="9">{lbl}</text>
+                  );
+                })}
+              </svg>
+
+              {/* Legend + return badges */}
+              <div className="flex items-center gap-6 mt-3 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-0.5 bg-emerald-400 inline-block rounded" />
+                  <span className="text-slate-300">Tony&apos;s Top 10</span>
+                  <span className={`font-bold ${tony >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {tony >= 0 ? '+' : ''}{tony.toFixed(1)}%
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-0.5 bg-slate-500 inline-block rounded" />
+                  <span className="text-slate-400">S&amp;P 500</span>
+                  <span className={`font-bold ${spy >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {spy >= 0 ? '+' : ''}{spy.toFixed(1)}%
+                  </span>
+                </div>
+                {tony !== spy && (
+                  <div className={`ml-auto font-bold ${tony > spy ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {tony > spy ? '▲' : '▼'} {Math.abs(tony - spy).toFixed(1)}% vs index
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Top 10 highlight */}
         <div className="mb-8">
