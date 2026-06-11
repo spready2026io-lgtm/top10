@@ -12,6 +12,7 @@ export function buildTonyContext(): string {
         coverage: Math.round(s.coverage * 100) + '%',
         avgWeight: s.avgWeight != null ? s.avgWeight.toFixed(2) + '%' : null,
         proScore: s.proScore.toFixed(2),
+        velocityScore: s.velocityScore ?? null,
         price: s.price,
         weeklyChange: s.weeklyChange + '%',
         returns: s.periodReturns,
