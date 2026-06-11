@@ -131,6 +131,23 @@ export default function ScorecardPage() {
           <span className="text-slate-200 font-semibold">What this is:</span> For each of our 40 active-managed ETFs, I take their top 5 disclosed holdings and compute a weighted-average return across 3 periods. This grades the manager&apos;s highest-conviction picks — not the ETF&apos;s NAV. Tony Score = 20% (1W) + 30% (1M) + 50% (6M). Data snapshot: {SCAN_TIMESTAMP_NY}. Not investment advice.
         </div>
 
+        {/* Top 10 highlight */}
+        <div className="mb-8">
+          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Tony&apos;s Top 10 ETFs by Pick Performance</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {top10.map((row, i) => (
+              <div key={row.etf} className="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
+                <div className="text-xs text-slate-500 mb-0.5">#{i + 1}</div>
+                <div className="font-bold text-sm">{row.etf}</div>
+                <div className={`text-xs font-bold mt-1 ${color(row.tonyScore)}`}>{fmt(row.tonyScore)}</div>
+                <div className={`text-[10px] mt-0.5 border rounded-full px-1.5 py-0.5 inline-block ${THEME_COLOR[row.theme] ?? 'text-slate-400'}`}>
+                  {row.theme}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Chart: Tony's Top 10 vs S&P 500 */}
         {(() => {
           const n = PERIOD_POINTS[chartPeriod];
@@ -173,42 +190,27 @@ export default function ScorecardPage() {
               </div>
 
               <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 180 }}>
-                {/* Baseline at 100 */}
                 <line x1={PAD} y1={baselineY} x2={W - PAD} y2={baselineY} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
-
-                {/* S&P 500 line */}
                 <path d={toPath(spyPts)} fill="none" stroke="#64748b" strokeWidth="1.5" strokeLinejoin="round" />
-                {/* Tony line */}
                 <path d={toPath(tonyPts)} fill="none" stroke="#34d399" strokeWidth="2" strokeLinejoin="round" />
-
-                {/* End dots */}
                 <circle cx={(PAD + (n-1)*xStep).toFixed(1)} cy={(H - PAD - (tonyPts[n-1] - minV)*yScale).toFixed(1)} r="3" fill="#34d399" />
                 <circle cx={(PAD + (n-1)*xStep).toFixed(1)} cy={(H - PAD - (spyPts[n-1]  - minV)*yScale).toFixed(1)} r="3" fill="#64748b" />
-
-                {/* X labels */}
                 {labels.map((lbl, i) => {
                   const xi = Math.min(i * labelStep, n - 1);
-                  return (
-                    <text key={lbl} x={PAD + xi * xStep} y={H - 6} textAnchor="middle" fill="#475569" fontSize="9">{lbl}</text>
-                  );
+                  return <text key={lbl} x={PAD + xi * xStep} y={H - 6} textAnchor="middle" fill="#475569" fontSize="9">{lbl}</text>;
                 })}
               </svg>
 
-              {/* Legend + return badges */}
               <div className="flex items-center gap-6 mt-3 text-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-0.5 bg-emerald-400 inline-block rounded" />
                   <span className="text-slate-300">Tony&apos;s Top 10</span>
-                  <span className={`font-bold ${tony >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {tony >= 0 ? '+' : ''}{tony.toFixed(1)}%
-                  </span>
+                  <span className={`font-bold ${tony >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tony >= 0 ? '+' : ''}{tony.toFixed(1)}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-0.5 bg-slate-500 inline-block rounded" />
                   <span className="text-slate-400">S&amp;P 500</span>
-                  <span className={`font-bold ${spy >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {spy >= 0 ? '+' : ''}{spy.toFixed(1)}%
-                  </span>
+                  <span className={`font-bold ${spy >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{spy >= 0 ? '+' : ''}{spy.toFixed(1)}%</span>
                 </div>
                 {tony !== spy && (
                   <div className={`ml-auto font-bold ${tony > spy ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -219,23 +221,6 @@ export default function ScorecardPage() {
             </div>
           );
         })()}
-
-        {/* Top 10 highlight */}
-        <div className="mb-8">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Tony&apos;s Top 10 ETFs by Pick Performance</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            {top10.map((row, i) => (
-              <div key={row.etf} className="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-                <div className="text-xs text-slate-500 mb-0.5">#{i + 1}</div>
-                <div className="font-bold text-sm">{row.etf}</div>
-                <div className={`text-xs font-bold mt-1 ${color(row.tonyScore)}`}>{fmt(row.tonyScore)}</div>
-                <div className={`text-[10px] mt-0.5 border rounded-full px-1.5 py-0.5 inline-block ${THEME_COLOR[row.theme] ?? 'text-slate-400'}`}>
-                  {row.theme}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Sort controls */}
         <div className="flex items-center gap-2 mb-4">
