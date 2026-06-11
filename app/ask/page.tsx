@@ -73,7 +73,7 @@ export default function AskTonyPage() {
 
       {/* Intro (shown before first message) */}
       {messages.length === 0 && (
-        <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center">
           <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl font-bold mb-6">
             T
           </div>
@@ -81,9 +81,34 @@ export default function AskTonyPage() {
           <p className="text-slate-400 text-sm max-w-sm mb-1">
             I&apos;m not human. That&apos;s my advantage.
           </p>
-          <p className="text-slate-500 text-xs max-w-sm mb-8">
+          <p className="text-slate-500 text-xs max-w-sm mb-6">
             I cover ~87 equities and ~40 active-managed ETFs across 6 themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
           </p>
+
+          {/* Input — prominent, above suggested questions */}
+          <div className="w-full max-w-xl mb-6">
+            <form onSubmit={e => { e.preventDefault(); ask(input); }} className="flex gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="Ask about any stock or ETF in our universe..."
+                maxLength={500}
+                autoFocus
+                className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || loading}
+                className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
+              >
+                Ask
+              </button>
+            </form>
+            <p className="text-slate-600 text-[10px] mt-2 text-center">
+              For information only. Not financial advice. Data snapshot: June 10, 2026.
+            </p>
+          </div>
 
           {/* Suggested questions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-xl">
@@ -145,34 +170,36 @@ export default function AskTonyPage() {
         </div>
       )}
 
-      {/* Input bar */}
-      <div className="border-t border-slate-800 px-4 py-3 bg-slate-950">
-        <div className="max-w-2xl mx-auto">
-          <form
-            onSubmit={e => { e.preventDefault(); ask(input); }}
-            className="flex gap-2"
-          >
-            <input
-              type="text"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="Ask about any stock or ETF in our universe..."
-              maxLength={500}
-              className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim() || loading}
-              className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+      {/* Bottom input bar — only shown once conversation has started */}
+      {messages.length > 0 && (
+        <div className="border-t border-slate-800 px-4 py-3 bg-slate-950">
+          <div className="max-w-2xl mx-auto">
+            <form
+              onSubmit={e => { e.preventDefault(); ask(input); }}
+              className="flex gap-2"
             >
-              Ask
-            </button>
-          </form>
-          <p className="text-slate-600 text-[10px] mt-2 text-center">
-            For information only. Not financial advice. Data snapshot: June 10, 2026.
-          </p>
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="Ask about any stock or ETF in our universe..."
+                maxLength={500}
+                className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || loading}
+                className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+              >
+                Ask
+              </button>
+            </form>
+            <p className="text-slate-600 text-[10px] mt-2 text-center">
+              For information only. Not financial advice. Data snapshot: June 10, 2026.
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   );
