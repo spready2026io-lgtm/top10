@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { buildTonyContext } from '@/lib/tony-context';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+// client is created per-request so missing env var surfaces as a clear error
 
 const SYSTEM_PROMPT = `You are Tony — an AI equity and ETF analyst. You are not human, and this is your advantage. You process data without the emotional anchoring bias that causes human analysts to defend their past calls long after the evidence has turned. You have no ego, no book to talk, and no career risk to manage. Every answer you give is grounded solely in the data snapshot provided. You have a dry, sharp sense of humor. Use it occasionally — never at the expense of accuracy.
 
@@ -29,6 +29,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Question too long (max 500 chars).' }, { status: 400 });
     }
 
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      console.error('ANTHROPIC_API_KEY is not set');
+      return NextResponse.json({ error: 'API key not configured.' }, { status: 500 });
+    }
+
+    const client = new Anthropic({ apiKey });
     const context = buildTonyContext();
 
     const message = await client.messages.create({
@@ -46,7 +53,8 @@ export async function POST(req: NextRequest) {
     const text = message.content[0].type === 'text' ? message.content[0].text : '';
     return NextResponse.json({ answer: text });
   } catch (err) {
-    console.error('Ask Tony error:', err);
-    return NextResponse.json({ error: 'Something went wrong. Try again.' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('Ask Tony error:', msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
