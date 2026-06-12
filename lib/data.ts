@@ -206,10 +206,10 @@ export const THEME_ETF_COUNT: Record<Theme, number> = {
 // @@END_GENERATED:THEME_ETF_COUNT@@
 
 export const THEME_ETFS: Record<Theme, string[]> = {
-  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IVEP', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
+  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
   'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI'],
-  'Electrification':['POW', 'VOLT', 'PBD', 'PBW'],
+  'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
