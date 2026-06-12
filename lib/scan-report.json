@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-12T13:36:43.633Z",
-  "scanTimestampNY": "June 12, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-06-12T15:32:38.476Z",
+  "scanTimestampNY": "June 12, 2026 at 11:32 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -15,10 +15,6 @@
         "ok": true,
         "count": 32
       },
-      "IVEP": {
-        "ok": true,
-        "count": 30
-      },
       "IGPT": {
         "ok": true,
         "count": 8
@@ -29,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 64
+        "count": 21
       },
       "CHAT": {
         "ok": true,
@@ -131,6 +127,10 @@
         "ok": true,
         "count": 10
       },
+      "IVEP": {
+        "ok": true,
+        "count": 30
+      },
       "AIRR": {
         "ok": true,
         "count": 51
@@ -161,7 +161,7 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 24
+        "count": 23
       }
     },
     "total": 40,
@@ -197,6 +197,14 @@
         "error": "HTTP 406"
       },
       {
+        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
+        "error": "fetch failed"
+      },
+      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -211,10 +219,8 @@
     ]
   },
   "yfScan": {
-    "total": 97,
-    "succeeded": 96,
-    "failed": [
-      "MRVL"
-    ]
+    "total": 94,
+    "succeeded": 94,
+    "failed": []
   }
 }
