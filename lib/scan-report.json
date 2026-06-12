@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-11T17:33:45.410Z",
-  "scanTimestampNY": "June 11, 2026 at 1:33 PM ET",
+  "scanTimestamp": "2026-06-12T13:36:43.633Z",
+  "scanTimestampNY": "June 12, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,11 +29,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 63
+        "count": 64
       },
       "CHAT": {
         "ok": true,
-        "count": 32
+        "count": 33
       },
       "AIFD": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 10
+        "count": 8
       },
       "ARKK": {
         "ok": true,
@@ -101,19 +101,19 @@
       },
       "FWD": {
         "ok": true,
-        "count": 17
+        "count": 14
       },
       "CBSE": {
         "ok": true,
-        "count": 18
+        "count": 23
       },
       "FCUS": {
         "ok": true,
-        "count": 20
+        "count": 22
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "POW": {
         "ok": true,
@@ -121,11 +121,11 @@
       },
       "VOLT": {
         "ok": true,
-        "count": 32
+        "count": 31
       },
       "PBD": {
         "ok": true,
-        "count": 2
+        "count": 3
       },
       "PBW": {
         "ok": true,
@@ -149,7 +149,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 50
+        "count": 51
       },
       "BUZZ": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 17
+        "count": 18
       },
       "RKNG": {
         "ok": true,
@@ -197,10 +197,6 @@
         "error": "HTTP 406"
       },
       {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -215,8 +211,10 @@
     ]
   },
   "yfScan": {
-    "total": 98,
-    "succeeded": 98,
-    "failed": []
+    "total": 97,
+    "succeeded": 96,
+    "failed": [
+      "MRVL"
+    ]
   }
 }
