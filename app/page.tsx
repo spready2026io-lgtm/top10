@@ -846,8 +846,8 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
-  // Map tile period to a velocityScore key ('1Y' has no VS, fall back to '1M')
-  const tileVsPeriod = tilePeriod === '6M' ? '6M' : tilePeriod === '1M' ? '1M' : '1W';
+  // Only 1W VS data exists for now; always show VS 1W regardless of chart period
+  const tileVsPeriod = '1W' as const;
   const tileVsVal    = equity.velocityScore?.[tileVsPeriod] ?? null;
 
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
