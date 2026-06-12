@@ -165,7 +165,7 @@ export default function About() {
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1 bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full">▲ +45% VS</span>
+                <span className="inline-flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded-full">+45% VS</span>
                 <h3 className="text-white font-semibold">Velocity Score</h3>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed mb-2">
@@ -180,11 +180,11 @@ export default function About() {
               </p>
               <ul className="space-y-1 text-sm mt-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-400 font-bold flex-shrink-0 mt-0.5">▲</span>
-                  <span className="text-slate-400">Positive VS (amber). Conviction is growing. Funds are adding or weighting up.</span>
+                  <span className="text-emerald-400 font-bold flex-shrink-0 mt-0.5">+</span>
+                  <span className="text-slate-400">Positive VS (green). Conviction is growing. Funds are adding or weighting up.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-rose-400 font-bold flex-shrink-0 mt-0.5">▼</span>
+                  <span className="text-rose-400 font-bold flex-shrink-0 mt-0.5">-</span>
                   <span className="text-slate-400">Negative VS (red). Conviction is fading. Funds are trimming or dropping the stock.</span>
                 </li>
               </ul>
@@ -258,7 +258,7 @@ export default function About() {
                 <li><span className="text-slate-300 font-medium">Coverage badge.</span> ETF ownership breadth (x/n, relative to theme).</li>
                 <li><span className="text-slate-300 font-medium">Price and period return.</span> Current price and return for the selected period.</li>
                 <li><span className="text-slate-300 font-medium">Weight Score.</span> Average ETF weighting across holders.</li>
-                <li><span className="text-slate-300 font-medium">Velocity Score badge.</span> Amber ▲ or red ▼ showing how fast Weight Score is changing.</li>
+                <li><span className="text-slate-300 font-medium">Velocity Score badge.</span> Green (+) or red (-) showing how fast Weight Score is changing.</li>
                 <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / 6M / 1Y.</li>
               </ul>
             </div>

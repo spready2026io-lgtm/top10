@@ -476,10 +476,10 @@ function VsBadge({ vs, period }: { vs: number | null; period: string }) {
   return (
     <span className={`inline-flex items-center gap-0.5 text-xs font-bold tabular-nums px-2 py-0.5 rounded-full border whitespace-nowrap ${
       pos
-        ? 'bg-amber-500/15 border-amber-500/35 text-amber-400'
+        ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-400'
         : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
     }`}>
-      {pos ? '▲' : '▼'} {pos ? '+' : ''}{vs.toFixed(1)}% {period}
+      {pos ? '+' : ''}{vs.toFixed(1)}% {period}
     </span>
   );
 }
@@ -713,7 +713,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
               {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
                 <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                   <p className="text-slate-500 text-xs mb-1">Velocity</p>
-                  <p className={`font-bold text-2xl tabular-nums ${(equity.velocityScore['1W'] ?? 0) >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
+                  <p className={`font-bold text-2xl tabular-nums ${(equity.velocityScore['1W'] ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {(equity.velocityScore['1W'] ?? 0) >= 0 ? '+' : ''}{equity.velocityScore['1W']?.toFixed(1)}%
                   </p>
                   <p className="text-slate-600 text-[10px] mt-0.5">1W wt score</p>
@@ -768,9 +768,9 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
             {(() => {
               const vsNote = getTonyVsNote(equity);
               if (!vsNote) return null;
-              const accentBg    = vsNote.positive ? 'bg-amber-500/8 border-amber-500/25'  : 'bg-rose-500/8 border-rose-500/20';
-              const accentLabel = vsNote.positive ? 'text-amber-400' : 'text-rose-400';
-              const arrow       = vsNote.positive ? '▲' : '▼';
+              const accentBg    = vsNote.positive ? 'bg-emerald-500/8 border-emerald-500/25' : 'bg-rose-500/8 border-rose-500/20';
+              const accentLabel = vsNote.positive ? 'text-emerald-400' : 'text-rose-400';
+              const arrow       = vsNote.positive ? '+' : '-';
               return (
                 <div>
                   <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
@@ -951,8 +951,8 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               {/* VS — same size as avg wt, directly below */}
               {tileVsVal !== null && (() => {
                 const pastScore = equity.proScore / (1 + tileVsVal / 100);
-                const vsColor   = tileVsVal >= 0 ? 'text-amber-400' : 'text-rose-400';
-                const vsSign    = tileVsVal >= 0 ? '▲+' : '▼';
+                const vsColor   = tileVsVal >= 0 ? 'text-emerald-400' : 'text-rose-400';
+                const vsSign    = tileVsVal >= 0 ? '+' : '-';
                 return (
                   <span className="relative group" onClick={e => { e.stopPropagation(); setVsOpen(o => !o); setWtOpen(false); }}>
                     <span className={`${vsColor} font-bold text-2xl tabular-nums leading-none cursor-pointer`}>
@@ -1183,8 +1183,8 @@ function CompactRow({
             {equity.proScore.toFixed(1)}% wt
           </span>
           {vs1w !== null ? (
-            <span className={`text-xs font-bold tabular-nums leading-none ${vs1w >= 0 ? 'text-amber-400' : 'text-rose-400'}`}>
-              {vs1w >= 0 ? '▲+' : '▼'}{Math.abs(vs1w).toFixed(1)}%
+            <span className={`text-xs font-bold tabular-nums leading-none ${vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {vs1w >= 0 ? '+' : '-'}{Math.abs(vs1w).toFixed(1)}%
             </span>
           ) : (
             <span className="text-slate-700 text-[10px] leading-none">&mdash;</span>
@@ -1323,7 +1323,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-white font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-slate-400 ml-0.5">% avg wt</span></span>
-          <span className="text-amber-400 font-bold text-sm tabular-nums leading-none">▲+4.6<span className="text-xs font-medium text-amber-400/60 ml-0.5">% VS 1W</span></span>
+          <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">+4.6<span className="text-xs font-medium text-emerald-400/60 ml-0.5">% VS 1W</span></span>
         </div>
       ),
       pointer: <span className="text-emerald-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-300">on every tile</span></span>,
