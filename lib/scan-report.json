@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-12T16:40:04.853Z",
-  "scanTimestampNY": "June 12, 2026 at 12:40 PM ET",
+  "scanTimestamp": "2026-06-13T13:36:27.566Z",
+  "scanTimestampNY": "June 13, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 21
+        "count": 65
       },
       "CHAT": {
         "ok": true,
@@ -33,7 +33,7 @@
       },
       "AIFD": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "SPRX": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 21
+        "count": 23
       },
       "IGV": {
         "ok": true,
@@ -77,7 +77,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 8
+        "count": 10
       },
       "ARKK": {
         "ok": true,
@@ -85,11 +85,11 @@
       },
       "MARS": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "BCTK": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 23
+        "count": 21
       },
       "FCUS": {
         "ok": true,
@@ -153,7 +153,7 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "MEME": {
         "ok": true,
@@ -195,14 +195,6 @@
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
         "error": "HTTP 406"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
-        "error": "fetch failed"
       },
       {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
