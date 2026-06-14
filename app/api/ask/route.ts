@@ -85,8 +85,8 @@ STOCK TILES — BACK FACE (click/tap to flip):
 ALL-THEME TOP 10 BOARD:
 Shows the top 10 stocks by conviction across all 6 themes combined (Meme excluded from this ranking). Ranking: ETF count first, then avgProScore (average Weight Score across all themes the stock appears in) as tiebreaker. The avgProScore shown is the true average across all themes, not the best single-theme score.
 
-SCORECARD PAGE (/scorecard):
-A separate view ranking all tracked ETFs (not stocks) by performance over 1W / 1M / 6M, compared to SPY. Sortable by different periods.
+CONVICTION BOARD (/conviction):
+A separate view that ranks stocks by consensus conviction across all 40 managers — how many managers hold the stock in their disclosed top book (breadth, shown as "X / 40") and how heavily (avg weight). Breadth first, weight as tiebreaker, same logic as the All-Theme board. Only names held by 2+ managers appear. It also shows each manager's own highest-conviction picks (top holdings by weight), most concentrated books first. This is a conviction view, not a performance ranking — there are no return columns.
 
 ASK TONY PAGE (/ask):
 This chat interface. Users ask questions about the dashboard, the data, the scores, or specific stocks and ETFs. Tony answers using the live data snapshot.
