@@ -21,12 +21,30 @@ const MANAGERS = computeManagers();
 // idiosyncratic bets, not consensus, so they sit out of the board.
 const CONSENSUS = CONVICTION.filter(r => r.breadth >= 2);
 
+type Tab = 'stocks' | 'managers';
+
 export default function ConvictionPage() {
+  const [tab, setTab] = useState<Tab>('stocks');
   const [showAllManagers, setShowAllManagers] = useState(false);
 
   const chartRows = useMemo(() => CONSENSUS.slice(0, 10), []);
   const maxBreadth = chartRows[0]?.totalManagers ?? 40;
   const managers = showAllManagers ? MANAGERS : MANAGERS.slice(0, 8);
+
+  function TabBtn({ k, label }: { k: Tab; label: string }) {
+    return (
+      <button
+        onClick={() => setTab(k)}
+        className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-colors ${
+          tab === k
+            ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+            : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+        }`}
+      >
+        {label}
+      </button>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -55,6 +73,16 @@ export default function ConvictionPage() {
           <p className="text-xs text-slate-600 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Not investment advice.</p>
         </div>
 
+        {/* Scoreboards — two views of the same conviction signal */}
+        <h2 className="text-lg font-bold text-slate-100">Scoreboards</h2>
+        <p className="text-xs text-slate-500 mb-4">Two views of the same signal. Switch between them.</p>
+        <div className="flex gap-2 mb-6">
+          <TabBtn k="stocks" label="By Stock" />
+          <TabBtn k="managers" label="By Manager" />
+        </div>
+
+        {tab === 'stocks' && (
+          <>
         {/* Consensus conviction chart */}
         <div className="mb-8 bg-slate-900 border border-slate-800 rounded-xl p-5">
           <div className="font-bold text-sm">Consensus conviction</div>
@@ -106,7 +134,11 @@ export default function ConvictionPage() {
             </div>
           ))}
         </div>
+          </>
+        )}
 
+        {tab === 'managers' && (
+          <>
         {/* Per-manager section — reframed around conviction, not returns */}
         <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Each manager&apos;s highest-conviction picks</h2>
         <p className="text-xs text-slate-600 mb-3">The disclosed top holdings of each fund, by weight. Most concentrated books first.</p>
@@ -140,6 +172,8 @@ export default function ConvictionPage() {
           >
             Show all {MANAGERS.length} managers
           </button>
+        )}
+          </>
         )}
 
         <p className="text-slate-700 text-xs text-center mt-8">
