@@ -86,7 +86,7 @@ export default function ConvictionPage() {
         {/* Consensus conviction chart */}
         <div className="mb-8 bg-slate-900 border border-slate-800 rounded-xl p-5">
           <div className="font-bold text-sm">Consensus conviction</div>
-          <div className="text-xs text-slate-500 mt-0.5 mb-5">
+          <div className="text-xs sm:text-sm font-medium text-slate-300 mt-1 mb-5">
             Held in N of {maxBreadth} managers&apos; top books. Bar = breadth, label = avg weight where held.
           </div>
 
@@ -140,8 +140,8 @@ export default function ConvictionPage() {
         {tab === 'managers' && (
           <>
         {/* Per-manager section — reframed around conviction, not returns */}
-        <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Each manager&apos;s highest-conviction picks</h2>
-        <p className="text-xs text-slate-600 mb-3">The disclosed top holdings of each fund, by weight. Most concentrated books first.</p>
+        <h2 className="text-sm sm:text-base font-bold text-slate-200 mb-1">Each manager&apos;s highest-conviction picks</h2>
+        <p className="text-xs sm:text-sm font-medium text-slate-300 mb-3">The disclosed top holdings of each fund, by weight. Most concentrated books first.</p>
         <div className="space-y-1">
           {managers.map(m => (
             <div key={m.etf} className="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-lg px-4 py-3">
