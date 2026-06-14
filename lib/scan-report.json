@@ -1,11 +1,12 @@
 {
-  "scanTimestamp": "2026-06-13T15:28:18.127Z",
-  "scanTimestampNY": "June 13, 2026 at 11:28 AM ET",
+  "scanTimestamp": "2026-06-14T15:35:18.662Z",
+  "scanTimestampNY": "June 14, 2026 at 11:35 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": true,
-        "count": 40
+        "ok": false,
+        "count": 0,
+        "error": "HTTP 415"
       },
       "ARTY": {
         "ok": true,
@@ -13,7 +14,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 32
+        "count": 33
       },
       "IGPT": {
         "ok": true,
@@ -25,7 +26,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 21
+        "count": 65
       },
       "CHAT": {
         "ok": true,
@@ -33,11 +34,11 @@
       },
       "AIFD": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "SPRX": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AOTG": {
         "ok": true,
@@ -77,7 +78,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 10
+        "count": 9
       },
       "ARKK": {
         "ok": true,
@@ -93,7 +94,7 @@
       },
       "BCTK": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "FWD": {
         "ok": true,
@@ -105,15 +106,16 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "WGMI": {
         "ok": true,
         "count": 23
       },
       "POW": {
-        "ok": true,
-        "count": 39
+        "ok": false,
+        "count": 0,
+        "error": "HTTP 415"
       },
       "VOLT": {
         "ok": true,
@@ -121,7 +123,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 3
+        "count": 5
       },
       "PBW": {
         "ok": true,
@@ -145,7 +147,7 @@
       },
       "IDEF": {
         "ok": true,
-        "count": 86
+        "count": 87
       },
       "BILT": {
         "ok": true,
@@ -157,7 +159,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 20
       },
       "RKNG": {
         "ok": true,
@@ -165,8 +167,11 @@
       }
     },
     "total": 40,
-    "ok": 40,
-    "failed": [],
+    "ok": 38,
+    "failed": [
+      "AIS",
+      "POW"
+    ],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -197,14 +202,6 @@
         "error": "HTTP 406"
       },
       {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
       },
@@ -215,6 +212,18 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://accounts.profunds.com/etfdata/psdlyhld.csv",
+        "error": "fetch failed"
       }
     ]
   },
