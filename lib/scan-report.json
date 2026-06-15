@@ -1,12 +1,11 @@
 {
-  "scanTimestamp": "2026-06-14T15:35:18.662Z",
-  "scanTimestampNY": "June 14, 2026 at 11:35 AM ET",
+  "scanTimestamp": "2026-06-15T18:23:12.884Z",
+  "scanTimestampNY": "June 15, 2026 at 2:23 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
-        "ok": false,
-        "count": 0,
-        "error": "HTTP 415"
+        "ok": true,
+        "count": 40
       },
       "ARTY": {
         "ok": true,
@@ -113,9 +112,8 @@
         "count": 23
       },
       "POW": {
-        "ok": false,
-        "count": 0,
-        "error": "HTTP 415"
+        "ok": true,
+        "count": 39
       },
       "VOLT": {
         "ok": true,
@@ -167,11 +165,8 @@
       }
     },
     "total": 40,
-    "ok": 38,
-    "failed": [
-      "AIS",
-      "POW"
-    ],
+    "ok": 40,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -212,24 +207,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://accounts.profunds.com/etfdata/psdlyhld.csv",
-        "error": "fetch failed"
       }
     ]
   },
   "yfScan": {
-    "total": 94,
-    "succeeded": 94,
+    "total": 92,
+    "succeeded": 92,
     "failed": []
   }
 }
