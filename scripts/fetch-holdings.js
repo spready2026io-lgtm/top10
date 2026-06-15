@@ -748,10 +748,11 @@ async function main() {
   // ── StockAnalysis fallback — only runs for tickers that still failed above ──
   // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
   // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
+  // AIS, POW (VistaShares) — datacenter IPs get HTTP 415 from CSV endpoint.
   // Yields top ~8–25 holdings each.
   // RSHO (Tema) has no public API — StockAnalysis is the primary source.
-  // WCLD, GTEK, ALAI are fallbacks in case their primary scrapers fail.
-  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI'].filter(t => !results[t]);
+  // WCLD, GTEK, ALAI, AIS, POW are fallbacks in case their primary scrapers fail.
+  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI', 'AIS', 'POW'].filter(t => !results[t]);
   if (saNeed.length > 0) {
     console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
     for (const ticker of saNeed) {
