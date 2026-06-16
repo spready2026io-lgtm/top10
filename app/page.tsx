@@ -251,8 +251,8 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: Period
   const zeroInRange = yMin <= 100 && yMax >= 100;
 
   return (
-    <div className="max-w-md h-full">
-      <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3 h-full flex flex-col">
+    <div className="max-w-md flex">
+      <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3 flex-1 flex flex-col">
 
         {/* Headline */}
         <div className="flex items-center gap-2 mb-3">
@@ -1758,7 +1758,7 @@ export default function Home() {
                 ? <GuideStrip onClose={closeGuide} />
                 : <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
               }
-              <div className="hidden sm:block flex-shrink-0 h-full">
+              <div className="hidden sm:flex flex-shrink-0 items-stretch">
                 <EtfPerfTile theme={theme} period={period} />
               </div>
 
