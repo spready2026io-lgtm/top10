@@ -1761,6 +1761,25 @@ export default function Home() {
               <div className="hidden sm:block flex-shrink-0 h-full">
                 <EtfPerfTile theme={theme} period={period} />
               </div>
+
+              {/* Desktop-only portfolio-builder teaser — fills the empty space
+                  to the right of the ETF tile with a CTA into /portfolio. */}
+              <Link
+                href="/portfolio"
+                className="hidden lg:flex flex-1 min-w-0 flex-col justify-between rounded-xl border border-sky-500/30 bg-gradient-to-br from-sky-500/10 to-slate-900 px-5 py-4 hover:border-sky-500/60 hover:from-sky-500/20 transition-colors group"
+              >
+                <div>
+                  <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-sky-400 mb-2">Build with Tony</div>
+                  <div className="text-lg font-bold text-slate-50 leading-snug">Build your own portfolio.</div>
+                  <p className="text-xs text-slate-400 leading-relaxed mt-1.5">
+                    Set a cheap index core, tilt toward the themes you believe in, and see the conviction, exposure, and past performance of your mix.
+                  </p>
+                </div>
+                <div className="mt-3 inline-flex items-center gap-1.5 self-start px-3 py-1.5 rounded-full bg-sky-500/20 border border-sky-500/40 text-sky-200 text-xs font-bold group-hover:bg-sky-500/30 transition-colors">
+                  Build your portfolio
+                  <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                </div>
+              </Link>
             </div>
 
             {/* Legend + sort toggle + layout toggle */}
