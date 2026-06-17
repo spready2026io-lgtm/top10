@@ -76,6 +76,23 @@ export default function PortfolioPage() {
                     </span>
                     <span className="text-sm font-semibold text-slate-200">{Math.round(norm[i] * 100)}%</span>
                   </div>
+                  {s.isCore && (
+                    <div className="flex gap-1 mb-2">
+                      {BASE_INDEX_IDS.map(id => (
+                        <button
+                          key={id}
+                          onClick={() => setBaseIndex(id)}
+                          className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
+                            baseIndex === id
+                              ? 'bg-slate-700 border-slate-600 text-slate-100'
+                              : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          {id}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <input
                     type="range" min={0} max={100} step={1} value={vals[i]}
                     onChange={e => setVal(i, +e.target.value)}
@@ -97,21 +114,7 @@ export default function PortfolioPage() {
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
                   Inside your index core
                 </div>
-                <div className="flex gap-1">
-                  {BASE_INDEX_IDS.map(id => (
-                    <button
-                      key={id}
-                      onClick={() => setBaseIndex(id)}
-                      className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
-                        baseIndex === id
-                          ? 'bg-slate-700 border-slate-600 text-slate-100'
-                          : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      {id}
-                    </button>
-                  ))}
-                </div>
+                <span className="text-[11px] text-slate-500">{core.id} · {core.name}</span>
               </div>
               <p className="text-[11px] text-slate-500 mb-3">
                 Top 5 holdings of your ballast leg. {core.name} weights — your cheap beta.
@@ -132,6 +135,12 @@ export default function PortfolioPage() {
 
           {/* ── Right: read-outs ── */}
           <div className="flex-1 min-w-0">
+            {/* How each theme is built — ETF selection formula */}
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4 text-xs text-slate-400 leading-relaxed">
+              <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-widest mb-1.5">How each theme is built</div>
+              Every theme on the dial is the equal-weight average of its <span className="text-slate-200">two strongest ETFs</span>, ranked by a blend of <span className="text-slate-200">50% 6-month and 50% 1-year</span> return and filtered to be <span className="text-slate-200">non-correlated</span> (the second ETF has to move differently enough from the first). That keeps each tilt diversified instead of doubling up on the same names. The ticker pair shown next to each theme is the live result.
+            </div>
+
             {/* Mix bar */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
               <div className="text-[11px] text-slate-500 mb-2">Your mix</div>
