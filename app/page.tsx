@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
@@ -1555,17 +1555,18 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
   );
 }
 
-// ── Full-screen intro carousel ────────────────────────────────────────────────
-// A revolving, full-viewport showcase shown on load. Auto-advances through the
-// three feature banners with dot navigation + prev/next arrows. Any click, scroll
-// or keypress dismisses it (with a fade-out), revealing the live dashboard.
-const INTRO_SLIDES = [
+
+// ── Hero carousel ─────────────────────────────────────────────────────────────
+// In-flow revolving banner that sits under the header, above the dashboard tiles.
+// Shows one feature banner at a time, auto-rotating (pauses on hover) with dot
+// indicators + prev/next arrows. Not an overlay — it scrolls with the page.
+const HERO_SLIDES = [
   {
     key: 'etfs',
     eyebrow: 'Active ETF universe',
     title: 'Explore our unique universe of Active ETFs',
     body: 'ETF holdings ranked daily across 1000+ shares. Pick your theme, sort by our scores.',
-    glow: 'from-emerald-500/15',
+    glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
     ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
     cta: 'Explore the universe',
@@ -1576,7 +1577,7 @@ const INTRO_SLIDES = [
     eyebrow: 'Build with Tony',
     title: 'Build your portfolio with Tony, our AI agent',
     body: 'Tilt a low-cost index core toward your conviction themes. See the mix, exposure and past performance.',
-    glow: 'from-sky-500/15',
+    glow: 'from-sky-500/10',
     eyebrowCls: 'text-sky-400',
     ctaCls: 'bg-sky-500 text-white hover:bg-sky-400',
     cta: 'Build your portfolio',
@@ -1587,7 +1588,7 @@ const INTRO_SLIDES = [
     eyebrow: 'Cross-theme scoring',
     title: 'The Scoreboard',
     body: 'Every stock, scored on consensus and conviction across the ETFs that hold it. See who ranks where.',
-    glow: 'from-amber-500/15',
+    glow: 'from-amber-500/10',
     eyebrowCls: 'text-amber-400',
     ctaCls: 'bg-amber-500 text-black hover:bg-amber-400',
     cta: 'Open the Scoreboard',
@@ -1595,120 +1596,113 @@ const INTRO_SLIDES = [
   },
 ];
 
-function IntroCarousel({ onDismiss }: { onDismiss: () => void }) {
-  const [slide,   setSlide]   = useState(0);
-  const [leaving, setLeaving] = useState(false);
-  const dismissed = useRef(false);
+function SlideVisual({ kind }: { kind: string }) {
+  if (kind === 'etfs') {
+    return (
+      <div className="flex flex-wrap gap-2">
+        {['AIS', 'SOXX', 'ARKK', 'IGV', 'BUZZ', 'AIRR', 'SPRX', 'PSI'].map(t => (
+          <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2.5 py-1 font-mono text-xs font-semibold text-slate-300">{t}</span>
+        ))}
+        <span className="rounded-full px-2.5 py-1 text-xs font-semibold text-slate-500">+32 more</span>
+      </div>
+    );
+  }
+  if (kind === 'tony') {
+    return (
+      <div>
+        <div className="flex h-3 w-full overflow-hidden rounded-full">
+          <div className="bg-slate-400"  style={{ width: '46%' }} />
+          <div className="bg-violet-400" style={{ width: '18%' }} />
+          <div className="bg-sky-500"    style={{ width: '15%' }} />
+          <div className="bg-sky-300"    style={{ width: '12%' }} />
+          <div className="bg-amber-400"  style={{ width: '9%' }} />
+        </div>
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-400">
+          {[['Core', 'bg-slate-400'], ['AI', 'bg-violet-400'], ['Semi', 'bg-sky-500'], ['Tech', 'bg-sky-300'], ['Elec', 'bg-amber-400']].map(([label, color]) => (
+            <span key={label} className="flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${color}`} />{label}</span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  // scoreboard
+  return (
+    <div className="space-y-2">
+      {[['1', '92%'], ['2', '74%'], ['3', '58%']].map(([rank, w]) => (
+        <div key={rank} className="flex items-center gap-2">
+          <span className="w-4 text-right font-mono text-xs font-bold text-amber-400">{rank}</span>
+          <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-800">
+            <div className="h-full rounded-full bg-amber-400/70" style={{ width: w }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const go = (i: number) => setSlide((i + INTRO_SLIDES.length) % INTRO_SLIDES.length);
+function HeroCarousel() {
+  const [slide,  setSlide]  = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = HERO_SLIDES.length;
+  const go = (i: number) => setSlide((i + n) % n);
 
-  const dismiss = () => {
-    if (dismissed.current) return;
-    dismissed.current = true;
-    setLeaving(true);
-    setTimeout(onDismiss, 450);
-  };
-
-  // Lock background scroll while the intro is showing.
+  // Auto-advance every 5s; pause while hovered so CTAs are clickable.
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, []);
-
-  // Auto-advance every 5s.
-  useEffect(() => {
-    const t = setInterval(() => setSlide(s => (s + 1) % INTRO_SLIDES.length), 5000);
+    if (paused) return;
+    const t = setInterval(() => setSlide(s => (s + 1) % n), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [paused, n]);
 
-  // Dismiss on scroll / key; left & right arrows navigate instead.
-  useEffect(() => {
-    const onWheel = () => dismiss();
-    const onTouch = () => dismiss();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') go(slide + 1);
-      else if (e.key === 'ArrowLeft') go(slide - 1);
-      else dismiss();
-    };
-    window.addEventListener('wheel', onWheel, { passive: true });
-    window.addEventListener('touchmove', onTouch, { passive: true });
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('touchmove', onTouch);
-      window.removeEventListener('keydown', onKey);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slide]);
-
-  const s = INTRO_SLIDES[slide];
+  const s = HERO_SLIDES[slide];
 
   return (
-    <div
-      onClick={dismiss}
-      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 text-center transition-opacity duration-500 ${leaving ? 'opacity-0' : 'opacity-100'}`}
-    >
-      {/* accent glow (swaps per slide) */}
-      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${s.glow} via-slate-950 to-slate-950 transition-[background] duration-700`} />
+    <section className="border-b border-slate-800 bg-slate-900/30">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
+        <div className="relative" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+          <div key={s.key} className={`animate-intro overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${s.glow} to-slate-900`}>
+            <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
+              <div className="max-w-xl">
+                <div className={`text-[11px] font-bold uppercase tracking-[0.16em] ${s.eyebrowCls}`}>{s.eyebrow}</div>
+                <h2 className="mt-2 text-2xl font-bold leading-tight text-white sm:text-3xl">{s.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">{s.body}</p>
+                <Link href={s.href} className={`mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${s.ctaCls}`}>
+                  {s.cta}<span aria-hidden>→</span>
+                </Link>
+              </div>
+              <div className="w-full flex-shrink-0 sm:w-72">
+                <SlideVisual kind={s.key} />
+              </div>
+            </div>
+          </div>
 
-      {/* live-data badge */}
-      <div className="relative z-10 inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-        </span>
-        Refreshed 3 times a day
-      </div>
-
-      {/* slide content — keyed so it re-animates on change */}
-      <div key={s.key} className="animate-intro relative z-10 mt-8 flex max-w-3xl flex-col items-center">
-        <div className={`text-xs font-bold uppercase tracking-[0.18em] ${s.eyebrowCls}`}>{s.eyebrow}</div>
-        <h2 className="mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl">{s.title}</h2>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl">{s.body}</p>
-        <Link
-          href={s.href}
-          onClick={(e) => { e.stopPropagation(); dismiss(); }}
-          className={`mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3 text-base font-bold transition-colors ${s.ctaCls}`}
-        >
-          {s.cta}
-          <span aria-hidden>→</span>
-        </Link>
-      </div>
-
-      {/* prev / next */}
-      <button
-        aria-label="Previous banner"
-        onClick={(e) => { e.stopPropagation(); go(slide - 1); }}
-        className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-xl text-slate-300 transition-colors hover:border-slate-500 hover:text-white sm:left-8"
-      >
-        ‹
-      </button>
-      <button
-        aria-label="Next banner"
-        onClick={(e) => { e.stopPropagation(); go(slide + 1); }}
-        className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-xl text-slate-300 transition-colors hover:border-slate-500 hover:text-white sm:right-8"
-      >
-        ›
-      </button>
-
-      {/* dot indicators */}
-      <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2.5" onClick={(e) => e.stopPropagation()}>
-        {INTRO_SLIDES.map((sl, i) => (
           <button
-            key={sl.key}
-            aria-label={`Go to banner ${i + 1}`}
-            onClick={() => go(i)}
-            className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-7 bg-white' : 'w-2.5 bg-slate-600 hover:bg-slate-400'}`}
-          />
-        ))}
-      </div>
+            aria-label="Previous banner"
+            onClick={() => go(slide - 1)}
+            className="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-950/70 text-lg text-slate-300 transition-colors hover:border-slate-500 hover:text-white"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next banner"
+            onClick={() => go(slide + 1)}
+            className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-950/70 text-lg text-slate-300 transition-colors hover:border-slate-500 hover:text-white"
+          >
+            ›
+          </button>
+        </div>
 
-      {/* enter hint */}
-      <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs text-slate-500">
-        Scroll or click to enter ↓
+        <div className="mt-4 flex items-center justify-center gap-2.5">
+          {HERO_SLIDES.map((sl, i) => (
+            <button
+              key={sl.key}
+              aria-label={`Go to banner ${i + 1}`}
+              onClick={() => go(i)}
+              className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-7 bg-white' : 'w-2.5 bg-slate-600 hover:bg-slate-400'}`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -1717,7 +1711,6 @@ export default function Home() {
   const [period,  setPeriod]  = useState<ChartPeriod>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
-  const [introOpen, setIntroOpen] = useState(true);
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
   const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
   const [showGuide, setShowGuide] = useState(false);
@@ -1775,7 +1768,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      {introOpen && <IntroCarousel onDismiss={() => setIntroOpen(false)} />}
       {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
       {/* Header */}
@@ -1868,6 +1860,8 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Revolving feature carousel — under the header, above the dashboard tiles */}
+      <HeroCarousel />
 
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
