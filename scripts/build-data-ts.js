@@ -854,9 +854,111 @@ function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
   ].join('\n');
 }
 
+// ── Base index (SPY / QQQ) generator ─────────────────────────────────────────
+// Powers the portfolio builder's selectable index core. Holdings come from the
+// scraped raw file (QQQ via Invesco, SPY via StockAnalysis); price series come
+// from the same Yahoo paths used for the theme charts. Returns null if either
+// index is missing so a partial fetch never wipes good data.
+function genBaseIndex(holdingsMap, spyData, qqqData) {
+  const PERIODS  = ['1W', '1M', '6M', '1Y'];
+  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  if (!holdingsMap['SPY'] || !holdingsMap['QQQ']) return null;
+
+  const top5 = etf => [...(holdingsMap[etf] || [])]
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, 5)
+    .map(x => `{ t: '${x.ticker}', w: ${parseFloat(x.weight.toFixed(2))} }`)
+    .join(', ');
+
+  const chart = data => PERIODS.map(p => {
+    const n = PERIOD_N[p];
+    const path = (data?.paths?.[p]?.length === n) ? data.paths[p] : Array.from({ length: n }, () => 100);
+    return `'${p}': [${path.join(', ')}]`;
+  }).join(', ');
+
+  return [
+    '// @@GENERATED:BASE_INDEX@@',
+    `export const BASE_INDEX_NAMES: Record<BaseIndexId, string> = { SPY: 'S&P 500', QQQ: 'Nasdaq 100' };`,
+    'export const BASE_INDEX_HOLDINGS: Record<BaseIndexId, EtfHolding[]> = {',
+    `  SPY: [${top5('SPY')}],`,
+    `  QQQ: [${top5('QQQ')}],`,
+    '};',
+    'export const BASE_INDEX_CHART: Record<BaseIndexId, Record<Period, number[]>> = {',
+    `  SPY: { ${chart(spyData)} },`,
+    `  QQQ: { ${chart(qqqData)} },`,
+    '};',
+    '// @@END_GENERATED:BASE_INDEX@@',
+  ].join('\n');
+}
+
+// ── Theme representative ETFs generator (portfolio builder dial) ──────────────
+// Per theme: rank ETFs by 0.5*6M + 0.5*1Y return, take the top one, then the
+// next-best whose 1Y daily-increment correlation with it is < 0.9 (falls back to
+// the least-correlated if none clear the bar). Average the two paths equally; the
+// theme's return is the averaged-series endpoint, so a 100%-in-one-theme mix in
+// the builder shows exactly that figure.
+function pearson(a, b) {
+  const n = Math.min(a.length, b.length);
+  if (n < 3) return 1;
+  let sa = 0, sb = 0;
+  for (let i = 0; i < n; i++) { sa += a[i]; sb += b[i]; }
+  const ma = sa / n, mb = sb / n;
+  let num = 0, da = 0, db = 0;
+  for (let i = 0; i < n; i++) { const x = a[i] - ma, y = b[i] - mb; num += x * y; da += x * x; db += y * y; }
+  return (da && db) ? num / Math.sqrt(da * db) : 1;
+}
+function pathIncrements(path) {
+  const r = [];
+  for (let i = 1; i < path.length; i++) r.push(path[i] / path[i - 1] - 1);
+  return r;
+}
+function genThemeReps(themeEtfs, etfDataMap) {
+  const PERIODS  = ['1W', '1M', '6M', '1Y'];
+  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const CORR_MAX = 0.8;
+  const blocks = [];
+
+  for (const [theme, tickers] of Object.entries(themeEtfs)) {
+    const cands = tickers.filter(t => {
+      const d = etfDataMap[t];
+      return d && d.returns?.['6M'] != null && d.returns?.['1Y'] != null && d.paths?.['1Y']?.length === 52;
+    });
+    if (cands.length === 0) continue; // UI falls back to the composite line
+
+    const score  = t => 0.5 * etfDataMap[t].returns['6M'] + 0.5 * etfDataMap[t].returns['1Y'];
+    const ranked = [...cands].sort((a, b) => score(b) - score(a));
+    const first  = ranked[0];
+
+    let second = null, fallback = null, fallbackCorr = Infinity;
+    const firstInc = pathIncrements(etfDataMap[first].paths['1Y']);
+    for (let i = 1; i < ranked.length; i++) {
+      const corr = pearson(firstInc, pathIncrements(etfDataMap[ranked[i]].paths['1Y']));
+      if (corr < fallbackCorr) { fallbackCorr = corr; fallback = ranked[i]; }
+      if (corr < CORR_MAX) { second = ranked[i]; break; }
+    }
+    if (!second) second = fallback; // null only when the theme has a single candidate
+
+    const chosen = second ? [first, second] : [first];
+    const series = PERIODS.map(p => ({ p, avg: averagePaths(chosen.map(t => etfDataMap[t].paths?.[p]), PERIOD_N[p]) }));
+    const seriesStr = series.map(s => `'${s.p}': [${s.avg.join(', ')}]`).join(', ');
+    const retStr    = series.map(s => `'${s.p}': ${parseFloat((s.avg[s.avg.length - 1] - 100).toFixed(1))}`).join(', ');
+
+    blocks.push(`  '${theme}': { etfs: [${chosen.map(t => `'${t}'`).join(', ')}], series: { ${seriesStr} }, returns: { ${retStr} } },`);
+  }
+
+  if (blocks.length === 0) return null;
+  return [
+    '// @@GENERATED:THEME_REPRESENTATIVES@@',
+    'export const THEME_REPRESENTATIVES: Partial<Record<Theme, ThemeRep>> = {',
+    ...blocks,
+    '};',
+    '// @@END_GENERATED:THEME_REPRESENTATIVES@@',
+  ].join('\n');
+}
+
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -911,6 +1013,18 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:ETF_TOP_HOLDINGS@@[\s\S]*?\/\/ @@END_GENERATED:ETF_TOP_HOLDINGS@@/,
       newEtfTopHoldings
+    );
+  }
+  if (newBaseIndex) {
+    src = src.replace(
+      /\/\/ @@GENERATED:BASE_INDEX@@[\s\S]*?\/\/ @@END_GENERATED:BASE_INDEX@@/,
+      newBaseIndex
+    );
+  }
+  if (newThemeReps) {
+    src = src.replace(
+      /\/\/ @@GENERATED:THEME_REPRESENTATIVES@@[\s\S]*?\/\/ @@END_GENERATED:THEME_REPRESENTATIVES@@/,
+      newThemeReps
     );
   }
 
@@ -1058,6 +1172,16 @@ async function main() {
     console.log('FAILED — SPY benchmark unchanged');
   }
 
+  // QQQ base index (portfolio builder core option)
+  process.stdout.write(`  QQQ... `);
+  const qqqData = await fetchEtfData('QQQ');
+  if (qqqData?.returns) {
+    const q = qqqData.returns;
+    console.log(`1W:${q['1W']}% 1M:${q['1M']}% 6M:${q['6M']}% 1Y:${q['1Y']}%`);
+  } else {
+    console.log('FAILED — QQQ base index unchanged');
+  }
+
   // Timestamps
   const isoTs = new Date().toISOString();
   const nyTs  = getNyTimestamp();
@@ -1093,9 +1217,11 @@ async function main() {
   const newThemeBenchmarks = genThemeBenchmarks(etfReturnsMap);
   const newCrossTheme      = genCrossThemeTop10(themeEquities, financialsMap);
   const newEtfTopHoldings  = genEtfTopHoldings(holdingsMap, THEME_ETFS);
+  const newBaseIndex       = genBaseIndex(holdingsMap, spyData, qqqData);
+  const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');

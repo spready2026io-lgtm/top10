@@ -596,6 +596,11 @@ const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 //   MARS (Broad Tech) — Roundhill Space & Technology ETF (launched Mar 2026)
 const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI'];
 
+// ── Base index holdings for the portfolio builder core (SPY, QQQ) ─────────────
+// QQQ already comes from the Invesco block above; SPY has no clean issuer API,
+// so it is sourced via StockAnalysis (top weighted holdings — we show the top 5).
+const BASE_INDEX_SA = ['SPY'];
+
 async function fetchVistaShares({ ticker }) {
   const url = `https://www.vistashares.com/csv/top-holdings/?etf=${ticker}`;
   console.log(`  [VistaShares] ${ticker}...`);
@@ -745,6 +750,22 @@ async function main() {
     await sleep(800);
   }
 
+  // ── Base index (SPY) — sourced via StockAnalysis ─────────────────────────────
+  console.log('\n[Base index — StockAnalysis]');
+  for (const ticker of BASE_INDEX_SA) {
+    let h = null;
+    for (let attempt = 1; attempt <= 3 && !h; attempt++) {
+      if (attempt > 1) {
+        console.log(`    ↻ retry ${attempt}/3 for ${ticker}`);
+        await sleep(1500 * attempt);
+      }
+      h = await fetchStockAnalysis(ticker);
+    }
+    if (h) results[ticker] = h;
+    else console.error(`    ✗✗ ${ticker} failed after 3 attempts`);
+    await sleep(800);
+  }
+
   // ── StockAnalysis fallback — only runs for tickers that still failed above ──
   // Covers QQQ (Invesco API blocked in CI), WCLD (WisdomTree blocks all bots),
   // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
@@ -777,6 +798,7 @@ async function main() {
     ...MEME_ETFS,
     'RSHO',
     ...NEW_SA_ETFS,
+    ...BASE_INDEX_SA,
   ];
   const failed = all.filter(t => !fetched.includes(t));
 

@@ -4,26 +4,27 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure,
-  INDEX_CORE, PERF_PERIODS,
+  baseIndexInfo, BASE_INDEX_IDS, PERF_PERIODS,
 } from '@/lib/portfolio';
-import type { Sleeve } from '@/lib/portfolio';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
-import type { Period } from '@/lib/data';
-
-const SLEEVES = buildSleeves();
+import type { Period, BaseIndexId } from '@/lib/data';
 
 export default function PortfolioPage() {
-  const [vals, setVals] = useState<number[]>(SLEEVES.map(s => s.defaultVal));
+  const [baseIndex, setBaseIndex] = useState<BaseIndexId>('SPY');
+  const [vals, setVals] = useState<number[]>(() => buildSleeves().map(s => s.defaultVal));
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
+
+  const SLEEVES = useMemo(() => buildSleeves(baseIndex), [baseIndex]);
+  const core = baseIndexInfo(baseIndex);
 
   const total = vals.reduce((a, b) => a + b, 0) || 1;
   const norm = vals.map(v => v / total);
 
-  const conviction = useMemo(() => blendConviction(SLEEVES, norm), [norm]);
+  const conviction = useMemo(() => blendConviction(SLEEVES, norm), [SLEEVES, norm]);
   const coreShare = norm[0] * 100;
-  const exposures = useMemo(() => blendExposure(SLEEVES, norm), [norm]);
-  const perf = useMemo(() => blendPerformance(SLEEVES, norm, period), [norm, period]);
+  const exposures = useMemo(() => blendExposure(SLEEVES, norm), [SLEEVES, norm]);
+  const perf = useMemo(() => blendPerformance(SLEEVES, norm, period), [SLEEVES, norm, period]);
   const maxExp = exposures[0]?.weight ?? 1;
 
   function setVal(i: number, v: number) {
@@ -73,7 +74,7 @@ export default function PortfolioPage() {
                         </span>
                       )}
                     </span>
-                    <span className="text-sm font-semibold text-slate-200">{vals[i]}%</span>
+                    <span className="text-sm font-semibold text-slate-200">{Math.round(norm[i] * 100)}%</span>
                   </div>
                   <input
                     type="range" min={0} max={100} step={1} value={vals[i]}
@@ -84,36 +85,45 @@ export default function PortfolioPage() {
               ))}
               <div className="flex justify-between text-xs mt-3 pt-3 border-t border-slate-800">
                 <span className="text-slate-500">Total allocated</span>
-                <span className={`font-semibold ${Math.round(total) === 100 ? 'text-emerald-400' : 'text-amber-400'}`}>
-                  {Math.round(total)}%
+                <span className="font-semibold text-emerald-400">
+                  {vals.some(v => v > 0) ? 100 : 0}%
                 </span>
               </div>
-              {Math.round(total) !== 100 && (
-                <p className="text-[11px] text-slate-500 mt-2">
-                  Weights are normalized to 100% for all read-outs below.
-                </p>
-              )}
             </div>
 
-            {/* Index core holdings — Shuki #3 */}
+            {/* Index core holdings + base-index selector */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-4">
               <div className="flex items-center justify-between mb-1">
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
                   Inside your index core
                 </div>
-                <span className="text-[11px] text-slate-500">{INDEX_CORE.etf} · {INDEX_CORE.name}</span>
+                <div className="flex gap-1">
+                  {BASE_INDEX_IDS.map(id => (
+                    <button
+                      key={id}
+                      onClick={() => setBaseIndex(id)}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
+                        baseIndex === id
+                          ? 'bg-slate-700 border-slate-600 text-slate-100'
+                          : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      {id}
+                    </button>
+                  ))}
+                </div>
               </div>
               <p className="text-[11px] text-slate-500 mb-3">
-                Top 5 holdings of your ballast leg. Indicative S&P 500 weights — your cheap beta.
+                Top 5 holdings of your ballast leg. {core.name} weights — your cheap beta.
               </p>
               <div className="flex flex-col gap-2">
-                {INDEX_CORE.holdings.map(h => (
-                  <div key={h.ticker} className="flex items-center gap-3">
-                    <div className="w-12 text-xs font-semibold text-slate-300 shrink-0">{h.ticker}</div>
+                {core.holdings.map(h => (
+                  <div key={h.t} className="flex items-center gap-3">
+                    <div className="w-12 text-xs font-semibold text-slate-300 shrink-0">{h.t}</div>
                     <div className="flex-1 bg-slate-800 rounded h-3">
-                      <div className="h-full rounded bg-slate-500" style={{ width: `${(h.weight / INDEX_CORE.holdings[0].weight) * 100}%` }} />
+                      <div className="h-full rounded bg-slate-500" style={{ width: `${(h.w / core.holdings[0].w) * 100}%` }} />
                     </div>
-                    <div className="w-12 text-right text-[11px] text-slate-400">{h.weight.toFixed(1)}%</div>
+                    <div className="w-12 text-right text-[11px] text-slate-400">{h.w.toFixed(1)}%</div>
                   </div>
                 ))}
               </div>

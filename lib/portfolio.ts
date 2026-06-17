@@ -1,5 +1,8 @@
-import { INDEX_CHART_DATA, SAMPLE_DATA as SD } from './data';
-import type { Theme, Period } from './data';
+import {
+  INDEX_CHART_DATA, SAMPLE_DATA as SD,
+  BASE_INDEX_HOLDINGS, BASE_INDEX_CHART, BASE_INDEX_NAMES, THEME_REPRESENTATIVES,
+} from './data';
+import type { Theme, Period, BaseIndexId } from './data';
 
 // ── Portfolio builder data layer ────────────────────────────────────────────
 // Everything here is DERIVED FROM REAL DATA in lib/data.ts:
@@ -41,22 +44,16 @@ const THEME_META: Record<Theme, { etf: string; color: string }> = {
   'Meme':            { etf: 'BUZZ', color: '#f472b6' },
 };
 
-// ── Index core (SPY) — separate price-only lane ─────────────────────────────
-// Indicative S&P 500 top-5 weights (large-cap, slow-moving). Shown as the
-// "what's inside your ballast" read-out for the core sleeve. Labelled
-// indicative in the UI — not part of the scraped conviction dataset.
-export const INDEX_CORE = {
-  etf: 'SPY',
-  name: 'S&P 500',
-  color: '#94a3b8',
-  holdings: [
-    { ticker: 'NVDA', weight: 7.5 },
-    { ticker: 'MSFT', weight: 6.5 },
-    { ticker: 'AAPL', weight: 5.5 },
-    { ticker: 'AMZN', weight: 3.9 },
-    { ticker: 'META', weight: 2.8 },
-  ],
-};
+// ── Index core — selectable base index (SPY / QQQ), price-only lane ──────────
+// Real top-5 holdings + price series come from the scraped data (BASE_INDEX_*).
+// The core scores zero conviction by design — it is passive beta, not a tilt.
+export const CORE_COLOR = '#94a3b8';
+export const BASE_INDEX_IDS: BaseIndexId[] = ['SPY', 'QQQ'];
+
+// Convenience accessor for the page's "inside your core" read-out.
+export function baseIndexInfo(id: BaseIndexId) {
+  return { id, name: BASE_INDEX_NAMES[id], holdings: BASE_INDEX_HOLDINGS[id] };
+}
 
 // Raw theme conviction = mean proScore of the theme's top 5 consensus stocks.
 // proScore = avg weight across the theme's ETFs × coverage (linear) — the same
@@ -73,50 +70,63 @@ function rawThemeConviction(theme: Theme): { raw: number; picks: { ticker: strin
 }
 
 // Build all sleeves with real conviction scores indexed 0–100.
-export function buildSleeves(): Sleeve[] {
+// baseIndex selects which index (SPY/QQQ) backs the passive core sleeve.
+export function buildSleeves(baseIndex: BaseIndexId = 'SPY'): Sleeve[] {
   const themeData = BUILDER_THEMES.map(t => ({ theme: t, ...rawThemeConviction(t) }));
   const maxRaw = Math.max(...themeData.map(d => d.raw)) || 1;
 
+  // Normalize core picks to fractions (sum to 1) so exposure math is share-based
+  // and consistent with the theme sleeves — otherwise raw percent weights (7.5)
+  // get multiplied by 100 again in the UI and read as 750%.
+  const coreHoldings = BASE_INDEX_HOLDINGS[baseIndex];
+  const coreTot = coreHoldings.reduce((s, h) => s + h.w, 0) || 1;
   const core: Sleeve = {
     id: 'core',
     name: 'Index core',
-    etf: INDEX_CORE.etf,
-    color: INDEX_CORE.color,
+    etf: baseIndex,                      // also carries the base-index id for sleeveSeries
+    color: CORE_COLOR,
     isCore: true,
     convScore: 0,
     convRaw: 0,
-    picks: INDEX_CORE.holdings.map(h => ({ ticker: h.ticker, weight: h.weight })),
+    picks: coreHoldings.map(h => ({ ticker: h.t, weight: h.w / coreTot })),
     defaultVal: 40,
   };
 
-  const themes: Sleeve[] = themeData.map(d => ({
-    id: d.theme.toLowerCase().replace(/[^a-z]/g, ''),
-    name: d.theme,
-    etf: THEME_META[d.theme].etf,
-    color: THEME_META[d.theme].color,
-    isCore: false,
-    convScore: Math.round((d.raw / maxRaw) * 100),
-    convRaw: d.raw,
-    picks: d.picks,
-    defaultVal: d.theme === 'AI & ML' ? 20 : d.theme === 'Semiconductors' || d.theme === 'Broad Tech' ? 14 : 6,
-  }));
+  const themes: Sleeve[] = themeData.map(d => {
+    const rep = THEME_REPRESENTATIVES[d.theme];
+    return {
+      id: d.theme.toLowerCase().replace(/[^a-z]/g, ''),
+      name: d.theme,
+      // Dial shows the representative ETF pair (avg of 2 best non-correlated
+      // performers) when available, else the static representative ETF.
+      etf: rep?.etfs?.length ? rep.etfs.join(' + ') : THEME_META[d.theme].etf,
+      color: THEME_META[d.theme].color,
+      isCore: false,
+      convScore: Math.round((d.raw / maxRaw) * 100),
+      convRaw: d.raw,
+      picks: d.picks,
+      defaultVal: d.theme === 'AI & ML' ? 20 : d.theme === 'Semiconductors' || d.theme === 'Broad Tech' ? 14 : 6,
+    };
+  });
 
   return [core, ...themes];
 }
 
 // The real indexed price series for a sleeve over a period.
-// Core uses the SPY benchmark line; themes use their own top10 line.
+// Core uses the selected base index; themes use their representative pair's
+// blended series (falling back to the all-ETF composite if no rep was built).
 function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
   if (sleeve.isCore) {
-    // SPY series is identical across themes — grab it from any theme block.
-    const anyTheme = BUILDER_THEMES[0];
-    return INDEX_CHART_DATA[anyTheme][period].spy;
+    return BASE_INDEX_CHART[sleeve.etf as BaseIndexId][period];
   }
+  const rep = THEME_REPRESENTATIVES[sleeve.name as Theme];
+  if (rep?.series?.[period]?.length) return rep.series[period];
   return INDEX_CHART_DATA[sleeve.name as Theme][period].top10;
 }
 
+// Benchmark line is always the S&P 500, independent of the chosen core index.
 function spySeries(period: Period): number[] {
-  return INDEX_CHART_DATA[BUILDER_THEMES[0]][period].spy;
+  return BASE_INDEX_CHART['SPY'][period];
 }
 
 export type PerfResult = {
