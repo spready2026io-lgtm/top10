@@ -27,6 +27,15 @@ body {
   to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
+/* Intro carousel slide entrance */
+@keyframes introFade {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-intro {
+  animation: introFade 0.5s ease forwards;
+}
+
 /* Flip tile — ensure both faces stack in the same cell */
 .tile-container {
   min-height: 260px;

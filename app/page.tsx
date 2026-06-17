@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
@@ -1555,11 +1555,169 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
   );
 }
 
+// ── Full-screen intro carousel ────────────────────────────────────────────────
+// A revolving, full-viewport showcase shown on load. Auto-advances through the
+// three feature banners with dot navigation + prev/next arrows. Any click, scroll
+// or keypress dismisses it (with a fade-out), revealing the live dashboard.
+const INTRO_SLIDES = [
+  {
+    key: 'etfs',
+    eyebrow: 'Active ETF universe',
+    title: 'Explore our unique universe of Active ETFs',
+    body: 'ETF holdings ranked daily across 1000+ shares. Pick your theme, sort by our scores.',
+    glow: 'from-emerald-500/15',
+    eyebrowCls: 'text-emerald-400',
+    ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
+    cta: 'Explore the universe',
+    href: '#live',
+  },
+  {
+    key: 'tony',
+    eyebrow: 'Build with Tony',
+    title: 'Build your portfolio with Tony, our AI agent',
+    body: 'Tilt a low-cost index core toward your conviction themes. See the mix, exposure and past performance.',
+    glow: 'from-sky-500/15',
+    eyebrowCls: 'text-sky-400',
+    ctaCls: 'bg-sky-500 text-white hover:bg-sky-400',
+    cta: 'Build your portfolio',
+    href: '/portfolio',
+  },
+  {
+    key: 'scoreboard',
+    eyebrow: 'Cross-theme scoring',
+    title: 'The Scoreboard',
+    body: 'Every stock, scored on consensus and conviction across the ETFs that hold it. See who ranks where.',
+    glow: 'from-amber-500/15',
+    eyebrowCls: 'text-amber-400',
+    ctaCls: 'bg-amber-500 text-black hover:bg-amber-400',
+    cta: 'Open the Scoreboard',
+    href: '/conviction',
+  },
+];
+
+function IntroCarousel({ onDismiss }: { onDismiss: () => void }) {
+  const [slide,   setSlide]   = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const dismissed = useRef(false);
+
+  const go = (i: number) => setSlide((i + INTRO_SLIDES.length) % INTRO_SLIDES.length);
+
+  const dismiss = () => {
+    if (dismissed.current) return;
+    dismissed.current = true;
+    setLeaving(true);
+    setTimeout(onDismiss, 450);
+  };
+
+  // Lock background scroll while the intro is showing.
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  // Auto-advance every 5s.
+  useEffect(() => {
+    const t = setInterval(() => setSlide(s => (s + 1) % INTRO_SLIDES.length), 5000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Dismiss on scroll / key; left & right arrows navigate instead.
+  useEffect(() => {
+    const onWheel = () => dismiss();
+    const onTouch = () => dismiss();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') go(slide + 1);
+      else if (e.key === 'ArrowLeft') go(slide - 1);
+      else dismiss();
+    };
+    window.addEventListener('wheel', onWheel, { passive: true });
+    window.addEventListener('touchmove', onTouch, { passive: true });
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchmove', onTouch);
+      window.removeEventListener('keydown', onKey);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slide]);
+
+  const s = INTRO_SLIDES[slide];
+
+  return (
+    <div
+      onClick={dismiss}
+      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 text-center transition-opacity duration-500 ${leaving ? 'opacity-0' : 'opacity-100'}`}
+    >
+      {/* accent glow (swaps per slide) */}
+      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${s.glow} via-slate-950 to-slate-950 transition-[background] duration-700`} />
+
+      {/* live-data badge */}
+      <div className="relative z-10 inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+        </span>
+        Refreshed 3 times a day
+      </div>
+
+      {/* slide content — keyed so it re-animates on change */}
+      <div key={s.key} className="animate-intro relative z-10 mt-8 flex max-w-3xl flex-col items-center">
+        <div className={`text-xs font-bold uppercase tracking-[0.18em] ${s.eyebrowCls}`}>{s.eyebrow}</div>
+        <h2 className="mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl">{s.title}</h2>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl">{s.body}</p>
+        <Link
+          href={s.href}
+          onClick={(e) => { e.stopPropagation(); dismiss(); }}
+          className={`mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3 text-base font-bold transition-colors ${s.ctaCls}`}
+        >
+          {s.cta}
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
+
+      {/* prev / next */}
+      <button
+        aria-label="Previous banner"
+        onClick={(e) => { e.stopPropagation(); go(slide - 1); }}
+        className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-xl text-slate-300 transition-colors hover:border-slate-500 hover:text-white sm:left-8"
+      >
+        ‹
+      </button>
+      <button
+        aria-label="Next banner"
+        onClick={(e) => { e.stopPropagation(); go(slide + 1); }}
+        className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-xl text-slate-300 transition-colors hover:border-slate-500 hover:text-white sm:right-8"
+      >
+        ›
+      </button>
+
+      {/* dot indicators */}
+      <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2.5" onClick={(e) => e.stopPropagation()}>
+        {INTRO_SLIDES.map((sl, i) => (
+          <button
+            key={sl.key}
+            aria-label={`Go to banner ${i + 1}`}
+            onClick={() => go(i)}
+            className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-7 bg-white' : 'w-2.5 bg-slate-600 hover:bg-slate-400'}`}
+          />
+        ))}
+      </div>
+
+      {/* enter hint */}
+      <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs text-slate-500">
+        Scroll or click to enter ↓
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [theme,   setTheme]   = useState<Theme>('AI & ML');
   const [period,  setPeriod]  = useState<ChartPeriod>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
+  const [introOpen, setIntroOpen] = useState(true);
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
   const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
   const [showGuide, setShowGuide] = useState(false);
@@ -1617,6 +1775,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
+      {introOpen && <IntroCarousel onDismiss={() => setIntroOpen(false)} />}
       {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
       {/* Header */}
@@ -1709,132 +1868,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── Landing hero + feature gallery (sits above the live dashboard) ── */}
-      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
-        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-16">
-
-          {/* Hero */}
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-              Refreshed 3 times a day
-            </div>
-            <h2 className="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.1]">
-              See what active fund managers <span className="text-emerald-400">actually hold.</span>
-            </h2>
-            <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
-              Top10 tracks 40 actively managed ETFs across 6 themes and ranks every stock they hold by
-              consensus and conviction. No tips, no hype, just the holdings, refreshed three times a day.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <a
-                href="#live"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-emerald-400"
-              >
-                Explore the Top 10
-                <span aria-hidden>↓</span>
-              </a>
-              <Link
-                href="/ask"
-                className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 px-5 py-2.5 text-sm font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10"
-              >
-                Ask Tony
-              </Link>
-            </div>
-            <p className="mt-3 text-xs text-slate-500">
-              Rankings, not recommendations. Top10 scores conviction, it does not give advice.
-            </p>
-          </div>
-
-          {/* 3-banner feature gallery (gallery-tile style, matches the dashboard row) */}
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-
-            {/* Banner 1 — Active ETF universe */}
-            <a
-              href="#live"
-              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-5 transition-colors hover:border-emerald-500/50"
-            >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-400">Active ETF universe</div>
-              <h3 className="mt-2 text-lg font-bold leading-snug text-white">Explore our unique universe of Active ETFs</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                ETF holdings ranked daily across 1000+ shares. Pick your theme, sort by our scores.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {['AIS', 'SOXX', 'ARKK', 'IGV', 'BUZZ', 'AIRR'].map(t => (
-                  <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-300">{t}</span>
-                ))}
-                <span className="rounded-full px-2 py-0.5 text-[11px] font-semibold text-slate-500">+34 more</span>
-              </div>
-              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-emerald-300">
-                Explore the universe
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </div>
-            </a>
-
-            {/* Banner 2 — Build a portfolio with Tony (reuses the allocation-bar visual) */}
-            <Link
-              href="/portfolio"
-              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-sky-500/10 to-slate-900 p-5 transition-colors hover:border-sky-500/50"
-            >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-400">Build with Tony</div>
-              <h3 className="mt-2 text-lg font-bold leading-snug text-white">Build your portfolio with Tony, our AI agent</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Tilt a low-cost index core toward your conviction themes. See the mix, exposure and past performance.
-              </p>
-              <div className="mt-4">
-                <div className="flex h-2.5 w-full overflow-hidden rounded-full">
-                  <div className="bg-slate-400"  style={{ width: '46%' }} />
-                  <div className="bg-violet-400" style={{ width: '18%' }} />
-                  <div className="bg-sky-500"    style={{ width: '15%' }} />
-                  <div className="bg-sky-300"    style={{ width: '12%' }} />
-                  <div className="bg-amber-400"  style={{ width: '9%' }} />
-                </div>
-                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-400">
-                  {[['Core', 'bg-slate-400'], ['AI', 'bg-violet-400'], ['Semi', 'bg-sky-500'], ['Tech', 'bg-sky-300'], ['Elec', 'bg-amber-400']].map(([label, color]) => (
-                    <span key={label} className="flex items-center gap-1">
-                      <span className={`h-2 w-2 rounded-full ${color}`} />{label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-sky-300">
-                Build your portfolio
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </div>
-            </Link>
-
-            {/* Banner 3 — The Scoreboard (Conviction Board) */}
-            <Link
-              href="/conviction"
-              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-amber-500/10 to-slate-900 p-5 transition-colors hover:border-amber-500/50"
-            >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-400">Cross-theme scoring</div>
-              <h3 className="mt-2 text-lg font-bold leading-snug text-white">The Scoreboard</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Every stock, scored on consensus and conviction across the ETFs that hold it. See who ranks where.
-              </p>
-              <div className="mt-4 space-y-1.5">
-                {[['1', '92%'], ['2', '74%'], ['3', '58%']].map(([rank, w]) => (
-                  <div key={rank} className="flex items-center gap-2">
-                    <span className="w-4 text-right font-mono text-[11px] font-bold text-amber-400">{rank}</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-800">
-                      <div className="h-full rounded-full bg-amber-400/70" style={{ width: w }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-amber-300">
-                Open the Scoreboard
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </div>
-            </Link>
-
-          </div>
-        </div>
-      </section>
 
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
