@@ -51,8 +51,16 @@ export default function PortfolioPage() {
           <p className="text-sm text-slate-400 leading-relaxed mt-4 max-w-2xl">
             Set a cheap index core for market beta, then tilt toward the themes you believe in. Tony reflects back
             the <span className="text-slate-200">conviction</span>, the <span className="text-slate-200">exposure</span>,
-            and the <span className="text-slate-200">past performance</span> of whatever you build. You do the choosing —
-            this is education, not a recommendation.
+            and the <span className="text-slate-200">past performance</span> of whatever you build. You do the choosing.
+            This is education, not a recommendation.
+          </p>
+          <p className="text-sm text-slate-400 leading-relaxed mt-3 max-w-2xl">
+            <span className="text-emerald-400 font-semibold">How each theme is built:</span> every theme on the dial is the
+            equal-weight average of its <span className="text-slate-200">two strongest ETFs</span>, ranked by a blend of
+            <span className="text-slate-200"> 50% 6-month and 50% 1-year</span> return and filtered to be
+            <span className="text-slate-200"> non-correlated</span> (the second ETF has to move differently enough from the
+            first), so each tilt stays diversified instead of doubling up on the same names. The ticker pair shown next to
+            each theme is the live result.
           </p>
           <p className="text-xs text-slate-600 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
         </div>
@@ -135,12 +143,6 @@ export default function PortfolioPage() {
 
           {/* ── Right: read-outs ── */}
           <div className="flex-1 min-w-0">
-            {/* How each theme is built — ETF selection formula */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4 text-xs text-slate-400 leading-relaxed">
-              <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-widest mb-1.5">How each theme is built</div>
-              Every theme on the dial is the equal-weight average of its <span className="text-slate-200">two strongest ETFs</span>, ranked by a blend of <span className="text-slate-200">50% 6-month and 50% 1-year</span> return and filtered to be <span className="text-slate-200">non-correlated</span> (the second ETF has to move differently enough from the first). That keeps each tilt diversified instead of doubling up on the same names. The ticker pair shown next to each theme is the live result.
-            </div>
-
             {/* Mix bar */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
               <div className="text-[11px] text-slate-500 mb-2">Your mix</div>
