@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-17T16:35:13.312Z",
-  "scanTimestampNY": "June 17, 2026 at 12:35 PM ET",
+  "scanTimestamp": "2026-06-17T16:53:39.391Z",
+  "scanTimestampNY": "June 17, 2026 at 12:53 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -168,6 +168,34 @@
     "ok": 40,
     "failed": [],
     "fetchErrors": [
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V811/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G847/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V134/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
       {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
         "error": "HTTP 404"
