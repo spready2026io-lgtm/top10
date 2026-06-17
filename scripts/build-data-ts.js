@@ -218,6 +218,55 @@ function formatMarketCap(n) {
   return `$${(n / 1e6).toFixed(0)}M`;
 }
 
+// Number of points in a 1D intraday path. Must match PERIOD_N['1D'] in
+// genIndexChartData so averagePaths() accepts the ETF 1D paths.
+const INTRADAY_N = 24;
+
+// Fetch today's intraday path for a ticker (range=1d, 5-minute bars). The series
+// is prepended with the prior close and end-anchored to the live price, so both
+// the line and the % move are measured against yesterday's close — matching the
+// day % Yahoo Finance shows. Auto-refreshes on each of the 3×/day price jobs.
+// Returns { prices, pathNorm, dayReturn } or null on failure (chart falls back).
+async function fetchIntraday(ticker, currentPrice, n = INTRADAY_N) {
+  try {
+    const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1d&interval=5m&crumb=${encodeURIComponent(_yfCrumb)}`;
+    const res = await fetch(url, {
+      headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const result = data.chart?.result?.[0];
+    if (!result) throw new Error('No chart result');
+
+    const prevClose = result.meta?.chartPreviousClose ?? result.meta?.previousClose ?? null;
+    const closes = (result.timestamp || [])
+      .map((_, i) => result.indicators?.quote?.[0]?.close?.[i])
+      .filter(c => c != null);
+    if (!prevClose || closes.length < 2) throw new Error('Insufficient intraday data');
+
+    const series = [prevClose, ...closes];
+    series[series.length - 1] = currentPrice; // anchor end to live price
+
+    const sample = (arr) => {
+      if (arr.length <= n) return arr.map(v => parseFloat(v.toFixed(2)));
+      return Array.from({ length: n }, (_, i) => {
+        const idx = Math.min(Math.round(i * (arr.length - 1) / (n - 1)), arr.length - 1);
+        return parseFloat(arr[idx].toFixed(2));
+      });
+    };
+
+    const base = series[0];
+    return {
+      prices:    sample(series),
+      pathNorm:  sample(series.map(v => v / base * 100)),
+      dayReturn: parseFloat(((currentPrice / prevClose - 1) * 100).toFixed(2)),
+    };
+  } catch (e) {
+    console.warn(`  [Yahoo Intraday] ${ticker} 1D failed: ${e.message}`);
+    return null;
+  }
+}
+
 // currentPrice = regularMarketPrice from quoteSummary — used as the return numerator
 // so that percentages match what Yahoo Finance displays (today's price vs. historical close),
 // not yesterday's close vs. historical close (which is what last.close would give mid-session).
@@ -282,7 +331,10 @@ async function fetchChartReturns(ticker, currentPrice) {
       ? parseFloat(((currentPrice / last1W[0].close - 1) * 100).toFixed(2))
       : 0;
 
+    const intraday = await fetchIntraday(ticker, currentPrice);
+
     const priceHistory = {
+      '1D': intraday?.prices,
       '1W': sample(last1W, 5),
       '1M': sample(last1M, 21),
       '6M': sample(last6M, 26),
@@ -293,12 +345,13 @@ async function fetchChartReturns(ticker, currentPrice) {
       '1M': ret(closest(calTs(1))),
       '6M': ret(closest(calTs(6))),
       '1Y': ret(closest(calTs(0, 1))),
+      dayReturn: intraday?.dayReturn ?? null,
       priceHistory,
       weeklyReturn,
     };
   } catch (e) {
     console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
-    return { '1M': 0, '6M': 0, '1Y': 0, priceHistory: null, weeklyReturn: 0 };
+    return { '1M': 0, '6M': 0, '1Y': 0, dayReturn: null, priceHistory: null, weeklyReturn: 0 };
   }
 }
 
@@ -332,8 +385,12 @@ async function fetchFinancials(ticker) {
     const weeklyChange  = (priceHistory?.['1W']?.length >= 2)
                           ? chartData.weeklyReturn
                           : parseFloat(((r.price?.regularMarketChangePercent?.raw ?? 0) * 100).toFixed(2));
+    // 1D move — Yahoo's live day % (vs prior close), matching what the site shows.
+    const dayChange     = r.price?.regularMarketChangePercent?.raw != null
+                          ? parseFloat((r.price.regularMarketChangePercent.raw * 100).toFixed(2))
+                          : (chartData.dayReturn ?? 0);
 
-    return { price: parseFloat(price.toFixed(2)), weeklyChange, weeklyPrices, periodReturns, priceHistory, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
+    return { price: parseFloat(price.toFixed(2)), weeklyChange, dayChange, weeklyPrices, periodReturns, priceHistory, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
 
   } catch (e) {
     console.warn(`  [Yahoo] ${ticker} failed: ${e.message}`);
@@ -422,6 +479,13 @@ async function fetchEtfData(ticker) {
       '6M': normAndSample(last6M, 26),
       '1Y': normAndSample(valid,  52),
     };
+
+    // 1D intraday path + return (powers the 1D view on the index chart)
+    const intraday = await fetchIntraday(ticker, currentPrice);
+    if (intraday) {
+      paths['1D']   = intraday.pathNorm;
+      returns['1D'] = intraday.dayReturn;
+    }
 
     return { returns, paths };
   } catch (e) {
@@ -522,6 +586,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const f = financials || {};
   const price         = f.price ?? 0;
   const weeklyChange  = f.weeklyChange ?? 0;
+  const dayChange     = f.dayChange ?? 0;
   // Use real 1W price history if available — fall back only if missing entirely
   const ph1w = f.priceHistory?.['1W'];
   const weeklyPrices = (ph1w && ph1w.length >= 2) ? ph1w : (price > 0 ? [price] : [0]);
@@ -541,8 +606,9 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const wpStr = '[' + weeklyPrices.map(p => p.toFixed(2)).join(', ') + ']';
 
   const ph = f.priceHistory;
+  const ph1d = ph && ph['1D'] && ph['1D'].length >= 2 ? `'1D': [${ph['1D'].join(', ')}], ` : '';
   const phStr = ph
-    ? `{ '1W': [${ph['1W'].join(', ')}], '1M': [${ph['1M'].join(', ')}], '6M': [${ph['6M'].join(', ')}], '1Y': [${ph['1Y'].join(', ')}] }`
+    ? `{ ${ph1d}'1W': [${ph['1W'].join(', ')}], '1M': [${ph['1M'].join(', ')}], '6M': [${ph['6M'].join(', ')}], '1Y': [${ph['1Y'].join(', ')}] }`
     : 'undefined';
 
   const vsObj = vs || { '1D': null, '1W': null, '1M': null, '6M': null };
@@ -552,7 +618,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   return [
     `    {`,
     `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, avgWeight: ${eq.avgWeight}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
-    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
+    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, dayChange: ${dayChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
@@ -626,6 +692,8 @@ function genXLabels(period, todayStr) {
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const d = new Date(todayStr + 'T12:00:00Z');
 
+  if (period === '1D') return ['Open', '11a', '1p', '3p', 'Now'];
+
   if (period === '1W') return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
   if (period === '1M') {
@@ -654,8 +722,8 @@ function genXLabels(period, todayStr) {
 
 // Build the full INDEX_CHART_DATA block from real ETF price paths and SPY.
 function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
-  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
-  const PERIODS  = ['1W', '1M', '6M', '1Y'];
+  const PERIOD_N = { '1D': INTRADAY_N, '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const PERIODS  = ['1D', '1W', '1M', '6M', '1Y'];
 
   const themeBlocks = Object.entries(themeEtfs).map(([theme, tickers]) => {
     const periodBlocks = PERIODS.map(period => {
@@ -687,7 +755,7 @@ function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
 
   return [
     '// @@GENERATED:INDEX_CHART_DATA@@',
-    'export const INDEX_CHART_DATA: Record<Theme, Record<Period, ChartPeriodData>> = {',
+    'export const INDEX_CHART_DATA: Record<Theme, IndexChartByPeriod> = {',
     ...themeBlocks,
     '};',
     '// @@END_GENERATED:INDEX_CHART_DATA@@',
@@ -715,6 +783,30 @@ function genEtfReturns(etfReturnsMap, themeEtfs) {
     ...lines,
     '};',
     '// @@END_GENERATED:ETF_RETURNS@@',
+  ].join('\n');
+}
+
+// Per-ETF 1D move (vs prior close). Additive — kept separate from ETF_RETURNS
+// so the core Record<Period, number> shape is unaffected. Returns null if no
+// ETF reported a 1D value, leaving the existing block unchanged.
+function genEtfDayChange(etfReturnsMap, themeEtfs) {
+  const allEtfs = [...new Set(Object.values(themeEtfs).flat())];
+  const lines = [];
+  for (const ticker of allEtfs) {
+    const d = etfReturnsMap[ticker]?.['1D'];
+    if (d == null) continue;
+    const pad = ' '.repeat(Math.max(0, 4 - ticker.length));
+    lines.push(`  ${ticker}:${pad} ${d},`);
+  }
+  if (lines.length === 0) return null;
+  return [
+    '// @@GENERATED:ETF_DAY_CHANGE@@',
+    "// Today's % move per ETF ticker (1D, vs prior close). Refreshed by the 3×/day",
+    '// price jobs. Powers the 1D ranking in the theme-ETF side panel.',
+    'export const ETF_DAY_CHANGE: Record<string, number> = {',
+    ...lines,
+    '};',
+    '// @@END_GENERATED:ETF_DAY_CHANGE@@',
   ].join('\n');
 }
 
@@ -958,7 +1050,7 @@ function genThemeReps(themeEtfs, etfDataMap) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -1025,6 +1117,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:THEME_REPRESENTATIVES@@[\s\S]*?\/\/ @@END_GENERATED:THEME_REPRESENTATIVES@@/,
       newThemeReps
+    );
+  }
+  if (newEtfDayChange) {
+    src = src.replace(
+      /\/\/ @@GENERATED:ETF_DAY_CHANGE@@[\s\S]*?\/\/ @@END_GENERATED:ETF_DAY_CHANGE@@/,
+      newEtfDayChange
     );
   }
 
@@ -1219,9 +1317,10 @@ async function main() {
   const newEtfTopHoldings  = genEtfTopHoldings(holdingsMap, THEME_ETFS);
   const newBaseIndex       = genBaseIndex(holdingsMap, spyData, qqqData);
   const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
+  const newEtfDayChange    = genEtfDayChange(etfReturnsMap, THEME_ETFS);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');

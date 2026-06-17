@@ -7,6 +7,7 @@ import {
   Theme,
   Equity,
   Period,
+  ChartPeriod,
   ChartPeriodData,
   THEMES,
   THEME_ETFS,
@@ -14,6 +15,7 @@ import {
   THEME_BENCHMARK_ETF,
   THEME_ETF_COUNT,
   ETF_RETURNS,
+  ETF_DAY_CHANGE,
   SPY_RET,
   SAMPLE_DATA,
   INDEX_CHART_DATA,
@@ -121,7 +123,8 @@ function displayName(ticker: string, scraped: string): string {
 }
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────
-const TILE_XLABELS: Record<Period, string[]> = {
+const TILE_XLABELS: Record<ChartPeriod, string[]> = {
+  '1D': ['Open', 'Midday', 'Now'],
   '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
   '1M': ['May 1', 'May 15', 'Jun 1'],
   '6M': ['Nov', 'Jan', 'Mar', 'May'],
@@ -129,9 +132,9 @@ const TILE_XLABELS: Record<Period, string[]> = {
 };
 
 // ── Generate deterministic price path for a tile chart ───────────────────────
-function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: Period): number[] {
+function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: ChartPeriod): number[] {
   const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const nMap:  Record<Period, number> = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const nMap:  Record<ChartPeriod, number> = { '1D': 8, '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
   const n          = nMap[period];
   const startPrice = currentPrice / (1 + periodReturn / 100);
   const pts: number[] = [startPrice];
@@ -206,10 +209,11 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
 }
 
 // ── Index performance chart ───────────────────────────────────────────────────
-const PERIODS: Period[] = ['1W', '1M', '6M', '1Y'];
+const PERIODS: ChartPeriod[] = ['1D', '1W', '1M', '6M', '1Y'];
 
-function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: Period; setPeriod: (p: Period) => void }) {
-  const d: ChartPeriodData = INDEX_CHART_DATA[theme][period];
+function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartPeriod; setPeriod: (p: ChartPeriod) => void }) {
+  // 1D may be absent until a price build produces intraday data — fall back to 1W.
+  const d: ChartPeriodData = INDEX_CHART_DATA[theme][period] ?? INDEX_CHART_DATA[theme]['1W'];
 
   const VW = 800; const VH = 200;
   const padL = 52; const padR = 20; const padT = 12; const padB = 30;
@@ -340,7 +344,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: Period
 }
 
 // ── ETF performance summary tile ─────────────────────────────────────────────
-function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
+function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
   const etfs = THEME_ETFS[theme];
   const etfCount = THEME_ETF_COUNT[theme];
 
@@ -350,7 +354,10 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: Period }) {
   const [showAllEtfs, setShowAllEtfs] = useState(false);
 
   const rows = etfs
-    .map(ticker => ({ ticker, ret: ETF_RETURNS[ticker]?.[period] ?? 0 }))
+    .map(ticker => ({
+      ticker,
+      ret: period === '1D' ? (ETF_DAY_CHANGE[ticker] ?? 0) : (ETF_RETURNS[ticker]?.[period] ?? 0),
+    }))
     .sort((a, b) => b.ret - a.ret);
 
   const PREVIEW_COUNT = 4;
@@ -810,7 +817,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
 // ── Equity tile ───────────────────────────────────────────────────────────────
 function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean }) {
   const [flipped,     setFlipped]     = useState(false);
-  const [tilePeriod,  setTilePeriod]  = useState<Period>('1W');
+  const [tilePeriod,  setTilePeriod]  = useState<ChartPeriod>('1W');
   const [wtOpen,      setWtOpen]      = useState(false);
   const [vsOpen,      setVsOpen]      = useState(false);
   const [thesisOpen,  setThesisOpen]  = useState(false);
@@ -835,7 +842,9 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
   }, [wtOpen, vsOpen]);
 
   const rawHistory   = equity.priceHistory?.[tilePeriod];
-  const baseReturn   = tilePeriod === '1W' ? equity.weeklyChange : equity.periodReturns[tilePeriod];
+  const baseReturn   = tilePeriod === '1D' ? (equity.dayChange ?? 0)
+                     : tilePeriod === '1W' ? equity.weeklyChange
+                     : equity.periodReturns[tilePeriod];
   const tilePrices   = (rawHistory && rawHistory.length >= 2)
                        ? rawHistory
                        : makeTilePrices(equity.ticker, equity.price, baseReturn, tilePeriod);
@@ -1548,7 +1557,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
 
 export default function Home() {
   const [theme,   setTheme]   = useState<Theme>('AI & ML');
-  const [period,  setPeriod]  = useState<Period>('6M');
+  const [period,  setPeriod]  = useState<ChartPeriod>('6M');
   const [tagline, setTagline] = useState(false);
   const [welcome, setWelcome] = useState(false);
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
@@ -1699,6 +1708,104 @@ export default function Home() {
 
         </div>
       </header>
+
+      {/* ── Landing hero + feature gallery (sits above the live dashboard) ── */}
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-16">
+
+          {/* Hero */}
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Refreshed 3 times a day
+            </div>
+            <h2 className="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+              See what active fund managers <span className="text-emerald-400">actually hold.</span>
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
+              Top10 tracks 40 actively managed ETFs across 6 themes and ranks every stock they hold by
+              consensus and conviction. No tips, no hype, just the holdings, refreshed three times a day.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href="#live"
+                className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-emerald-400"
+              >
+                Explore the Top 10
+                <span aria-hidden>↓</span>
+              </a>
+              <Link
+                href="/ask"
+                className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 px-5 py-2.5 text-sm font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10"
+              >
+                Ask Tony
+              </Link>
+            </div>
+            <p className="mt-3 text-xs text-slate-500">
+              Rankings, not recommendations. Top10 scores conviction, it does not give advice.
+            </p>
+          </div>
+
+          {/* 3-banner feature gallery */}
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+
+            {/* Banner 1 — live rankings */}
+            <a
+              href="#live"
+              className="group relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-5 transition-colors hover:border-emerald-500/60"
+            >
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-400">Live rankings</div>
+              <h3 className="mt-2 text-lg font-bold text-white">Top 10 by theme</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                The stocks held most widely, and most heavily, across each theme&apos;s ETFs. Scored and re-ranked every day.
+              </p>
+              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-emerald-300">
+                See the rankings
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              </div>
+            </a>
+
+            {/* Banner 2 — conviction board */}
+            <Link
+              href="/conviction"
+              className="group relative overflow-hidden rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 to-slate-900 p-5 transition-colors hover:border-amber-500/60"
+            >
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-400">Cross-theme breadth</div>
+              <h3 className="mt-2 text-lg font-bold text-white">Conviction Board</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Where the same names appear across multiple themes. The widest institutional conviction, in a single view.
+              </p>
+              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-amber-300">
+                Open the board
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              </div>
+            </Link>
+
+            {/* Banner 3 — build a portfolio */}
+            <Link
+              href="/portfolio"
+              className="group relative overflow-hidden rounded-2xl border border-sky-500/25 bg-gradient-to-br from-sky-500/10 to-slate-900 p-5 transition-colors hover:border-sky-500/60"
+            >
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-400">Build with Tony</div>
+              <h3 className="mt-2 text-lg font-bold text-white">Build a portfolio</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Turn the holdings data into a themed, weighted portfolio. Or ask Tony how any stock scores.
+              </p>
+              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-sky-300">
+                Start building
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              </div>
+            </Link>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Anchor for the hero CTA — jumps to the live dashboard below */}
+      <div id="live" className="scroll-mt-4" />
 
       {/* Theme toggle — mobile only, full-width scrollable bar */}
       <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
