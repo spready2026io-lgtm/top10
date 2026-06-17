@@ -1749,53 +1749,85 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 3-banner feature gallery */}
+          {/* 3-banner feature gallery (gallery-tile style, matches the dashboard row) */}
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
 
-            {/* Banner 1 — live rankings */}
+            {/* Banner 1 — Active ETF universe */}
             <a
               href="#live"
-              className="group relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-5 transition-colors hover:border-emerald-500/60"
+              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-5 transition-colors hover:border-emerald-500/50"
             >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-400">Live rankings</div>
-              <h3 className="mt-2 text-lg font-bold text-white">Top 10 by theme</h3>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-400">Active ETF universe</div>
+              <h3 className="mt-2 text-lg font-bold leading-snug text-white">Explore our unique universe of Active ETFs</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                The stocks held most widely, and most heavily, across each theme&apos;s ETFs. Scored and re-ranked every day.
+                ETF holdings ranked daily across 1000+ shares. Pick your theme, sort by our scores.
               </p>
-              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-emerald-300">
-                See the rankings
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {['AIS', 'SOXX', 'ARKK', 'IGV', 'BUZZ', 'AIRR'].map(t => (
+                  <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-300">{t}</span>
+                ))}
+                <span className="rounded-full px-2 py-0.5 text-[11px] font-semibold text-slate-500">+34 more</span>
+              </div>
+              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-emerald-300">
+                Explore the universe
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
               </div>
             </a>
 
-            {/* Banner 2 — conviction board */}
+            {/* Banner 2 — Build a portfolio with Tony (reuses the allocation-bar visual) */}
             <Link
-              href="/conviction"
-              className="group relative overflow-hidden rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 to-slate-900 p-5 transition-colors hover:border-amber-500/60"
+              href="/portfolio"
+              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-sky-500/10 to-slate-900 p-5 transition-colors hover:border-sky-500/50"
             >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-400">Cross-theme breadth</div>
-              <h3 className="mt-2 text-lg font-bold text-white">Conviction Board</h3>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-400">Build with Tony</div>
+              <h3 className="mt-2 text-lg font-bold leading-snug text-white">Build your portfolio with Tony, our AI agent</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Where the same names appear across multiple themes. The widest institutional conviction, in a single view.
+                Tilt a low-cost index core toward your conviction themes. See the mix, exposure and past performance.
               </p>
-              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-amber-300">
-                Open the board
+              <div className="mt-4">
+                <div className="flex h-2.5 w-full overflow-hidden rounded-full">
+                  <div className="bg-slate-400"  style={{ width: '46%' }} />
+                  <div className="bg-violet-400" style={{ width: '18%' }} />
+                  <div className="bg-sky-500"    style={{ width: '15%' }} />
+                  <div className="bg-sky-300"    style={{ width: '12%' }} />
+                  <div className="bg-amber-400"  style={{ width: '9%' }} />
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-400">
+                  {[['Core', 'bg-slate-400'], ['AI', 'bg-violet-400'], ['Semi', 'bg-sky-500'], ['Tech', 'bg-sky-300'], ['Elec', 'bg-amber-400']].map(([label, color]) => (
+                    <span key={label} className="flex items-center gap-1">
+                      <span className={`h-2 w-2 rounded-full ${color}`} />{label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-sky-300">
+                Build your portfolio
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
               </div>
             </Link>
 
-            {/* Banner 3 — build a portfolio */}
+            {/* Banner 3 — The Scoreboard (Conviction Board) */}
             <Link
-              href="/portfolio"
-              className="group relative overflow-hidden rounded-2xl border border-sky-500/25 bg-gradient-to-br from-sky-500/10 to-slate-900 p-5 transition-colors hover:border-sky-500/60"
+              href="/conviction"
+              className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-br from-amber-500/10 to-slate-900 p-5 transition-colors hover:border-amber-500/50"
             >
-              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-400">Build with Tony</div>
-              <h3 className="mt-2 text-lg font-bold text-white">Build a portfolio</h3>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-400">Cross-theme scoring</div>
+              <h3 className="mt-2 text-lg font-bold leading-snug text-white">The Scoreboard</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Turn the holdings data into a themed, weighted portfolio. Or ask Tony how any stock scores.
+                Every stock, scored on consensus and conviction across the ETFs that hold it. See who ranks where.
               </p>
-              <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-sky-300">
-                Start building
+              <div className="mt-4 space-y-1.5">
+                {[['1', '92%'], ['2', '74%'], ['3', '58%']].map(([rank, w]) => (
+                  <div key={rank} className="flex items-center gap-2">
+                    <span className="w-4 text-right font-mono text-[11px] font-bold text-amber-400">{rank}</span>
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-800">
+                      <div className="h-full rounded-full bg-amber-400/70" style={{ width: w }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-amber-300">
+                Open the Scoreboard
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
               </div>
             </Link>
