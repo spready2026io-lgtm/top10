@@ -2,16 +2,49 @@ name: Scrape ETF Holdings
 
 on:
   workflow_dispatch:
-  # Backup trigger. cron-job.org is the PRIMARY trigger (fires at 13:35 UTC via
-  # the dispatches API). This GitHub-native schedule is a fallback ~15 min later
-  # so a cron-job.org outage or a transient GitHub 500 on dispatch doesn't cost a
-  # whole day. GitHub cron often runs late, which is fine for a backup. The commit
-  # step is idempotent (commits only on diff), so a double-fire is harmless.
+  # cron-job.org is the PRIMARY trigger (fires at 13:35 UTC via the dispatches
+  # API, which arrives here as a workflow_dispatch event). This GitHub-native
+  # schedule is a BACKUP that only runs if the primary did NOT land a holdings
+  # update today — see the `guard` job below. So on a normal day exactly one
+  # scrape runs (the cron-job.org one); the scheduled run self-skips.
   schedule:
     - cron: '50 13 * * *'   # 13:50 UTC backup (primary cron-job.org is 13:35 UTC)
 
 jobs:
+  # Decide whether the scrape should run. The primary (workflow_dispatch from
+  # cron-job.org, or any manual run) always proceeds. The scheduled backup only
+  # proceeds if today's "ETF holdings update" commit is missing — i.e. the
+  # primary either never fired or failed before committing fresh data.
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # need full history to inspect today's commits
+
+      - id: check
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Triggered by '${{ github.event_name }}' — primary run, proceeding."
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch origin master --quiet
+          TODAY=$(date -u +%Y-%m-%d)
+          if git log FETCH_HEAD --since="$TODAY 00:00:00 +0000" \
+               --grep="data: ETF holdings update $TODAY" --oneline | grep -q .; then
+            echo "Primary scrape already committed holdings for $TODAY — skipping backup."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No holdings update found for $TODAY — running backup scrape."
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   scrape:
+    needs: guard
+    if: needs.guard.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
