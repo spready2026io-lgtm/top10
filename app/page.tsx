@@ -1640,7 +1640,7 @@ function SlideVisual({ kind }: { kind: string }) {
   );
 }
 
-function HeroCarousel() {
+function HeroCarousel({ onClose }: { onClose: () => void }) {
   const [slide,  setSlide]  = useState(0);
   const [paused, setPaused] = useState(false);
   const n = HERO_SLIDES.length;
@@ -1689,6 +1689,14 @@ function HeroCarousel() {
           >
             ›
           </button>
+          <button
+            aria-label="Dismiss featured banners"
+            title="Hide featured banners"
+            onClick={onClose}
+            className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-950/70 text-base leading-none text-slate-400 transition-colors hover:border-slate-500 hover:text-white"
+          >
+            ×
+          </button>
         </div>
 
         <div className="mt-4 flex items-center justify-center gap-2.5">
@@ -1718,6 +1726,9 @@ export default function Home() {
   const [showAll,   setShowAll]   = useState(false);
   const [expanded,  setExpanded]  = useState<string | null>(null);
   const [crossView, setCrossView] = useState(false);
+  // Session-only: dismissing the hero carousel reveals the portfolio banner as a
+  // fallback. Resets on reload so the other carousel slides aren't lost for good.
+  const [heroDismissed, setHeroDismissed] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setTagline(true), 300);
@@ -1860,8 +1871,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Revolving feature carousel — under the header, above the dashboard tiles */}
-      <HeroCarousel />
+      {/* Revolving feature carousel — under the header, above the dashboard tiles.
+          Dismissible: hiding it surfaces the portfolio banner below as a fallback. */}
+      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} />}
 
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
@@ -1929,7 +1941,10 @@ export default function Home() {
               </div>
 
               {/* Desktop-only portfolio-builder teaser — fills the empty space
-                  to the right of the ETF tile with a CTA into /portfolio. */}
+                  to the right of the ETF tile with a CTA into /portfolio.
+                  Fallback only: shown when the hero carousel is dismissed and the
+                  guide is closed, so it never duplicates the carousel's CTA. */}
+              {heroDismissed && !showGuide && (
               <Link
                 href="/portfolio"
                 className="hidden lg:flex flex-1 min-w-0 max-w-md flex-col justify-between rounded-xl border border-sky-500/30 bg-gradient-to-br from-sky-500/10 to-slate-900 px-4 pt-3 pb-3 hover:border-sky-500/60 hover:from-sky-500/20 transition-colors group"
@@ -1966,6 +1981,7 @@ export default function Home() {
                   <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                 </div>
               </Link>
+              )}
             </div>
 
             {/* Legend + sort toggle + layout toggle */}
