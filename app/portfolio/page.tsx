@@ -4,13 +4,14 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure,
-  baseIndexInfo, BASE_INDEX_IDS, PERF_PERIODS,
+  baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
 } from '@/lib/portfolio';
+import type { BaseChoiceId } from '@/lib/portfolio';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
-import type { Period, BaseIndexId } from '@/lib/data';
+import type { Period } from '@/lib/data';
 
 export default function PortfolioPage() {
-  const [baseIndex, setBaseIndex] = useState<BaseIndexId>('SPY');
+  const [baseIndex, setBaseIndex] = useState<BaseChoiceId>('SPY');
   const [vals, setVals] = useState<number[]>(() => buildSleeves().map(s => s.defaultVal));
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
@@ -86,7 +87,7 @@ export default function PortfolioPage() {
                   </div>
                   {s.isCore && (
                     <div className="flex gap-1 mb-2">
-                      {BASE_INDEX_IDS.map(id => (
+                      {BASE_CHOICES.map(({ id, label }) => (
                         <button
                           key={id}
                           onClick={() => setBaseIndex(id)}
@@ -96,7 +97,7 @@ export default function PortfolioPage() {
                               : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
                           }`}
                         >
-                          {id}
+                          {label}
                         </button>
                       ))}
                     </div>
@@ -122,7 +123,7 @@ export default function PortfolioPage() {
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
                   Inside your index core
                 </div>
-                <span className="text-[11px] text-slate-500">{core.id} · {core.name}</span>
+                <span className="text-[11px] text-slate-500">{core.label} · {core.name}</span>
               </div>
               <p className="text-[11px] text-slate-500 mb-3">
                 Top 5 holdings of your ballast leg. {core.name} weights — your cheap beta.

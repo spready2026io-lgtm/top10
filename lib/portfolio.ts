@@ -2,7 +2,7 @@ import {
   INDEX_CHART_DATA, SAMPLE_DATA as SD,
   BASE_INDEX_HOLDINGS, BASE_INDEX_CHART, BASE_INDEX_NAMES, THEME_REPRESENTATIVES,
 } from './data';
-import type { Theme, Period, BaseIndexId } from './data';
+import type { Theme, Period, BaseIndexId, EtfHolding } from './data';
 
 // ── Portfolio builder data layer ────────────────────────────────────────────
 // Everything here is DERIVED FROM REAL DATA in lib/data.ts:
@@ -44,15 +44,63 @@ const THEME_META: Record<Theme, { etf: string; color: string }> = {
   'Meme':            { etf: 'BUZZ', color: '#f472b6' },
 };
 
-// ── Index core — selectable base index (SPY / QQQ), price-only lane ──────────
+// ── Index core — selectable base, price-only lane ────────────────────────────
 // Real top-5 holdings + price series come from the scraped data (BASE_INDEX_*).
 // The core scores zero conviction by design — it is passive beta, not a tilt.
 export const CORE_COLOR = '#94a3b8';
 export const BASE_INDEX_IDS: BaseIndexId[] = ['SPY', 'QQQ'];
 
+// A third, synthetic core option: a classic growth-tilted 60% S&P / 40% Nasdaq
+// blend. It is DERIVED ENTIRELY from the real SPY and QQQ data — nothing new is
+// scraped — so it is NOT a BaseIndexId (those map 1:1 to scraped indices).
+// The builder works against the wider BaseChoiceId set and resolves the blend
+// at runtime in baseChoice* below.
+export type BaseChoiceId = BaseIndexId | 'BLEND';
+const BLEND_WEIGHTS: Record<BaseIndexId, number> = { SPY: 0.6, QQQ: 0.4 };
+const BASE_CHOICE_LABEL: Record<BaseChoiceId, string> = { SPY: 'SPY', QQQ: 'QQQ', BLEND: '60/40' };
+const BLEND_NAME =
+  `${Math.round(BLEND_WEIGHTS.SPY * 100)}% ${BASE_INDEX_NAMES.SPY} / ` +
+  `${Math.round(BLEND_WEIGHTS.QQQ * 100)}% ${BASE_INDEX_NAMES.QQQ}`;
+
+// Choices the toggle renders, in order, with their short button labels.
+export const BASE_CHOICES: { id: BaseChoiceId; label: string }[] =
+  (['SPY', 'QQQ', 'BLEND'] as BaseChoiceId[]).map(id => ({ id, label: BASE_CHOICE_LABEL[id] }));
+
+// 60/40 weight-blend of the two indices' disclosed top holdings, summed by
+// ticker and re-ranked. Built from the top-5 disclosures only, so it is an
+// illustrative blend of the ballast leg — the same spirit as the per-index view.
+function blendedHoldings(): EtfHolding[] {
+  const acc: Record<string, number> = {};
+  (Object.keys(BLEND_WEIGHTS) as BaseIndexId[]).forEach(idx => {
+    BASE_INDEX_HOLDINGS[idx].forEach(h => { acc[h.t] = (acc[h.t] ?? 0) + h.w * BLEND_WEIGHTS[idx]; });
+  });
+  return Object.entries(acc)
+    .map(([t, w]) => ({ t, w: +w.toFixed(2) }))
+    .sort((a, b) => b.w - a.w)
+    .slice(0, 5);
+}
+
+// Point-wise 60/40 blend of the real SPY and QQQ indexed series. Both start at
+// 100, so the weighted average is itself a valid indexed series.
+function blendedSeries(period: Period): number[] {
+  const spy = BASE_INDEX_CHART.SPY[period], qqq = BASE_INDEX_CHART.QQQ[period];
+  return spy.map((v, i) => v * BLEND_WEIGHTS.SPY + qqq[i] * BLEND_WEIGHTS.QQQ);
+}
+
+// Resolvers that accept either a scraped index or the synthetic blend.
+export function baseChoiceSeries(id: BaseChoiceId, period: Period): number[] {
+  return id === 'BLEND' ? blendedSeries(period) : BASE_INDEX_CHART[id][period];
+}
+function baseChoiceHoldings(id: BaseChoiceId): EtfHolding[] {
+  return id === 'BLEND' ? blendedHoldings() : BASE_INDEX_HOLDINGS[id];
+}
+function baseChoiceName(id: BaseChoiceId): string {
+  return id === 'BLEND' ? BLEND_NAME : BASE_INDEX_NAMES[id];
+}
+
 // Convenience accessor for the page's "inside your core" read-out.
-export function baseIndexInfo(id: BaseIndexId) {
-  return { id, name: BASE_INDEX_NAMES[id], holdings: BASE_INDEX_HOLDINGS[id] };
+export function baseIndexInfo(id: BaseChoiceId) {
+  return { id, label: BASE_CHOICE_LABEL[id], name: baseChoiceName(id), holdings: baseChoiceHoldings(id) };
 }
 
 // Raw theme conviction = mean proScore of the theme's top 5 consensus stocks.
@@ -70,15 +118,15 @@ function rawThemeConviction(theme: Theme): { raw: number; picks: { ticker: strin
 }
 
 // Build all sleeves with real conviction scores indexed 0–100.
-// baseIndex selects which index (SPY/QQQ) backs the passive core sleeve.
-export function buildSleeves(baseIndex: BaseIndexId = 'SPY'): Sleeve[] {
+// baseIndex selects which core (SPY / QQQ / 60-40 blend) backs the passive sleeve.
+export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
   const themeData = BUILDER_THEMES.map(t => ({ theme: t, ...rawThemeConviction(t) }));
   const maxRaw = Math.max(...themeData.map(d => d.raw)) || 1;
 
   // Normalize core picks to fractions (sum to 1) so exposure math is share-based
   // and consistent with the theme sleeves — otherwise raw percent weights (7.5)
   // get multiplied by 100 again in the UI and read as 750%.
-  const coreHoldings = BASE_INDEX_HOLDINGS[baseIndex];
+  const coreHoldings = baseChoiceHoldings(baseIndex);
   const coreTot = coreHoldings.reduce((s, h) => s + h.w, 0) || 1;
   const core: Sleeve = {
     id: 'core',
@@ -117,7 +165,7 @@ export function buildSleeves(baseIndex: BaseIndexId = 'SPY'): Sleeve[] {
 // blended series (falling back to the all-ETF composite if no rep was built).
 function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
   if (sleeve.isCore) {
-    return BASE_INDEX_CHART[sleeve.etf as BaseIndexId][period];
+    return baseChoiceSeries(sleeve.etf as BaseChoiceId, period);
   }
   const rep = THEME_REPRESENTATIVES[sleeve.name as Theme];
   if (rep?.series?.[period]?.length) return rep.series[period];
