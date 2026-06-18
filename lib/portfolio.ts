@@ -57,14 +57,16 @@ export const BASE_INDEX_IDS: BaseIndexId[] = ['SPY', 'QQQ'];
 // at runtime in baseChoice* below.
 export type BaseChoiceId = BaseIndexId | 'BLEND';
 const BLEND_WEIGHTS: Record<BaseIndexId, number> = { SPY: 0.6, QQQ: 0.4 };
+// Short label for the core chip; longer self-explaining label for the toggle button.
 const BASE_CHOICE_LABEL: Record<BaseChoiceId, string> = { SPY: 'SPY', QQQ: 'QQQ', BLEND: '60/40' };
+const BASE_CHOICE_BUTTON: Record<BaseChoiceId, string> = { SPY: 'SPY', QQQ: 'QQQ', BLEND: '60% SPY / 40% QQQ' };
 const BLEND_NAME =
   `${Math.round(BLEND_WEIGHTS.SPY * 100)}% ${BASE_INDEX_NAMES.SPY} / ` +
   `${Math.round(BLEND_WEIGHTS.QQQ * 100)}% ${BASE_INDEX_NAMES.QQQ}`;
 
 // Choices the toggle renders, in order, with their short button labels.
 export const BASE_CHOICES: { id: BaseChoiceId; label: string }[] =
-  (['SPY', 'QQQ', 'BLEND'] as BaseChoiceId[]).map(id => ({ id, label: BASE_CHOICE_LABEL[id] }));
+  (['SPY', 'QQQ', 'BLEND'] as BaseChoiceId[]).map(id => ({ id, label: BASE_CHOICE_BUTTON[id] }));
 
 // 60/40 weight-blend of the two indices' disclosed top holdings, summed by
 // ticker and re-ranked. Built from the top-5 disclosures only, so it is an
