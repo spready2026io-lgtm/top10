@@ -22,6 +22,7 @@ import {
   SCAN_TIMESTAMP_NY,
   CROSS_THEME_TOP10,
   ETF_TOP_HOLDINGS,
+  HOLDINGS_COUNT,
 } from '@/lib/data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
@@ -1557,17 +1558,45 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
 
 
 // ── Hero carousel ─────────────────────────────────────────────────────────────
-// In-flow revolving banner that sits under the header, above the dashboard tiles.
-// Shows one feature banner at a time, auto-rotating (pauses on hover) with dot
-// indicators + prev/next arrows. Not an overlay — it scrolls with the page.
+// In-flow banner pinned to the very top of the page. Shows one feature banner at
+// a time, advanced only by the user via dot indicators + prev/next arrows (no
+// auto-rotation). Not an overlay — it scrolls with the page.
+
+// Live universe stats — all derived from the generated data so the carousel copy
+// and visuals update automatically whenever the ETF universe is rebuilt.
+const THEME_COUNT     = THEMES.length;
+const ETF_COUNT       = Object.values(THEME_ETF_COUNT).reduce((a, b) => a + b, 0);
+const SCORED_COUNT    = new Set(THEMES.flatMap(t => SAMPLE_DATA[t].map(e => e.ticker))).size;
+// "1,100+" style: round the raw holdings count down to the nearest 100 so the
+// headline figure stays stable as holdings drift a few names up or down.
+const HOLDINGS_FLOOR  = (Math.floor(HOLDINGS_COUNT / 100) * 100).toLocaleString('en-US');
+
+// Strongest current consensus name (highest coverage vs its theme, avg weight as
+// tiebreaker) — feeds the landing slide's example card with live data.
+const TOP_CONSENSUS = (() => {
+  let best: { ticker: string; name: string; theme: Theme; held: number; max: number; weight: number } | null = null;
+  for (const t of THEMES) {
+    const max = THEME_ETF_COUNT[t];
+    for (const e of SAMPLE_DATA[t]) {
+      const cov = e.easyScore / max;
+      const weight = e.avgWeight ?? e.proScore;
+      const bestCov = best ? best.held / best.max : -1;
+      if (!best || cov > bestCov || (cov === bestCov && weight > best.weight)) {
+        best = { ticker: e.ticker, name: e.name, theme: t, held: e.easyScore, max, weight };
+      }
+    }
+  }
+  return best;
+})();
+
 const HERO_SLIDES = [
   {
     key: 'etfs',
     eyebrow: '',
     title: 'Explore our unique universe of actively managed ETFs',
     titleCls: 'text-3xl sm:text-4xl',
-    lead: 'We track and rank over 1,100 shares, the full holdings of 40 active ETFs, grouped into 6 themes.',
-    body: "When 8 of 10 active ETF managers within a theme overweight the same stock, that's worth knowing. We score 92 names on how many ETFs hold them, and at what weight. Conviction, ranked daily.",
+    lead: `We track and rank over ${HOLDINGS_FLOOR} shares, the full holdings of ${ETF_COUNT} active ETFs, grouped into ${THEME_COUNT} themes.`,
+    body: `When 8 of 10 active ETF managers within a theme overweight the same stock, that's worth knowing. We score ${SCORED_COUNT} names on how many ETFs hold them, and at what weight. Conviction, ranked daily.`,
     glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
     ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
@@ -1604,33 +1633,37 @@ const HERO_SLIDES = [
 
 function SlideVisual({ kind }: { kind: string }) {
   if (kind === 'etfs') {
+    const tc = TOP_CONSENSUS;
+    const sampleTickers = ['AIS', 'SOXX', 'ARKK', 'IGV', 'AIRR', 'PSI'];
     return (
       <div className="space-y-3">
-        {/* Real top-consensus example — NVDA: held by all 10 AI & ML ETFs at 6.0% avg weight */}
-        <div className="rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="font-mono text-base font-bold text-white">NVDA</div>
-              <div className="text-[10px] text-slate-500">NVIDIA Corp · AI &amp; ML</div>
+        {/* Live top-consensus example — the current strongest-coverage name */}
+        {tc && (
+          <div className="rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-mono text-base font-bold text-white">{tc.ticker}</div>
+                <div className="text-[10px] text-slate-500">{tc.name} · {tc.theme}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-base font-bold text-emerald-400">{tc.held}/{tc.max}</div>
+                <div className="text-[10px] text-slate-500">ETFs hold it</div>
+              </div>
             </div>
-            <div className="text-right">
-              <div className="text-base font-bold text-emerald-400">10/10</div>
-              <div className="text-[10px] text-slate-500">ETFs hold it</div>
+            <div className="mt-2.5 flex gap-1">
+              {Array.from({ length: tc.max }).map((_, i) => (
+                <span key={i} className={`h-2 flex-1 rounded-full ${i < tc.held ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+              ))}
+            </div>
+            <div className="mt-2 text-[11px] text-slate-400">
+              <span className="font-semibold text-slate-200">{tc.weight.toFixed(1)}%</span> average weight across the theme&apos;s ETFs
             </div>
           </div>
-          <div className="mt-2.5 flex gap-1">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <span key={i} className="h-2 flex-1 rounded-full bg-emerald-400" />
-            ))}
-          </div>
-          <div className="mt-2 text-[11px] text-slate-400">
-            <span className="font-semibold text-slate-200">6.0%</span> average weight across the theme&apos;s ETFs
-          </div>
-        </div>
+        )}
 
-        {/* Universe scale */}
+        {/* Universe scale — derived from live data */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          {[['40', 'active ETFs'], ['1,100+', 'shares'], ['92', 'ranked']].map(([num, label]) => (
+          {[[`${ETF_COUNT}`, 'active ETFs'], [`${HOLDINGS_FLOOR}+`, 'shares'], [`${SCORED_COUNT}`, 'ranked']].map(([num, label]) => (
             <div key={label} className="rounded-lg border border-slate-800 bg-slate-900/50 py-2">
               <div className="text-base font-bold text-white">{num}</div>
               <div className="text-[9px] uppercase tracking-wide text-slate-500">{label}</div>
@@ -1640,10 +1673,10 @@ function SlideVisual({ kind }: { kind: string }) {
 
         {/* Sample tickers from the universe */}
         <div className="flex flex-wrap gap-1.5">
-          {['AIS', 'SOXX', 'ARKK', 'IGV', 'AIRR', 'PSI'].map(t => (
+          {sampleTickers.map(t => (
             <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-300">{t}</span>
           ))}
-          <span className="px-1.5 py-0.5 text-[11px] font-semibold text-slate-500">+34 more</span>
+          <span className="px-1.5 py-0.5 text-[11px] font-semibold text-slate-500">+{ETF_COUNT - sampleTickers.length} more</span>
         </div>
       </div>
     );

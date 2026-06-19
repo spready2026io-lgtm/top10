@@ -561,6 +561,23 @@ function genThemeEtfCount(counts) {
   ].join('\n');
 }
 
+// Total holdings rows across all theme ETFs — every position, counting a stock
+// once per ETF that holds it. Powers the home carousel's "shares tracked" stat.
+function genHoldingsCount(holdingsMap) {
+  const themeEtfs = new Set([].concat(...Object.values(THEME_ETFS)));
+  let rows = 0;
+  for (const etf of themeEtfs) {
+    if (holdingsMap[etf]) rows += holdingsMap[etf].length;
+  }
+  return [
+    '// @@GENERATED:HOLDINGS_COUNT@@',
+    '// Total holdings rows across all theme ETFs (every position, counting a stock',
+    '// once per ETF that holds it). Powers the home carousel\'s "shares tracked" stat.',
+    `export const HOLDINGS_COUNT = ${rows};`,
+    '// @@END_GENERATED:HOLDINGS_COUNT@@',
+  ].join('\n');
+}
+
 function escapeStr(s) {
   // Escape for safe embedding in single-quoted TypeScript string literals.
   // Strip backticks, ${ sequences, and null bytes in addition to \ and '.
@@ -1050,7 +1067,7 @@ function genThemeReps(themeEtfs, etfDataMap) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -1061,6 +1078,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     /\/\/ @@GENERATED:THEME_ETF_COUNT@@[\s\S]*?\/\/ @@END_GENERATED:THEME_ETF_COUNT@@/,
     newEtfCount
   );
+  if (newHoldingsCount) {
+    src = src.replace(
+      /\/\/ @@GENERATED:HOLDINGS_COUNT@@[\s\S]*?\/\/ @@END_GENERATED:HOLDINGS_COUNT@@/,
+      newHoldingsCount
+    );
+  }
   src = src.replace(
     /\/\/ @@GENERATED:SAMPLE_DATA@@[\s\S]*?\/\/ @@END_GENERATED:SAMPLE_DATA@@/,
     newSampleData
@@ -1318,9 +1341,10 @@ async function main() {
   const newBaseIndex       = genBaseIndex(holdingsMap, spyData, qqqData);
   const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
   const newEtfDayChange    = genEtfDayChange(etfReturnsMap, THEME_ETFS);
+  const newHoldingsCount   = genHoldingsCount(holdingsMap);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');

@@ -222,6 +222,12 @@ export const THEME_ETF_COUNT: Record<Theme, number> = {
 };
 // @@END_GENERATED:THEME_ETF_COUNT@@
 
+// @@GENERATED:HOLDINGS_COUNT@@
+// Total holdings rows across all theme ETFs (every position, counting a stock
+// once per ETF that holds it). Powers the home carousel's "shares tracked" stat.
+export const HOLDINGS_COUNT = 1191;
+// @@END_GENERATED:HOLDINGS_COUNT@@
+
 export const THEME_ETFS: Record<Theme, string[]> = {
   'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
