@@ -65,7 +65,7 @@ export default function PortfolioPage() {
             first), so each tilt stays diversified instead of doubling up on the same names. The ticker pair shown next to
             each theme is the live result.
           </p>
-          <p className="text-xs text-slate-600 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
+          <p className="text-xs text-slate-400 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-5">
@@ -78,7 +78,7 @@ export default function PortfolioPage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm text-slate-300 flex items-center gap-2">
                       <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: s.color }} />
-                      {s.name} <span className="text-slate-600 text-xs">{s.etf}</span>
+                      {s.name} <span className="text-slate-400 text-xs">{s.etf}</span>
                       {!s.isCore && (
                         <span className="text-[10px] text-emerald-500/80 border border-emerald-500/20 rounded px-1">
                           conv {s.convScore}
@@ -176,12 +176,12 @@ export default function PortfolioPage() {
                 <div className="mt-4 pt-3 border-t border-slate-800">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-semibold text-slate-300">Breakdown by sleeve</span>
-                    <span className="text-[10px] text-slate-500">Performance over {period}</span>
+                    <span className="text-[11px] text-slate-400">Performance over {period}</span>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left">
                       <thead>
-                        <tr className="text-[10px] uppercase tracking-wider text-slate-600">
+                        <tr className="text-[10px] uppercase tracking-wider text-slate-400">
                           <th className="font-semibold py-1 pr-2">Sleeve</th>
                           <th className="font-semibold py-1 pr-2">ETF</th>
                           <th className="font-semibold py-1 pr-2 text-right">Weight</th>
@@ -209,7 +209,7 @@ export default function PortfolioPage() {
                       </tbody>
                     </table>
                   </div>
-                  <p className="text-[10px] text-slate-600 mt-2 leading-relaxed">
+                  <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
                     ETF shows each theme&apos;s suggested ticker (the equal-weight pair of its two strongest non-correlated ETFs).
                     Return is the past performance of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
                   </p>
@@ -306,7 +306,7 @@ export default function PortfolioPage() {
                   </span>
                 </span>
               </div>
-              <p className="text-[10px] text-slate-600 mt-2">
+              <p className="text-[11px] text-slate-400 mt-2">
                 Hypothetical past performance of this exact mix, blended from each theme's real index. Past performance does not predict future results.
               </p>
             </div>
@@ -323,9 +323,9 @@ export default function PortfolioPage() {
                     </div>
                     <div className="w-12 text-right text-[11px] text-slate-400">{(e.weight * 100).toFixed(1)}%</div>
                   </div>
-                )) : <div className="text-xs text-slate-600">Add some allocation to see exposures.</div>}
+                )) : <div className="text-xs text-slate-400">Add some allocation to see exposures.</div>}
               </div>
-              <p className="text-[10px] text-slate-600 mt-3 leading-relaxed">
+              <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
                 Each percentage is the stock&apos;s share of your whole portfolio. For every theme we take your weight in that theme
                 and multiply it by how heavily the theme&apos;s ETFs hold the stock, then add up the same stock across themes.
               </p>
@@ -333,7 +333,7 @@ export default function PortfolioPage() {
           </div>
         </div>
 
-        <p className="text-slate-700 text-xs text-center mt-8 max-w-2xl mx-auto">
+        <p className="text-slate-500 text-xs text-center mt-8 max-w-2xl mx-auto">
           For informational and educational purposes only. Not investment advice and not personalised. The portfolio is one you
           build yourself; Tony only reflects back its conviction, exposure, and hypothetical past performance from disclosed ETF data.
         </p>

@@ -1985,8 +1985,8 @@ export default function Home() {
             </div>
 
             {/* Coverage Score explainer — user feedback #1 */}
-            <p className="text-xs text-slate-500 mb-2">
-              <span className="text-slate-300 font-semibold">Coverage Score</span> is how many of this theme&apos;s {maxScore} ETFs hold the stock, so a higher score means broader institutional consensus.
+            <p className="text-xs text-slate-400 mb-2">
+              <span className="text-slate-200 font-semibold">Coverage Score</span> is how many of this theme&apos;s {maxScore} ETFs hold the stock, so a higher score means broader institutional consensus.
             </p>
 
             {/* Legend + sort toggle + layout toggle */}
