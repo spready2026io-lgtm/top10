@@ -1564,19 +1564,23 @@ const HERO_SLIDES = [
   {
     key: 'etfs',
     eyebrow: 'Active ETF universe',
-    title: 'Explore our unique universe of Active ETFs',
-    body: 'ETF holdings ranked daily across 1000+ shares. Pick your theme, sort by our scores.',
+    title: 'Explore our unique universe of actively managed ETFs',
+    titleCls: 'text-3xl sm:text-4xl',
+    lead: 'We track and rank over 1,100 shares, the full holdings of all 40 active ETFs.',
+    body: "When 8 of 10 ETF managers overweight a stock, that's worth knowing. We score 92 names on how many active ETFs hold them, and at what weight. Conviction, ranked daily.",
     glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
     ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
-    cta: 'Explore the universe',
+    cta: 'See the rankings',
     href: '#live',
   },
   {
     key: 'tony',
     eyebrow: 'Build with Tony',
-    title: 'Build your portfolio with Tony, our AI agent',
-    body: 'Tilt a low-cost index core toward your conviction themes. See the mix, exposure and past performance.',
+    title: 'Tilt a low-cost core toward your conviction',
+    titleCls: 'text-2xl sm:text-3xl',
+    lead: '',
+    body: 'Set an index core, then lean into the themes you believe in. See the mix, exposure, and past performance.',
     glow: 'from-sky-500/10',
     eyebrowCls: 'text-sky-400',
     ctaCls: 'bg-sky-500 text-white hover:bg-sky-400',
@@ -1585,13 +1589,15 @@ const HERO_SLIDES = [
   },
   {
     key: 'scoreboard',
-    eyebrow: 'Cross-theme scoring',
-    title: 'The Scoreboard',
-    body: 'Every stock, scored on consensus and conviction across the ETFs that hold it. See who ranks where.',
+    eyebrow: 'Conviction Board',
+    title: 'Every name, scored on consensus and conviction',
+    titleCls: 'text-2xl sm:text-3xl',
+    lead: '',
+    body: "One board ranks all 92 across the ETFs that hold them. See who leads and who's climbing.",
     glow: 'from-amber-500/10',
     eyebrowCls: 'text-amber-400',
     ctaCls: 'bg-amber-500 text-black hover:bg-amber-400',
-    cta: 'Open the Scoreboard',
+    cta: 'Open the board',
     href: '/conviction',
   },
 ];
@@ -1611,14 +1617,15 @@ function SlideVisual({ kind }: { kind: string }) {
     return (
       <div>
         <div className="flex h-3 w-full overflow-hidden rounded-full">
-          <div className="bg-slate-400"  style={{ width: '46%' }} />
-          <div className="bg-violet-400" style={{ width: '18%' }} />
-          <div className="bg-sky-500"    style={{ width: '15%' }} />
-          <div className="bg-sky-300"    style={{ width: '12%' }} />
-          <div className="bg-amber-400"  style={{ width: '9%' }} />
+          <div className="bg-slate-400"  style={{ width: '40%' }} />
+          <div className="bg-violet-400" style={{ width: '20%' }} />
+          <div className="bg-blue-400"   style={{ width: '14%' }} />
+          <div className="bg-sky-400"    style={{ width: '14%' }} />
+          <div className="bg-amber-400"  style={{ width: '6%' }} />
+          <div className="bg-orange-400" style={{ width: '6%' }} />
         </div>
         <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-400">
-          {[['Core', 'bg-slate-400'], ['AI', 'bg-violet-400'], ['Semi', 'bg-sky-500'], ['Tech', 'bg-sky-300'], ['Elec', 'bg-amber-400']].map(([label, color]) => (
+          {[['Core 40', 'bg-slate-400'], ['AI 20', 'bg-violet-400'], ['Semi 14', 'bg-blue-400'], ['Tech 14', 'bg-sky-400'], ['Elec 6', 'bg-amber-400'], ['Ind 6', 'bg-orange-400']].map(([label, color]) => (
             <span key={label} className="flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${color}`} />{label}</span>
           ))}
         </div>
@@ -1663,7 +1670,8 @@ function HeroCarousel({ onClose }: { onClose: () => void }) {
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
               <div className="max-w-xl">
                 <div className={`text-[11px] font-bold uppercase tracking-[0.16em] ${s.eyebrowCls}`}>{s.eyebrow}</div>
-                <h2 className="mt-2 text-2xl font-bold leading-tight text-white sm:text-3xl">{s.title}</h2>
+                <h2 className={`mt-2 font-bold leading-tight text-white ${s.titleCls}`}>{s.title}</h2>
+                {s.lead && <p className="mt-2.5 text-base font-semibold leading-snug text-slate-100 sm:text-lg">{s.lead}</p>}
                 <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">{s.body}</p>
                 <Link href={s.href} className={`mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${s.ctaCls}`}>
                   {s.cta}<span aria-hidden>→</span>
