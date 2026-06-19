@@ -208,6 +208,27 @@ export function blendPerformance(
   return { portfolio, spy, portfolioReturn, spyReturn, xLabels };
 }
 
+// Per-sleeve breakdown for the "Your mix" detail table: the suggested ETF, the
+// user's weight in that sleeve, and the sleeve's own period return (its real
+// indexed series, start-to-end). Same series the blend is built from.
+export function sleeveBreakdown(
+  sleeves: Sleeve[],
+  norm: number[],
+  period: Period
+): { id: string; name: string; etf: string; isCore: boolean; weight: number; ret: number }[] {
+  return sleeves.map((s, i) => {
+    const series = sleeveSeries(s, period);
+    return {
+      id: s.id,
+      name: s.name,
+      etf: s.etf,
+      isCore: s.isCore,
+      weight: norm[i],
+      ret: series[series.length - 1] - series[0],
+    };
+  });
+}
+
 // Weighted portfolio conviction score (core scores 0 by design).
 export function blendConviction(sleeves: Sleeve[], norm: number[]): number {
   return sleeves.reduce((sum, s, i) => sum + norm[i] * s.convScore, 0);

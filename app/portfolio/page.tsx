@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
-  buildSleeves, blendPerformance, blendConviction, blendExposure,
+  buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
   baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
 } from '@/lib/portfolio';
 import type { BaseChoiceId } from '@/lib/portfolio';
@@ -15,6 +15,7 @@ export default function PortfolioPage() {
   const [vals, setVals] = useState<number[]>(() => buildSleeves().map(s => s.defaultVal));
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
+  const [showMixTable, setShowMixTable] = useState(false);
 
   const SLEEVES = useMemo(() => buildSleeves(baseIndex), [baseIndex]);
   const core = baseIndexInfo(baseIndex);
@@ -26,6 +27,7 @@ export default function PortfolioPage() {
   const coreShare = norm[0] * 100;
   const exposures = useMemo(() => blendExposure(SLEEVES, norm), [SLEEVES, norm]);
   const perf = useMemo(() => blendPerformance(SLEEVES, norm, period), [SLEEVES, norm, period]);
+  const mixRows = useMemo(() => sleeveBreakdown(SLEEVES, norm, period), [SLEEVES, norm, period]);
   const maxExp = exposures[0]?.weight ?? 1;
 
   function setVal(i: number, v: number) {
@@ -146,7 +148,15 @@ export default function PortfolioPage() {
           <div className="flex-1 min-w-0">
             {/* Mix bar */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
-              <div className="text-[11px] text-slate-500 mb-2">Your mix</div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-[11px] text-slate-500">Your mix</div>
+                <button
+                  onClick={() => setShowMixTable(v => !v)}
+                  className="text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  {showMixTable ? 'Hide breakdown' : 'View breakdown'}
+                </button>
+              </div>
               <div className="flex h-5 w-full rounded-md overflow-hidden bg-slate-800">
                 {SLEEVES.map((s, i) => norm[i] > 0 && (
                   <div key={s.id} style={{ width: `${(norm[i] * 100).toFixed(1)}%`, background: s.color }} />
@@ -160,6 +170,51 @@ export default function PortfolioPage() {
                   </span>
                 ))}
               </div>
+
+              {/* Detailed per-ETF breakdown — user feedback #3 */}
+              {showMixTable && (
+                <div className="mt-4 pt-3 border-t border-slate-800">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-semibold text-slate-300">Breakdown by sleeve</span>
+                    <span className="text-[10px] text-slate-500">Performance over {period}</span>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="text-[10px] uppercase tracking-wider text-slate-600">
+                          <th className="font-semibold py-1 pr-2">Sleeve</th>
+                          <th className="font-semibold py-1 pr-2">ETF</th>
+                          <th className="font-semibold py-1 pr-2 text-right">Weight</th>
+                          <th className="font-semibold py-1 text-right">{period} return</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mixRows.map((r, i) => norm[i] > 0 && (
+                          <tr key={r.id} className="border-t border-slate-800/60">
+                            <td className="py-1.5 pr-2">
+                              <span className="flex items-center gap-1.5 text-xs text-slate-300">
+                                <span className="inline-block w-2 h-2 rounded-sm" style={{ background: SLEEVES[i].color }} />
+                                {r.name}
+                              </span>
+                            </td>
+                            <td className="py-1.5 pr-2 text-xs text-slate-400 font-mono">{r.etf}</td>
+                            <td className="py-1.5 pr-2 text-xs text-slate-200 text-right tabular-nums">{Math.round(r.weight * 100)}%</td>
+                            <td className={`py-1.5 text-xs font-semibold text-right tabular-nums ${
+                              r.isCore ? 'text-slate-400' : r.ret >= 0 ? 'text-emerald-400' : 'text-red-400'
+                            }`}>
+                              {r.ret >= 0 ? '+' : ''}{r.ret.toFixed(1)}%
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-[10px] text-slate-600 mt-2 leading-relaxed">
+                    ETF shows each theme&apos;s suggested ticker (the equal-weight pair of its two strongest non-correlated ETFs).
+                    Return is the past performance of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Conviction + core dials */}
@@ -188,14 +243,27 @@ export default function PortfolioPage() {
 
             {/* Conviction explainer — Shuki #2 */}
             {showConvHelp && (
-              <div className="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-4 mb-4 text-xs text-slate-400 leading-relaxed">
-                <div className="text-emerald-400 font-semibold mb-1">How the conviction score is calculated</div>
-                Each theme's conviction comes straight from the Conviction Board. For the theme's top 5 consensus stocks we take
-                their <span className="text-slate-200">proScore</span> — the average weight those stocks carry across the theme's ETFs,
-                multiplied by their <span className="text-slate-200">coverage</span> (how many of the theme's managers hold them). We average
-                that across the five names, then index every theme 0–100 against the strongest theme. Your portfolio score is the
-                allocation-weighted blend of the themes you picked. The index core is pure passive beta, so it scores
-                <span className="text-slate-200"> 0</span> by design — conviction is what you pay active managers for.
+              <div className="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-4 mb-4 text-xs text-slate-400 leading-relaxed space-y-2">
+                <div className="text-emerald-400 font-semibold">How the conviction score is calculated</div>
+                <p>
+                  Conviction measures how strongly active fund managers back a theme. For each theme we look at its
+                  top 5 consensus stocks and ask two things: the <span className="text-slate-200">average weight</span> the
+                  theme&apos;s ETFs give a stock, and its <span className="text-slate-200">coverage</span> (how many of those
+                  ETFs actually hold it). We multiply the two, so a stock held heavily by most managers scores far higher
+                  than one held lightly by a few.
+                </p>
+                <p className="text-slate-300">
+                  Example: if NVDA gets an <span className="text-slate-100">average weight of 8%</span> across the AI ETFs and
+                  <span className="text-slate-100"> 9 of 10</span> of them hold it (90% coverage), its signal is
+                  8 × 0.9 = <span className="text-emerald-300 font-semibold">7.2</span>. A stock at 3% weight held by only
+                  4 of 10 scores 3 × 0.4 = 1.2, much lower.
+                </p>
+                <p>
+                  We average that signal across the five names, then index every theme from 0 to 100 against the strongest
+                  theme. Your portfolio score is the allocation-weighted blend of the themes you picked. The index core is
+                  pure passive beta, so it scores <span className="text-slate-200">0</span> by design. Conviction is what you
+                  pay active managers for.
+                </p>
               </div>
             )}
 
@@ -257,6 +325,10 @@ export default function PortfolioPage() {
                   </div>
                 )) : <div className="text-xs text-slate-600">Add some allocation to see exposures.</div>}
               </div>
+              <p className="text-[10px] text-slate-600 mt-3 leading-relaxed">
+                Each percentage is the stock&apos;s share of your whole portfolio. For every theme we take your weight in that theme
+                and multiply it by how heavily the theme&apos;s ETFs hold the stock, then add up the same stock across themes.
+              </p>
             </div>
           </div>
         </div>

@@ -1984,6 +1984,11 @@ export default function Home() {
               )}
             </div>
 
+            {/* Coverage Score explainer — user feedback #1 */}
+            <p className="text-xs text-slate-500 mb-2">
+              <span className="text-slate-300 font-semibold">Coverage Score</span> is how many of this theme&apos;s {maxScore} ETFs hold the stock, so a higher score means broader institutional consensus.
+            </p>
+
             {/* Legend + sort toggle + layout toggle */}
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
