@@ -1692,7 +1692,7 @@ function HeroCarousel({ onClose }: { onClose: () => void }) {
 
   return (
     <section className="border-b border-slate-800 bg-slate-900/30">
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:pt-8 sm:pb-5">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-3 sm:pt-8 sm:pb-4">
         <div className="relative">
           <div key={s.key} className={`animate-intro overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${s.glow} to-slate-900`}>
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
@@ -1733,17 +1733,18 @@ function HeroCarousel({ onClose }: { onClose: () => void }) {
           >
             ×
           </button>
-        </div>
 
-        <div className="mt-2.5 flex items-center justify-center gap-2.5">
-          {HERO_SLIDES.map((sl, i) => (
-            <button
-              key={sl.key}
-              aria-label={`Go to banner ${i + 1}`}
-              onClick={() => go(i)}
-              className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-7 bg-white' : 'w-2.5 bg-slate-600 hover:bg-slate-400'}`}
-            />
-          ))}
+          {/* Dot indicators — overlaid inside the card, bottom-center */}
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center justify-center gap-2.5">
+            {HERO_SLIDES.map((sl, i) => (
+              <button
+                key={sl.key}
+                aria-label={`Go to banner ${i + 1}`}
+                onClick={() => go(i)}
+                className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-7 bg-white' : 'w-2.5 bg-slate-600 hover:bg-slate-400'}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
