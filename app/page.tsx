@@ -1563,7 +1563,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
 const HERO_SLIDES = [
   {
     key: 'etfs',
-    eyebrow: 'Active ETF universe',
+    eyebrow: '',
     title: 'Explore our unique universe of actively managed ETFs',
     titleCls: 'text-3xl sm:text-4xl',
     lead: 'We track and rank over 1,100 shares, the full holdings of 40 active ETFs, grouped into 6 themes.',
@@ -1697,7 +1697,7 @@ function HeroCarousel({ onClose }: { onClose: () => void }) {
           <div key={s.key} className={`animate-intro overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${s.glow} to-slate-900`}>
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
               <div className="max-w-xl">
-                <div className={`text-[11px] font-bold uppercase tracking-[0.16em] ${s.eyebrowCls}`}>{s.eyebrow}</div>
+                {s.eyebrow && <div className={`text-[11px] font-bold uppercase tracking-[0.16em] ${s.eyebrowCls}`}>{s.eyebrow}</div>}
                 <h2 className={`mt-2 font-bold leading-tight text-white ${s.titleCls}`}>{s.title}</h2>
                 {s.lead && <p className="mt-2.5 text-base font-semibold leading-snug text-slate-100 sm:text-lg">{s.lead}</p>}
                 <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">{s.body}</p>
