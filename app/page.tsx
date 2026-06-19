@@ -1789,6 +1789,11 @@ export default function Home() {
     <main className="min-h-screen bg-slate-950 text-white">
       {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
+      {/* Revolving feature carousel — pinned to the very top of the page, above the
+          header, so slide height can vary freely. Dismissible: hiding it surfaces the
+          portfolio banner below as a fallback. */}
+      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} />}
+
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -1878,10 +1883,6 @@ export default function Home() {
 
         </div>
       </header>
-
-      {/* Revolving feature carousel — under the header, above the dashboard tiles.
-          Dismissible: hiding it surfaces the portfolio banner below as a fallback. */}
-      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} />}
 
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
