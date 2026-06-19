@@ -1605,11 +1605,46 @@ const HERO_SLIDES = [
 function SlideVisual({ kind }: { kind: string }) {
   if (kind === 'etfs') {
     return (
-      <div className="flex flex-wrap gap-2">
-        {['AIS', 'SOXX', 'ARKK', 'IGV', 'BUZZ', 'AIRR', 'SPRX', 'PSI'].map(t => (
-          <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2.5 py-1 font-mono text-xs font-semibold text-slate-300">{t}</span>
-        ))}
-        <span className="rounded-full px-2.5 py-1 text-xs font-semibold text-slate-500">+32 more</span>
+      <div className="space-y-3">
+        {/* Real top-consensus example — NVDA: held by all 10 AI & ML ETFs at 6.0% avg weight */}
+        <div className="rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="font-mono text-base font-bold text-white">NVDA</div>
+              <div className="text-[10px] text-slate-500">NVIDIA Corp · AI &amp; ML</div>
+            </div>
+            <div className="text-right">
+              <div className="text-base font-bold text-emerald-400">10/10</div>
+              <div className="text-[10px] text-slate-500">ETFs hold it</div>
+            </div>
+          </div>
+          <div className="mt-2.5 flex gap-1">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <span key={i} className="h-2 flex-1 rounded-full bg-emerald-400" />
+            ))}
+          </div>
+          <div className="mt-2 text-[11px] text-slate-400">
+            <span className="font-semibold text-slate-200">6.0%</span> average weight across the theme&apos;s ETFs
+          </div>
+        </div>
+
+        {/* Universe scale */}
+        <div className="grid grid-cols-3 gap-2 text-center">
+          {[['40', 'active ETFs'], ['1,100+', 'shares'], ['92', 'ranked']].map(([num, label]) => (
+            <div key={label} className="rounded-lg border border-slate-800 bg-slate-900/50 py-2">
+              <div className="text-base font-bold text-white">{num}</div>
+              <div className="text-[9px] uppercase tracking-wide text-slate-500">{label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Sample tickers from the universe */}
+        <div className="flex flex-wrap gap-1.5">
+          {['AIS', 'SOXX', 'ARKK', 'IGV', 'AIRR', 'PSI'].map(t => (
+            <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-300">{t}</span>
+          ))}
+          <span className="px-1.5 py-0.5 text-[11px] font-semibold text-slate-500">+34 more</span>
+        </div>
       </div>
     );
   }
@@ -1648,24 +1683,17 @@ function SlideVisual({ kind }: { kind: string }) {
 }
 
 function HeroCarousel({ onClose }: { onClose: () => void }) {
-  const [slide,  setSlide]  = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [slide, setSlide] = useState(0);
   const n = HERO_SLIDES.length;
   const go = (i: number) => setSlide((i + n) % n);
 
-  // Auto-advance every 5s; pause while hovered so CTAs are clickable.
-  useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setSlide(s => (s + 1) % n), 5000);
-    return () => clearInterval(t);
-  }, [paused, n]);
-
+  // No auto-advance: the user drives the carousel with the arrows / dots.
   const s = HERO_SLIDES[slide];
 
   return (
     <section className="border-b border-slate-800 bg-slate-900/30">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
-        <div className="relative" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div className="relative">
           <div key={s.key} className={`animate-intro overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${s.glow} to-slate-900`}>
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
               <div className="max-w-xl">
