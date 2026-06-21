@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import ThemeNav from '@/app/components/ThemeNav';
+import { THEMES, THEME_ETFS } from '@/lib/data';
 
 export const metadata = { title: 'About — Top10' };
 
 export default function About() {
+  // Counts are derived from the live universe so this page never drifts stale.
+  const totalEtfs   = Object.values(THEME_ETFS).reduce((n, list) => n + list.length, 0);
+  const themeCount  = THEMES.length;
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
 
@@ -36,8 +41,8 @@ export default function About() {
         <section>
           <h2 className="text-2xl font-bold text-white mb-3">What is Top10?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Top10 is an ETF holdings analyser. It reads the holdings of 40 actively managed ETFs
-            across 6 investment themes every day, ranks every stock by how much conviction those
+            Top10 is an ETF holdings analyser. It reads the holdings of {totalEtfs} actively managed ETFs
+            across {themeCount} investment themes every day, ranks every stock by how much conviction those
             ETFs have in it, and surfaces the Top 10 names per theme.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed">
@@ -63,8 +68,8 @@ export default function About() {
             in one name.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed mb-3">
-            Top10 tracks <span className="text-slate-200 font-semibold">40 actively managed ETFs</span> across
-            6 themes, giving you a view across 40 institutional products simultaneously.
+            Top10 tracks <span className="text-slate-200 font-semibold">{totalEtfs} actively managed ETFs</span> across
+            {' '}{themeCount} themes, giving you a view across {totalEtfs} institutional products simultaneously.
             All ETFs in the universe are discretionary, actively managed funds. Index trackers are
             excluded — passive index construction reflects mechanical rules, not manager conviction.
           </p>
@@ -72,25 +77,21 @@ export default function About() {
           {/* ETF table */}
           <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
             <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs — 40 active funds</p>
+              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs, {totalEtfs} active funds</p>
               <p className="text-slate-500 text-xs">last updated June 2026</p>
             </div>
-            {[
-              { theme: 'AI & ML',        count: '11', etfs: 'AIS, ARTY, BAI, IVEP, IGPT, IVES, ALAI, CHAT, AIFD, SPRX, AOTG' },
-              { theme: 'Semiconductors', count: '4',  etfs: 'SOXX, PSI, XSD, DRAM' },
-              { theme: 'Broad Tech',     count: '13', etfs: 'PTF, WCLD, IGV, FDTX, GTEK, ARKK, MARS, FRWD, BCTK, FWD, CBSE, FCUS, WGMI' },
-              { theme: 'Electrification',count: '4',  etfs: 'POW, VOLT, PBD, PBW' },
-              { theme: 'Industrials',    count: '5',  etfs: 'AIRR, PRN, RSHO, IDEF, BILT' },
-              { theme: 'Meme',           count: '3',  etfs: 'BUZZ, MEME, RKNG' },
-            ].map(({ theme, count, etfs }, i) => (
-              <div key={theme} className={`px-4 py-3 text-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-slate-200 font-semibold w-36 flex-shrink-0">{theme}</span>
-                  <span className="text-slate-500 text-xs">{count} ETFs</span>
+            {THEMES.map((theme, i) => {
+              const list = THEME_ETFS[theme];
+              return (
+                <div key={theme} className={`px-4 py-3 text-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-slate-200 font-semibold w-36 flex-shrink-0">{theme}</span>
+                    <span className="text-slate-500 text-xs">{list.length} ETFs</span>
+                  </div>
+                  <span className="text-slate-500 text-xs font-mono">{list.join(', ')}</span>
                 </div>
-                <span className="text-slate-500 text-xs font-mono">{etfs}</span>
-              </div>
-            ))}
+              );
+            })}
             <div className="px-4 py-3 border-t border-slate-800 bg-slate-950">
               <p className="text-slate-500 text-xs">
                 Previously tracked and removed: QQQ, QQQA (index trackers — Nasdaq-100 and Nasdaq-100 Dorsey Wright Momentum).
