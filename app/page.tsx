@@ -1637,22 +1637,27 @@ function SlideVisual({ kind }: { kind: string }) {
     const sampleTickers = ['AIS', 'SOXX', 'ARKK', 'IGV', 'AIRR', 'PSI'];
     return (
       <div className="space-y-3">
-        {/* Live top-consensus example — the current strongest-coverage name */}
+        {/* Illustrative example — fixed at 8/10 to mirror the "8 of 10" copy on
+            the left. Clearly badged as an example, and hidden on the compact
+            mobile layout so the stacked slide stays short. */}
         {tc && (
-          <div className="rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
+          <div className="hidden sm:block rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
+            <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
+              Example
+            </div>
             <div className="flex items-start justify-between">
               <div>
                 <div className="font-mono text-base font-bold text-white">{tc.ticker}</div>
                 <div className="text-[10px] text-slate-500">{tc.name} · {tc.theme}</div>
               </div>
               <div className="text-right">
-                <div className="text-base font-bold text-emerald-400">{tc.held}/{tc.max}</div>
+                <div className="text-base font-bold text-emerald-400">8/10</div>
                 <div className="text-[10px] text-slate-500">ETFs hold it</div>
               </div>
             </div>
             <div className="mt-2.5 flex gap-1">
-              {Array.from({ length: tc.max }).map((_, i) => (
-                <span key={i} className={`h-2 flex-1 rounded-full ${i < tc.held ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+              {Array.from({ length: 10 }).map((_, i) => (
+                <span key={i} className={`h-2 flex-1 rounded-full ${i < 8 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
               ))}
             </div>
             <div className="mt-2 text-[11px] text-slate-400">
@@ -1715,7 +1720,7 @@ function SlideVisual({ kind }: { kind: string }) {
   );
 }
 
-function HeroCarousel({ onClose }: { onClose: () => void }) {
+function HeroCarousel({ onClose, onGuide }: { onClose: () => void; onGuide: () => void }) {
   const [slide, setSlide] = useState(0);
   const n = HERO_SLIDES.length;
   const go = (i: number) => setSlide((i + n) % n);
@@ -1734,9 +1739,23 @@ function HeroCarousel({ onClose }: { onClose: () => void }) {
                 <h2 className={`mt-2 font-bold leading-tight text-white ${s.titleCls}`}>{s.title}</h2>
                 {s.lead && <p className="mt-2.5 text-base font-semibold leading-snug text-slate-100 sm:text-lg">{s.lead}</p>}
                 <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">{s.body}</p>
-                <Link href={s.href} className={`mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${s.ctaCls}`}>
-                  {s.cta}<span aria-hidden>→</span>
-                </Link>
+                {s.key === 'etfs' ? (
+                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                    <Link href="#live" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-emerald-400">
+                      Start Explore<span aria-hidden>↓</span>
+                    </Link>
+                    <button
+                      onClick={onGuide}
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800/60 px-5 py-2.5 text-sm font-bold text-slate-200 transition-colors hover:border-slate-400 hover:text-white"
+                    >
+                      Guide
+                    </button>
+                  </div>
+                ) : (
+                  <Link href={s.href} className={`mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${s.ctaCls}`}>
+                    {s.cta}<span aria-hidden>→</span>
+                  </Link>
+                )}
               </div>
               <div className="w-full flex-shrink-0 sm:w-72">
                 <SlideVisual kind={s.key} />
@@ -1854,7 +1873,7 @@ export default function Home() {
       {/* Revolving feature carousel — pinned to the very top of the page, above the
           header, so slide height can vary freely. Dismissible: hiding it surfaces the
           portfolio banner below as a fallback. */}
-      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} />}
+      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} onGuide={() => setShowGuide(true)} />}
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
