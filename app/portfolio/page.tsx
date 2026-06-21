@@ -59,11 +59,11 @@ export default function PortfolioPage() {
           </p>
           <p className="text-sm text-slate-400 leading-relaxed mt-3 max-w-2xl">
             <span className="text-emerald-400 font-semibold">How each theme is built:</span> every theme on the dial is the
-            equal-weight average of its <span className="text-slate-200">two strongest ETFs</span>, ranked by a blend of
+            equal-weight average of its <span className="text-slate-200">three strongest ETFs</span>, ranked by a blend of
             <span className="text-slate-200"> 50% 6-month and 50% 1-year</span> return and filtered to be
-            <span className="text-slate-200"> non-correlated</span> (the second ETF has to move differently enough from the
-            first), so each tilt stays diversified instead of doubling up on the same names. The ticker pair shown next to
-            each theme is the live result.
+            <span className="text-slate-200"> non-correlated</span> (each added ETF has to move differently enough from the
+            ones already chosen), so each tilt stays diversified instead of doubling up on the same names. The tickers shown next to
+            each theme are the live result.
           </p>
           <p className="text-xs text-slate-400 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
         </div>
@@ -210,7 +210,7 @@ export default function PortfolioPage() {
                     </table>
                   </div>
                   <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
-                    ETF shows each theme&apos;s suggested ticker (the equal-weight pair of its two strongest non-correlated ETFs).
+                    ETF shows each theme&apos;s suggested tickers (the equal-weight blend of its three strongest non-correlated ETFs).
                     Return is the past performance of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
                   </p>
                 </div>

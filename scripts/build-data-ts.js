@@ -414,14 +414,20 @@ async function fetchFinancials(ticker) {
 async function fetchEtfData(ticker) {
   await yfInit();
   try {
-    const qUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price&crumb=${encodeURIComponent(_yfCrumb)}`;
+    const qUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,fundProfile&crumb=${encodeURIComponent(_yfCrumb)}`;
     const qRes = await fetch(qUrl, {
       headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' },
     });
     if (!qRes.ok) throw new Error(`quoteSummary HTTP ${qRes.status}`);
     const qData = await qRes.json();
-    const currentPrice = qData.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw;
+    const priceMod = qData.quoteSummary?.result?.[0]?.price;
+    const fundMod  = qData.quoteSummary?.result?.[0]?.fundProfile;
+    const currentPrice = priceMod?.regularMarketPrice?.raw;
     if (!currentPrice) throw new Error('No current price');
+
+    // Fund name + manager (issuer), sourced from Yahoo — feeds the ETF tile.
+    const name    = priceMod?.longName || priceMod?.shortName || ticker;
+    const manager = fundMod?.family || '';
 
     const cUrl = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1y&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
     const cRes = await fetch(cUrl, {
@@ -504,7 +510,7 @@ async function fetchEtfData(ticker) {
       returns['1D'] = intraday.dayReturn;
     }
 
-    return { returns, paths };
+    return { returns, paths, name, manager };
   } catch (e) {
     console.warn(`  [ETF Data] ${ticker} failed: ${e.message}`);
     return null;
@@ -990,6 +996,27 @@ function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
   ].join('\n');
 }
 
+// Fund name + manager (issuer) per ETF ticker, sourced from Yahoo. Feeds the
+// theme ETF performance tile. Returns null if no ETF reported a name so a
+// partial fetch never wipes the existing block.
+function genEtfInfo(etfDataMap, themeEtfs) {
+  const allEtfs = [...new Set(Object.values(themeEtfs).flat())];
+  const lines = [];
+  for (const etf of allEtfs) {
+    const d = etfDataMap[etf];
+    if (!d || !d.name) continue;
+    lines.push(`  ${etf}: { name: ${JSON.stringify(d.name)}, manager: ${JSON.stringify(d.manager || '')} },`);
+  }
+  if (lines.length === 0) return null;
+  return [
+    '// @@GENERATED:ETF_INFO@@',
+    'export const ETF_INFO: Record<string, { name: string; manager: string }> = {',
+    ...lines,
+    '};',
+    '// @@END_GENERATED:ETF_INFO@@',
+  ].join('\n');
+}
+
 // ── Base index (SPY / QQQ) generator ─────────────────────────────────────────
 // Powers the portfolio builder's selectable index core. Holdings come from the
 // scraped raw file (QQQ via Invesco, SPY via StockAnalysis); price series come
@@ -1052,6 +1079,7 @@ function genThemeReps(themeEtfs, etfDataMap) {
   const PERIODS  = ['1W', '1M', 'YTD', '6M', '1Y'];
   const PERIOD_N = { '1W': 5, '1M': 21, 'YTD': 26, '6M': 26, '1Y': 52 };
   const CORR_MAX = 0.8;
+  const TARGET_REPS = 3; // equal-weight blend of up to 3 non-correlated ETFs
   const blocks = [];
 
   for (const [theme, tickers] of Object.entries(themeEtfs)) {
@@ -1063,18 +1091,28 @@ function genThemeReps(themeEtfs, etfDataMap) {
 
     const score  = t => 0.5 * etfDataMap[t].returns['6M'] + 0.5 * etfDataMap[t].returns['1Y'];
     const ranked = [...cands].sort((a, b) => score(b) - score(a));
-    const first  = ranked[0];
+    const incOf  = t => pathIncrements(etfDataMap[t].paths['1Y']);
 
-    let second = null, fallback = null, fallbackCorr = Infinity;
-    const firstInc = pathIncrements(etfDataMap[first].paths['1Y']);
-    for (let i = 1; i < ranked.length; i++) {
-      const corr = pearson(firstInc, pathIncrements(etfDataMap[ranked[i]].paths['1Y']));
-      if (corr < fallbackCorr) { fallbackCorr = corr; fallback = ranked[i]; }
-      if (corr < CORR_MAX) { second = ranked[i]; break; }
+    // Equal-weight blend of up to 3 ETFs: take the top scorer, then greedily add
+    // the next-best whose 1Y increments stay below CORR_MAX vs EVERY ETF already
+    // chosen (least-correlated fallback if none clear the bar). Same high-perf +
+    // non-correlation formula, extended from a pair to a trio.
+    const chosen = [ranked[0]];
+    while (chosen.length < TARGET_REPS && chosen.length < ranked.length) {
+      const chosenInc = chosen.map(incOf);
+      let pick = null, fallback = null, fallbackCorr = Infinity;
+      for (let i = 1; i < ranked.length; i++) {
+        const t = ranked[i];
+        if (chosen.includes(t)) continue;
+        const incT = incOf(t);
+        const maxC = Math.max(...chosenInc.map(c => pearson(c, incT)));
+        if (maxC < fallbackCorr) { fallbackCorr = maxC; fallback = t; }
+        if (maxC < CORR_MAX) { pick = t; break; }
+      }
+      const next = pick || fallback;
+      if (!next) break;
+      chosen.push(next);
     }
-    if (!second) second = fallback; // null only when the theme has a single candidate
-
-    const chosen = second ? [first, second] : [first];
     const series = PERIODS.map(p => ({ p, avg: averagePaths(chosen.map(t => etfDataMap[t].paths?.[p]), PERIOD_N[p]) }));
     const seriesStr = series.map(s => `'${s.p}': [${s.avg.join(', ')}]`).join(', ');
     const retStr    = series.map(s => `'${s.p}': ${parseFloat((s.avg[s.avg.length - 1] - 100).toFixed(1))}`).join(', ');
@@ -1094,7 +1132,7 @@ function genThemeReps(themeEtfs, etfDataMap) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -1173,6 +1211,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:ETF_DAY_CHANGE@@[\s\S]*?\/\/ @@END_GENERATED:ETF_DAY_CHANGE@@/,
       newEtfDayChange
+    );
+  }
+  if (newEtfInfo) {
+    src = src.replace(
+      /\/\/ @@GENERATED:ETF_INFO@@[\s\S]*?\/\/ @@END_GENERATED:ETF_INFO@@/,
+      newEtfInfo
     );
   }
 
@@ -1369,9 +1413,10 @@ async function main() {
   const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
   const newEtfDayChange    = genEtfDayChange(etfReturnsMap, THEME_ETFS);
   const newHoldingsCount   = genHoldingsCount(holdingsMap);
+  const newEtfInfo         = genEtfInfo(etfDataMap, THEME_ETFS);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');

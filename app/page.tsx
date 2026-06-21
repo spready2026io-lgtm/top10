@@ -22,6 +22,7 @@ import {
   SCAN_TIMESTAMP_NY,
   CROSS_THEME_TOP10,
   ETF_TOP_HOLDINGS,
+  ETF_INFO,
   HOLDINGS_COUNT,
 } from '@/lib/data';
 
@@ -368,7 +369,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
   const maxAbs = Math.max(...rows.map(r => Math.abs(r.ret)), 0.1);
 
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 flex flex-col gap-3 w-56 flex-shrink-0 h-full">
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 flex flex-col gap-3 w-80 flex-shrink-0 h-full">
 
       {/* Header */}
       <div>
@@ -389,6 +390,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
           const pos      = ret >= 0;
           const barPct   = (Math.abs(ret) / maxAbs) * 100;
           const holdings = ETF_TOP_HOLDINGS[ticker] ?? [];
+          const info     = ETF_INFO[ticker];
           const open     = openEtf === ticker;
           return (
             <div
@@ -404,6 +406,12 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
                   {pos ? '+' : ''}{ret.toFixed(1)}%
                 </span>
               </div>
+              {info && (
+                <div className="mb-1 leading-tight">
+                  <div className="truncate text-[11px] text-slate-300">{info.name}</div>
+                  {info.manager && <div className="truncate text-[10px] text-slate-500">{info.manager}</div>}
+                </div>
+              )}
               <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${pos ? 'bg-emerald-500/50' : 'bg-rose-500/50'}`}
