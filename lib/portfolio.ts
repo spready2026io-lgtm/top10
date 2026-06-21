@@ -29,7 +29,7 @@ export type Sleeve = {
 };
 
 // Periods Shuki asked to surface on the performance read-out.
-export const PERF_PERIODS: Period[] = ['1W', '1M', '6M'];
+export const PERF_PERIODS: Period[] = ['1W', '1M', 'YTD', '6M'];
 
 // Themes the user can tilt toward. Meme is excluded — speculative/retail
 // sentiment, kept off the conviction board, so it stays out of the builder too.

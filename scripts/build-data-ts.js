@@ -327,6 +327,12 @@ async function fetchChartReturns(ticker, currentPrice) {
     const last1M = valid.filter(d => d.ts >= calTs(1));
     const last6M = valid.filter(d => d.ts >= calTs(6));
 
+    // YTD: anchored to prior year-end close through today (free subset of the 1y window).
+    const ytdStartTs   = Math.floor(Date.UTC(lastDate.getUTCFullYear(), 0, 1) / 1000);
+    const ytdInYear    = valid.filter(d => d.ts >= ytdStartTs);
+    const priorYearEnd = valid.filter(d => d.ts < ytdStartTs).slice(-1)[0];
+    const lastYTD      = priorYearEnd ? [priorYearEnd, ...ytdInYear] : ytdInYear;
+
     const weeklyReturn = last1W.length >= 2
       ? parseFloat(((currentPrice / last1W[0].close - 1) * 100).toFixed(2))
       : 0;
@@ -337,12 +343,14 @@ async function fetchChartReturns(ticker, currentPrice) {
       '1D': intraday?.prices,
       '1W': sample(last1W, 5),
       '1M': sample(last1M, 21),
+      'YTD': sample(lastYTD, 26),
       '6M': sample(last6M, 26),
       '1Y': sample(valid,  52),
     };
 
     return {
       '1M': ret(closest(calTs(1))),
+      'YTD': lastYTD.length >= 2 ? ret(lastYTD[0].close) : 0,
       '6M': ret(closest(calTs(6))),
       '1Y': ret(closest(calTs(0, 1))),
       dayReturn: intraday?.dayReturn ?? null,
@@ -351,7 +359,7 @@ async function fetchChartReturns(ticker, currentPrice) {
     };
   } catch (e) {
     console.warn(`  [Yahoo Chart] ${ticker} returns failed: ${e.message}`);
-    return { '1M': 0, '6M': 0, '1Y': 0, dayReturn: null, priceHistory: null, weeklyReturn: 0 };
+    return { '1M': 0, 'YTD': 0, '6M': 0, '1Y': 0, dayReturn: null, priceHistory: null, weeklyReturn: 0 };
   }
 }
 
@@ -380,7 +388,7 @@ async function fetchFinancials(ticker) {
     const weeklyPrices  = [];
 
     const chartData     = await fetchChartReturns(ticker, price);
-    const periodReturns = { '1M': chartData['1M'], '6M': chartData['6M'], '1Y': chartData['1Y'] };
+    const periodReturns = { '1M': chartData['1M'], 'YTD': chartData['YTD'], '6M': chartData['6M'], '1Y': chartData['1Y'] };
     const priceHistory  = chartData.priceHistory;
     const weeklyChange  = (priceHistory?.['1W']?.length >= 2)
                           ? chartData.weeklyReturn
@@ -449,6 +457,13 @@ async function fetchEtfData(ticker) {
     const last1M = valid.filter(d => d.ts >= calTs(1));
     const last6M = valid.filter(d => d.ts >= calTs(6));
 
+    // YTD: anchored to the prior year-end close through today. The 1y window
+    // always contains Dec 31 of the prior year, so YTD is a free subset of it.
+    const ytdStartTs   = Math.floor(Date.UTC(lastDate.getUTCFullYear(), 0, 1) / 1000);
+    const ytdInYear    = valid.filter(d => d.ts >= ytdStartTs);
+    const priorYearEnd = valid.filter(d => d.ts < ytdStartTs).slice(-1)[0];
+    const lastYTD      = priorYearEnd ? [priorYearEnd, ...ytdInYear] : ytdInYear;
+
     const w1Return = last1W.length >= 2
       ? parseFloat(((currentPrice / last1W[0].close - 1) * 100).toFixed(1))
       : 0;
@@ -456,6 +471,7 @@ async function fetchEtfData(ticker) {
     const returns = {
       '1W': w1Return,
       '1M': ret(closest(calTs(1))),
+      'YTD': lastYTD.length >= 2 ? ret(lastYTD[0].close) : 0,
       '6M': ret(closest(calTs(6))),
       '1Y': ret(closest(calTs(0, 1))),
     };
@@ -476,6 +492,7 @@ async function fetchEtfData(ticker) {
     const paths = {
       '1W': normAndSample(last1W, 5),
       '1M': normAndSample(last1M, 21),
+      'YTD': normAndSample(lastYTD, 26),
       '6M': normAndSample(last6M, 26),
       '1Y': normAndSample(valid,  52),
     };
@@ -613,7 +630,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const grossMargin   = f.grossMargin ?? 0;
   const revenueGrowth = f.revenueGrowth ?? 0;
   const divYield      = f.dividendYield ?? null;
-  const pr            = f.periodReturns ?? { '1M': 0, '6M': 0, '1Y': 0 };
+  const pr            = f.periodReturns ?? { '1M': 0, 'YTD': 0, '6M': 0, '1Y': 0 };
   const tonyNote      = TONY_NOTES[eq.ticker] || makeTonyNote(eq.ticker, eq.name, eq.easyScore, totalEtfs, eq.avgWeight, eq.proScore, themeName);
 
   const presenceEntries = Object.entries(eq.etfPresence)
@@ -625,7 +642,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const ph = f.priceHistory;
   const ph1d = ph && ph['1D'] && ph['1D'].length >= 2 ? `'1D': [${ph['1D'].join(', ')}], ` : '';
   const phStr = ph
-    ? `{ ${ph1d}'1W': [${ph['1W'].join(', ')}], '1M': [${ph['1M'].join(', ')}], '6M': [${ph['6M'].join(', ')}], '1Y': [${ph['1Y'].join(', ')}] }`
+    ? `{ ${ph1d}'1W': [${ph['1W'].join(', ')}], '1M': [${ph['1M'].join(', ')}], 'YTD': [${ph['YTD'].join(', ')}], '6M': [${ph['6M'].join(', ')}], '1Y': [${ph['1Y'].join(', ')}] }`
     : 'undefined';
 
   const vsObj = vs || { '1D': null, '1W': null, '1M': null, '6M': null };
@@ -635,7 +652,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   return [
     `    {`,
     `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, avgWeight: ${eq.avgWeight}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
-    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, dayChange: ${dayChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
+    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, dayChange: ${dayChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, 'YTD': ${pr['YTD']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
@@ -729,6 +746,16 @@ function genXLabels(period, todayStr) {
     });
   }
 
+  if (period === 'YTD') {
+    // Evenly spaced month labels from Jan of this year through the current month.
+    const months = d.getUTCMonth(); // 0 = Jan; number of months elapsed this year
+    const count  = Math.min(months + 1, 6);
+    return Array.from({ length: count }, (_, i) => {
+      const m = Math.round((i * months) / Math.max(count - 1, 1));
+      return MONTHS[m];
+    });
+  }
+
   // 1Y — 5 quarterly labels
   return Array.from({ length: 5 }, (_, i) => {
     const dt = new Date(d);
@@ -739,8 +766,8 @@ function genXLabels(period, todayStr) {
 
 // Build the full INDEX_CHART_DATA block from real ETF price paths and SPY.
 function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
-  const PERIOD_N = { '1D': INTRADAY_N, '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
-  const PERIODS  = ['1D', '1W', '1M', '6M', '1Y'];
+  const PERIOD_N = { '1D': INTRADAY_N, '1W': 5, '1M': 21, 'YTD': 26, '6M': 26, '1Y': 52 };
+  const PERIODS  = ['1D', '1W', '1M', 'YTD', '6M', '1Y'];
 
   const themeBlocks = Object.entries(themeEtfs).map(([theme, tickers]) => {
     const periodBlocks = PERIODS.map(period => {
@@ -789,7 +816,7 @@ function genEtfReturns(etfReturnsMap, themeEtfs) {
       const r = etfReturnsMap[ticker];
       if (r) {
         const pad = ' '.repeat(Math.max(0, 4 - ticker.length));
-        lines.push(`  ${ticker}:${pad} { '1W': ${r['1W']}, '1M': ${r['1M']}, '6M': ${r['6M']}, '1Y': ${r['1Y']} },`);
+        lines.push(`  ${ticker}:${pad} { '1W': ${r['1W']}, '1M': ${r['1M']}, 'YTD': ${r['YTD']}, '6M': ${r['6M']}, '1Y': ${r['1Y']} },`);
       }
     }
   }
@@ -830,7 +857,7 @@ function genEtfDayChange(etfReturnsMap, themeEtfs) {
 // Compute per-theme average return across all ETFs that succeeded.
 // Falls back to the previous hardcoded value for any theme where no ETF data was fetched.
 function genTop10Ret(etfReturnsMap, themeEtfs) {
-  const PERIODS = ['1W', '1M', '6M', '1Y'];
+  const PERIODS = ['1W', '1M', 'YTD', '6M', '1Y'];
   const avg = (nums) => nums.length === 0 ? null : parseFloat((nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(1));
 
   const themeLines = [];
@@ -843,7 +870,7 @@ function genTop10Ret(etfReturnsMap, themeEtfs) {
     // Only emit a line if we have data for all 4 periods
     if (PERIODS.every(p => byPeriod[p] !== null)) {
       const pad = ' '.repeat(Math.max(0, 16 - theme.length));
-      themeLines.push(`  '${theme}':${pad}{ '1W': ${byPeriod['1W']}, '1M': ${byPeriod['1M']}, '6M': ${byPeriod['6M']}, '1Y': ${byPeriod['1Y']} },`);
+      themeLines.push(`  '${theme}':${pad}{ '1W': ${byPeriod['1W']}, '1M': ${byPeriod['1M']}, 'YTD': ${byPeriod['YTD']}, '6M': ${byPeriod['6M']}, '1Y': ${byPeriod['1Y']} },`);
     }
   }
 
@@ -936,7 +963,7 @@ function genCrossThemeTop10(themeEquities, financialsMap) {
 function genSpyRet(r) {
   return [
     '// @@GENERATED:SPY_RET@@',
-    `export const SPY_RET: Record<Period, number> = { '1W': ${r['1W']}, '1M': ${r['1M']}, '6M': ${r['6M']}, '1Y': ${r['1Y']} };`,
+    `export const SPY_RET: Record<Period, number> = { '1W': ${r['1W']}, '1M': ${r['1M']}, 'YTD': ${r['YTD']}, '6M': ${r['6M']}, '1Y': ${r['1Y']} };`,
     '// @@END_GENERATED:SPY_RET@@',
   ].join('\n');
 }
@@ -969,8 +996,8 @@ function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
 // from the same Yahoo paths used for the theme charts. Returns null if either
 // index is missing so a partial fetch never wipes good data.
 function genBaseIndex(holdingsMap, spyData, qqqData) {
-  const PERIODS  = ['1W', '1M', '6M', '1Y'];
-  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const PERIODS  = ['1W', '1M', 'YTD', '6M', '1Y'];
+  const PERIOD_N = { '1W': 5, '1M': 21, 'YTD': 26, '6M': 26, '1Y': 52 };
   if (!holdingsMap['SPY'] || !holdingsMap['QQQ']) return null;
 
   const top5 = etf => [...(holdingsMap[etf] || [])]
@@ -1022,8 +1049,8 @@ function pathIncrements(path) {
   return r;
 }
 function genThemeReps(themeEtfs, etfDataMap) {
-  const PERIODS  = ['1W', '1M', '6M', '1Y'];
-  const PERIOD_N = { '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const PERIODS  = ['1W', '1M', 'YTD', '6M', '1Y'];
+  const PERIOD_N = { '1W': 5, '1M': 21, 'YTD': 26, '6M': 26, '1Y': 52 };
   const CORR_MAX = 0.8;
   const blocks = [];
 

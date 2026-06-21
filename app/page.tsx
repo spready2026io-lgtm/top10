@@ -128,6 +128,7 @@ const TILE_XLABELS: Record<ChartPeriod, string[]> = {
   '1D': ['Open', 'Midday', 'Now'],
   '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
   '1M': ['May 1', 'May 15', 'Jun 1'],
+  'YTD': ['Jan', 'Mar', 'May'],
   '6M': ['Nov', 'Jan', 'Mar', 'May'],
   '1Y': ["May '25", "Nov '25", "May '26"],
 };
@@ -135,7 +136,7 @@ const TILE_XLABELS: Record<ChartPeriod, string[]> = {
 // ── Generate deterministic price path for a tile chart ───────────────────────
 function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: ChartPeriod): number[] {
   const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const nMap:  Record<ChartPeriod, number> = { '1D': 8, '1W': 5, '1M': 21, '6M': 26, '1Y': 52 };
+  const nMap:  Record<ChartPeriod, number> = { '1D': 8, '1W': 5, '1M': 21, 'YTD': 26, '6M': 26, '1Y': 52 };
   const n          = nMap[period];
   const startPrice = currentPrice / (1 + periodReturn / 100);
   const pts: number[] = [startPrice];
@@ -210,7 +211,7 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
 }
 
 // ── Index performance chart ───────────────────────────────────────────────────
-const PERIODS: ChartPeriod[] = ['1D', '1W', '1M', '6M', '1Y'];
+const PERIODS: ChartPeriod[] = ['1D', '1W', '1M', 'YTD', '6M', '1Y'];
 
 function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartPeriod; setPeriod: (p: ChartPeriod) => void }) {
   // 1D may be absent until a price build produces intraday data — fall back to 1W.
