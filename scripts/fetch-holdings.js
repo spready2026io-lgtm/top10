@@ -137,6 +137,8 @@ const INVESCO_ETFS = [
   { ticker: 'PBD',  id: '46138G847', idType: 'cusip'  },
   { ticker: 'PBW',  id: '46137V134', idType: 'cusip'  },
   { ticker: 'PRN',  id: '46137V845', idType: 'cusip'  },
+  { ticker: 'SPMO', id: 'SPMO',      idType: 'ticker' },
+  { ticker: 'XMMO', id: 'XMMO',      idType: 'ticker' },
 ];
 
 async function fetchInvesco({ ticker, id, idType }) {
@@ -196,14 +198,25 @@ async function fetchARK() {
 
 // ── Alger (public daily CSV) ─────────────────────────────────────────────────
 
-const ALGER_URLS = [
-  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv',
-  'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv',
+const ALGER_ETFS = [
+  {
+    ticker: 'ALAI',
+    urls: [
+      'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv',
+      'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv',
+    ],
+  },
+  {
+    ticker: 'CNEQ',
+    urls: [
+      'https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_Concentrated_Equity_ETF.csv',
+    ],
+  },
 ];
 
-async function fetchAlger() {
-  console.log(`  [Alger] ALAI...`);
-  for (const url of ALGER_URLS) {
+async function fetchAlgerETF({ ticker, urls }) {
+  console.log(`  [Alger] ${ticker}...`);
+  for (const url of urls) {
     try {
       const text = await fetchText(url);
       const rows  = text.split(/\r?\n/).map(parseCSVLine);
@@ -227,7 +240,7 @@ async function fetchAlger() {
       return holdings;
     } catch {}
   }
-  console.error('    ✗ All Alger URLs failed');
+  console.error(`    ✗ All Alger URLs failed for ${ticker}`);
   return null;
 }
 
@@ -594,7 +607,7 @@ const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 //   CHAT (AI & ML) — Roundhill Generative AI & Technology ETF
 //   DRAM (Semiconductors) — Roundhill Memory ETF (launched Apr 2026; ~4 US equities after foreign filter)
 //   MARS (Broad Tech) — Roundhill Space & Technology ETF (launched Mar 2026)
-const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI'];
+const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI', 'SGRT'];
 
 // ── Base index holdings for the portfolio builder core (SPY, QQQ) ─────────────
 // QQQ already comes from the Invesco block above; SPY has no clean issuer API,
@@ -664,8 +677,11 @@ async function main() {
   if (ark) results['ARKK'] = ark;
 
   console.log('\n[Alger]');
-  const alger = await fetchAlger();
-  if (alger) results['ALAI'] = alger;
+  for (const etf of ALGER_ETFS) {
+    const h = await fetchAlgerETF(etf);
+    if (h) results[etf.ticker] = h;
+    await sleep(600);
+  }
 
   console.log('\n[SPDR]');
   const spdr = await fetchSPDR();
@@ -773,7 +789,7 @@ async function main() {
   // Yields top ~8–25 holdings each.
   // RSHO (Tema) has no public API — StockAnalysis is the primary source.
   // WCLD, GTEK, ALAI, AIS, POW are fallbacks in case their primary scrapers fail.
-  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI', 'AIS', 'POW'].filter(t => !results[t]);
+  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI', 'AIS', 'POW', 'CNEQ', 'SPMO', 'XMMO'].filter(t => !results[t]);
   if (saNeed.length > 0) {
     console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
     for (const ticker of saNeed) {
@@ -787,7 +803,7 @@ async function main() {
   const all = [
     ...ISHARES_ETFS.map(e => e.ticker),
     ...INVESCO_ETFS.map(e => e.ticker),
-    'ARKK', 'ALAI', 'XSD',
+    'ARKK', ...ALGER_ETFS.map(e => e.ticker), 'XSD',
     'WCLD', 'GTEK',
     ...WEDBUSH_ETFS.map(e => e.ticker),
     'VOLT',

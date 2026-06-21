@@ -45,7 +45,7 @@ const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(T
 const THEME_ETFS = {
   'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI'],
+  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI', 'CNEQ', 'SGRT', 'SPMO', 'XMMO'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
