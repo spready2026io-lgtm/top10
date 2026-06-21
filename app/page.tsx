@@ -1873,7 +1873,7 @@ export default function Home() {
       {/* Revolving feature carousel — pinned to the very top of the page, above the
           header, so slide height can vary freely. Dismissible: hiding it surfaces the
           portfolio banner below as a fallback. */}
-      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} onGuide={() => setShowGuide(true)} />}
+      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} onGuide={() => { setShowGuide(true); requestAnimationFrame(() => document.getElementById('live')?.scrollIntoView({ behavior: 'smooth' })); }} />}
 
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-900">
