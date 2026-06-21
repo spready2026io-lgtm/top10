@@ -11,6 +11,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@media (min-width: 768px) {
+  html { font-size: 18px; }
+}
+
 /* Subtitle badge sway animation */
 @keyframes sway {
   0%, 100% { transform: translateX(0); }
