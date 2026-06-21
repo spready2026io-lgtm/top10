@@ -67,6 +67,7 @@ export default function ContactPage() {
           {/* Right: nav + theme toggle */}
           <div className="flex flex-col items-end gap-4 min-w-0 overflow-hidden flex-1">
             <nav className="flex items-center gap-4 text-sm">
+              <Link href="/universe" className="text-slate-400 hover:text-white transition-colors">Universe</Link>
               <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
               <Link href="/contact" className="text-emerald-400 font-medium">Contact</Link>
             </nav>
