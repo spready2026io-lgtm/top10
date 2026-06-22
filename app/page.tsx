@@ -422,7 +422,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
               {/* Top holdings — inline expansion. It takes real layout space and pushes
                   the rows below it down, so it never overlays another ETF's data. */}
               {holdings.length > 0 && open && (
-                <div className="mt-2 w-28 rounded-md border border-slate-800 bg-slate-950/50 px-2.5 py-2">
+                <div className="mt-2 ml-auto w-28 rounded-md border border-slate-800 bg-slate-950/50 px-2.5 py-2">
                   <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">Top holdings</p>
                   <div className="flex flex-col gap-1">
                     {holdings.map(h => (
