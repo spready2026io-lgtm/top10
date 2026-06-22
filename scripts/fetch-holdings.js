@@ -330,13 +330,13 @@ async function fetchWedbush({ ticker, slug }) {
   }
 }
 
-// ── Tema (VOLT — direct CSV) ──────────────────────────────────────────────────
+// ── Tema (VOLT, RSHO — direct CSV) ───────────────────────────────────────────
 
-async function fetchTema() {
-  // VOLT CSV columns: holdings_date, ticker, cusip, proper_name, shares, market_value, percent_of_nav, is_cash, ...
+async function fetchTema(ticker = 'VOLT') {
+  // CSV columns: holdings_date, ticker, cusip, proper_name, shares, market_value, percent_of_nav, is_cash, ...
   // percent_of_nav is a 0-1 decimal (e.g. 0.0796 = 7.96%)
-  const url = 'https://temaetfs.com/hubfs/Website/Holdings/VOLT-holdings.csv';
-  console.log('  [Tema] VOLT...');
+  const url = `https://temaetfs.com/hubfs/Website/Holdings/${ticker}-holdings.csv`;
+  console.log(`  [Tema] ${ticker}...`);
   try {
     const text = await fetchText(url);
     const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
@@ -699,8 +699,10 @@ async function main() {
   }
 
   console.log('\n[Tema]');
-  const volt = await fetchTema();
+  const volt = await fetchTema('VOLT');
   if (volt) results['VOLT'] = volt;
+  const rsho = await fetchTema('RSHO');
+  if (rsho) results['RSHO'] = rsho;
 
   console.log('\n[First Trust]');
   for (const etf of FIRSTTRUST_ETFS) {
@@ -787,9 +789,8 @@ async function main() {
   // GTEK (Goldman Sachs blocks Playwright), ALAI (Alger blocks CI IPs).
   // AIS, POW (VistaShares) — datacenter IPs get HTTP 415 from CSV endpoint.
   // Yields top ~8–25 holdings each.
-  // RSHO (Tema) has no public API — StockAnalysis is the primary source.
-  // WCLD, GTEK, ALAI, AIS, POW are fallbacks in case their primary scrapers fail.
-  const saNeed = ['RSHO', 'WCLD', 'GTEK', 'ALAI', 'AIS', 'POW', 'CNEQ', 'SPMO', 'XMMO'].filter(t => !results[t]);
+  // RSHO fetched above via Tema direct CSV. Others are fallbacks for primary scrapers.
+  const saNeed = ['WCLD', 'GTEK', 'ALAI', 'AIS', 'POW', 'CNEQ', 'SPMO', 'XMMO'].filter(t => !results[t]);
   if (saNeed.length > 0) {
     console.log(`\n[StockAnalysis fallback] Missing: ${saNeed.join(', ')}`);
     for (const ticker of saNeed) {
