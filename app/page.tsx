@@ -444,7 +444,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
       {rows.length > PREVIEW_COUNT && (
         <button
           onClick={() => setShowAllEtfs(v => !v)}
-          className="text-[10px] font-semibold text-slate-500 hover:text-emerald-400 transition-colors text-center mt-1"
+          className="text-[10px] font-semibold text-slate-500 hover:text-emerald-400 transition-colors text-center mt-auto"
         >
           {showAllEtfs ? '▲ show less' : `▼ show all ${rows.length} ETFs`}
         </button>
@@ -2205,8 +2205,10 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {equities.length > 0 ? (
           <>
-            {/* Index chart OR guide + ETF summary tile */}
-            <div className="flex items-start gap-4 mb-6">
+            {/* Index chart OR guide + ETF summary tile.
+                items-stretch keeps the chart card and the ETF table card the
+                same height — whichever is shorter grows to match the taller. */}
+            <div className="flex items-stretch gap-4 mb-6">
               {showGuide
                 ? <GuideStrip onClose={closeGuide} />
                 : <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
