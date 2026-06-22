@@ -487,13 +487,16 @@ async function fetchEtfData(ticker) {
       '1Y': ret(closest(calTs(0, 1))),
     };
 
-    // Normalize arr to 100 at arr[0], replace last point with live price, downsample to n pts.
+    // Normalize arr to 100 at arr[0], replace last point with live price, resample to exactly n pts.
+    // Always returns n points: downsamples when raw is longer, upsamples (repeating indices) when
+    // shorter. Consumers (averagePaths, SPY path) require length === n, so n must be exact even for
+    // short windows like 1M (~21 trading days, which varies day to day).
     const normAndSample = (arr, n) => {
       if (arr.length === 0) return null;
       const base = arr[0].close;
       const raw = arr.map(d => d.close / base * 100);
       raw[raw.length - 1] = currentPrice / base * 100; // anchor end to live price
-      if (raw.length <= n) return raw.map(v => parseFloat(v.toFixed(2)));
+      if (raw.length === 1) return Array.from({ length: n }, () => parseFloat(raw[0].toFixed(2)));
       return Array.from({ length: n }, (_, i) => {
         const idx = Math.min(Math.round(i * (raw.length - 1) / (n - 1)), raw.length - 1);
         return parseFloat(raw[idx].toFixed(2));

@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-06-22T13:38:55.958Z",
-  "scanTimestampNY": "June 22, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-06-22T19:24:56.471Z",
+  "scanTimestampNY": "June 22, 2026 at 3:24 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -187,40 +187,12 @@
     ],
     "fetchErrors": [
       {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V811/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G847/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V134/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/SPMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
+        "error": "HTTP 500"
       },
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/XMMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
+        "error": "HTTP 500"
       },
       {
         "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
