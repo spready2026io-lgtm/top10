@@ -1036,7 +1036,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             ))}
           </div>
 
-          <p className="text-slate-700 text-xs pt-1 text-right">flip for details</p>
+          <p className="text-slate-700 text-xs pt-1 text-right">Flip for details</p>
         </div>
 
         {/* ── BACK ── */}
@@ -1115,7 +1115,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               Analysis
             </p>
             <div className="flex-1 overflow-y-auto rounded-lg bg-slate-800/40 px-2.5 py-2 scrollbar-thin scrollbar-thumb-slate-700">
-              <p className="text-slate-300 text-xs leading-relaxed">{equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim()}</p>
+              <p className="text-slate-300 text-[11px] leading-relaxed">{equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim()}</p>
             </div>
           </div>
 
@@ -1127,7 +1127,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             >
               Tony&apos;s full thesis
             </button>
-            <span className="text-slate-700 text-xs">flip back</span>
+            <span className="text-slate-700 text-xs">Flip back</span>
           </div>
         </div>
 
