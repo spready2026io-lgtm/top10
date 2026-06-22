@@ -1693,6 +1693,10 @@ function LandingExampleGuide() {
   }, [tc]);
 
   if (!tc) return null;
+  // Illustrative VS / 1W values, kept distinct so the example never shows the
+  // same number twice (the live top-consensus name can coincidentally match).
+  const exVs = 9.8;
+  const exWk = 3.4;
   const dot = 'inline-block h-2 w-2 flex-shrink-0 rounded-full bg-amber-400';
   const bubble = 'rounded-md border border-amber-400/30 bg-amber-400/[0.07] px-2 py-1';
 
@@ -1703,7 +1707,7 @@ function LandingExampleGuide() {
       </div>
       <div className="flex items-stretch gap-6">
         {/* Tile top, mirroring a real stock tile */}
-        <div className="w-[190px] flex-shrink-0 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3">
+        <div className="w-[210px] flex-shrink-0 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3">
           <div className="flex items-start justify-between gap-1.5">
             <div className="min-w-0">
               <div className="truncate text-[13px] font-bold leading-tight text-white">{tc.name}</div>
@@ -1721,25 +1725,23 @@ function LandingExampleGuide() {
                 <span className="text-base font-bold leading-none tabular-nums text-white">{tc.proScore.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium text-slate-400">% avg wt</span></span>
                 <span ref={mk2} className={dot} />
               </span>
-              {tc.vs1w !== null && (
-                <span className="flex items-center gap-1">
-                  <span className={`text-base font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% VS 1W</span></span>
-                  <span ref={mk3} className={dot} />
-                </span>
-              )}
+              <span className="flex items-center gap-1">
+                <span className={`text-base font-bold leading-none tabular-nums ${exVs >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exVs >= 0 ? '+' : ''}{exVs.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% VS 1W</span></span>
+                <span ref={mk3} className={dot} />
+              </span>
             </div>
           </div>
           <div className="mt-2.5 flex items-center justify-between border-t border-slate-800 pt-2">
             <span className="text-[10px] text-slate-500">1W change</span>
             <span className="flex items-center gap-1">
-              <span className={`text-xs font-bold tabular-nums ${tc.week1 >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.week1 >= 0 ? '+' : ''}{tc.week1.toFixed(1)}%</span>
+              <span className={`text-xs font-bold tabular-nums ${exWk >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exWk >= 0 ? '+' : ''}{exWk.toFixed(1)}%</span>
               <span ref={mk4} className={dot} />
             </span>
           </div>
         </div>
 
         {/* Callout bubbles, connected to the metrics by amber lines */}
-        <div className="flex flex-1 flex-col justify-between py-0.5">
+        <div className="flex w-[180px] flex-col justify-between py-0.5">
           <div ref={bb1} className={bubble}>
             <div className="text-[10px] font-bold text-amber-300">Coverage</div>
             <div className="text-[10px] leading-tight text-slate-400">ETFs in the theme that hold it</div>
@@ -1938,7 +1940,7 @@ function HeroCarousel({ onClose, onGuide }: { onClose: () => void; onGuide: () =
                   </Link>
                 )}
               </div>
-              <div className={`w-full flex-shrink-0 sm:w-72 ${s.key === 'etfs' ? 'lg:w-[26rem]' : ''}`}>
+              <div className={`w-full flex-shrink-0 sm:w-72 ${s.key === 'etfs' ? 'lg:w-[24rem]' : ''}`}>
                 <SlideVisual kind={s.key} />
               </div>
             </div>
