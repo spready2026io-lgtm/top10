@@ -419,9 +419,10 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
                 />
               </div>
 
-              {/* Top-holdings tooltip, appears to the right so it never covers the chart */}
+              {/* Top-holdings tooltip, drops below the row so it never runs off the
+                  page's right edge (the table sits on the right side of the layout). */}
               {holdings.length > 0 && open && (
-                <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
+                <div className="pointer-events-none absolute top-full left-0 mt-1 z-50 block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
                   <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">{ticker} top holdings</p>
                   <div className="flex flex-col gap-1">
                     {holdings.map(h => (
