@@ -414,7 +414,7 @@ async function fetchFinancials(ticker) {
 async function fetchEtfData(ticker) {
   await yfInit();
   try {
-    const qUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,fundProfile&crumb=${encodeURIComponent(_yfCrumb)}`;
+    const qUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,fundProfile,summaryDetail&crumb=${encodeURIComponent(_yfCrumb)}`;
     const qRes = await fetch(qUrl, {
       headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' },
     });
@@ -428,6 +428,11 @@ async function fetchEtfData(ticker) {
     // Fund name + manager (issuer), sourced from Yahoo — feeds the ETF tile.
     const name    = priceMod?.longName || priceMod?.shortName || ticker;
     const manager = fundMod?.family || '';
+
+    // Fund size (AUM / net assets), from Yahoo summaryDetail.totalAssets only.
+    // Do NOT fall back to defaultKeyStatistics.totalAssets (a company balance-sheet
+    // figure) or price.marketCap — both report wrong values for funds. null if absent.
+    const aum = qData.quoteSummary?.result?.[0]?.summaryDetail?.totalAssets?.raw ?? null;
 
     const cUrl = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1y&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
     const cRes = await fetch(cUrl, {
@@ -510,7 +515,7 @@ async function fetchEtfData(ticker) {
       returns['1D'] = intraday.dayReturn;
     }
 
-    return { returns, paths, name, manager };
+    return { returns, paths, name, manager, aum };
   } catch (e) {
     console.warn(`  [ETF Data] ${ticker} failed: ${e.message}`);
     return null;
@@ -1005,12 +1010,13 @@ function genEtfInfo(etfDataMap, themeEtfs) {
   for (const etf of allEtfs) {
     const d = etfDataMap[etf];
     if (!d || !d.name) continue;
-    lines.push(`  ${etf}: { name: ${JSON.stringify(d.name)}, manager: ${JSON.stringify(d.manager || '')} },`);
+    const aumPart = d.aum ? `, aum: ${Math.round(d.aum)}` : '';
+    lines.push(`  ${etf}: { name: ${JSON.stringify(d.name)}, manager: ${JSON.stringify(d.manager || '')}${aumPart} },`);
   }
   if (lines.length === 0) return null;
   return [
     '// @@GENERATED:ETF_INFO@@',
-    'export const ETF_INFO: Record<string, { name: string; manager: string }> = {',
+    'export const ETF_INFO: Record<string, { name: string; manager: string; aum?: number }> = {',
     ...lines,
     '};',
     '// @@END_GENERATED:ETF_INFO@@',

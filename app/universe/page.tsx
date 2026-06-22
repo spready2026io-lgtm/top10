@@ -19,12 +19,13 @@ type Row = {
   name:    string;
   manager: string;
   theme:   Theme;
+  aum:     number;        // fund size (net assets), 0 if unknown
   topT:    string;        // top holding ticker
   topW:    number;        // top holding weight
   ret:     Record<Period, number>;
 };
 
-type SortKey = 'ticker' | 'name' | 'manager' | 'theme' | 'top' | Period;
+type SortKey = 'ticker' | 'name' | 'manager' | 'theme' | 'size' | 'top' | Period;
 const TEXT_KEYS: SortKey[] = ['ticker', 'name', 'manager', 'theme', 'top'];
 
 // Performance windows shown as columns (skip 1W — too noisy for a reference table).
@@ -42,6 +43,7 @@ function buildRows(): Row[] {
         name:    info?.name ?? ticker,
         manager: info?.manager ?? '—',
         theme,
+        aum:     info?.aum ?? 0,
         topT:    top?.t ?? '—',
         topW:    top?.w ?? 0,
         ret,
@@ -49,6 +51,14 @@ function buildRows(): Row[] {
     }
   }
   return rows;
+}
+
+// Fund size (net assets) → compact $ string. Returns '—' when unknown.
+function fmtAum(v: number): string {
+  if (!v || v <= 0) return '—';
+  if (v >= 1e9) return `$${(v / 1e9).toFixed(v >= 1e10 ? 0 : 1)}B`;
+  if (v >= 1e6) return `$${(v / 1e6).toFixed(0)}M`;
+  return `$${Math.max(1, Math.round(v / 1e3))}K`;
 }
 
 function Perf({ v }: { v: number }) {
@@ -74,6 +84,7 @@ export default function Universe() {
       else if (key === 'name')   cmp = a.name.localeCompare(b.name);
       else if (key === 'manager')cmp = a.manager.localeCompare(b.manager);
       else if (key === 'theme')  cmp = a.theme.localeCompare(b.theme) || a.ticker.localeCompare(b.ticker);
+      else if (key === 'size')   cmp = a.aum - b.aum;
       else if (key === 'top')    cmp = a.topW - b.topW;
       else                       cmp = a.ret[key] - b.ret[key];
       return cmp * mul;
@@ -157,6 +168,7 @@ export default function Universe() {
                   <Th k="name"    label="Name" />
                   <Th k="manager" label="Manager" />
                   <Th k="theme"   label="Theme" />
+                  <Th k="size"    label="Size" align="right" />
                   <Th k="top"     label="Top Holding" />
                   {PERF_COLS.map(p => <Th key={p} k={p} label={p} align="right" />)}
                 </tr>
@@ -168,6 +180,7 @@ export default function Universe() {
                     <td className="px-3 py-2.5 text-slate-300 min-w-[14rem]">{r.name}</td>
                     <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">{r.manager}</td>
                     <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">{r.theme}</td>
+                    <td className="px-3 py-2.5 text-right text-slate-300 tabular-nums whitespace-nowrap">{fmtAum(r.aum)}</td>
                     <td className="px-3 py-2.5 whitespace-nowrap">
                       <span className="font-mono text-slate-300">{r.topT}</span>
                       {r.topW > 0 && <span className="text-slate-500 text-xs ml-1.5">{r.topW.toFixed(1)}%</span>}
@@ -183,8 +196,9 @@ export default function Universe() {
         </div>
 
         <p className="text-slate-500 text-xs mt-4">
-          Data snapshot: {SCAN_TIMESTAMP_NY}. Performance is price return over each window (YTD = year to date).
-          Top holding is the single largest position by weight. Indicative only, not investment advice.
+          Data snapshot: {SCAN_TIMESTAMP_NY}. Size is fund net assets (AUM). Performance is price return over
+          each window (YTD = year to date). Top holding is the single largest position by weight. Indicative
+          only, not investment advice.
         </p>
 
         {/* Disclaimer */}
