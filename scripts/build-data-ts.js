@@ -61,11 +61,37 @@ const CROSS_THEME_EXCLUDE = new Set(['Meme']);
 // keeps display consistent across themes (the UI also maps these tickers to a
 // logo domain in app/page.tsx). Applied only when the scraped name is blank
 // or equals the ticker, so real source names always win.
-// Non-US tickers need an exchange suffix for Yahoo Finance to find them.
-// Maps the ETF holding ticker -> the Yahoo Finance symbol to use for price lookups.
+// ── Foreign (non-US) shares — EUR / AUD / etc. ───────────────────────────────
+// Yahoo Finance only finds non-US listings via an exchange suffix. The bare
+// ticker 404s and the equity falls through to price: 0 with all-zero returns,
+// which then renders broken in the conviction / universe / cross-theme tables.
+// Map the ETF holding ticker -> the suffixed Yahoo symbol here to fix it.
+//
+// How to add a new one:
+//   1. Find the listing's Yahoo symbol (search finance.yahoo.com for the name).
+//      Common suffixes:
+//        .AX  ASX (Australia)        .MC  Bolsa de Madrid (Spain)
+//        .MI  Borsa Italiana (Milan) .PA  Euronext Paris (France)
+//        .AS  Euronext Amsterdam     .DE  XETRA / .F Frankfurt (Germany)
+//        .L   London Stock Exchange  .SW  SIX Swiss Exchange
+//        .TO  Toronto (Canada)       .HK  Hong Kong   .T  Tokyo
+//   2. Verify BOTH endpoints the build uses actually return data for it:
+//        quoteSummary -> price.regularMarketPrice, price.currency, exchangeName
+//        v8 chart (range=1y) -> a full series of non-null closes
+//      (see fetchFinancials / fetchChartReturns below; a quick standalone fetch
+//       with the yfInit crumb flow is enough to confirm before committing.)
+//   3. Add the mapping, rebuild data.ts, and confirm the ticker no longer shows
+//      price: 0 (grep "price: 0" lib/data.ts should return nothing).
+//
+// CURRENCY CAVEAT: these prices come back in local currency (EUR, AUD, GBP…),
+// but the UI prefixes every price with "$". Returns and proScore are
+// currency-agnostic (they're % changes), so scoring is unaffected — only the
+// displayed price number carries the wrong currency symbol. If foreign names
+// become common, add a currency-aware price label rather than mapping more
+// tickers blind.
 const YAHOO_TICKER_MAP = {
-  PRY:  'PRY.MI',   // Prysmian SpA — Borsa Italiana (Milan)
-  AENA: 'AENA.MC',  // Aena S.M.E., S.A. — Bolsa de Madrid
+  PRY:  'PRY.MI',   // Prysmian SpA — Borsa Italiana (Milan), EUR
+  AENA: 'AENA.MC',  // Aena S.M.E., S.A. — Bolsa de Madrid, EUR
 };
 
 const COMPANY_NAMES = {
