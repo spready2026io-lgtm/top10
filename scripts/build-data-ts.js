@@ -64,7 +64,8 @@ const CROSS_THEME_EXCLUDE = new Set(['Meme']);
 // Non-US tickers need an exchange suffix for Yahoo Finance to find them.
 // Maps the ETF holding ticker -> the Yahoo Finance symbol to use for price lookups.
 const YAHOO_TICKER_MAP = {
-  PRY: 'PRY.MI',  // Prysmian SpA — Borsa Italiana (Milan)
+  PRY:  'PRY.MI',   // Prysmian SpA — Borsa Italiana (Milan)
+  AENA: 'AENA.MC',  // Aena S.M.E., S.A. — Bolsa de Madrid
 };
 
 const COMPANY_NAMES = {
