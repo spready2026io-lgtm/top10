@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
@@ -535,22 +535,22 @@ function getTonyVsNote(equity: Equity): { text: string; positive: boolean } | nu
   const { ticker, proScore } = equity;
   const positive = vs1w >= 0;
   const mCtx = vs1m !== null
-    ? ` Looking at the past month, Weight Score is ${vs1m >= 0 ? 'up' : 'down'} ${Math.abs(vs1m).toFixed(1)}% — ${Math.abs(vs1w) > Math.abs(vs1m) ? 'the weekly move is outpacing the monthly trend, suggesting acceleration' : 'broadly consistent with the recent trend'}.`
+    ? ` Looking at the past month, Weight Score is ${vs1m >= 0 ? 'up' : 'down'} ${Math.abs(vs1m).toFixed(1)}%, ${Math.abs(vs1w) > Math.abs(vs1m) ? 'the weekly move is outpacing the monthly trend, suggesting acceleration' : 'broadly consistent with the recent trend'}.`
     : '';
 
   let text: string;
   if (vs1w >= 50) {
-    text = `Exceptional accumulation this week. ${ticker}'s Weight Score surged +${vs1w.toFixed(1)}% — a move of this magnitude reflects a coordinated increase across multiple ETF managers simultaneously, not just passive price drift. At ${proScore.toFixed(1)}% average weighting the absolute conviction is already high; this acceleration suggests it has further to run.${mCtx}`;
+    text = `Exceptional accumulation this week. ${ticker}'s Weight Score surged +${vs1w.toFixed(1)}%, a move of this magnitude reflects a coordinated increase across multiple ETF managers simultaneously, not just passive price drift. At ${proScore.toFixed(1)}% average weighting the absolute conviction is already high; this acceleration suggests it has further to run.${mCtx}`;
   } else if (vs1w >= 20) {
-    text = `Strong positive momentum. Weight Score is up +${vs1w.toFixed(1)}% this week, signalling that ETF managers are actively building their ${ticker} positions — increasing portfolio weight, not just riding price.${mCtx}`;
+    text = `Strong positive momentum. Weight Score is up +${vs1w.toFixed(1)}% this week, signalling that ETF managers are actively building their ${ticker} positions, increasing portfolio weight, not just riding price.${mCtx}`;
   } else if (vs1w >= 5) {
-    text = `Gradual accumulation. ${ticker}'s Weight Score nudged up +${vs1w.toFixed(1)}% this week. A steady drip of adds across the ETF basket — conviction is growing, not plateauing.${mCtx}`;
+    text = `Gradual accumulation. ${ticker}'s Weight Score nudged up +${vs1w.toFixed(1)}% this week. A steady drip of adds across the ETF basket, conviction is growing, not plateauing.${mCtx}`;
   } else if (vs1w >= -5) {
-    text = `Conviction is stable. Weight Score moved ${vs1w >= 0 ? '+' : ''}${vs1w.toFixed(1)}% this week — no meaningful adds or trims at the ETF level. ${ticker} is holding its place in the institutional allocation.${mCtx}`;
+    text = `Conviction is stable. Weight Score moved ${vs1w >= 0 ? '+' : ''}${vs1w.toFixed(1)}% this week, with no meaningful adds or trims at the ETF level. ${ticker} is holding its place in the institutional allocation.${mCtx}`;
   } else if (vs1w >= -20) {
     text = `Slight fading. Weight Score slipped ${vs1w.toFixed(1)}% this week. Some ETF managers appear to be trimming ${ticker} at the margin. The stock remains broadly held, but the short-term momentum is not in its favour.${mCtx}`;
   } else {
-    text = `Notable de-weighting. Weight Score fell ${vs1w.toFixed(1)}% this week — a sharp move that suggests active trimming across the ETF basket, not just price-driven rebalancing. Whether this is tactical profit-taking or a shift in longer-term conviction around ${ticker} warrants watching closely.${mCtx}`;
+    text = `Notable de-weighting. Weight Score fell ${vs1w.toFixed(1)}% this week, a sharp move that suggests active trimming across the ETF basket, not just price-driven rebalancing. Whether this is tactical profit-taking or a shift in longer-term conviction around ${ticker} warrants watching closely.${mCtx}`;
   }
   return { text, positive };
 }
@@ -980,7 +980,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                     </span>
                     {/* Tooltip: VS calculation */}
                     <div className={`absolute right-0 top-full mt-1.5 w-52 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${vsOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
-                      <p className="text-slate-400 text-xs font-semibold mb-2">Velocity Score — {tileVsPeriod} window</p>
+                      <p className="text-slate-400 text-xs font-semibold mb-2">Velocity Score, {tileVsPeriod} window</p>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <span className="text-slate-400 text-xs">Weight Score now</span>
@@ -1391,7 +1391,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="text-emerald-400 font-bold text-sm">How Top10 Works</span>
-          <span className="text-slate-400 text-xs hidden sm:inline">— follow the steps below then explore the tiles</span>
+          <span className="text-slate-400 text-xs hidden sm:inline">follow the steps below then explore the tiles</span>
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -1511,7 +1511,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
           <span className="text-amber-300">★</span> Top 10 Across All Themes
         </h2>
         <p className="text-slate-500 text-xs mt-1 max-w-2xl">
-          Ranked by cross-theme breadth — the stocks held across the most institutional theme
+          Ranked by cross-theme breadth, the stocks held across the most institutional theme
           baskets. The widest-conviction names in the entire tracked universe.
           Ranking: ETF count first, avg weight across all themes as tiebreaker. (Meme theme excluded)
         </p>
@@ -1648,6 +1648,130 @@ const HERO_SLIDES = [
   },
 ];
 
+// Desktop (lg+) landing-slide guide: a mock of a real tile top with amber
+// callout bubbles connected to each metric. Connector lines are measured at
+// runtime so they land exactly on each metric regardless of width/font.
+function LandingExampleGuide() {
+  const tc = TOP_CONSENSUS;
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const mk1 = useRef<HTMLSpanElement>(null);
+  const mk2 = useRef<HTMLSpanElement>(null);
+  const mk3 = useRef<HTMLSpanElement>(null);
+  const mk4 = useRef<HTMLSpanElement>(null);
+  const bb1 = useRef<HTMLDivElement>(null);
+  const bb2 = useRef<HTMLDivElement>(null);
+  const bb3 = useRef<HTMLDivElement>(null);
+  const bb4 = useRef<HTMLDivElement>(null);
+  const [lines, setLines] = useState<{ x1: number; y1: number; x2: number; y2: number }[]>([]);
+
+  useEffect(() => {
+    if (!tc) return;
+    const pairs = [[mk1, bb1], [mk2, bb2], [mk3, bb3], [mk4, bb4]] as const;
+    const measure = () => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const wr = wrap.getBoundingClientRect();
+      const next: { x1: number; y1: number; x2: number; y2: number }[] = [];
+      for (const [mk, bb] of pairs) {
+        const m = mk.current?.getBoundingClientRect();
+        const b = bb.current?.getBoundingClientRect();
+        if (!m || !b) continue;
+        next.push({
+          x1: m.left + m.width / 2 - wr.left,
+          y1: m.top + m.height / 2 - wr.top,
+          x2: b.left - wr.left,
+          y2: b.top + b.height / 2 - wr.top,
+        });
+      }
+      setLines(next);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, [tc]);
+
+  if (!tc) return null;
+  const dot = 'inline-block h-2 w-2 flex-shrink-0 rounded-full bg-amber-400';
+  const bubble = 'rounded-md border border-amber-400/30 bg-amber-400/[0.07] px-2 py-1';
+
+  return (
+    <div ref={wrapRef} className="relative hidden lg:block">
+      <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
+        Example tile
+      </div>
+      <div className="flex items-stretch gap-6">
+        {/* Tile top, mirroring a real stock tile */}
+        <div className="w-[190px] flex-shrink-0 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3">
+          <div className="flex items-start justify-between gap-1.5">
+            <div className="min-w-0">
+              <div className="truncate text-[13px] font-bold leading-tight text-white">{tc.name}</div>
+              <div className="font-mono text-[10px] text-slate-500">{tc.ticker}</div>
+            </div>
+            <span className="flex flex-shrink-0 items-center gap-1">
+              <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-bold tabular-nums text-emerald-300">8/10</span>
+              <span ref={mk1} className={dot} />
+            </span>
+          </div>
+          <div className="mt-2.5 flex items-start justify-between gap-1.5">
+            <div className="mt-0.5 text-base font-bold tabular-nums text-white">${tc.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="flex items-center gap-1">
+                <span className="text-base font-bold leading-none tabular-nums text-white">{tc.proScore.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium text-slate-400">% avg wt</span></span>
+                <span ref={mk2} className={dot} />
+              </span>
+              {tc.vs1w !== null && (
+                <span className="flex items-center gap-1">
+                  <span className={`text-base font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% VS 1W</span></span>
+                  <span ref={mk3} className={dot} />
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="mt-2.5 flex items-center justify-between border-t border-slate-800 pt-2">
+            <span className="text-[10px] text-slate-500">1W change</span>
+            <span className="flex items-center gap-1">
+              <span className={`text-xs font-bold tabular-nums ${tc.week1 >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.week1 >= 0 ? '+' : ''}{tc.week1.toFixed(1)}%</span>
+              <span ref={mk4} className={dot} />
+            </span>
+          </div>
+        </div>
+
+        {/* Callout bubbles, connected to the metrics by amber lines */}
+        <div className="flex flex-1 flex-col justify-between py-0.5">
+          <div ref={bb1} className={bubble}>
+            <div className="text-[10px] font-bold text-amber-300">Coverage</div>
+            <div className="text-[10px] leading-tight text-slate-400">ETFs in the theme that hold it</div>
+          </div>
+          <div ref={bb2} className={bubble}>
+            <div className="text-[10px] font-bold text-amber-300">Avg wt</div>
+            <div className="text-[10px] leading-tight text-slate-400">average weight across those ETFs</div>
+          </div>
+          <div ref={bb3} className={bubble}>
+            <div className="text-[10px] font-bold text-amber-300">Velocity</div>
+            <div className="text-[10px] leading-tight text-slate-400">weight change vs last week</div>
+          </div>
+          <div ref={bb4} className={bubble}>
+            <div className="text-[10px] font-bold text-amber-300">1W</div>
+            <div className="text-[10px] leading-tight text-slate-400">the stock price move this week</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Connector overlay */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ overflow: 'visible' }}>
+        {lines.map((l, i) => (
+          <g key={i}>
+            <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="#fbbf24" strokeWidth="1.25" strokeDasharray="3 2" opacity="0.65" />
+            <circle cx={l.x1} cy={l.y1} r="2.5" fill="#fbbf24" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 function SlideVisual({ kind }: { kind: string }) {
   if (kind === 'etfs') {
     const tc = TOP_CONSENSUS;
@@ -1657,8 +1781,12 @@ function SlideVisual({ kind }: { kind: string }) {
         {/* Illustrative example — fixed at 8/10 to mirror the "8 of 10" copy on
             the left. Clearly badged as an example, and hidden on the compact
             mobile layout so the stacked slide stays short. */}
+        {/* Desktop (lg+): annotated tile guide with connector bubbles */}
+        <LandingExampleGuide />
+
+        {/* Tablet (sm to lg): same tile with a numbered legend below (narrower column) */}
         {tc && (
-          <div className="hidden sm:block">
+          <div className="hidden sm:block lg:hidden">
             <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
               Example tile
             </div>
@@ -1810,7 +1938,7 @@ function HeroCarousel({ onClose, onGuide }: { onClose: () => void; onGuide: () =
                   </Link>
                 )}
               </div>
-              <div className="w-full flex-shrink-0 sm:w-72">
+              <div className={`w-full flex-shrink-0 sm:w-72 ${s.key === 'etfs' ? 'lg:w-[26rem]' : ''}`}>
                 <SlideVisual kind={s.key} />
               </div>
             </div>
