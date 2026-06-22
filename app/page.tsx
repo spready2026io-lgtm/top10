@@ -1584,7 +1584,7 @@ const HOLDINGS_FLOOR  = (Math.floor(HOLDINGS_COUNT / 100) * 100).toLocaleString(
 // Strongest current consensus name (highest coverage vs its theme, avg weight as
 // tiebreaker) — feeds the landing slide's example card with live data.
 const TOP_CONSENSUS = (() => {
-  let best: { ticker: string; name: string; theme: Theme; held: number; max: number; weight: number } | null = null;
+  let best: { ticker: string; name: string; theme: Theme; held: number; max: number; weight: number; price: number; proScore: number; vs1w: number | null; week1: number } | null = null;
   for (const t of THEMES) {
     const max = THEME_ETF_COUNT[t];
     for (const e of SAMPLE_DATA[t]) {
@@ -1592,12 +1592,19 @@ const TOP_CONSENSUS = (() => {
       const weight = e.avgWeight ?? e.proScore;
       const bestCov = best ? best.held / best.max : -1;
       if (!best || cov > bestCov || (cov === bestCov && weight > best.weight)) {
-        best = { ticker: e.ticker, name: e.name, theme: t, held: e.easyScore, max, weight };
+        best = { ticker: e.ticker, name: e.name, theme: t, held: e.easyScore, max, weight, price: e.price, proScore: e.proScore, vs1w: e.velocityScore?.['1W'] ?? null, week1: e.weeklyChange };
       }
     }
   }
   return best;
 })();
+
+// Amber marker keyed to the example-tile legend on the landing slide.
+function GuideMark({ n, className = '' }: { n: number; className?: string }) {
+  return (
+    <span className={`inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-amber-400 text-[9px] font-bold text-slate-900 ${className}`}>{n}</span>
+  );
+}
 
 const HERO_SLIDES = [
   {
@@ -1651,33 +1658,69 @@ function SlideVisual({ kind }: { kind: string }) {
             the left. Clearly badged as an example, and hidden on the compact
             mobile layout so the stacked slide stays short. */}
         {tc && (
-          <div className="hidden sm:block rounded-xl border border-emerald-500/25 bg-slate-900/60 p-3.5">
+          <div className="hidden sm:block">
             <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
-              Example
+              Example tile
             </div>
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="font-mono text-base font-bold text-white">{tc.ticker}</div>
-                <div className="text-[10px] text-slate-500">{tc.name} · {tc.theme}</div>
+
+            {/* Mirror of a real tile top, with amber markers keyed to the legend below */}
+            <div className="rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-bold leading-tight text-white">{tc.name}</div>
+                  <div className="font-mono text-[11px] text-slate-500">{tc.ticker}</div>
+                </div>
+                <div className="flex flex-shrink-0 items-center">
+                  <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-xs font-bold tabular-nums text-emerald-300">8/10</span>
+                  <GuideMark n={1} className="ml-1" />
+                </div>
               </div>
-              <div className="text-right">
-                <div className="text-base font-bold text-emerald-400">8/10</div>
-                <div className="text-[10px] text-slate-500">ETFs hold it</div>
+
+              <div className="mt-3 flex items-start justify-between gap-2">
+                <div className="mt-0.5 text-lg font-bold tabular-nums text-white">${tc.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                <div className="flex flex-col items-end gap-1">
+                  <div className="flex items-center">
+                    <span className="text-lg font-bold leading-none tabular-nums text-white">{tc.proScore.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium text-slate-400">% avg wt</span></span>
+                    <GuideMark n={2} className="ml-1" />
+                  </div>
+                  {tc.vs1w !== null && (
+                    <div className="flex items-center">
+                      <span className={`text-lg font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium opacity-70">% VS 1W</span></span>
+                      <GuideMark n={3} className="ml-1" />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-2.5 flex items-center justify-between border-t border-slate-800 pt-2">
+                <span className="text-[11px] text-slate-500">1W change</span>
+                <div className="flex items-center">
+                  <span className={`text-sm font-bold tabular-nums ${tc.week1 >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.week1 >= 0 ? '+' : ''}{tc.week1.toFixed(1)}%</span>
+                  <GuideMark n={4} className="ml-1" />
+                </div>
               </div>
             </div>
-            <div className="mt-2.5 flex gap-1">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <span key={i} className={`h-2 flex-1 rounded-full ${i < 8 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+
+            {/* Legend — amber bubbles explain each metric on the tile */}
+            <div className="mt-2.5 space-y-1.5">
+              {([
+                [1, 'Coverage', 'how many of the theme ETFs hold it'],
+                [2, 'Avg wt', 'average weight across those ETFs'],
+                [3, 'Velocity', 'weight change vs last week, who is climbing'],
+                [4, '1W', 'the stock price move this week'],
+              ] as [number, string, string][]).map(([n, label, desc]) => (
+                <div key={n} className="flex items-start gap-2">
+                  <GuideMark n={n} className="mt-0.5" />
+                  <p className="text-[11px] leading-snug text-slate-400"><span className="font-semibold text-amber-300">{label}</span>, {desc}</p>
+                </div>
               ))}
-            </div>
-            <div className="mt-2 text-[11px] text-slate-400">
-              <span className="font-semibold text-slate-200">{tc.weight.toFixed(1)}%</span> average weight across the theme&apos;s ETFs
             </div>
           </div>
         )}
 
-        {/* Universe scale — derived from live data */}
-        <div className="grid grid-cols-3 gap-2 text-center">
+        {/* Universe scale — derived from live data. Desktop only; hidden on the
+            compact mobile slide per feedback. */}
+        <div className="hidden sm:grid grid-cols-3 gap-2 text-center">
           {[[`${ETF_COUNT}`, 'active ETFs'], [`${HOLDINGS_FLOOR}+`, 'shares'], [`${SCORED_COUNT}`, 'ranked']].map(([num, label]) => (
             <div key={label} className="rounded-lg border border-slate-800 bg-slate-900/50 py-2">
               <div className="text-base font-bold text-white">{num}</div>
@@ -1686,8 +1729,8 @@ function SlideVisual({ kind }: { kind: string }) {
           ))}
         </div>
 
-        {/* Sample tickers from the universe */}
-        <div className="flex flex-wrap gap-1.5">
+        {/* Sample tickers from the universe. Desktop only; hidden on mobile. */}
+        <div className="hidden sm:flex flex-wrap gap-1.5">
           {sampleTickers.map(t => (
             <span key={t} className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-300">{t}</span>
           ))}
