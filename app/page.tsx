@@ -400,11 +400,27 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
               onPointerLeave={e => { if (e.pointerType === 'mouse') setOpenEtf(null); }}
               onClick={() => setOpenEtf(prev => (prev === ticker ? null : ticker))}
             >
-              <div className="flex items-center justify-between mb-0.5">
+              <div className="relative flex items-center justify-between mb-0.5">
                 <span className={`text-xs font-mono font-bold border-b border-dotted ${open ? 'text-white border-emerald-500/60' : 'text-slate-300 border-slate-700'}`}>{ticker}</span>
                 <span className={`text-xs font-bold tabular-nums ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {pos ? '+' : ''}{ret.toFixed(1)}%
                 </span>
+
+                {/* Top-holdings tooltip — drops directly under the ticker it represents,
+                    inside the card width so it never runs off the page's right edge. */}
+                {holdings.length > 0 && open && (
+                  <div className="pointer-events-none absolute top-full left-0 mt-1 z-50 block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
+                    <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">{ticker} top holdings</p>
+                    <div className="flex flex-col gap-1">
+                      {holdings.map(h => (
+                        <div key={h.t} className="flex items-center justify-between text-[11px]">
+                          <span className="text-slate-300 font-mono">{h.t}</span>
+                          <span className="text-slate-400 tabular-nums">{h.w.toFixed(1)}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               {info && (
                 <div className="mb-1 leading-tight truncate text-[11px] text-slate-300">
@@ -418,22 +434,6 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
                   style={{ width: `${barPct}%` }}
                 />
               </div>
-
-              {/* Top-holdings tooltip, drops below the row so it never runs off the
-                  page's right edge (the table sits on the right side of the layout). */}
-              {holdings.length > 0 && open && (
-                <div className="pointer-events-none absolute top-full left-0 mt-1 z-50 block w-44 rounded-lg border border-slate-700 bg-slate-950/95 backdrop-blur-sm shadow-xl px-3 py-2">
-                  <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">{ticker} top holdings</p>
-                  <div className="flex flex-col gap-1">
-                    {holdings.map(h => (
-                      <div key={h.t} className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-300 font-mono">{h.t}</span>
-                        <span className="text-slate-400 tabular-nums">{h.w.toFixed(1)}%</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           );
         })}
