@@ -238,11 +238,24 @@ function isNewEntrant(history, todayStr, theme, ticker) {
   return !(ticker in (history[prevDates[0]]?.[theme] ?? {}));
 }
 
-function formatMarketCap(n) {
+// Currency symbol for embedding in built strings (market cap). Mirrors
+// currencySymbol() in lib/format.ts — keep the two in sync. Unknown/suffix-style
+// currencies fall back to the ISO code + nbsp so a number is never mislabeled.
+const CURRENCY_SYMBOLS = {
+  USD: '$', EUR: '€', GBP: '£', JPY: '¥',
+  AUD: 'A$', CAD: 'C$', NZD: 'NZ$', HKD: 'HK$', SGD: 'S$', CHF: 'CHF ',
+};
+function currencySymbol(currency) {
+  if (!currency || currency === 'USD') return '$';
+  return CURRENCY_SYMBOLS[currency] ?? `${currency} `;
+}
+
+function formatMarketCap(n, currency) {
   if (!n || isNaN(n)) return 'N/A';
-  if (n >= 1e12) return `$${(n / 1e12).toFixed(1)}T`;
-  if (n >= 1e9)  return `$${(n / 1e9).toFixed(0)}B`;
-  return `$${(n / 1e6).toFixed(0)}M`;
+  const s = currencySymbol(currency);
+  if (n >= 1e12) return `${s}${(n / 1e12).toFixed(1)}T`;
+  if (n >= 1e9)  return `${s}${(n / 1e9).toFixed(0)}B`;
+  return `${s}${(n / 1e6).toFixed(0)}M`;
 }
 
 // Number of points in a 1D intraday path. Must match PERIOD_N['1D'] in
@@ -404,7 +417,10 @@ async function fetchFinancials(ticker) {
     if (!r) throw new Error('No result');
 
     const price         = r.price?.regularMarketPrice?.raw ?? 0;
-    const marketCap     = formatMarketCap(r.price?.marketCap?.raw);
+    // Local trading currency (USD, EUR, AUD…). Foreign listings report non-USD;
+    // price/EPS/marketCap are all denominated in it. See YAHOO_TICKER_MAP notes.
+    const currency      = r.price?.currency ?? 'USD';
+    const marketCap     = formatMarketCap(r.price?.marketCap?.raw, currency);
     const pe            = r.summaryDetail?.trailingPE?.raw != null
                           ? parseFloat(r.summaryDetail.trailingPE.raw.toFixed(1)) : null;
     const eps           = parseFloat((r.defaultKeyStatistics?.trailingEps?.raw ?? 0).toFixed(2));
@@ -425,7 +441,7 @@ async function fetchFinancials(ticker) {
                           ? parseFloat((r.price.regularMarketChangePercent.raw * 100).toFixed(2))
                           : (chartData.dayReturn ?? 0);
 
-    return { price: parseFloat(price.toFixed(2)), weeklyChange, dayChange, weeklyPrices, periodReturns, priceHistory, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
+    return { price: parseFloat(price.toFixed(2)), currency, weeklyChange, dayChange, weeklyPrices, periodReturns, priceHistory, marketCap, pe, eps, grossMargin, revenueGrowth, dividendYield: divYield };
 
   } catch (e) {
     console.warn(`  [Yahoo] ${ticker} failed: ${e.message}`);
@@ -660,6 +676,7 @@ function safeTicker(t) {
 function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   const f = financials || {};
   const price         = f.price ?? 0;
+  const currency      = f.currency ?? 'USD';
   const weeklyChange  = f.weeklyChange ?? 0;
   const dayChange     = f.dayChange ?? 0;
   // Use real 1W price history if available — fall back only if missing entirely
@@ -693,7 +710,7 @@ function genEquity(eq, financials, totalEtfs, themeName, vs, isNew) {
   return [
     `    {`,
     `      ticker: '${ticker}', name: '${escapeStr(eq.name)}', easyScore: ${eq.easyScore}, avgWeight: ${eq.avgWeight}, proScore: ${eq.proScore}, coverage: ${parseFloat(eq.coverage.toFixed(3))},`,
-    `      price: ${price}, weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, dayChange: ${dayChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, 'YTD': ${pr['YTD']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
+    `      price: ${price},${currency !== 'USD' ? ` currency: '${currency}',` : ''} weeklyPrices: ${wpStr}, weeklyChange: ${weeklyChange}, dayChange: ${dayChange}, sortRank: 0, periodReturns: { '1M': ${pr['1M']}, 'YTD': ${pr['YTD']}, '6M': ${pr['6M']}, '1Y': ${pr['1Y']} },`,
     `      priceHistory: ${phStr},`,
     `      velocityScore: { '1D': ${v(vsObj['1D'])}, '1W': ${v(vsObj['1W'])}, '1M': ${v(vsObj['1M'])}, '6M': ${v(vsObj['6M'])} }, isNew: ${!!isNew},`,
     `      marketCap: '${marketCap}', pe: ${pe === null ? 'null' : pe}, revenueGrowth: ${revenueGrowth}, eps: ${eps}, grossMargin: ${grossMargin}, dividendYield: ${divYield === null ? 'null' : divYield},`,
@@ -986,10 +1003,12 @@ function genCrossThemeTop10(themeEquities, financialsMap) {
   const lines = ranked.map(e => {
     const f = financialsMap[e.ticker] || {};
     const price        = Number(f.price ?? 0).toFixed(2);
+    const currency     = f.currency ?? 'USD';
     const weeklyChange = Number(f.weeklyChange ?? 0).toFixed(2);
     const themesArr    = e.themes.map(t => `'${escapeStr(t)}'`).join(', ');
     const avgProScore = (e.aggregateScore / e.themes.length).toFixed(2);
-    return `  { ticker: '${safeTicker(e.ticker)}', name: \`${escapeStr(e.name)}\`, themeCount: ${e.themes.length}, themes: [${themesArr}], aggregateScore: ${e.aggregateScore.toFixed(2)}, bestProScore: ${e.bestProScore.toFixed(2)}, avgProScore: ${avgProScore}, price: ${price}, weeklyChange: ${weeklyChange} },`;
+    const curStr = currency !== 'USD' ? ` currency: '${currency}',` : '';
+    return `  { ticker: '${safeTicker(e.ticker)}', name: \`${escapeStr(e.name)}\`, themeCount: ${e.themes.length}, themes: [${themesArr}], aggregateScore: ${e.aggregateScore.toFixed(2)}, bestProScore: ${e.bestProScore.toFixed(2)}, avgProScore: ${avgProScore}, price: ${price},${curStr} weeklyChange: ${weeklyChange} },`;
   });
 
   return [

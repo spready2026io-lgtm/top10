@@ -25,6 +25,7 @@ import {
   ETF_INFO,
   HOLDINGS_COUNT,
 } from '@/lib/data';
+import { fmtMoney } from '@/lib/format';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
 const TICKER_DOMAINS: Record<string, string> = {
@@ -768,7 +769,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <Stat label="Mkt Cap"    value={equity.marketCap} />
                 <Stat label="P/E"        value={peStr} />
                 <Stat label="Rev Growth" value={revStr} highlight={equity.revenueGrowth > 15} />
-                <Stat label="EPS"        value={`$${equity.eps.toFixed(2)}`} />
+                <Stat label="EPS"        value={fmtMoney(equity.eps, equity.currency)} />
                 <Stat label="Grs Margin" value={`${equity.grossMargin}%`} highlight={equity.grossMargin > 55} />
                 <Stat label="Dividend"   value={divStr} />
               </div>
@@ -926,7 +927,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
           {/* Price + Weight Score + VS */}
           <div className="flex items-start justify-between flex-shrink-0 mt-3">
             <p className="text-white font-bold text-xl tabular-nums mt-1">
-              ${equity.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {fmtMoney(equity.price, equity.currency)}
             </p>
             <div className="flex flex-col items-end gap-1.5">
               {/* avg wt */}
@@ -1103,7 +1104,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               <Stat label="Mkt Cap"    value={equity.marketCap} />
               <Stat label="P/E"        value={peStr} />
               <Stat label="Rev Growth" value={revStr} highlight={equity.revenueGrowth > 15} />
-              <Stat label="EPS"        value={`$${equity.eps.toFixed(2)}`} />
+              <Stat label="EPS"        value={fmtMoney(equity.eps, equity.currency)} />
               <Stat label="Grs Margin" value={`${equity.grossMargin}%`} highlight={equity.grossMargin > 55} />
               <Stat label="Dividend"   value={divStr} />
             </div>
@@ -1187,9 +1188,9 @@ function CompactRow({
 
         {/* Price */}
         <span className="text-white font-bold text-xs tabular-nums flex-shrink-0 w-16 text-right">
-          ${equity.price >= 1000
-            ? equity.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-            : equity.price.toFixed(2)}
+          {equity.price >= 1000
+            ? fmtMoney(equity.price, equity.currency, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            : fmtMoney(equity.price, equity.currency)}
         </span>
 
         {/* Weekly change */}
@@ -1553,7 +1554,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                     {e.themeCount} themes
                   </span>
                   <div className="mt-1 text-xs tabular-nums">
-                    <span className="text-slate-400">${e.price.toFixed(2)}</span>
+                    <span className="text-slate-400">{fmtMoney(e.price, e.currency)}</span>
                     <span className="ml-2 text-slate-400">avg wt <span className="text-white font-bold">{e.avgProScore.toFixed(1)}%</span></span>
                   </div>
                 </div>
@@ -1584,7 +1585,7 @@ const HOLDINGS_FLOOR  = (Math.floor(HOLDINGS_COUNT / 100) * 100).toLocaleString(
 // Strongest current consensus name (highest coverage vs its theme, avg weight as
 // tiebreaker) — feeds the landing slide's example card with live data.
 const TOP_CONSENSUS = (() => {
-  let best: { ticker: string; name: string; theme: Theme; held: number; max: number; weight: number; price: number; proScore: number; vs1w: number | null; week1: number } | null = null;
+  let best: { ticker: string; name: string; theme: Theme; held: number; max: number; weight: number; price: number; currency?: string; proScore: number; vs1w: number | null; week1: number } | null = null;
   for (const t of THEMES) {
     const max = THEME_ETF_COUNT[t];
     for (const e of SAMPLE_DATA[t]) {
@@ -1592,7 +1593,7 @@ const TOP_CONSENSUS = (() => {
       const weight = e.avgWeight ?? e.proScore;
       const bestCov = best ? best.held / best.max : -1;
       if (!best || cov > bestCov || (cov === bestCov && weight > best.weight)) {
-        best = { ticker: e.ticker, name: e.name, theme: t, held: e.easyScore, max, weight, price: e.price, proScore: e.proScore, vs1w: e.velocityScore?.['1W'] ?? null, week1: e.weeklyChange };
+        best = { ticker: e.ticker, name: e.name, theme: t, held: e.easyScore, max, weight, price: e.price, currency: e.currency, proScore: e.proScore, vs1w: e.velocityScore?.['1W'] ?? null, week1: e.weeklyChange };
       }
     }
   }
@@ -1719,7 +1720,7 @@ function LandingExampleGuide() {
             </span>
           </div>
           <div className="mt-2.5 flex items-start justify-between gap-1.5">
-            <div className="mt-0.5 text-base font-bold tabular-nums text-white">${tc.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className="mt-0.5 text-base font-bold tabular-nums text-white">{fmtMoney(tc.price, tc.currency)}</div>
             <div className="flex flex-col items-end gap-1">
               <span className="flex items-center gap-1">
                 <span className="text-base font-bold leading-none tabular-nums text-white">{tc.proScore.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium text-slate-400">% avg wt</span></span>
@@ -1807,7 +1808,7 @@ function SlideVisual({ kind }: { kind: string }) {
               </div>
 
               <div className="mt-3 flex items-start justify-between gap-2">
-                <div className="mt-0.5 text-lg font-bold tabular-nums text-white">${tc.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                <div className="mt-0.5 text-lg font-bold tabular-nums text-white">{fmtMoney(tc.price, tc.currency)}</div>
                 <div className="flex flex-col items-end gap-1">
                   <div className="flex items-center">
                     <span className="text-lg font-bold leading-none tabular-nums text-white">{tc.proScore.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium text-slate-400">% avg wt</span></span>

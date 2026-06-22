@@ -14,6 +14,7 @@ export function buildTonyContext(): string {
         proScore: s.proScore.toFixed(2),
         velocityScore: s.velocityScore ?? null,
         price: s.price,
+        currency: s.currency ?? 'USD',
         weeklyChange: s.weeklyChange + '%',
         returns: s.periodReturns,
         marketCap: s.marketCap,
