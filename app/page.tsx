@@ -258,7 +258,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
   const zeroInRange = yMin <= 100 && yMax >= 100;
 
   return (
-    <div className="flex-1 min-w-0 flex">
+    <div className="flex-1 min-w-0 max-w-lg flex">
       <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3 flex-1 flex flex-col">
 
         {/* Headline */}
@@ -407,9 +407,9 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
                 </span>
               </div>
               {info && (
-                <div className="mb-1 leading-tight">
-                  <div className="truncate text-[11px] text-slate-300">{info.name}</div>
-                  {info.manager && <div className="truncate text-[10px] text-slate-500">{info.manager}</div>}
+                <div className="mb-1 leading-tight truncate text-[11px] text-slate-300">
+                  {info.name}
+                  {info.manager && <span className="text-slate-500"> ({info.manager.split(' ')[0]})</span>}
                 </div>
               )}
               <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
