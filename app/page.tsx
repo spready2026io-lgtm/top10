@@ -218,7 +218,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
   // 1D may be absent until a price build produces intraday data — fall back to 1W.
   const d: ChartPeriodData = INDEX_CHART_DATA[theme][period] ?? INDEX_CHART_DATA[theme]['1W'];
 
-  const VW = 800; const VH = 200;
+  const VW = 800; const VH = 260;
   const padL = 52; const padR = 20; const padT = 12; const padB = 30;
   const chartW = VW - padL - padR;
   const chartH = VH - padT - padB;
@@ -258,7 +258,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
   const zeroInRange = yMin <= 100 && yMax >= 100;
 
   return (
-    <div className="max-w-md flex">
+    <div className="flex-1 min-w-0 flex">
       <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 pt-3 pb-3 flex-1 flex flex-col">
 
         {/* Headline */}
@@ -369,7 +369,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
   const maxAbs = Math.max(...rows.map(r => Math.abs(r.ret)), 0.1);
 
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 flex flex-col gap-3 w-80 flex-shrink-0 h-full">
+    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 flex flex-col gap-3 w-80 lg:w-96 flex-shrink-0 h-full">
 
       {/* Header */}
       <div>
@@ -2031,7 +2031,7 @@ export default function Home() {
         {equities.length > 0 ? (
           <>
             {/* Index chart OR guide + ETF summary tile */}
-            <div className="flex items-stretch gap-4 mb-6">
+            <div className="flex items-start gap-4 mb-6">
               {showGuide
                 ? <GuideStrip onClose={closeGuide} />
                 : <IndexChart theme={theme} period={period} setPeriod={setPeriod} />
