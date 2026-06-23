@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-06-22T20:08:22.536Z",
-  "scanTimestampNY": "June 22, 2026 at 4:08 PM ET",
+  "scanTimestamp": "2026-06-23T13:38:39.752Z",
+  "scanTimestampNY": "June 23, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 42
+        "count": 18
       },
       "ARTY": {
         "ok": true,
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 9
       },
       "IVES": {
         "ok": true,
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 20
+        "count": 68
       },
       "CHAT": {
         "ok": true,
@@ -97,7 +97,7 @@
       },
       "FWD": {
         "ok": true,
-        "count": 16
+        "count": 18
       },
       "CBSE": {
         "ok": true,
@@ -105,7 +105,7 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 23
+        "count": 25
       },
       "WGMI": {
         "ok": true,
@@ -113,11 +113,11 @@
       },
       "CNEQ": {
         "ok": true,
-        "count": 18
+        "count": 27
       },
       "SGRT": {
         "ok": true,
-        "count": 19
+        "count": 18
       },
       "SPMO": {
         "ok": true,
@@ -129,11 +129,11 @@
       },
       "POW": {
         "ok": true,
-        "count": 45
+        "count": 14
       },
       "VOLT": {
         "ok": true,
-        "count": 31
+        "count": 30
       },
       "PBD": {
         "ok": true,
@@ -156,8 +156,8 @@
         "count": 10
       },
       "RSHO": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 25
       },
       "IDEF": {
         "ok": true,
@@ -181,30 +181,44 @@
       }
     },
     "total": 44,
-    "ok": 43,
-    "failed": [
-      "RSHO"
-    ],
+    "ok": 44,
+    "failed": [],
     "fetchErrors": [
       {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V811/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G847/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V134/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/SPMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 500"
+        "error": "HTTP 406"
       },
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/XMMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 500"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_&_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_AI_Enablers_%26_Adopters_ETF.csv",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.alger.com/AlgerETFDailyHoldings/Daily_Holdings_Alger_Concentrated_Equity_ETF.csv",
-        "error": "fetch failed"
+        "error": "HTTP 406"
       },
       {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
@@ -217,12 +231,20 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 89,
-    "succeeded": 89,
+    "total": 88,
+    "succeeded": 88,
     "failed": []
   }
 }
