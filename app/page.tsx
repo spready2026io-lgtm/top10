@@ -884,7 +884,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
     <>
     <div
       className="relative cursor-pointer"
-      style={{ perspective: '1000px', height: '520px' }}
+      style={{ perspective: '1000px', height: '564px' }}
       onClick={() => { setFlipped(f => !f); setWtOpen(false); }}
     >
       <div
@@ -1073,7 +1073,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
           {/* ETF presence */}
           <div className="flex-shrink-0">
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">ETF Presence</p>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1 max-h-[58px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-700">
               {etfs.map(etf => {
                 const val = equity.etfPresence[etf];
                 const held = val !== false && val !== 0;
@@ -1116,7 +1116,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5 flex-shrink-0">
               Analysis
             </p>
-            <div className="flex-1 overflow-y-auto rounded-lg bg-slate-800/40 px-2.5 py-2 scrollbar-thin scrollbar-thumb-slate-700">
+            <div className="flex-1 min-h-[120px] overflow-y-auto rounded-lg bg-slate-800/40 px-2.5 py-2 scrollbar-thin scrollbar-thumb-slate-700">
               <p className="text-slate-300 text-[11px] leading-relaxed">{equity.tonyNote.replace(/\s*Analysis pending[^.]*\.\s*$/, '').trim()}</p>
             </div>
           </div>
@@ -1214,7 +1214,7 @@ function CompactRow({
         </div>
 
         {/* Coverage score badge */}
-        <div className="flex-shrink-0">
+        <div className="w-12 flex justify-center flex-shrink-0">
           <CoverageScoreBadge score={equity.easyScore} maxScore={maxScore} />
         </div>
 
@@ -2367,6 +2367,20 @@ export default function Home() {
             {/* Compact list layout: all 20, click to expand */}
             {layout === 'compact' && (
               <div className="flex flex-col gap-1.5">
+                {/* Column headers — mirror CompactRow widths so labels line up */}
+                <div className="flex items-center gap-3 px-3 pb-0.5 text-slate-500 text-[10px] font-semibold uppercase tracking-wider select-none">
+                  <span className="w-5 flex-shrink-0" aria-hidden="true" />{/* rank */}
+                  <span className="w-5 flex-shrink-0" aria-hidden="true" />{/* logo */}
+                  <span className="w-14 flex-shrink-0">Stock</span>
+                  <span className="flex-1 min-w-0 hidden sm:block" aria-hidden="true" />{/* name */}
+                  <span className="w-16 flex-shrink-0 text-right">Price</span>
+                  <span className="w-14 flex-shrink-0 text-right hidden sm:block" title="Price change, past week">1W</span>
+                  <span className="w-16 flex-shrink-0 text-right leading-tight" title="Average ETF weight / Velocity (weight change vs last week)">
+                    Avg wt<br />VS&nbsp;1W
+                  </span>
+                  <span className="w-12 flex-shrink-0 text-center" title="Coverage: how many theme ETFs hold this stock">Cov</span>
+                  <span className="w-4 flex-shrink-0" aria-hidden="true" />{/* chevron */}
+                </div>
                 {sortedEquities.map((eq, i) => (
                   <CompactRow
                     key={eq.ticker}
