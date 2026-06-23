@@ -2055,121 +2055,94 @@ export default function Home() {
     <main className="min-h-screen bg-slate-950 text-white">
       {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
-      {/* Revolving feature carousel — pinned to the very top of the page, above the
-          header, so slide height can vary freely. Dismissible: hiding it surfaces the
-          portfolio banner below as a fallback. */}
-      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} onGuide={() => { setShowGuide(true); requestAnimationFrame(() => document.getElementById('live')?.scrollIntoView({ behavior: 'smooth' })); }} />}
-
-      {/* Header */}
+      {/* Brand header — top of page: logo, tagline, minimal site nav */}
       <header className="border-b border-slate-800 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-4">
 
-          {/* Row 1: logo (left) + nav (right) — same on mobile and desktop */}
+          {/* Row 1: logo + tagline (left) + site nav (right) */}
           <div className="flex items-center justify-between gap-4">
 
-            {/* Left: logo + badge (badge desktop-only here; mobile badge is row 2 below) */}
-            <div className="flex-shrink-0">
+            {/* Left: logo + tagline */}
+            <div className="flex items-center gap-3 min-w-0">
               <Logo />
-              <div
-                className="hidden sm:block mt-1.5"
+              <span
+                className="hidden sm:inline text-emerald-300 text-sm font-medium tracking-[0.18em] uppercase whitespace-nowrap"
                 style={{
                   opacity:   tagline ? 1 : 0,
-                  transform: tagline ? 'translateY(0)' : 'translateY(6px)',
+                  transform: tagline ? 'translateX(0)' : 'translateX(-6px)',
                   transition: 'opacity 0.55s ease, transform 0.55s ease',
                 }}
               >
-                <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
-                  ETF Holdings Analyser
-                </span>
-              </div>
+                See it first.
+              </span>
             </div>
 
-            {/* Right: nav + sector toggle (desktop only) */}
-            <div className="flex flex-col items-end gap-4 min-w-0 flex-1">
-              <nav className="flex items-center gap-4 text-sm flex-shrink-0">
-                <Link href="/universe" className="text-slate-400 hover:text-white transition-colors">Universe</Link>
-                <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
-                <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
-                <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors">
-                  Conviction Board
-                </Link>
-                <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors">
-                  Build Portfolio
-                </Link>
-                <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors">
-                  Ask Tony
-                </Link>
-                <button
-                  onClick={() => setCrossView(v => !v)}
-                  title="Top 10 stocks ranked across all themes by breadth"
-                  className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
-                    crossView
-                      ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
-                      : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
-                  }`}
-                >
-                  ★ All-Theme Top 10
-                </button>
-              </nav>
-              <div className="hidden sm:flex justify-end max-w-full overflow-x-auto scrollbar-none">
-                <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 flex-shrink-0">
-                  {THEMES.map(s => (
-                    <button
-                      key={s}
-                      onClick={() => { setCrossView(false); setTheme(s); }}
-                      className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
-                        theme === s
-                          ? 'bg-emerald-500 text-black shadow-sm'
-                          : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            {/* Right: minimal site nav */}
+            <nav className="flex items-center gap-5 text-sm flex-shrink-0">
+              <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
+              <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
+            </nav>
 
-          </div>
-
-          {/* Row 2: badge — mobile only, on its own line below logo/nav */}
-          <div
-            className="sm:hidden mt-3"
-            style={{
-              opacity:   tagline ? 1 : 0,
-              transform: tagline ? 'translateY(0)' : 'translateY(6px)',
-              transition: 'opacity 0.55s ease, transform 0.55s ease',
-            }}
-          >
-            <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-lg font-semibold px-3.5 py-1 rounded-full tracking-wide animate-sway">
-              ETF Holdings Analyser
-            </span>
           </div>
 
         </div>
       </header>
 
+      {/* Revolving feature carousel — below the brand header, above the tools strip.
+          Dismissible: hiding it surfaces the portfolio banner below as a fallback. */}
+      {!heroDismissed && <HeroCarousel onClose={() => setHeroDismissed(true)} onGuide={() => { setShowGuide(true); requestAnimationFrame(() => document.getElementById('live')?.scrollIntoView({ behavior: 'smooth' })); }} />}
+
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
 
-      {/* Theme toggle — mobile only, full-width scrollable bar */}
-      <div className="sm:hidden border-b border-slate-800 bg-slate-900/50">
-        <div className="px-4 overflow-x-auto scrollbar-none">
-          <div className="flex items-center gap-1 pt-4 pb-3 w-max">
-            {THEMES.map(s => (
-              <button
-                key={s}
-                onClick={() => { setCrossView(false); setTheme(s); }}
-                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  theme === s
-                    ? 'bg-emerald-500 text-black'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+      {/* Tools strip — app actions + theme toggle, below the carousel */}
+      <div className="border-b border-slate-800 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+
+          {/* App action links */}
+          <nav className="flex items-center gap-2.5 flex-wrap text-sm">
+            <Link href="/universe" className="text-slate-400 hover:text-white transition-colors px-1">Universe</Link>
+            <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors">
+              Conviction Board
+            </Link>
+            <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors">
+              Build Portfolio
+            </Link>
+            <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors">
+              Ask Tony
+            </Link>
+            <button
+              onClick={() => setCrossView(v => !v)}
+              title="Top 10 stocks ranked across all themes by breadth"
+              className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
+                crossView
+                  ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
+              }`}
+            >
+              ★ All-Theme Top 10
+            </button>
+          </nav>
+
+          {/* Theme toggle — scrolls horizontally when it cannot fit */}
+          <div className="max-w-full overflow-x-auto scrollbar-none -mx-1 px-1">
+            <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 w-max">
+              {THEMES.map(s => (
+                <button
+                  key={s}
+                  onClick={() => { setCrossView(false); setTheme(s); }}
+                  className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
+                    theme === s
+                      ? 'bg-emerald-500 text-black shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
+
         </div>
       </div>
 

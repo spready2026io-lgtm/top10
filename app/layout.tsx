@@ -23,12 +23,6 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://stockscout.io"),
   title: "Stockscout, ETF Holdings Analyser",
   description: "Discover the top 10 equities per sector, ranked by ETF consensus and portfolio weight. Updated daily.",
-  icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
-    ],
-  },
 };
 
 export default function RootLayout({
