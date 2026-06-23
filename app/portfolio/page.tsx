@@ -38,7 +38,7 @@ export default function PortfolioPage() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* Header */}
       <header className="border-b border-slate-800 px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Top10</Link>
+        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Stockscout</Link>
         <div className="text-center">
           <div className="font-bold text-sm">Build with Tony</div>
           <div className="text-xs text-slate-500">Your portfolio, your conviction</div>

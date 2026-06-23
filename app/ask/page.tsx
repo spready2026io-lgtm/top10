@@ -57,7 +57,7 @@ export default function AskTonyPage() {
       {/* Header */}
       <header className="border-b border-slate-800 px-4 py-4 flex items-center justify-between">
         <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">
-          ← Top10
+          ← Stockscout
         </Link>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-sm">

@@ -51,7 +51,7 @@ export default function ConvictionPage() {
 
       {/* Header */}
       <header className="border-b border-slate-800 px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Top10</Link>
+        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Stockscout</Link>
         <div className="text-center">
           <div className="font-bold text-sm">The Conviction Board</div>
           <div className="text-xs text-slate-500">Where 40 managers concentrate</div>

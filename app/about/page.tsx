@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import ThemeNav from '@/app/components/ThemeNav';
+import Logo from '@/app/components/Logo';
 import { THEMES, THEME_ETFS } from '@/lib/data';
 
-export const metadata = { title: 'About — Top10' };
+export const metadata = { title: 'About | Stockscout' };
 
 export default function About() {
   // Counts are derived from the live universe so this page never drifts stale.
@@ -15,9 +16,7 @@ export default function About() {
       <header className="border-b border-slate-800 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="text-emerald-400">Top</span>10
-            </h1>
+            <Logo />
             <div className="mt-1.5">
               <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
                 ETF Holdings Analyser
@@ -39,15 +38,15 @@ export default function About() {
 
         {/* Hero */}
         <section>
-          <h2 className="text-2xl font-bold text-white mb-3">What is Top10?</h2>
+          <h2 className="text-2xl font-bold text-white mb-3">What is Stockscout?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Top10 is an ETF holdings analyser. It reads the holdings of {totalEtfs} actively managed ETFs
+            Stockscout is an ETF holdings analyser. It reads the holdings of {totalEtfs} actively managed ETFs
             across {themeCount} investment themes every day, ranks every stock by how much conviction those
             ETFs have in it, and surfaces the Top 10 names per theme.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed">
             The idea is simple. When multiple serious ETFs all own the same stock and give it a
-            large weighting, that is a signal worth paying attention to. Top10 makes that signal
+            large weighting, that is a signal worth paying attention to. Stockscout makes that signal
             visible at a glance.
           </p>
         </section>
@@ -68,7 +67,7 @@ export default function About() {
             in one name.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Top10 tracks <span className="text-slate-200 font-semibold">{totalEtfs} actively managed ETFs</span> across
+            Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} actively managed ETFs</span> across
             {' '}{themeCount} themes, giving you a view across {totalEtfs} institutional products simultaneously.
             All ETFs in the universe are discretionary, actively managed funds. Index trackers are
             excluded — passive index construction reflects mechanical rules, not manager conviction.
@@ -289,7 +288,7 @@ export default function About() {
 
         {/* How to use */}
         <section>
-          <h2 className="text-xl font-bold text-white mb-4">How to Use Top10</h2>
+          <h2 className="text-xl font-bold text-white mb-4">How to Use Stockscout</h2>
           <ol className="space-y-3">
             {[
               { n: '1', title: 'Pick your theme.', body: 'Use the toggle in the header to switch between AI & ML, Semiconductors, Broad Tech, Electrification, Industrials, and Meme.' },
@@ -318,21 +317,21 @@ export default function About() {
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
             ETF holdings are published daily by the fund providers (iShares, Invesco, ARK, Alger,
             Wedbush, Tema, Roundhill, VistaShares, First Trust, Fidelity, WisdomTree, and others).
-            Top10 fetches these published holdings every day and rebuilds the rankings automatically.
+            Stockscout fetches these published holdings every day and rebuilds the rankings automatically.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
             Fundamentals (P/E, revenue growth, EPS, gross margin) come from public market data sources.
             Price data comes from exchange feeds.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            All data is indicative. Top10 does not modify, filter, or adjust the underlying ETF
+            All data is indicative. Stockscout does not modify, filter, or adjust the underlying ETF
             holdings data. What the ETF publishes is what you see.
           </p>
         </section>
 
         {/* Disclaimer */}
         <p className="text-slate-600 text-xs border-t border-slate-800 pt-6">
-          Top10 is for informational purposes only and does not constitute financial advice.
+          Stockscout is for informational purposes only and does not constitute financial advice.
           All data is indicative. Past performance is not a guarantee of future results.
           Always do your own research.
         </p>

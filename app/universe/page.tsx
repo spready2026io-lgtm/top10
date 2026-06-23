@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import ThemeNav from '@/app/components/ThemeNav';
+import Logo from '@/app/components/Logo';
 import {
   THEME_ETFS,
   ETF_INFO,
@@ -120,9 +121,7 @@ export default function Universe() {
       <header className="border-b border-slate-800 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
           <Link href="/" className="flex-shrink-0">
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="text-emerald-400">Top</span>10
-            </h1>
+            <Logo />
             <div className="mt-1.5">
               <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
                 ETF Holdings Analyser
@@ -148,7 +147,7 @@ export default function Universe() {
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
             Every actively managed ETF we track, in one table. {allRows.length} funds across six themes —
             each one a discretionary book of conviction bets, not a passive index. These are the funds whose
-            daily holdings feed every ranking on Top10.
+            daily holdings feed every ranking on Stockscout.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed">
             <span className="text-emerald-400 font-semibold">Tony&apos;s read:</span> use the manager column to
@@ -203,7 +202,7 @@ export default function Universe() {
 
         {/* Disclaimer */}
         <p className="text-slate-600 text-xs border-t border-slate-800 pt-6 mt-8 max-w-3xl">
-          Top10 is for informational purposes only and does not constitute financial advice. All data is
+          Stockscout is for informational purposes only and does not constitute financial advice. All data is
           indicative and sourced from public ETF disclosures and market feeds. Past performance is not a
           guarantee of future results. Always do your own research.
         </p>

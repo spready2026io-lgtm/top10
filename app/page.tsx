@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Logo from '@/app/components/Logo';
 import {
   Theme,
   Equity,
@@ -1256,7 +1257,7 @@ function WelcomeModal({ onClose }: { onClose: () => void }) {
 
         {/* Body */}
         <p className="text-slate-200 text-sm leading-relaxed mb-5">
-          Top10 is an ETF holdings analyser for professional traders and investors.
+          Stockscout is an ETF holdings analyser for professional traders and investors.
           It ranks equities by how many sector ETFs hold them and by average weight,
           surfacing the names with the highest conviction across institutional products.
         </p>
@@ -1325,7 +1326,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'Pick a Theme',
       color: 'text-violet-400',
       borderColor: 'border-violet-500/30',
-      desc: 'Choose a sector. Each theme groups 3–13 actively managed ETFs. Top10 then ranks every stock those ETFs collectively hold.',
+      desc: 'Choose a sector. Each theme groups 3–13 actively managed ETFs. Stockscout then ranks every stock those ETFs collectively hold.',
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['AI & ML','Semis','Broad Tech'].map(t => (
@@ -1391,7 +1392,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <span className="text-emerald-400 font-bold text-sm">How Top10 Works</span>
+          <span className="text-emerald-400 font-bold text-sm">How Stockscout Works</span>
           <span className="text-slate-400 text-xs hidden sm:inline">follow the steps below then explore the tiles</span>
         </div>
         <div className="flex items-center gap-1">
@@ -2068,9 +2069,7 @@ export default function Home() {
 
             {/* Left: logo + badge (badge desktop-only here; mobile badge is row 2 below) */}
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold tracking-tight">
-                <span className="text-emerald-400">Top</span>10
-              </h1>
+              <Logo />
               <div
                 className="hidden sm:block mt-1.5"
                 style={{
@@ -2420,13 +2419,13 @@ export default function Home() {
             Last updated: <span className="text-slate-400 font-bold">{SCAN_TIMESTAMP_NY}</span>
           </p>
           <p className="text-center text-slate-600 text-xs max-w-2xl mx-auto leading-relaxed mb-3">
-            Top10 is for informational purposes only. ETF holdings data is sourced from public fund
+            Stockscout is for informational purposes only. ETF holdings data is sourced from public fund
             disclosures and updated daily. Nothing on this site constitutes investment advice, a
             recommendation to buy or sell any security, or an offer of any kind. ETF weightings
             reflect published data and may lag actual portfolio changes. Always do your own research.
           </p>
           <p className="text-center text-slate-700 text-xs">
-            &copy; {new Date().getFullYear()} Top10. All rights reserved.
+            &copy; {new Date().getFullYear()} Stockscout. All rights reserved.
           </p>
         </footer>
       )}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import ThemeNav from '@/app/components/ThemeNav';
+import Logo from '@/app/components/Logo';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
@@ -24,9 +25,9 @@ export default function ContactPage() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: '21931e21-1b54-4be3-a6fc-cf86445bc572',
-          from_name:  'Top10 Contact',
+          from_name:  'Stockscout Contact',
           replyto:    email,
-          subject:    `[Top10 Contact] ${subject}`,
+          subject:    `[Stockscout Contact] ${subject}`,
           message:    `From: ${email}\n\n${message}`,
         }),
       });
@@ -53,9 +54,7 @@ export default function ContactPage() {
           {/* Left: logo + badge */}
           <div className="flex-shrink-0">
             <Link href="/" className="inline-block">
-              <h1 className="text-xl font-bold tracking-tight">
-                <span className="text-emerald-400">Top</span>10
-              </h1>
+              <Logo />
             </Link>
             <div className="mt-1.5">
               <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
@@ -91,7 +90,7 @@ export default function ContactPage() {
               Thanks for reaching out. We&apos;ll get back to you at <span className="text-slate-300">{email}</span>.
             </p>
             <Link href="/" className="inline-block bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">
-              Back to Top10 →
+              Back to Stockscout →
             </Link>
           </div>
         ) : (
