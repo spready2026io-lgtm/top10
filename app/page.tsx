@@ -2097,36 +2097,40 @@ export default function Home() {
       {/* Anchor for the hero CTA — jumps to the live dashboard below */}
       <div id="live" className="scroll-mt-4" />
 
-      {/* Tools strip — app actions + theme toggle, below the carousel */}
+      {/* Tools strip — action buttons (row 1) + theme toggle (row 2), below the carousel */}
       <div className="border-b border-slate-800 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3">
 
-          {/* App action links */}
-          <nav className="flex items-center gap-2.5 flex-wrap text-sm">
-            <Link href="/universe" className="text-slate-400 hover:text-white transition-colors px-1">Universe</Link>
-            <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors">
-              Conviction Board
-            </Link>
-            <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors">
-              Build Portfolio
-            </Link>
-            <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors">
-              Ask Tony
-            </Link>
-            <button
-              onClick={() => setCrossView(v => !v)}
-              title="Top 10 stocks ranked across all themes by breadth"
-              className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors ${
-                crossView
-                  ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
-                  : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
-              }`}
-            >
-              ★ All-Theme Top 10
-            </button>
-          </nav>
+          {/* App action buttons — kept on a single row, scrolls on small screens */}
+          <div className="max-w-full overflow-x-auto scrollbar-none -mx-1 px-1">
+            <nav className="flex items-center gap-2.5 w-max text-sm">
+              <Link href="/universe" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-bold transition-colors whitespace-nowrap">
+                ETF Universe
+              </Link>
+              <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors whitespace-nowrap">
+                Conviction Board
+              </Link>
+              <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors whitespace-nowrap">
+                Build Portfolio
+              </Link>
+              <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors whitespace-nowrap">
+                Ask Tony
+              </Link>
+              <button
+                onClick={() => setCrossView(v => !v)}
+                title="Top 10 stocks ranked across all themes by breadth"
+                className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors whitespace-nowrap ${
+                  crossView
+                    ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
+                    : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
+                }`}
+              >
+                ★ All-Theme Top 10
+              </button>
+            </nav>
+          </div>
 
-          {/* Theme toggle — scrolls horizontally when it cannot fit */}
+          {/* Theme toggle — left-aligned, scrolls horizontally on small screens */}
           <div className="max-w-full overflow-x-auto scrollbar-none -mx-1 px-1">
             <div className="flex items-center bg-slate-800 rounded-full p-0.5 text-xs font-bold border border-slate-700 w-max">
               {THEMES.map(s => (
