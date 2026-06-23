@@ -2064,7 +2064,9 @@ export default function Home() {
 
             {/* Left: logo + tagline */}
             <div className="flex items-center gap-3 min-w-0">
-              <Logo />
+              <Link href="/" aria-label="Stockscout home">
+                <Logo />
+              </Link>
               <span
                 className="hidden sm:inline text-emerald-300 text-sm font-medium tracking-[0.18em] uppercase whitespace-nowrap"
                 style={{

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import ThemeNav from '@/app/components/ThemeNav';
 import Logo from '@/app/components/Logo';
 import { THEMES, THEME_ETFS } from '@/lib/data';
 
@@ -14,23 +13,18 @@ export default function About() {
     <main className="min-h-screen bg-slate-950 text-white">
 
       <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-start justify-between gap-4">
-          <div className="flex-shrink-0">
-            <Logo />
-            <div className="mt-1.5">
-              <span className="inline-flex items-center whitespace-nowrap bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
-                ETF Holdings Analyser
-              </span>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <Link href="/" aria-label="Stockscout home">
+              <Logo />
+            </Link>
+            <span className="hidden sm:inline text-emerald-300 text-sm font-medium tracking-[0.18em] uppercase whitespace-nowrap">See it first.</span>
           </div>
-          <div className="flex flex-col items-end gap-4 min-w-0 overflow-hidden flex-1">
-            <nav className="flex items-center gap-4 text-sm">
-              <Link href="/universe" className="text-slate-400 hover:text-white transition-colors">Universe</Link>
-              <Link href="/about" className="text-emerald-400 font-medium">About</Link>
-              <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
-            </nav>
-            <ThemeNav />
-          </div>
+          <nav className="flex items-center gap-5 text-sm flex-shrink-0">
+            <Link href="/universe" className="text-slate-400 hover:text-white transition-colors">Universe</Link>
+            <Link href="/about" className="text-emerald-400 font-medium">About</Link>
+            <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
+          </nav>
         </div>
       </header>
 
