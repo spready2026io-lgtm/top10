@@ -377,12 +377,12 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
       <div>
         <p className="text-white font-semibold text-sm">{theme} ETFs</p>
         <p className="text-slate-500 text-xs flex items-center flex-wrap gap-x-1">
-          {etfCount} tracked · ranked by
+          {etfCount} tracked · Ranked by
           <span className="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[11px] font-bold border border-emerald-500/40 tabular-nums leading-none">{period}</span>
           return
         </p>
         <p className="text-slate-600 text-[10px] mt-1 flex items-center gap-1">
-          <span aria-hidden className="text-emerald-500/70">⇄</span> synced with chart timeframe
+          <span aria-hidden className="text-emerald-500/70">⇄</span> Synced with chart timeframe
         </p>
       </div>
 
@@ -447,7 +447,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
           onClick={() => setShowAllEtfs(v => !v)}
           className="text-[10px] font-semibold text-slate-500 hover:text-emerald-400 transition-colors text-center mt-auto"
         >
-          {showAllEtfs ? '▲ show less' : `▼ show all ${rows.length} ETFs`}
+          {showAllEtfs ? '▲ Show less' : `▼ Show all ${rows.length} ETFs`}
         </button>
       )}
 
@@ -1341,7 +1341,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'The Scores',
       color: 'text-emerald-400',
       borderColor: 'border-emerald-500/30',
-      desc: 'Stocks are ranked first by how many ETFs in the theme hold them — breadth of conviction comes first. When two stocks are held by the same number of ETFs, the average portfolio weight breaks the tie. A stock held by 9 out of 11 ETFs always ranks above one held by 5, even if that 5-ETF stock carries a higher individual weight. The Weight Score shown on each tile is avg weight x coverage — a single number combining both signals. Velocity Score shows whether that conviction is growing or fading week over week.',
+      desc: 'Stocks are ranked first by how many ETFs in the theme hold them. Breadth of conviction comes first. When two stocks are held by the same number of ETFs, the average portfolio weight breaks the tie. A stock held by 9 out of 11 ETFs always ranks above one held by 5, even if that 5-ETF stock carries a higher individual weight. The Weight Score shown on each tile is avg weight x coverage, a single number combining both signals. Velocity Score shows whether that conviction is growing or fading week over week.',
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-white font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-slate-400 ml-0.5">% avg wt</span></span>
@@ -1393,7 +1393,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="text-emerald-400 font-bold text-sm">How Stockscout Works</span>
-          <span className="text-slate-400 text-xs hidden sm:inline">follow the steps below then explore the tiles</span>
+          <span className="text-slate-400 text-xs hidden sm:inline">Follow the steps below, then explore the tiles</span>
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -1434,7 +1434,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
             onClick={() => setExpanded(true)}
             className="flex flex-col items-center gap-0.5 pb-2 text-slate-500 hover:text-emerald-400 transition-colors group"
           >
-            <span className="text-[10px] font-semibold group-hover:text-emerald-400">expand guide</span>
+            <span className="text-[10px] font-semibold group-hover:text-emerald-400">Expand guide</span>
             <span className="text-base leading-none animate-bounce">▼</span>
           </button>
         </>
@@ -1612,10 +1612,10 @@ const HERO_SLIDES = [
   {
     key: 'etfs',
     eyebrow: '',
-    title: 'Explore our unique universe of actively managed ETFs',
+    title: 'See what active ETF managers are really buying',
     titleCls: 'text-3xl sm:text-4xl',
-    lead: `We track and rank over ${HOLDINGS_FLOOR} shares, the full holdings of ${ETF_COUNT} active ETFs, grouped into ${THEME_COUNT} themes.`,
-    body: `When 8 of 10 active ETF managers within a theme overweight the same stock, that's worth knowing. We score ${SCORED_COUNT} names on how many ETFs hold them, and at what weight. Conviction, ranked daily.`,
+    lead: `We track every holding of ${ETF_COUNT} active ETFs, over ${HOLDINGS_FLOOR} shares across ${THEME_COUNT} themes, and rank them by manager conviction.`,
+    body: `When 8 of 10 active ETF managers overweight the same stock, that tells you something. We score ${SCORED_COUNT} names on how many ETFs hold them and at what weight, then rank that conviction fresh every day.`,
     glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
     ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
@@ -1628,7 +1628,7 @@ const HERO_SLIDES = [
     title: 'Tilt a low-cost core toward your conviction',
     titleCls: 'text-2xl sm:text-3xl',
     lead: '',
-    body: 'Set an index core, then lean into the themes you believe in. See the mix, exposure, and past performance.',
+    body: 'Set an index core, then lean into the themes you believe in. See the mix, exposure, and past performance, so every choice is informed, not a guess.',
     glow: 'from-sky-500/10',
     eyebrowCls: 'text-sky-400',
     ctaCls: 'bg-sky-500 text-white hover:bg-sky-400',
@@ -1704,7 +1704,7 @@ function LandingExampleGuide() {
 
   return (
     <div ref={wrapRef} className="relative hidden lg:block">
-      <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
+      <div className="mb-2 inline-flex items-center rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-300">
         Example tile
       </div>
       <div className="flex items-stretch gap-6">
@@ -1791,7 +1791,7 @@ function SlideVisual({ kind }: { kind: string }) {
         {/* Tablet (sm to lg): same tile with a numbered legend below (narrower column) */}
         {tc && (
           <div className="hidden sm:block lg:hidden">
-            <div className="mb-2 inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
+            <div className="mb-2 inline-flex items-center rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-300">
               Example tile
             </div>
 
@@ -2230,7 +2230,7 @@ export default function Home() {
                     ))}
                   </div>
                   <p className="text-[11px] text-slate-400 leading-snug mt-2">
-                    Cheap index core, tilt toward your conviction themes. See the mix, exposure and past performance.
+                    Cheap index core, tilt toward your conviction themes. See the mix, exposure, and past performance, so every choice is informed, not a guess.
                   </p>
                 </div>
 
