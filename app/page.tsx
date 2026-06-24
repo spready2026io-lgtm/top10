@@ -1915,7 +1915,7 @@ function HeroCarousel({ onClose, onGuide }: { onClose: () => void; onGuide: () =
 
   return (
     <section className="border-b border-slate-800 bg-slate-900/30">
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-3 sm:pt-8 sm:pb-4">
+      <div className="mx-auto max-w-7xl px-4 py-3 sm:py-4">
         <div className="relative">
           <div key={s.key} className={`animate-intro overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${s.glow} to-slate-900`}>
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-9">
