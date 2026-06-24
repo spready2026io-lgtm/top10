@@ -1925,17 +1925,20 @@ function HeroCarousel({ onClose, onGuide }: { onClose: () => void; onGuide: () =
                 {s.lead && <p className="mt-2.5 text-base font-semibold leading-snug text-slate-100 sm:text-lg">{s.lead}</p>}
                 <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">{s.body}</p>
                 {s.key === 'etfs' ? (
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
-                    <Link href="#live" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-emerald-400">
-                      Start Explore<span aria-hidden>↓</span>
-                    </Link>
-                    <button
-                      onClick={onGuide}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800/60 px-5 py-2.5 text-sm font-bold text-slate-200 transition-colors hover:border-slate-400 hover:text-white"
-                    >
-                      Guide
-                    </button>
-                  </div>
+                  <>
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
+                      <Link href="#live" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-emerald-400">
+                        See the rankings<span aria-hidden>↓</span>
+                      </Link>
+                      <button
+                        onClick={onGuide}
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800/60 px-5 py-2.5 text-sm font-bold text-slate-200 transition-colors hover:border-slate-400 hover:text-white"
+                      >
+                        Guide
+                      </button>
+                    </div>
+                    <p className="mt-3 text-xs font-medium text-slate-400">Free. No login. Updated daily.</p>
+                  </>
                 ) : (
                   <Link href={s.href} className={`mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${s.ctaCls}`}>
                     {s.cta}<span aria-hidden>→</span>

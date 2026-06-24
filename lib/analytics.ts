@@ -1,15 +1,18 @@
 /**
- * Spready — GA4 Analytics helper
+ * Stockscout — GA4 event helpers
  *
- * Thin wrapper around window.gtag so every component uses the same
- * typed event names. All events are sent to G-YVY5SK89D4.
+ * Thin wrapper around window.gtag so every component fires the same typed
+ * event names. The GA4 script is loaded in app/components/GoogleAnalytics.tsx
+ * (Measurement ID via NEXT_PUBLIC_GA_ID). Pageviews + scroll + outbound clicks
+ * are captured automatically by GA4 Enhanced Measurement; these helpers add
+ * the product-specific interactions worth tracking.
  *
  * Events
  * ──────
- *   market_switch        — user switches AU / UK / EU / WW
- *   instrument_filter    — user filters the dashboard by a specific pair
- *   broker_tile_flip     — user flips a broker tile to see the back
- *   broker_source_click  — user clicks the broker "Source ↗" link  ← conversion
+ *   theme_switch     — user switches sector/theme on the home grid
+ *   equity_flip      — user flips an equity card to read Tony's analysis
+ *   portfolio_open   — user opens the /portfolio builder
+ *   ask_tony_submit  — user submits a question to Ask Tony  ← engagement signal
  */
 
 type GTag = (...args: unknown[]) => void;
@@ -20,42 +23,22 @@ function gtag(...args: unknown[]) {
   }
 }
 
-/** User switches between AU / UK / EU / WW markets */
-export function trackMarketSwitch(market: string) {
-  gtag('event', 'market_switch', { market });
+/** User switches the active sector/theme on the home grid */
+export function trackThemeSwitch(theme: string) {
+  gtag('event', 'theme_switch', { theme });
 }
 
-/** User selects a pair filter pill (null = cleared / "All Pairs") */
-export function trackInstrumentFilter(pair: string | null, market: string) {
-  gtag('event', 'instrument_filter', {
-    pair:   pair ?? 'all',
-    market,
-  });
+/** User flips an equity card to read the analysis on the back */
+export function trackEquityFlip(ticker: string, theme: string) {
+  gtag('event', 'equity_flip', { ticker, theme });
 }
 
-/** User flips a broker tile to see the back (more pairs + broker note) */
-export function trackBrokerTileFlip(brokerId: string, market: string) {
-  gtag('event', 'broker_tile_flip', {
-    broker_id: brokerId,
-    market,
-  });
+/** User opens the portfolio builder */
+export function trackPortfolioOpen(source: string) {
+  gtag('event', 'portfolio_open', { source });
 }
 
-/**
- * User clicks the "Source ↗" link — navigating to the broker's site.
- * This is the primary conversion event: high-intent exit to a broker.
- */
-export function trackBrokerSourceClick(brokerId: string, market: string) {
-  gtag('event', 'broker_source_click', {
-    broker_id: brokerId,
-    market,
-  });
-}
-
-/**
- * Contact form submitted successfully.
- * Conversion event — someone reached out directly.
- */
-export function trackContactFormSent() {
-  gtag('event', 'contact_form_sent');
+/** User submits a question to Ask Tony — high-intent engagement */
+export function trackAskTonySubmit() {
+  gtag('event', 'ask_tony_submit');
 }
