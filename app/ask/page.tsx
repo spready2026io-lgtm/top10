@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 const SUGGESTED = [
   'Which stocks have the strongest ETF consensus right now?',
@@ -25,9 +26,10 @@ export default function AskTonyPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  async function ask(question: string) {
+  async function ask(question: string, source: 'typed' | 'suggested' = 'typed') {
     const q = question.trim();
     if (!q || loading) return;
+    trackEvent('ask_tony_question', { source, question_length: q.length });
     setInput('');
     setError('');
     setMessages(prev => [...prev, { role: 'user', text: q }]);
@@ -119,7 +121,7 @@ export default function AskTonyPage() {
             {SUGGESTED.map((q) => (
               <button
                 key={q}
-                onClick={() => ask(q)}
+                onClick={() => ask(q, 'suggested')}
                 className="text-left text-xs text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-2.5 transition-colors"
               >
                 {q}

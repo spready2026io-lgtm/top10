@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 import Logo from '@/app/components/Logo';
 import {
   Theme,
@@ -312,7 +313,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
           {PERIODS.map(p => (
             <button
               key={p}
-              onClick={() => setPeriod(p)}
+              onClick={() => { setPeriod(p); trackEvent('chart_period_changed', { period: p, theme }); }}
               className={`px-3 py-1 rounded text-xs font-semibold transition-all ${
                 p === period
                   ? 'bg-slate-700 text-white border border-slate-600'
@@ -885,7 +886,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
     <div
       className="relative cursor-pointer"
       style={{ perspective: '1000px', height: '564px' }}
-      onClick={() => { setFlipped(f => !f); setWtOpen(false); }}
+      onClick={() => { const next = !flipped; setFlipped(next); setWtOpen(false); trackEvent('tile_flipped', { ticker: equity.ticker, direction: next ? 'back' : 'front' }); }}
     >
       <div
         className="absolute inset-0 transition-transform duration-500"
@@ -1125,7 +1126,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
           <div className="flex items-center justify-between flex-shrink-0 pt-1">
             <button
               className="text-emerald-600 hover:text-emerald-400 text-xs font-semibold transition-colors"
-              onClick={e => { e.stopPropagation(); setThesisOpen(true); }}
+              onClick={e => { e.stopPropagation(); setThesisOpen(true); trackEvent('thesis_opened', { ticker: equity.ticker }); }}
             >
               Tony&apos;s full thesis
             </button>
@@ -2139,7 +2140,7 @@ export default function Home() {
               {THEMES.map(s => (
                 <button
                   key={s}
-                  onClick={() => { setCrossView(false); setTheme(s); }}
+                  onClick={() => { setCrossView(false); setTheme(s); trackEvent('theme_selected', { theme: s }); }}
                   className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                     theme === s
                       ? 'bg-emerald-500 text-black shadow-sm'
@@ -2265,7 +2266,7 @@ export default function Home() {
               {/* New Entrants button — shown when new equities exist */}
               {newCount > 0 && (
                 <button
-                  onClick={() => setShowNew(n => !n)}
+                  onClick={() => { setShowNew(n => { if (!n) trackEvent('new_entrants_opened', { theme }); return !n; }); }}
                   title="New entrants — first time in the Top 20 today"
                   className={`ml-auto flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold transition-colors ${
                     showNew
@@ -2283,7 +2284,7 @@ export default function Home() {
               {/* Sort toggle */}
               <div className={`${newCount === 0 ? 'sm:ml-auto' : ''} flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5`}>
                 <button
-                  onClick={() => setSortBy('wt')}
+                  onClick={() => { setSortBy('wt'); trackEvent('sort_changed', { sort: 'avg_wt', theme }); }}
                   title="Rank by ETF count (breadth first), avg weight as tiebreaker"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     sortBy === 'wt'
@@ -2294,7 +2295,7 @@ export default function Home() {
                   Avg Wt
                 </button>
                 <button
-                  onClick={() => setSortBy('vs')}
+                  onClick={() => { setSortBy('vs'); trackEvent('sort_changed', { sort: 'velocity', theme }); }}
                   title="Sort by Velocity Score — fastest-rising Weight Scores first"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     sortBy === 'vs'
@@ -2309,7 +2310,7 @@ export default function Home() {
               {/* Layout toggle */}
               <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
                 <button
-                  onClick={() => setLayout('grid')}
+                  onClick={() => { setLayout('grid'); trackEvent('view_mode_changed', { mode: 'grid', theme }); }}
                   title="Grid view — 10 tiles, then next 10"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     layout === 'grid'
@@ -2320,7 +2321,7 @@ export default function Home() {
                   ⊞ Grid
                 </button>
                 <button
-                  onClick={() => setLayout('compact')}
+                  onClick={() => { setLayout('compact'); trackEvent('view_mode_changed', { mode: 'list', theme }); }}
                   title="Compact list — all 20, click to expand"
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
                     layout === 'compact'
