@@ -309,7 +309,7 @@ export default function PortfolioPage() {
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 mt-2">
-                Hypothetical past performance of this exact mix, blended from each theme's real index. Past performance does not predict future results.
+                Hypothetical past performance of this exact mix, blended from each theme&apos;s real index. Past performance does not predict future results.
               </p>
             </div>
 

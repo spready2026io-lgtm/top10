@@ -2018,16 +2018,19 @@ export default function Home() {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const t = params.get('theme') as Theme | null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (t && (THEMES as readonly string[]).includes(t)) setTheme(t);
   }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const guideDone = localStorage.getItem('top10_guide_done');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!guideDone) setShowGuide(true);
   }, []);
 
   // Reset pagination + expanded when switching theme, layout, or sort
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setShowAll(false); setExpanded(null); }, [theme, layout, sortBy]);
 
   const closeWelcome = () => {
