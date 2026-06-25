@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-06-24T13:36:58.837Z",
-  "scanTimestampNY": "June 24, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-06-25T13:37:21.993Z",
+  "scanTimestampNY": "June 25, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 19
+        "count": 43
       },
       "ARTY": {
         "ok": true,
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 33
+        "count": 32
       },
       "IGPT": {
         "ok": true,
@@ -29,11 +29,11 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 32
+        "count": 31
       },
       "AIFD": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "SPRX": {
         "ok": true,
@@ -41,7 +41,7 @@
       },
       "AOTG": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "SOXX": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 20
+        "count": 23
       },
       "IGV": {
         "ok": true,
@@ -77,7 +77,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 8
+        "count": 7
       },
       "ARKK": {
         "ok": true,
@@ -93,7 +93,7 @@
       },
       "BCTK": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "FWD": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 22
+        "count": 19
       },
       "FCUS": {
         "ok": true,
@@ -109,11 +109,11 @@
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "CNEQ": {
         "ok": true,
-        "count": 28
+        "count": 27
       },
       "SGRT": {
         "ok": true,
@@ -121,15 +121,15 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "XMMO": {
         "ok": true,
-        "count": 25
+        "count": 23
       },
       "POW": {
         "ok": true,
-        "count": 14
+        "count": 45
       },
       "VOLT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 2
+        "count": 3
       },
       "PBW": {
         "ok": true,
@@ -161,7 +161,7 @@
       },
       "IDEF": {
         "ok": true,
-        "count": 87
+        "count": 90
       },
       "BILT": {
         "ok": true,
@@ -169,7 +169,7 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "MEME": {
         "ok": true,
@@ -177,7 +177,7 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 25
+        "count": 24
       }
     },
     "total": 44,
@@ -231,14 +231,6 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
