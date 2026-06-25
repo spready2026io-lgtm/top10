@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
   baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
@@ -92,7 +93,7 @@ export default function PortfolioPage() {
                       {BASE_CHOICES.map(({ id, label }) => (
                         <button
                           key={id}
-                          onClick={() => setBaseIndex(id)}
+                          onClick={() => { setBaseIndex(id); trackEvent('portfolio_base_index_changed', { base_index: id }); }}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
                             baseIndex === id
                               ? 'bg-slate-700 border-slate-600 text-slate-100'
@@ -107,6 +108,7 @@ export default function PortfolioPage() {
                   <input
                     type="range" min={0} max={100} step={1} value={vals[i]}
                     onChange={e => setVal(i, +e.target.value)}
+                    onPointerUp={e => trackEvent('portfolio_dial_changed', { sleeve: s.name, value: +(e.target as HTMLInputElement).value })}
                     className="w-full" style={{ accentColor: s.color }}
                   />
                 </div>
