@@ -170,8 +170,8 @@ export default function Universe() {
                 {rows.map((r, i) => (
                   <tr key={r.ticker} className={`border-b border-slate-800/60 ${i % 2 ? 'bg-slate-900/40' : ''} hover:bg-slate-800/40 transition-colors`}>
                     <td className="px-3 py-2.5 font-mono font-bold text-white whitespace-nowrap">{r.ticker}</td>
-                    <td className="px-3 py-2.5 text-slate-300 min-w-[14rem]">{r.name}</td>
-                    <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">{r.manager}</td>
+                    <td className="px-3 py-2.5 text-slate-300 max-w-[10rem] truncate" title={r.name}>{r.name}</td>
+                    <td className="px-3 py-2.5 text-slate-400 max-w-[8rem] truncate" title={r.manager}>{r.manager}</td>
                     <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">{r.theme}</td>
                     <td className="px-3 py-2.5 text-right text-slate-300 tabular-nums whitespace-nowrap">{fmtAum(r.aum)}</td>
                     <td className="px-3 py-2.5 whitespace-nowrap">
