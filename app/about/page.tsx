@@ -154,7 +154,7 @@ export default function About() {
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded-full">+45% VS</span>
+                <span className="inline-flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded-full">+45% Velocity</span>
                 <h3 className="text-white font-semibold">Velocity Score</h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed mb-2">

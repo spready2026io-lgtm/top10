@@ -559,7 +559,8 @@ function getTonyVsNote(equity: Equity): { text: string; positive: boolean } | nu
 }
 
 // ── New Entrants modal ────────────────────────────────────────────────────────
-function NewEntrantsModal({ onClose, onSelectTheme }: {
+function NewEntrantsModal({ currentTheme, onClose, onSelectTheme }: {
+  currentTheme: Theme;
   onClose: () => void;
   onSelectTheme: (t: Theme) => void;
 }) {
@@ -575,7 +576,47 @@ function NewEntrantsModal({ onClose, onSelectTheme }: {
   // Group by theme, preserve THEMES order
   const byTheme = Object.fromEntries(THEMES.map(t => [t, [] as EntrantRow[]])) as Record<Theme, EntrantRow[]>;
   for (const row of newEntrants) byTheme[row.theme].push(row);
-  const themesWithNew = THEMES.filter(t => byTheme[t].length > 0);
+
+  // Lead with the theme the user is currently viewing, then the rest.
+  const currentRows = byTheme[currentTheme] ?? [];
+  const otherThemes = THEMES.filter(t => t !== currentTheme && byTheme[t].length > 0);
+
+  // One theme block: separator header + tile grid, or an empty-state line.
+  const renderThemeSection = (theme: Theme, rows: EntrantRow[]) => (
+    <div key={theme}>
+      {/* Theme section header */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="h-px flex-1 bg-slate-800" />
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-slate-300 text-sm font-bold">{theme}</span>
+          {rows.length > 0 && (
+            <span className="bg-amber-500/20 border border-amber-500/35 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full tabular-nums">
+              {rows.length} new
+            </span>
+          )}
+          {theme !== currentTheme && (
+            <button
+              className="text-slate-500 hover:text-emerald-400 text-xs font-semibold transition-colors"
+              onClick={() => { onSelectTheme(theme); onClose(); }}
+            >
+              View all →
+            </button>
+          )}
+        </div>
+        <div className="h-px flex-1 bg-slate-800" />
+      </div>
+
+      {rows.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {rows.map(({ equity, maxScore, etfs }) => (
+            <EquityTile key={equity.ticker} equity={equity} etfs={etfs} maxScore={maxScore} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-slate-500 text-sm text-center py-6">No new shares in {theme} today.</p>
+      )}
+    </div>
+  );
 
   return createPortal(
     // Backdrop — scrollable so tall tile grids don't clip
@@ -617,35 +658,22 @@ function NewEntrantsModal({ onClose, onSelectTheme }: {
               </div>
             ) : (
               <div className="space-y-8 pt-5">
-                {themesWithNew.map(theme => (
-                  <div key={theme}>
+                {/* Current theme first — or "No new shares today" for it */}
+                {renderThemeSection(currentTheme, currentRows)}
 
-                    {/* Theme section header */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-px flex-1 bg-slate-800" />
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <span className="text-slate-300 text-sm font-bold">{theme}</span>
-                        <span className="bg-amber-500/20 border border-amber-500/35 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full tabular-nums">
-                          {byTheme[theme].length} new
-                        </span>
-                        <button
-                          className="text-slate-500 hover:text-emerald-400 text-xs font-semibold transition-colors"
-                          onClick={() => { onSelectTheme(theme); onClose(); }}
-                        >
-                          View all →
-                        </button>
-                      </div>
-                      <div className="h-px flex-1 bg-slate-800" />
+                {/* New in other themes */}
+                {otherThemes.length > 0 && (
+                  <>
+                    <div className="flex items-center gap-3 pt-2">
+                      <div className="h-px flex-1 bg-amber-500/20" />
+                      <span className="text-amber-300/80 text-xs font-semibold uppercase tracking-wider flex-shrink-0">
+                        New in Other Themes
+                      </span>
+                      <div className="h-px flex-1 bg-amber-500/20" />
                     </div>
-
-                    {/* Tile grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {byTheme[theme].map(({ equity, maxScore, etfs }) => (
-                        <EquityTile key={equity.ticker} equity={equity} etfs={etfs} maxScore={maxScore} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                    {otherThemes.map(theme => renderThemeSection(theme, byTheme[theme]))}
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -979,7 +1007,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                 return (
                   <span className="relative group" onClick={e => { e.stopPropagation(); setVsOpen(o => !o); setWtOpen(false); }}>
                     <span className={`${vsColor} font-bold text-2xl tabular-nums leading-none cursor-pointer`}>
-                      {vsSign}{Math.abs(tileVsVal).toFixed(1)}<span className="text-sm font-medium ml-0.5 opacity-70">% VS {tileVsPeriod}</span>
+                      {vsSign}{Math.abs(tileVsVal).toFixed(1)}<span className="text-sm font-medium ml-0.5 opacity-70">% Velocity {tileVsPeriod}</span>
                     </span>
                     {/* Tooltip: VS calculation */}
                     <div className={`absolute right-0 top-full mt-1.5 w-52 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${vsOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
@@ -999,7 +1027,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                           <span className="text-slate-400 text-xs">Change</span>
                           <span className={`text-xs font-bold tabular-nums ${vsColor}`}>{tileVsVal >= 0 ? '+' : ''}{tileVsVal.toFixed(1)}%</span>
                         </div>
-                        <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">VS = (now ÷ then − 1) × 100</p>
+                        <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Velocity = (now ÷ then − 1) × 100</p>
                       </div>
                     </div>
                   </span>
@@ -1065,7 +1093,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
                 <>
                   <span className="text-slate-700">|</span>
-                  <VsBadge vs={equity.velocityScore['1W']} period="VS 1W" />
+                  <VsBadge vs={equity.velocityScore['1W']} period="Velocity 1W" />
                 </>
               )}
             </div>
@@ -1346,7 +1374,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       visual: (
         <div className="flex flex-col mt-2 gap-0.5">
           <span className="text-white font-bold text-sm tabular-nums leading-none">5.5<span className="text-xs font-medium text-slate-400 ml-0.5">% avg wt</span></span>
-          <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">+4.6<span className="text-xs font-medium text-emerald-400/60 ml-0.5">% VS 1W</span></span>
+          <span className="text-emerald-400 font-bold text-sm tabular-nums leading-none">+4.6<span className="text-xs font-medium text-emerald-400/60 ml-0.5">% Velocity 1W</span></span>
         </div>
       ),
       pointer: <span className="text-emerald-500/60 text-xs mt-1 flex items-center gap-1">↓ <span className="text-slate-300">on every tile</span></span>,
@@ -1729,7 +1757,7 @@ function LandingExampleGuide() {
                 <span ref={mk2} className={dot} />
               </span>
               <span className="flex items-center gap-1">
-                <span className={`text-base font-bold leading-none tabular-nums ${exVs >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exVs >= 0 ? '+' : ''}{exVs.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% VS 1W</span></span>
+                <span className={`text-base font-bold leading-none tabular-nums ${exVs >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exVs >= 0 ? '+' : ''}{exVs.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% Velocity 1W</span></span>
                 <span ref={mk3} className={dot} />
               </span>
             </div>
@@ -1818,7 +1846,7 @@ function SlideVisual({ kind }: { kind: string }) {
                   </div>
                   {tc.vs1w !== null && (
                     <div className="flex items-center">
-                      <span className={`text-lg font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium opacity-70">% VS 1W</span></span>
+                      <span className={`text-lg font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium opacity-70">% Velocity 1W</span></span>
                       <GuideMark n={3} className="ml-1" />
                     </div>
                   )}
@@ -2060,7 +2088,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      {showNew && <NewEntrantsModal onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
+      {showNew && <NewEntrantsModal currentTheme={theme} onClose={() => setShowNew(false)} onSelectTheme={t => setTheme(t)} />}
 
       {/* Brand header — top of page: logo, tagline, minimal site nav */}
       <header className="border-b border-slate-800 bg-slate-900">
@@ -2383,7 +2411,7 @@ export default function Home() {
                   <span className="w-16 flex-shrink-0 text-right">Price</span>
                   <span className="w-14 flex-shrink-0 text-right hidden sm:block" title="Price change, past week">1W</span>
                   <span className="w-16 flex-shrink-0 text-right leading-tight" title="Average ETF weight / Velocity (weight change vs last week)">
-                    Avg wt<br />VS&nbsp;1W
+                    Avg wt<br />Velocity
                   </span>
                   <span className="w-12 flex-shrink-0 text-center" title="Coverage: how many theme ETFs hold this stock">Cov</span>
                   <span className="w-4 flex-shrink-0" aria-hidden="true" />{/* chevron */}

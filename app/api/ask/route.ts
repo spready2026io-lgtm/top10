@@ -39,7 +39,7 @@ Multiplying by coverage scales the raw average by breadth, so a stock held narro
 This is the primary ranking metric. A high Weight Score with low coverage (few funds, large size) is often the most interesting positioning signal.
 Previous formula used √coverage (k=0.5, changed 2026-06-03 to linear). This caused a one-cycle VS distortion that self-healed after 7 days.
 
-VELOCITY SCORE (shown as "VS 1D / 1W / 1M / 6M" badge, amber ▲ or red ▼)
+VELOCITY SCORE (shown as "Velocity 1D / 1W / 1M / 6M" badge, amber ▲ or red ▼)
 Formula: (currentProScore / pastProScore − 1) × 100, where pastProScore is from history.json at the relevant lookback date.
 Measures the % change in Weight Score over a time window. Positive = institutional conviction is growing (funds adding or weighting up). Negative = conviction is fading (funds trimming or dropping the stock).
 This is the early-detection layer. A stock ranked 8th today but with a strongly positive VS may overtake stocks ranked above it.
