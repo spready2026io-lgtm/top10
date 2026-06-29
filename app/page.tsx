@@ -129,13 +129,30 @@ function displayName(ticker: string, scraped: string): string {
 
 // ── Per-tile x-axis labels per period ─────────────────────────────────────────
 const TILE_XLABELS: Record<ChartPeriod, string[]> = {
-  '1D': ['Open', 'Midday', 'Now'],
+  '1D': ['Open', 'Midday', 'Close'],
   '1W': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
   '1M': ['May 1', 'May 15', 'Jun 1'],
   'YTD': ['Jan', 'Mar', 'May'],
   '6M': ['Nov', 'Jan', 'Mar', 'May'],
   '1Y': ["May '25", "Nov '25", "May '26"],
 };
+
+// Fraction (0–1) of the US regular session (9:30–16:00 ET = 390 min) elapsed as of
+// the data scan, parsed from SCAN_TIMESTAMP_NY (e.g. "June 29, 2026 at 9:37 AM ET").
+// Drives the 1D intraday chart: the line is placed at the real time of day on a
+// full Open→Close axis instead of being stretched to the right edge. Falls back to
+// 1 (full width) if the time can't be parsed. Floored slightly so an immediately
+// post-open scan still renders a visible point rather than collapsing onto the axis.
+function computeSessionProgress(nyTs: string): number {
+  const m = /(\d{1,2}):(\d{2})\s*(AM|PM)/i.exec(nyTs || '');
+  if (!m) return 1;
+  let h = parseInt(m[1], 10) % 12;
+  if (/PM/i.test(m[3])) h += 12;
+  const mins = h * 60 + parseInt(m[2], 10);
+  const frac = (mins - (9 * 60 + 30)) / 390;
+  return Math.min(1, Math.max(0.02, frac));
+}
+const SESSION_PROGRESS = computeSessionProgress(SCAN_TIMESTAMP_NY);
 
 // ── Generate deterministic price path for a tile chart ───────────────────────
 function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: ChartPeriod): number[] {
@@ -159,7 +176,7 @@ function makeTilePrices(ticker: string, currentPrice: number, periodReturn: numb
 }
 
 // ── Mini chart (price chart with axes) ────────────────────────────────────────
-function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: boolean; xLabels: string[] }) {
+function MiniChart({ prices, positive, xLabels, progress = 1 }: { prices: number[]; positive: boolean; xLabels: string[]; progress?: number }) {
   if (!prices || prices.length < 2) return null;
 
   const VW = 280; const VH = 155;
@@ -174,9 +191,12 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
   const yMax = rawMax + rawRange * 0.15;
   const yRange = yMax - yMin;
 
-  const toX = (i: number) => padL + (i / (prices.length - 1)) * chartW;
+  // When progress < 1 (partial 1D session) the line only fills the elapsed fraction
+  // of the axis; labels stay pinned to the full Open→Close width.
+  const toX = (i: number) => padL + (i / (prices.length - 1)) * chartW * progress;
   const toY = (p: number) => padT + chartH - ((p - yMin) / yRange) * chartH;
   const xLabelPos = xLabels.map((_, i) => padL + (i / (xLabels.length - 1)) * chartW);
+  const nowX = padL + chartW * progress;
 
   const pts = prices.map((p, i) => ({ x: toX(i), y: toY(p) }));
   const linePath = pts.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`).join(' ');
@@ -197,6 +217,13 @@ function MiniChart({ prices, positive, xLabels }: { prices: number[]; positive: 
       ))}
       <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
       <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+      {/* "Now" guide — only when the session is still in progress (1D) */}
+      {progress < 1 && (
+        <>
+          <line x1={nowX} y1={padT} x2={nowX} y2={padT + chartH} stroke="#475569" strokeWidth="1" strokeDasharray="3 3" />
+          <text x={nowX} y={padT - 1} textAnchor="middle" fontSize="8" fill="#64748b">Now</text>
+        </>
+      )}
       {yTicks.map((tick, i) => (
         <text key={i} x={padL - 5} y={toY(tick) + 3.5} textAnchor="end" fontSize="9" fill="#64748b">
           {fmtPrice(tick)}
@@ -895,6 +922,11 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
                        ? parseFloat(((rawHistory[rawHistory.length - 1] / rawHistory[0] - 1) * 100).toFixed(1))
                        : baseReturn;
   const positive     = tilePrices[tilePrices.length - 1] >= tilePrices[0];
+  // Real intraday only fills the part of the session that has elapsed. Synthetic
+  // fallback paths and non-US tickers (different session hours) use the full width.
+  const usingReal1D  = tilePeriod === '1D' && !!rawHistory && rawHistory.length >= 2;
+  const isUsSession  = !equity.currency || equity.currency === 'USD';
+  const dayProgress  = usingReal1D && isUsSession ? SESSION_PROGRESS : 1;
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
@@ -1048,7 +1080,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
 
           {/* Chart — fills all remaining vertical space */}
           <div className="flex-1 min-h-0 -mx-1 mt-1">
-            <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} />
+            <MiniChart prices={tilePrices} positive={positive} xLabels={TILE_XLABELS[tilePeriod]} progress={dayProgress} />
           </div>
 
           {/* Period toggle — below chart */}
