@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-06-28T13:36:35.063Z",
-  "scanTimestampNY": "June 28, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-06-29T13:37:20.820Z",
+  "scanTimestampNY": "June 29, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 18
+        "count": 43
       },
       "ARTY": {
         "ok": true,
@@ -49,7 +49,7 @@
       },
       "PSI": {
         "ok": true,
-        "count": 30
+        "count": 10
       },
       "XSD": {
         "ok": true,
@@ -121,7 +121,7 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 23
+        "count": 25
       },
       "XMMO": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 15
+        "count": 44
       },
       "VOLT": {
         "ok": true,
@@ -169,11 +169,11 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 24
+        "count": 22
       },
       "MEME": {
         "ok": true,
-        "count": 19
+        "count": 21
       },
       "RKNG": {
         "ok": true,
@@ -190,6 +190,10 @@
       },
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
         "error": "HTTP 406"
       },
       {
@@ -227,20 +231,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 87,
-    "succeeded": 87,
+    "total": 88,
+    "succeeded": 88,
     "failed": []
   }
 }
