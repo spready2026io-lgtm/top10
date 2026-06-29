@@ -398,7 +398,7 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
           return (
             <div
               key={ticker}
-              className="cursor-pointer select-none"
+              className="relative cursor-pointer select-none"
               onPointerEnter={e => { if (e.pointerType === 'mouse') setOpenEtf(ticker); }}
               onPointerLeave={e => { if (e.pointerType === 'mouse') setOpenEtf(null); }}
               onClick={() => setOpenEtf(prev => (prev === ticker ? null : ticker))}
@@ -422,10 +422,11 @@ function EtfPerfTile({ theme, period }: { theme: Theme; period: ChartPeriod }) {
                 />
               </div>
 
-              {/* Top holdings — inline expansion. It takes real layout space and pushes
-                  the rows below it down, so it never overlays another ETF's data. */}
+              {/* Top holdings — floating overlay anchored to the row (like the other
+                  hover tooltips on the site). Absolutely positioned so it never
+                  reflows the table or opens a gap between rows. */}
               {holdings.length > 0 && open && (
-                <div className="mt-2 ml-auto w-28 rounded-md border border-slate-800 bg-slate-950/50 px-2.5 py-2">
+                <div className="absolute right-0 top-full mt-1 z-30 w-32 rounded-md border border-slate-700 bg-slate-950 px-2.5 py-2 shadow-xl">
                   <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-1.5">Top holdings</p>
                   <div className="flex flex-col gap-1">
                     {holdings.map(h => (
