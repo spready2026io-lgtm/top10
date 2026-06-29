@@ -246,7 +246,13 @@ const PERIODS: ChartPeriod[] = ['1D', '1W', '1M', 'YTD', '6M', '1Y'];
 
 function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartPeriod; setPeriod: (p: ChartPeriod) => void }) {
   // 1D may be absent until a price build produces intraday data — fall back to 1W.
+  const has1D = !!INDEX_CHART_DATA[theme]['1D'];
   const d: ChartPeriodData = INDEX_CHART_DATA[theme][period] ?? INDEX_CHART_DATA[theme]['1W'];
+  // For an in-progress 1D session, only fill the elapsed fraction of the axis
+  // (same treatment as the tile charts). The index is US-based, so use the US
+  // session progress. Other periods — or a 1D that fell back to 1W — fill full width.
+  const is1DLive = period === '1D' && has1D;
+  const progress = is1DLive ? SESSION_PROGRESS : 1;
 
   const VW = 800; const VH = 260;
   const padL = 52; const padR = 20; const padT = 12; const padB = 30;
@@ -262,7 +268,7 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
   const yMax = rawMax + pad;
   const yRange = yMax - yMin;
 
-  const toX = (i: number, n: number) => padL + (i / (n - 1)) * chartW;
+  const toX = (i: number, n: number) => padL + (i / (n - 1)) * chartW * progress;
   const toY = (v: number) => padT + chartH - ((v - yMin) / yRange) * chartH;
 
   const makeLine = (pts: number[]) =>
@@ -275,9 +281,12 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
     return `${pct > 0 ? '+' : pct < 0 ? '' : ''}${pct.toFixed(pct === 0 ? 0 : 1)}%`;
   };
 
-  // X labels evenly spaced across chart width
-  const xl   = d.xLabels;
+  // X labels evenly spaced across chart width. For a live 1D session the axis
+  // spans the full trading day, so use Open→Midday→Close (the "Now" marker shows
+  // where in the day we are) rather than the stored intraday tick labels.
+  const xl   = is1DLive ? ['Open', 'Midday', 'Close'] : d.xLabels;
   const xPos = xl.map((_, i) => padL + (i / (xl.length - 1)) * chartW);
+  const nowX = padL + chartW * progress;
 
   const top10Pos = d.top10Return >= 0;
   const spyPos   = d.spyReturn   >= 0;
@@ -315,6 +324,13 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
           )}
           <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
           <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
+          {/* "Now" guide — only while the 1D session is still in progress */}
+          {progress < 1 && (
+            <>
+              <line x1={nowX} y1={padT} x2={nowX} y2={padT + chartH} stroke="#475569" strokeWidth="1" strokeDasharray="4 3" />
+              <text x={nowX} y={padT - 2} textAnchor="middle" fontSize="9" fill="#64748b">Now</text>
+            </>
+          )}
           {yTicks.map((tick, i) => (
             <text key={i} x={padL - 6} y={toY(tick) + 3.5} textAnchor="end" fontSize="10" fill="#475569">
               {fmtY(tick)}
