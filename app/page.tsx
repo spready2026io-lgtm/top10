@@ -1690,7 +1690,9 @@ function computeModelCheck() {
 
 // ── Top 10 Across All Themes — cross-theme breadth board + 1D / 1M movers ─────
 function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void }) {
-  const [mode, setMode] = useState<CrossMode>('breadth');
+  // Opens on 1M Movers — the strongest, most actionable view (where the model
+  // validation holds up); users can switch to 1D or the breadth ranking.
+  const [mode, setMode] = useState<CrossMode>('1m');
   const rows = CROSS_THEME_TOP10;
 
   const key: 'oneM' | 'dayChange' = mode === '1m' ? 'oneM' : 'dayChange';
