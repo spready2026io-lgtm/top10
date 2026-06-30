@@ -154,6 +154,14 @@ function computeSessionProgress(nyTs: string): number {
 }
 const SESSION_PROGRESS = computeSessionProgress(SCAN_TIMESTAMP_NY);
 
+// Just the clock time from the scan timestamp (e.g. "10:40 AM ET"). Shown on the 1D
+// charts at the leading edge of the line in place of a generic "Now" marker, so the
+// point is labelled with the actual NY time the data was captured.
+const SCAN_TIME_NY = (() => {
+  const m = /(\d{1,2}:\d{2})\s*(AM|PM)/i.exec(SCAN_TIMESTAMP_NY || '');
+  return m ? `${m[1]} ${m[2].toUpperCase()} ET` : 'Now';
+})();
+
 // ── Generate deterministic price path for a tile chart ───────────────────────
 function makeTilePrices(ticker: string, currentPrice: number, periodReturn: number, period: ChartPeriod): number[] {
   const seed = ticker.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
@@ -217,11 +225,13 @@ function MiniChart({ prices, positive, xLabels, progress = 1 }: { prices: number
       ))}
       <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
       <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
-      {/* "Now" guide — only when the session is still in progress (1D) */}
+      {/* Scan-time guide — only when the session is still in progress (1D). Labelled
+          with the NY time the data was captured; flips side near the right edge so the
+          time never clips off-chart. */}
       {progress < 1 && (
         <>
           <line x1={nowX} y1={padT} x2={nowX} y2={padT + chartH} stroke="#475569" strokeWidth="1" strokeDasharray="3 3" />
-          <text x={nowX} y={padT - 1} textAnchor="middle" fontSize="8" fill="#64748b">Now</text>
+          <text x={nowX + (nowX > VW * 0.6 ? -3 : 3)} y={padT - 1} textAnchor={nowX > VW * 0.6 ? 'end' : 'start'} fontSize="8" fill="#64748b">{SCAN_TIME_NY}</text>
         </>
       )}
       {yTicks.map((tick, i) => (
@@ -324,11 +334,12 @@ function IndexChart({ theme, period, setPeriod }: { theme: Theme; period: ChartP
           )}
           <line x1={padL} y1={padT} x2={padL} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
           <line x1={padL} y1={padT + chartH} x2={VW - padR} y2={padT + chartH} stroke="#334155" strokeWidth="1" />
-          {/* "Now" guide — only while the 1D session is still in progress */}
+          {/* Scan-time guide — only while the 1D session is still in progress. Labelled
+              with the NY time the data was captured; flips side near the right edge. */}
           {progress < 1 && (
             <>
               <line x1={nowX} y1={padT} x2={nowX} y2={padT + chartH} stroke="#475569" strokeWidth="1" strokeDasharray="4 3" />
-              <text x={nowX} y={padT - 2} textAnchor="middle" fontSize="9" fill="#64748b">Now</text>
+              <text x={nowX + (nowX > VW * 0.6 ? -4 : 4)} y={padT - 2} textAnchor={nowX > VW * 0.6 ? 'end' : 'start'} fontSize="9" fill="#64748b">{SCAN_TIME_NY}</text>
             </>
           )}
           {yTicks.map((tick, i) => (
@@ -1581,31 +1592,110 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
-// ── Top 10 Across All Themes — cross-theme breadth board ─────────────────────
+// ── Cross-theme movers (1D / 1M) ──────────────────────────────────────────────
+// Derived once from the static dataset. Stocks come from every non-Meme theme
+// (deduped by ticker, themes collected); ETFs from the tracked theme ETFs. Each
+// carries today's move (1D) and the trailing-month return (1M) so the All-Theme
+// board can re-rank by "what's moving" alongside the breadth ranking.
+type MoverStock = { ticker: string; name: string; price: number; currency?: string; dayChange: number; oneM: number; themes: Theme[] };
+type MoverEtf   = { ticker: string; name: string; dayChange: number; oneM: number };
+
+const MOVER_STOCKS: MoverStock[] = (() => {
+  const map = new Map<string, MoverStock>();
+  (Object.keys(SAMPLE_DATA) as Theme[]).forEach(t => {
+    if (t === 'Meme') return;
+    SAMPLE_DATA[t].forEach(eq => {
+      const ex = map.get(eq.ticker);
+      if (ex) { if (!ex.themes.includes(t)) ex.themes.push(t); }
+      else map.set(eq.ticker, {
+        ticker: eq.ticker, name: eq.name, price: eq.price, currency: eq.currency,
+        dayChange: eq.dayChange ?? 0, oneM: eq.periodReturns['1M'], themes: [t],
+      });
+    });
+  });
+  return [...map.values()];
+})();
+
+const MOVER_ETFS: MoverEtf[] = (() => {
+  const set = new Set<string>();
+  (Object.keys(THEME_ETFS) as Theme[]).forEach(t => { if (t !== 'Meme') THEME_ETFS[t].forEach(e => set.add(e)); });
+  return [...set]
+    .map(e => ({ ticker: e, name: ETF_INFO[e]?.name ?? e, dayChange: ETF_DAY_CHANGE[e] ?? 0, oneM: ETF_RETURNS[e]?.['1M'] ?? 0 }))
+    .filter(e => e.dayChange !== 0 || e.oneM !== 0);
+})();
+
+type CrossMode = 'breadth' | '1d' | '1m';
+
+// A move counts as "exceptional" (flame badge) above these thresholds.
+const isHotMove = (v: number, mode: CrossMode) => mode === '1d' ? v >= 3 : v >= 15;
+
+// Coloured % pill, green for gains and rose for losses.
+function PctPill({ v }: { v: number }) {
+  const pos = v >= 0;
+  return (
+    <span className={`text-sm font-bold tabular-nums px-2 py-0.5 rounded-full border whitespace-nowrap ${
+      pos ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
+          : 'bg-rose-500/15 border-rose-500/30 text-rose-300'
+    }`}>
+      {pos ? '+' : ''}{v.toFixed(1)}%
+    </span>
+  );
+}
+
+// ── Top 10 Across All Themes — cross-theme breadth board + 1D / 1M movers ─────
 function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void }) {
+  const [mode, setMode] = useState<CrossMode>('breadth');
   const rows = CROSS_THEME_TOP10;
+
+  const key: 'oneM' | 'dayChange' = mode === '1m' ? 'oneM' : 'dayChange';
+  const topStocks = [...MOVER_STOCKS].sort((a, b) => b[key] - a[key]).slice(0, 10);
+  const topEtfs   = [...MOVER_ETFS].sort((a, b) => b[key] - a[key]).slice(0, 10);
+
+  const heading =
+    mode === '1d' ? 'Biggest Movers Today (1D)' :
+    mode === '1m' ? 'Top Performers This Month (1M)' :
+    'Top 10 Across All Themes';
+  const blurb =
+    mode === '1d' ? 'Largest one-day moves across the tracked universe of stocks and ETFs. The names with the most momentum right now.' :
+    mode === '1m' ? 'Strongest trailing-month returns across stocks and ETFs. Where capital has been rotating over the past month.' :
+    'Ranked by cross-theme breadth, the stocks held across the most institutional theme baskets. The widest-conviction names in the entire tracked universe. Ranking: ETF count first, avg weight across all themes as tiebreaker. (Meme theme excluded)';
+
+  const segs: [CrossMode, string][] = [['breadth', 'Breadth'], ['1d', '🔥 1D Movers'], ['1m', '⚡ 1M Movers']];
+
   return (
     <div className="max-w-7xl mx-auto px-4 pb-16 pt-4">
-      <div className="mb-6">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          <span className="text-amber-300">★</span> Top 10 Across All Themes
-        </h2>
-        <p className="text-slate-500 text-xs mt-1 max-w-2xl">
-          Ranked by cross-theme breadth, the stocks held across the most institutional theme
-          baskets. The widest-conviction names in the entire tracked universe.
-          Ranking: ETF count first, avg weight across all themes as tiebreaker. (Meme theme excluded)
-        </p>
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <span className="text-orange-400">{mode === 'breadth' ? '★' : '🔥'}</span> {heading}
+          </h2>
+          <p className="text-slate-500 text-xs mt-1 max-w-2xl">{blurb}</p>
+        </div>
+        {/* Mode segment control — breadth ranking vs. 1D / 1M movers */}
+        <div className="inline-flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5 text-xs font-semibold flex-shrink-0 w-max">
+          {segs.map(([m, label]) => (
+            <button
+              key={m}
+              onClick={() => { setMode(m); trackEvent('cross_theme_mode', { mode: m }); }}
+              className={`px-3 py-1 rounded-md transition-all whitespace-nowrap ${
+                mode === m ? 'bg-emerald-500 text-black' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {rows.length === 0 ? (
-        <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-12 text-center">
-          <p className="text-slate-400 text-sm">Cross-theme ranking is being generated.</p>
-          <p className="text-slate-600 text-xs mt-2">Refreshes on the next data run.</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {rows.map((e, i) => {
-            return (
+      {mode === 'breadth' ? (
+        rows.length === 0 ? (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-12 text-center">
+            <p className="text-slate-400 text-sm">Cross-theme ranking is being generated.</p>
+            <p className="text-slate-600 text-xs mt-2">Refreshes on the next data run.</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {rows.map((e, i) => (
               <div
                 key={e.ticker}
                 className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3"
@@ -1638,8 +1728,62 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+        )
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Stocks movers */}
+          <div>
+            <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400 mb-2">Stocks</h3>
+            <div className="space-y-2">
+              {topStocks.map((s, i) => {
+                const val = mode === '1m' ? s.oneM : s.dayChange;
+                return (
+                  <div key={s.ticker} className="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2">
+                    <span className="text-slate-600 font-bold tabular-nums w-5 text-right text-xs flex-shrink-0">{i + 1}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-white font-mono text-sm">{s.ticker}</span>
+                        {isHotMove(val, mode) && <span aria-hidden title="Exceptional move">🔥</span>}
+                        <button
+                          onClick={() => onSelectTheme(s.themes[0])}
+                          className="bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-semibold px-1.5 py-0.5 rounded-full hover:border-emerald-500/50 hover:text-emerald-300 transition-colors flex-shrink-0"
+                        >
+                          {s.themes[0]}
+                        </button>
+                      </div>
+                      <span className="text-slate-500 text-[11px] truncate block">{displayName(s.ticker, s.name)}</span>
+                    </div>
+                    <PctPill v={val} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ETF movers */}
+          <div>
+            <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400 mb-2">ETFs</h3>
+            <div className="space-y-2">
+              {topEtfs.map((e, i) => {
+                const val = mode === '1m' ? e.oneM : e.dayChange;
+                return (
+                  <div key={e.ticker} className="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2">
+                    <span className="text-slate-600 font-bold tabular-nums w-5 text-right text-xs flex-shrink-0">{i + 1}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-white font-mono text-sm">{e.ticker}</span>
+                        {isHotMove(val, mode) && <span aria-hidden title="Exceptional move">🔥</span>}
+                      </div>
+                      <span className="text-slate-500 text-[11px] truncate block">{e.name}</span>
+                    </div>
+                    <PctPill v={val} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -2188,6 +2332,22 @@ export default function Home() {
           {/* App action buttons — kept on a single row, scrolls on small screens */}
           <div className="max-w-full overflow-x-auto scrollbar-none -mx-1 px-1">
             <nav className="flex items-center gap-2.5 w-max text-sm">
+              {/* All-Theme Top 10 — flagship feature, pulled to the front with a hot
+                  gradient + HOT badge so it leads the row and stands apart from the
+                  other amber tools. Toggles the cross-theme board below. */}
+              <button
+                onClick={() => { setCrossView(v => !v); trackEvent('cross_theme_toggled', { open: !crossView }); }}
+                title="Top 10 stocks and ETFs across every theme — breadth leaders and biggest movers"
+                className={`flex items-center gap-1.5 pl-2.5 pr-2 py-1 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${
+                  crossView
+                    ? 'bg-gradient-to-r from-orange-500 to-rose-600 border-orange-300 text-white shadow-md shadow-orange-900/30'
+                    : 'bg-gradient-to-r from-orange-500/25 to-rose-600/25 border-orange-500/50 text-orange-200 hover:from-orange-500/40 hover:to-rose-600/40 hover:border-orange-400'
+                }`}
+              >
+                <span aria-hidden className="text-sm leading-none">🔥</span>
+                All-Theme Top 10
+                <span className="bg-orange-400/30 border border-orange-300/50 text-orange-50 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full leading-none tracking-wider">HOT</span>
+              </button>
               <Link href="/universe" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-bold transition-colors whitespace-nowrap">
                 ETF Universe
               </Link>
@@ -2200,17 +2360,6 @@ export default function Home() {
               <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors whitespace-nowrap">
                 Ask Tony
               </Link>
-              <button
-                onClick={() => setCrossView(v => !v)}
-                title="Top 10 stocks ranked across all themes by breadth"
-                className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-bold transition-colors whitespace-nowrap ${
-                  crossView
-                    ? 'bg-amber-500/25 border-amber-500/50 text-amber-200'
-                    : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50'
-                }`}
-              >
-                ★ All-Theme Top 10
-              </button>
             </nav>
           </div>
 
