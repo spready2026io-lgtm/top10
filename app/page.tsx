@@ -1665,6 +1665,14 @@ function VeloPill({ v }: { v: number | null }) {
 }
 
 // ── Model check: does Velocity agree with the actual move? ────────────────────
+// Small "?" affordance so users (especially on mobile, where hover doesn't exist)
+// know the stat has an explainer behind a tap.
+function TipMark() {
+  return (
+    <span aria-hidden className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-slate-600 text-[8px] font-bold leading-none text-slate-400 align-text-top">?</span>
+  );
+}
+
 // Honest, same-window co-movement across the WHOLE tracked stock universe (not just
 // the top-10 tail): direction-match rate + the average move of the rising- vs
 // falling-conviction cohorts. The spread (Velocity+ minus Velocity− average move)
@@ -1693,6 +1701,9 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
   // Opens on 1M Movers — the strongest, most actionable view (where the model
   // validation holds up); users can switch to 1D or the breadth ranking.
   const [mode, setMode] = useState<CrossMode>('1m');
+  // Which model-check tooltip is tapped open (mobile has no hover). Desktop still
+  // gets hover via group-hover; tap toggles here. null = none open.
+  const [mcTip, setMcTip] = useState<'up' | 'down' | 'spread' | null>(null);
   const rows = CROSS_THEME_TOP10;
 
   const key: 'oneM' | 'dayChange' = mode === '1m' ? 'oneM' : 'dayChange';
@@ -1796,28 +1807,28 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                 </div>
               </div>
               <div className="flex items-stretch gap-2.5 text-xs">
-                <div className="relative group rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 cursor-help">
-                  <div className="text-slate-400 whitespace-nowrap">Rising ⚡+ <span className="text-slate-600">({mc.upN})</span></div>
+                <button type="button" onClick={() => setMcTip(t => t === 'up' ? null : 'up')} className="relative group text-left rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 cursor-help">
+                  <div className="text-slate-400 whitespace-nowrap">Rising ⚡+ <span className="text-slate-600">({mc.upN})</span><TipMark /></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.upAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.upAvg ?? 0) >= 0 ? '+' : ''}{(mc.upAvg ?? 0).toFixed(1)}%</div>
-                  <div className="absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                  <div className={`absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${mcTip === 'up' ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                     <p className="text-slate-300 text-xs font-normal leading-relaxed">Average 1M price move of the {mc.upN} stocks whose Velocity Score rose this month (conviction building). If the model works, this should beat the falling group.</p>
                   </div>
-                </div>
-                <div className="relative group rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5 cursor-help">
-                  <div className="text-slate-400 whitespace-nowrap">Falling ⚡− <span className="text-slate-600">({mc.downN})</span></div>
+                </button>
+                <button type="button" onClick={() => setMcTip(t => t === 'down' ? null : 'down')} className="relative group text-left rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5 cursor-help">
+                  <div className="text-slate-400 whitespace-nowrap">Falling ⚡− <span className="text-slate-600">({mc.downN})</span><TipMark /></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.downAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.downAvg ?? 0) >= 0 ? '+' : ''}{(mc.downAvg ?? 0).toFixed(1)}%</div>
-                  <div className="absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                  <div className={`absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${mcTip === 'down' ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                     <p className="text-slate-300 text-xs font-normal leading-relaxed">Average 1M price move of the {mc.downN} stocks whose Velocity Score fell this month (conviction fading).</p>
                   </div>
-                </div>
+                </button>
                 {mc.spread !== null && (
-                  <div className="relative group rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 cursor-help">
-                    <div className="text-slate-400 whitespace-nowrap">Spread</div>
+                  <button type="button" onClick={() => setMcTip(t => t === 'spread' ? null : 'spread')} className="relative group text-left rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 cursor-help">
+                    <div className="text-slate-400 whitespace-nowrap">Spread<TipMark /></div>
                     <div className={`font-bold tabular-nums text-sm ${mc.spread >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>{mc.spread >= 0 ? '+' : ''}{mc.spread.toFixed(1)}%</div>
-                    <div className="absolute right-0 top-full mt-1.5 w-60 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                    <div className={`absolute right-0 top-full mt-1.5 w-60 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${mcTip === 'spread' ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
                       <p className="text-slate-300 text-xs font-normal leading-relaxed">Rising-group average minus falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month — the Velocity Score is tracking real price performance.</p>
                     </div>
-                  </div>
+                  </button>
                 )}
               </div>
             </div>
@@ -2454,17 +2465,17 @@ export default function Home() {
                 All-Theme Top 10
                 <span className="bg-orange-400/30 border border-orange-300/50 text-orange-50 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full leading-none tracking-wider">HOT</span>
               </button>
-              <Link href="/universe" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-bold transition-colors whitespace-nowrap">
-                ETF Universe
+              <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors whitespace-nowrap">
+                Build Portfolio
               </Link>
               <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors whitespace-nowrap">
                 Conviction Board
               </Link>
-              <Link href="/portfolio" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:bg-sky-500/20 hover:border-sky-500/50 text-xs font-bold transition-colors whitespace-nowrap">
-                Build Portfolio
-              </Link>
               <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors whitespace-nowrap">
                 Ask Tony
+              </Link>
+              <Link href="/universe" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-bold transition-colors whitespace-nowrap">
+                ETF Universe
               </Link>
             </nav>
           </div>
