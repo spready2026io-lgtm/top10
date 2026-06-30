@@ -1666,6 +1666,30 @@ function VeloPill({ v }: { v: number | null }) {
   );
 }
 
+// ── Model check: does Velocity agree with the actual move? ────────────────────
+// Honest, same-window co-movement across the WHOLE tracked stock universe (not just
+// the top-10 tail): direction-match rate + the average move of the rising- vs
+// falling-conviction cohorts. The spread (Velocity+ minus Velocity− average move)
+// is the real signal — positive means the conviction metric is tracking price.
+function computeModelCheck(mode: '1d' | '1m') {
+  const ret = (s: MoverStock) => mode === '1m' ? s.oneM : s.dayChange;
+  const vel = (s: MoverStock) => mode === '1m' ? s.velo1M : s.velo1D;
+  const pop = MOVER_STOCKS.filter(s => vel(s) !== null);
+  const directional = pop.filter(s => vel(s) !== 0 && ret(s) !== 0);
+  const matched = directional.filter(s => Math.sign(vel(s)!) === Math.sign(ret(s))).length;
+  const up   = pop.filter(s => (vel(s) ?? 0) > 0);
+  const down = pop.filter(s => (vel(s) ?? 0) < 0);
+  const avg  = (arr: MoverStock[]) => arr.length ? arr.reduce((a, s) => a + ret(s), 0) / arr.length : null;
+  const upAvg = avg(up), downAvg = avg(down);
+  return {
+    n: directional.length,
+    matchPct: directional.length ? Math.round((matched / directional.length) * 100) : null,
+    upAvg, upN: up.length,
+    downAvg, downN: down.length,
+    spread: (upAvg !== null && downAvg !== null) ? upAvg - downAvg : null,
+  };
+}
+
 // ── Top 10 Across All Themes — cross-theme breadth board + 1D / 1M movers ─────
 function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void }) {
   const [mode, setMode] = useState<CrossMode>('breadth');
@@ -1674,6 +1698,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
   const key: 'oneM' | 'dayChange' = mode === '1m' ? 'oneM' : 'dayChange';
   const topStocks = [...MOVER_STOCKS].sort((a, b) => b[key] - a[key]).slice(0, 10);
   const topEtfs   = [...MOVER_ETFS].sort((a, b) => b[key] - a[key]).slice(0, 10);
+  const mc = mode === 'breadth' ? null : computeModelCheck(mode);
 
   const heading =
     mode === '1d' ? 'Biggest Movers Today (1D)' :
@@ -1756,6 +1781,39 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
           </div>
         )
       ) : (
+        <>
+        {/* Model check — does Velocity track the actual move across the whole universe? */}
+        {mc && mc.matchPct !== null && (
+          <div className="mb-5 rounded-xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-900/40 px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+              <div className="min-w-0">
+                <div className="text-[10px] font-bold tracking-[0.14em] uppercase text-amber-300/80">Model check · Velocity vs price · {mode === '1m' ? '1M' : '1D'}</div>
+                <div className="text-sm text-slate-300 mt-0.5">
+                  Velocity agreed with the actual move on <span className="text-white font-bold text-lg tabular-nums">{mc.matchPct}%</span> of {mc.n} tracked stocks
+                </div>
+              </div>
+              <div className="flex items-stretch gap-2.5 text-xs">
+                <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5">
+                  <div className="text-slate-400 whitespace-nowrap">Rising ⚡+ <span className="text-slate-600">({mc.upN})</span></div>
+                  <div className={`font-bold tabular-nums text-sm ${(mc.upAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.upAvg ?? 0) >= 0 ? '+' : ''}{(mc.upAvg ?? 0).toFixed(1)}%</div>
+                </div>
+                <div className="rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5">
+                  <div className="text-slate-400 whitespace-nowrap">Falling ⚡− <span className="text-slate-600">({mc.downN})</span></div>
+                  <div className={`font-bold tabular-nums text-sm ${(mc.downAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.downAvg ?? 0) >= 0 ? '+' : ''}{(mc.downAvg ?? 0).toFixed(1)}%</div>
+                </div>
+                {mc.spread !== null && (
+                  <div className="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5">
+                    <div className="text-slate-400 whitespace-nowrap">Spread</div>
+                    <div className={`font-bold tabular-nums text-sm ${mc.spread >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>{mc.spread >= 0 ? '+' : ''}{mc.spread.toFixed(1)}%</div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">
+              Same-window co-movement across the full tracked universe (Meme excluded), not a forward-looking backtest. A positive spread means rising-conviction names outpaced falling-conviction ones.
+            </p>
+          </div>
+        )}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Stocks movers */}
           <div>
@@ -1818,6 +1876,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
             </div>
           </div>
         </div>
+        </>
       )}
     </div>
   );
