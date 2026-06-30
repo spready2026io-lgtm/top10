@@ -154,6 +154,12 @@ function computeSessionProgress(nyTs: string): number {
 }
 const SESSION_PROGRESS = computeSessionProgress(SCAN_TIMESTAMP_NY);
 
+// Velocity Score window shown on tiles / list / sort. 1W is broadest coverage (86%
+// of names); 1M is the strongest signal (see the All-Theme model-check) but only
+// ~61% populated. User toggles between them; names missing the chosen window simply
+// omit the velocity value.
+type VsPeriod = '1W' | '1M';
+
 // Just the clock time from the scan timestamp (e.g. "10:40 AM ET"). Shown on the 1D
 // charts at the leading edge of the line in place of a generic "Now" marker, so the
 // point is labelled with the actual NY time the data was captured.
@@ -741,9 +747,10 @@ function NewEntrantsModal({ currentTheme, onClose, onSelectTheme }: {
 }
 
 // ── Tony's full thesis modal ─────────────────────────────────────────────────
-function ThesisModal({ equity, etfs, maxScore, onClose }: {
-  equity: Equity; etfs: string[]; maxScore: number; onClose: () => void;
+function ThesisModal({ equity, etfs, maxScore, onClose, vsPeriod = '1W' }: {
+  equity: Equity; etfs: string[]; maxScore: number; onClose: () => void; vsPeriod?: VsPeriod;
 }) {
+  const vsVal = equity.velocityScore?.[vsPeriod] ?? null;
   const domain  = TICKER_DOMAINS[equity.ticker];
   const logoUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
 
@@ -814,13 +821,13 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
                 <p className="text-emerald-400 font-bold text-2xl tabular-nums">{equity.easyScore}/{maxScore}</p>
                 <p className="text-slate-600 text-[10px] mt-0.5">ETFs holding</p>
               </div>
-              {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
+              {vsVal !== null && (
                 <div className="flex-1 min-w-[4.5rem] bg-slate-800/60 rounded-xl p-3 text-center">
                   <p className="text-slate-500 text-xs mb-1">Velocity</p>
-                  <p className={`font-bold text-2xl tabular-nums ${(equity.velocityScore['1W'] ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {(equity.velocityScore['1W'] ?? 0) >= 0 ? '+' : ''}{equity.velocityScore['1W']?.toFixed(1)}%
+                  <p className={`font-bold text-2xl tabular-nums ${vsVal >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {vsVal >= 0 ? '+' : ''}{vsVal.toFixed(1)}%
                   </p>
-                  <p className="text-slate-600 text-[10px] mt-0.5">1W wt score</p>
+                  <p className="text-slate-600 text-[10px] mt-0.5">{vsPeriod} wt score</p>
                 </div>
               )}
             </div>
@@ -912,7 +919,7 @@ function ThesisModal({ equity, etfs, maxScore, onClose }: {
 }
 
 // ── Equity tile ───────────────────────────────────────────────────────────────
-function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean }) {
+function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean; vsPeriod?: VsPeriod }) {
   const [flipped,     setFlipped]     = useState(false);
   const [tilePeriod,  setTilePeriod]  = useState<ChartPeriod>('1W');
   const [wtOpen,      setWtOpen]      = useState(false);
@@ -958,7 +965,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
   // Only 1W VS data exists for now; always show VS 1W regardless of chart period
-  const tileVsPeriod = '1W' as const;
+  const tileVsPeriod = vsPeriod;
   const tileVsVal    = equity.velocityScore?.[tileVsPeriod] ?? null;
 
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
@@ -1150,10 +1157,10 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
               <span className="text-slate-200 font-semibold text-xs">{(equity.coverage * 100).toFixed(0)}% coverage</span>
               <span className="text-slate-700">|</span>
               <span className="text-slate-200 font-semibold text-xs">coeff ×{equity.coverage.toFixed(2)}</span>
-              {equity.velocityScore?.['1W'] !== null && equity.velocityScore?.['1W'] !== undefined && (
+              {tileVsVal !== null && (
                 <>
                   <span className="text-slate-700">|</span>
-                  <VsBadge vs={equity.velocityScore['1W']} period="Velocity 1W" />
+                  <VsBadge vs={tileVsVal} period={`Velocity ${tileVsPeriod}`} />
                 </>
               )}
             </div>
@@ -1226,7 +1233,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
     </div>
 
     {thesisOpen && (
-      <ThesisModal equity={equity} etfs={etfs} maxScore={maxScore} onClose={() => setThesisOpen(false)} />
+      <ThesisModal equity={equity} etfs={etfs} maxScore={maxScore} onClose={() => setThesisOpen(false)} vsPeriod={vsPeriod} />
     )}
     </>
   );
@@ -1234,16 +1241,16 @@ function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs
 
 // ── Compact row (list view) ───────────────────────────────────────────────────
 function CompactRow({
-  equity, etfs, maxScore, rank, expanded, onToggle,
+  equity, etfs, maxScore, rank, expanded, onToggle, vsPeriod = '1W',
 }: {
   equity: Equity; etfs: string[]; maxScore: number;
-  rank: number; expanded: boolean; onToggle: () => void;
+  rank: number; expanded: boolean; onToggle: () => void; vsPeriod?: VsPeriod;
 }) {
   const domain     = TICKER_DOMAINS[equity.ticker];
   const logoUrl    = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
   const positive   = equity.weeklyChange >= 0;
   const changeColor = positive ? 'text-emerald-400' : 'text-rose-400';
-  const vs1w = equity.velocityScore?.['1W'] ?? null;
+  const vsVal = equity.velocityScore?.[vsPeriod] ?? null;
 
   return (
     <div>
@@ -1293,9 +1300,9 @@ function CompactRow({
           <span className="text-emerald-400 text-xs font-bold tabular-nums leading-none">
             {equity.proScore.toFixed(1)}% wt
           </span>
-          {vs1w !== null ? (
-            <span className={`text-xs font-bold tabular-nums leading-none ${vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {vs1w >= 0 ? '+' : '-'}{Math.abs(vs1w).toFixed(1)}%
+          {vsVal !== null ? (
+            <span className={`text-xs font-bold tabular-nums leading-none ${vsVal >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {vsVal >= 0 ? '+' : '-'}{Math.abs(vsVal).toFixed(1)}%
             </span>
           ) : (
             <span className="text-slate-700 text-[10px] leading-none">&mdash;</span>
@@ -1314,7 +1321,7 @@ function CompactRow({
       {/* Expanded full tile */}
       {expanded && (
         <div className="mt-2 mb-1 px-2">
-          <EquityTile equity={equity} etfs={etfs} maxScore={maxScore} />
+          <EquityTile equity={equity} etfs={etfs} maxScore={maxScore} vsPeriod={vsPeriod} />
         </div>
       )}
     </div>
@@ -2337,6 +2344,7 @@ export default function Home() {
   const [welcome, setWelcome] = useState(false);
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
   const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
+  const [vsPeriod,  setVsPeriod]  = useState<VsPeriod>('1W');
   const [showGuide, setShowGuide] = useState(false);
   const [showNew,   setShowNew]   = useState(false);
   const [showAll,   setShowAll]   = useState(false);
@@ -2386,8 +2394,8 @@ export default function Home() {
   const equities = SAMPLE_DATA[theme];
   const sortedEquities = sortBy === 'vs'
     ? [...equities].sort((a, b) => {
-        const va = a.velocityScore?.['1W'] ?? -Infinity;
-        const vb = b.velocityScore?.['1W'] ?? -Infinity;
+        const va = a.velocityScore?.[vsPeriod] ?? -Infinity;
+        const vb = b.velocityScore?.[vsPeriod] ?? -Infinity;
         return vb - va;
       })
     : [...equities].sort((a, b) =>
@@ -2653,6 +2661,36 @@ export default function Home() {
                 </button>
               </div>
 
+              {/* Velocity window toggle — switches the Velocity Score window shown on
+                  tiles/list (and the Velocity sort) between 1W (broadest coverage) and
+                  1M (strongest signal, ~61% of names). Names missing the chosen window
+                  simply omit the velocity value. */}
+              <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
+                <span aria-hidden className="text-amber-300/80 text-xs pl-1.5 pr-0.5 select-none" title="Velocity Score window shown on the tiles">⚡</span>
+                <button
+                  onClick={() => { setVsPeriod('1W'); trackEvent('vs_period_changed', { period: '1W', theme }); }}
+                  title="Show the 1-week Velocity Score (broadest coverage)"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    vsPeriod === '1W'
+                      ? 'bg-slate-600 text-white'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  1W
+                </button>
+                <button
+                  onClick={() => { setVsPeriod('1M'); trackEvent('vs_period_changed', { period: '1M', theme }); }}
+                  title="Show the 1-month Velocity Score — the strongest signal (some names have no 1M value yet)"
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                    vsPeriod === '1M'
+                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/30'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  1M
+                </button>
+              </div>
+
               {/* Layout toggle */}
               <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
                 <button
@@ -2698,7 +2736,7 @@ export default function Home() {
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {(showAll ? sortedEquities : sortedEquities.slice(0, 10)).map((eq, i) => (
-                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} autoOpen={i === 1} />
+                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} autoOpen={i === 1} vsPeriod={vsPeriod} />
                   ))}
                 </div>
                 {!showAll && sortedEquities.length > 10 && (
@@ -2740,6 +2778,7 @@ export default function Home() {
                     rank={i + 1}
                     expanded={expanded === eq.ticker}
                     onToggle={() => setExpanded(t => t === eq.ticker ? null : eq.ticker)}
+                    vsPeriod={vsPeriod}
                   />
                 ))}
               </div>
