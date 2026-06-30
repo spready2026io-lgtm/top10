@@ -1649,9 +1649,7 @@ function PctPill({ v }: { v: number }) {
 // move (a win for the model), mismatched = divergence. Muted vs PctPill (⚡ + no %)
 // so the actual return stays the primary number.
 function VeloPill({ v }: { v: number | null }) {
-  if (v === null || v === undefined) {
-    return <span className="text-[11px] text-slate-600 tabular-nums px-1.5 whitespace-nowrap" title="No Velocity Score for this window">⚡ —</span>;
-  }
+  if (v === null || v === undefined) return null;
   const pos = v >= 0;
   return (
     <span
@@ -1796,16 +1794,25 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                 </div>
               </div>
               <div className="flex items-stretch gap-2.5 text-xs">
-                <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5">
+                <div
+                  className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 cursor-help"
+                  title={`Average 1M price move of the ${mc.upN} stocks whose Velocity Score rose this month (institutional conviction building). If the model works, this should be higher than the falling group.`}
+                >
                   <div className="text-slate-400 whitespace-nowrap">Rising ⚡+ <span className="text-slate-600">({mc.upN})</span></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.upAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.upAvg ?? 0) >= 0 ? '+' : ''}{(mc.upAvg ?? 0).toFixed(1)}%</div>
                 </div>
-                <div className="rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5">
+                <div
+                  className="rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5 cursor-help"
+                  title={`Average 1M price move of the ${mc.downN} stocks whose Velocity Score fell this month (institutional conviction fading).`}
+                >
                   <div className="text-slate-400 whitespace-nowrap">Falling ⚡− <span className="text-slate-600">({mc.downN})</span></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.downAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.downAvg ?? 0) >= 0 ? '+' : ''}{(mc.downAvg ?? 0).toFixed(1)}%</div>
                 </div>
                 {mc.spread !== null && (
-                  <div className="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5">
+                  <div
+                    className="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 cursor-help"
+                    title="Rising-group average minus falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month — the Velocity Score is tracking real price performance."
+                  >
                     <div className="text-slate-400 whitespace-nowrap">Spread</div>
                     <div className={`font-bold tabular-nums text-sm ${mc.spread >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>{mc.spread >= 0 ? '+' : ''}{mc.spread.toFixed(1)}%</div>
                   </div>
@@ -1822,8 +1829,8 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
           <div>
             <div className="flex items-baseline justify-between gap-2 mb-2">
               <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400">Stocks</h3>
-              <span className="text-[10px] text-slate-500 text-right leading-tight">
-                price move <span className="text-slate-600">·</span> <span className="text-slate-400">⚡ Velocity ({veloWin})</span> — matching colours = conviction confirms the move
+              <span className="text-[11px] font-semibold text-slate-300 text-right leading-tight">
+                price move <span className="text-slate-500">·</span> <span className="text-amber-300/90">⚡ Velocity ({veloWin})</span> <span className="text-slate-400">— matching colours = conviction confirms the move</span>
               </span>
             </div>
             <div className="space-y-2">
@@ -1846,9 +1853,11 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                       </div>
                       <span className="text-slate-500 text-[11px] truncate block">{displayName(s.ticker, s.name)}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <PctPill v={val} />
-                      <VeloPill v={velo} />
+                    {/* Fixed-width right-justified slots keep the price number in the
+                        same column whether or not a Velocity pill is present. */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="w-[68px] flex justify-end"><PctPill v={val} /></div>
+                      <div className="w-[64px] flex justify-end"><VeloPill v={velo} /></div>
                     </div>
                   </div>
                 );
