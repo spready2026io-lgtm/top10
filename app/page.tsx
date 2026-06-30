@@ -919,12 +919,13 @@ function ThesisModal({ equity, etfs, maxScore, onClose, vsPeriod = '1W' }: {
 }
 
 // ── Equity tile ───────────────────────────────────────────────────────────────
-function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean; vsPeriod?: VsPeriod }) {
-  const [flipped,     setFlipped]     = useState(false);
-  const [tilePeriod,  setTilePeriod]  = useState<ChartPeriod>('1W');
-  const [wtOpen,      setWtOpen]      = useState(false);
-  const [vsOpen,      setVsOpen]      = useState(false);
-  const [thesisOpen,  setThesisOpen]  = useState(false);
+function EquityTile({ equity, etfs, maxScore, autoOpen }: { equity: Equity; etfs: string[]; maxScore: number; autoOpen?: boolean }) {
+  const [flipped,     setFlipped]      = useState(false);
+  const [tilePeriod,  setTilePeriod]   = useState<ChartPeriod>('1W');
+  const [tileVsPeriod, setTileVsPeriod] = useState<VsPeriod>('1W');
+  const [wtOpen,      setWtOpen]       = useState(false);
+  const [vsOpen,      setVsOpen]       = useState(false);
+  const [thesisOpen,  setThesisOpen]   = useState(false);
 
   // Auto-open the weight tooltip on the 2nd tile for 3s — fires only once ever (localStorage flag)
   useEffect(() => {
@@ -964,8 +965,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equ
   const changeColor  = periodReturn >= 0 ? 'text-emerald-400' : 'text-rose-400';
   const changeSign   = periodReturn >= 0 ? '+' : '';
 
-  // Only 1W VS data exists for now; always show VS 1W regardless of chart period
-  const tileVsPeriod = vsPeriod;
+  // Velocity Score for the per-tile window (tileVsPeriod, toggled on the tile itself).
   const tileVsVal    = equity.velocityScore?.[tileVsPeriod] ?? null;
 
   const peStr  = equity.pe !== null ? `${equity.pe}x` : 'N/A';
@@ -1066,38 +1066,68 @@ function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equ
                 </div>
               </span>
 
-              {/* VS — same size as avg wt, directly below */}
-              {tileVsVal !== null && (() => {
-                const pastScore = equity.proScore / (1 + tileVsVal / 100);
-                const vsColor   = tileVsVal >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                const vsSign    = tileVsVal >= 0 ? '+' : '-';
+              {/* Velocity Score + per-tile 1W/1M window switch. The toggle lets you
+                  inspect this specific stock's weight-change momentum over either
+                  window (1M is the stronger signal — see the All-Theme model-check —
+                  but ~39% of names have no 1M value yet). Rendered whenever the stock
+                  has at least one window, so the switch persists even if the selected
+                  window is empty. */}
+              {(equity.velocityScore?.['1W'] != null || equity.velocityScore?.['1M'] != null) && (() => {
+                const pastScore = tileVsVal !== null ? equity.proScore / (1 + tileVsVal / 100) : null;
+                const vsColor   = (tileVsVal ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400';
+                const vsSign    = (tileVsVal ?? 0) >= 0 ? '+' : '-';
                 return (
-                  <span className="relative group" onClick={e => { e.stopPropagation(); setVsOpen(o => !o); setWtOpen(false); }}>
-                    <span className={`${vsColor} font-bold text-2xl tabular-nums leading-none cursor-pointer`}>
-                      {vsSign}{Math.abs(tileVsVal).toFixed(1)}<span className="text-sm font-medium ml-0.5 opacity-70">% Velocity {tileVsPeriod}</span>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="relative group" onClick={e => { e.stopPropagation(); if (tileVsVal !== null) { setVsOpen(o => !o); setWtOpen(false); } }}>
+                      {tileVsVal !== null ? (
+                        <span className={`${vsColor} font-bold text-2xl tabular-nums leading-none cursor-pointer`}>
+                          {vsSign}{Math.abs(tileVsVal).toFixed(1)}<span className="text-sm font-medium ml-0.5 opacity-70">% Velocity</span>
+                        </span>
+                      ) : (
+                        <span className="text-slate-500 font-medium text-sm leading-none">No {tileVsPeriod} Velocity yet</span>
+                      )}
+                      {/* Tooltip: VS calculation */}
+                      {tileVsVal !== null && pastScore !== null && (
+                        <div className={`absolute right-0 top-full mt-1.5 w-52 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${vsOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
+                          <p className="text-slate-400 text-xs font-semibold mb-2">Velocity Score, {tileVsPeriod} window</p>
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 text-xs">Weight Score now</span>
+                              <span className="text-white text-xs font-bold tabular-nums">{equity.proScore.toFixed(2)}%</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 text-xs">Weight Score {tileVsPeriod} ago</span>
+                              <span className="text-slate-300 text-xs font-bold tabular-nums">{pastScore.toFixed(2)}%</span>
+                            </div>
+                          </div>
+                          <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 text-xs">Change</span>
+                              <span className={`text-xs font-bold tabular-nums ${vsColor}`}>{tileVsVal >= 0 ? '+' : ''}{tileVsVal.toFixed(1)}%</span>
+                            </div>
+                            <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Velocity = (now ÷ then − 1) × 100</p>
+                          </div>
+                        </div>
+                      )}
                     </span>
-                    {/* Tooltip: VS calculation */}
-                    <div className={`absolute right-0 top-full mt-1.5 w-52 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none ${vsOpen ? 'visible opacity-100' : 'invisible opacity-0 group-hover:visible group-hover:opacity-100'}`}>
-                      <p className="text-slate-400 text-xs font-semibold mb-2">Velocity Score, {tileVsPeriod} window</p>
-                      <div className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-400 text-xs">Weight Score now</span>
-                          <span className="text-white text-xs font-bold tabular-nums">{equity.proScore.toFixed(2)}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-400 text-xs">Weight Score {tileVsPeriod} ago</span>
-                          <span className="text-slate-300 text-xs font-bold tabular-nums">{pastScore.toFixed(2)}%</span>
-                        </div>
-                      </div>
-                      <div className="border-t border-slate-700 mt-2 pt-2 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-400 text-xs">Change</span>
-                          <span className={`text-xs font-bold tabular-nums ${vsColor}`}>{tileVsVal >= 0 ? '+' : ''}{tileVsVal.toFixed(1)}%</span>
-                        </div>
-                        <p className="text-slate-400 text-[11px] leading-relaxed pt-0.5">Velocity = (now ÷ then − 1) × 100</p>
-                      </div>
+                    {/* Per-tile window switch */}
+                    <div className="flex items-center gap-0.5 rounded-md border border-slate-700 bg-slate-800/70 p-0.5" onClick={e => e.stopPropagation()}>
+                      {(['1W', '1M'] as const).map(p => (
+                        <button
+                          key={p}
+                          onClick={() => { setTileVsPeriod(p); setVsOpen(false); trackEvent('tile_vs_period_changed', { ticker: equity.ticker, period: p }); }}
+                          title={`Show this stock's ${p === '1W' ? '1-week' : '1-month'} Velocity Score`}
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-bold leading-none transition-colors ${
+                            tileVsPeriod === p
+                              ? (p === '1M' ? 'bg-amber-500/25 text-amber-300' : 'bg-slate-600 text-white')
+                              : 'text-slate-500 hover:text-slate-300'
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      ))}
                     </div>
-                  </span>
+                  </div>
                 );
               })()}
             </div>
@@ -1233,7 +1263,7 @@ function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equ
     </div>
 
     {thesisOpen && (
-      <ThesisModal equity={equity} etfs={etfs} maxScore={maxScore} onClose={() => setThesisOpen(false)} vsPeriod={vsPeriod} />
+      <ThesisModal equity={equity} etfs={etfs} maxScore={maxScore} onClose={() => setThesisOpen(false)} vsPeriod={tileVsPeriod} />
     )}
     </>
   );
@@ -1241,16 +1271,16 @@ function EquityTile({ equity, etfs, maxScore, autoOpen, vsPeriod = '1W' }: { equ
 
 // ── Compact row (list view) ───────────────────────────────────────────────────
 function CompactRow({
-  equity, etfs, maxScore, rank, expanded, onToggle, vsPeriod = '1W',
+  equity, etfs, maxScore, rank, expanded, onToggle,
 }: {
   equity: Equity; etfs: string[]; maxScore: number;
-  rank: number; expanded: boolean; onToggle: () => void; vsPeriod?: VsPeriod;
+  rank: number; expanded: boolean; onToggle: () => void;
 }) {
   const domain     = TICKER_DOMAINS[equity.ticker];
   const logoUrl    = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
   const positive   = equity.weeklyChange >= 0;
   const changeColor = positive ? 'text-emerald-400' : 'text-rose-400';
-  const vsVal = equity.velocityScore?.[vsPeriod] ?? null;
+  const vsVal = equity.velocityScore?.['1W'] ?? null;
 
   return (
     <div>
@@ -1321,7 +1351,7 @@ function CompactRow({
       {/* Expanded full tile */}
       {expanded && (
         <div className="mt-2 mb-1 px-2">
-          <EquityTile equity={equity} etfs={etfs} maxScore={maxScore} vsPeriod={vsPeriod} />
+          <EquityTile equity={equity} etfs={etfs} maxScore={maxScore} />
         </div>
       )}
     </div>
@@ -2344,7 +2374,6 @@ export default function Home() {
   const [welcome, setWelcome] = useState(false);
   const [layout,    setLayout]    = useState<'grid' | 'compact'>('grid');
   const [sortBy,    setSortBy]    = useState<'wt' | 'vs'>('wt');
-  const [vsPeriod,  setVsPeriod]  = useState<VsPeriod>('1W');
   const [showGuide, setShowGuide] = useState(false);
   const [showNew,   setShowNew]   = useState(false);
   const [showAll,   setShowAll]   = useState(false);
@@ -2394,8 +2423,8 @@ export default function Home() {
   const equities = SAMPLE_DATA[theme];
   const sortedEquities = sortBy === 'vs'
     ? [...equities].sort((a, b) => {
-        const va = a.velocityScore?.[vsPeriod] ?? -Infinity;
-        const vb = b.velocityScore?.[vsPeriod] ?? -Infinity;
+        const va = a.velocityScore?.['1W'] ?? -Infinity;
+        const vb = b.velocityScore?.['1W'] ?? -Infinity;
         return vb - va;
       })
     : [...equities].sort((a, b) =>
@@ -2661,36 +2690,6 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Velocity window toggle — switches the Velocity Score window shown on
-                  tiles/list (and the Velocity sort) between 1W (broadest coverage) and
-                  1M (strongest signal, ~61% of names). Names missing the chosen window
-                  simply omit the velocity value. */}
-              <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
-                <span aria-hidden className="text-amber-300/80 text-xs pl-1.5 pr-0.5 select-none" title="Velocity Score window shown on the tiles">⚡</span>
-                <button
-                  onClick={() => { setVsPeriod('1W'); trackEvent('vs_period_changed', { period: '1W', theme }); }}
-                  title="Show the 1-week Velocity Score (broadest coverage)"
-                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
-                    vsPeriod === '1W'
-                      ? 'bg-slate-600 text-white'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  1W
-                </button>
-                <button
-                  onClick={() => { setVsPeriod('1M'); trackEvent('vs_period_changed', { period: '1M', theme }); }}
-                  title="Show the 1-month Velocity Score — the strongest signal (some names have no 1M value yet)"
-                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
-                    vsPeriod === '1M'
-                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/30'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  1M
-                </button>
-              </div>
-
               {/* Layout toggle */}
               <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 gap-0.5">
                 <button
@@ -2736,7 +2735,7 @@ export default function Home() {
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {(showAll ? sortedEquities : sortedEquities.slice(0, 10)).map((eq, i) => (
-                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} autoOpen={i === 1} vsPeriod={vsPeriod} />
+                    <EquityTile key={eq.ticker} equity={eq} etfs={etfs} maxScore={maxScore} autoOpen={i === 1} />
                   ))}
                 </div>
                 {!showAll && sortedEquities.length > 10 && (
@@ -2778,7 +2777,6 @@ export default function Home() {
                     rank={i + 1}
                     expanded={expanded === eq.ticker}
                     onToggle={() => setExpanded(t => t === eq.ticker ? null : eq.ticker)}
-                    vsPeriod={vsPeriod}
                   />
                 ))}
               </div>
