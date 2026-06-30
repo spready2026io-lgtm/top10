@@ -1597,7 +1597,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 // (deduped by ticker, themes collected); ETFs from the tracked theme ETFs. Each
 // carries today's move (1D) and the trailing-month return (1M) so the All-Theme
 // board can re-rank by "what's moving" alongside the breadth ranking.
-type MoverStock = { ticker: string; name: string; price: number; currency?: string; dayChange: number; oneM: number; velo1D: number | null; velo1M: number | null; themes: Theme[] };
+type MoverStock = { ticker: string; name: string; price: number; currency?: string; dayChange: number; oneM: number; velo1W: number | null; velo1M: number | null; themes: Theme[] };
 type MoverEtf   = { ticker: string; name: string; dayChange: number; oneM: number };
 
 const MOVER_STOCKS: MoverStock[] = (() => {
@@ -1610,7 +1610,7 @@ const MOVER_STOCKS: MoverStock[] = (() => {
       else map.set(eq.ticker, {
         ticker: eq.ticker, name: eq.name, price: eq.price, currency: eq.currency,
         dayChange: eq.dayChange ?? 0, oneM: eq.periodReturns['1M'],
-        velo1D: eq.velocityScore?.['1D'] ?? null, velo1M: eq.velocityScore?.['1M'] ?? null,
+        velo1W: eq.velocityScore?.['1W'] ?? null, velo1M: eq.velocityScore?.['1M'] ?? null,
         themes: [t],
       });
     });
@@ -1671,9 +1671,9 @@ function VeloPill({ v }: { v: number | null }) {
 // the top-10 tail): direction-match rate + the average move of the rising- vs
 // falling-conviction cohorts. The spread (Velocity+ minus Velocity− average move)
 // is the real signal — positive means the conviction metric is tracking price.
-function computeModelCheck(mode: '1d' | '1m') {
-  const ret = (s: MoverStock) => mode === '1m' ? s.oneM : s.dayChange;
-  const vel = (s: MoverStock) => mode === '1m' ? s.velo1M : s.velo1D;
+function computeModelCheck() {
+  const ret = (s: MoverStock) => s.oneM;
+  const vel = (s: MoverStock) => s.velo1M;
   const pop = MOVER_STOCKS.filter(s => vel(s) !== null);
   const directional = pop.filter(s => vel(s) !== 0 && ret(s) !== 0);
   const matched = directional.filter(s => Math.sign(vel(s)!) === Math.sign(ret(s))).length;
@@ -1698,7 +1698,10 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
   const key: 'oneM' | 'dayChange' = mode === '1m' ? 'oneM' : 'dayChange';
   const topStocks = [...MOVER_STOCKS].sort((a, b) => b[key] - a[key]).slice(0, 10);
   const topEtfs   = [...MOVER_ETFS].sort((a, b) => b[key] - a[key]).slice(0, 10);
-  const mc = mode === 'breadth' ? null : computeModelCheck(mode);
+  // Model check only on the 1M tab — 1W velocity vs a single day's move is noise, so
+  // the validation stat lives where windows are meaningful (1M velocity vs 1M move).
+  const mc = mode === '1m' ? computeModelCheck() : null;
+  const veloWin = mode === '1m' ? '1M' : '1W';
 
   const heading =
     mode === '1d' ? 'Biggest Movers Today (1D)' :
@@ -1787,7 +1790,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
           <div className="mb-5 rounded-xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-900/40 px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
               <div className="min-w-0">
-                <div className="text-[10px] font-bold tracking-[0.14em] uppercase text-amber-300/80">Model check · Velocity vs price · {mode === '1m' ? '1M' : '1D'}</div>
+                <div className="text-[10px] font-bold tracking-[0.14em] uppercase text-amber-300/80">Model check · Velocity vs price · 1M</div>
                 <div className="text-sm text-slate-300 mt-0.5">
                   Velocity agreed with the actual move on <span className="text-white font-bold text-lg tabular-nums">{mc.matchPct}%</span> of {mc.n} tracked stocks
                 </div>
@@ -1820,13 +1823,13 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
             <div className="flex items-baseline justify-between gap-2 mb-2">
               <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400">Stocks</h3>
               <span className="text-[10px] text-slate-500 text-right leading-tight">
-                price move <span className="text-slate-600">·</span> <span className="text-slate-400">⚡ Velocity</span> — matching colours = conviction confirms the move
+                price move <span className="text-slate-600">·</span> <span className="text-slate-400">⚡ Velocity ({veloWin})</span> — matching colours = conviction confirms the move
               </span>
             </div>
             <div className="space-y-2">
               {topStocks.map((s, i) => {
                 const val  = mode === '1m' ? s.oneM : s.dayChange;
-                const velo = mode === '1m' ? s.velo1M : s.velo1D;
+                const velo = mode === '1m' ? s.velo1M : s.velo1W;
                 return (
                   <div key={s.ticker} className="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2">
                     <span className="text-slate-600 font-bold tabular-nums w-5 text-right text-xs flex-shrink-0">{i + 1}</span>
