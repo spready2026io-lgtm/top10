@@ -1710,7 +1710,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
     mode === '1m' ? 'Strongest trailing-month returns across stocks and ETFs. Where capital has been rotating over the past month.' :
     'Ranked by cross-theme breadth, the stocks held across the most institutional theme baskets. The widest-conviction names in the entire tracked universe. Ranking: ETF count first, avg weight across all themes as tiebreaker. (Meme theme excluded)';
 
-  const segs: [CrossMode, string][] = [['breadth', 'Breadth'], ['1d', '🔥 1D Movers'], ['1m', '⚡ 1M Movers']];
+  const segs: [CrossMode, string][] = [['1d', '🔥 1D Movers'], ['1m', '⚡ 1M Movers'], ['breadth', 'Breadth']];
 
   return (
     <div className="max-w-7xl mx-auto px-4 pb-16 pt-4">
@@ -1794,27 +1794,27 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                 </div>
               </div>
               <div className="flex items-stretch gap-2.5 text-xs">
-                <div
-                  className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 cursor-help"
-                  title={`Average 1M price move of the ${mc.upN} stocks whose Velocity Score rose this month (institutional conviction building). If the model works, this should be higher than the falling group.`}
-                >
+                <div className="relative group rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-1.5 cursor-help">
                   <div className="text-slate-400 whitespace-nowrap">Rising ⚡+ <span className="text-slate-600">({mc.upN})</span></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.upAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.upAvg ?? 0) >= 0 ? '+' : ''}{(mc.upAvg ?? 0).toFixed(1)}%</div>
+                  <div className="absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                    <p className="text-slate-300 text-xs font-normal leading-relaxed">Average 1M price move of the {mc.upN} stocks whose Velocity Score rose this month (conviction building). If the model works, this should beat the falling group.</p>
+                  </div>
                 </div>
-                <div
-                  className="rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5 cursor-help"
-                  title={`Average 1M price move of the ${mc.downN} stocks whose Velocity Score fell this month (institutional conviction fading).`}
-                >
+                <div className="relative group rounded-lg border border-rose-500/20 bg-rose-500/5 px-3 py-1.5 cursor-help">
                   <div className="text-slate-400 whitespace-nowrap">Falling ⚡− <span className="text-slate-600">({mc.downN})</span></div>
                   <div className={`font-bold tabular-nums text-sm ${(mc.downAvg ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>avg {(mc.downAvg ?? 0) >= 0 ? '+' : ''}{(mc.downAvg ?? 0).toFixed(1)}%</div>
+                  <div className="absolute left-0 top-full mt-1.5 w-56 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                    <p className="text-slate-300 text-xs font-normal leading-relaxed">Average 1M price move of the {mc.downN} stocks whose Velocity Score fell this month (conviction fading).</p>
+                  </div>
                 </div>
                 {mc.spread !== null && (
-                  <div
-                    className="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 cursor-help"
-                    title="Rising-group average minus falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month — the Velocity Score is tracking real price performance."
-                  >
+                  <div className="relative group rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 cursor-help">
                     <div className="text-slate-400 whitespace-nowrap">Spread</div>
                     <div className={`font-bold tabular-nums text-sm ${mc.spread >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>{mc.spread >= 0 ? '+' : ''}{mc.spread.toFixed(1)}%</div>
+                    <div className="absolute right-0 top-full mt-1.5 w-60 rounded-lg border border-slate-700 bg-slate-950 p-3 shadow-xl z-50 transition-opacity duration-150 pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100">
+                      <p className="text-slate-300 text-xs font-normal leading-relaxed">Rising-group average minus falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month — the Velocity Score is tracking real price performance.</p>
+                    </div>
                   </div>
                 )}
               </div>
