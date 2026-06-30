@@ -1597,7 +1597,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
 // (deduped by ticker, themes collected); ETFs from the tracked theme ETFs. Each
 // carries today's move (1D) and the trailing-month return (1M) so the All-Theme
 // board can re-rank by "what's moving" alongside the breadth ranking.
-type MoverStock = { ticker: string; name: string; price: number; currency?: string; dayChange: number; oneM: number; themes: Theme[] };
+type MoverStock = { ticker: string; name: string; price: number; currency?: string; dayChange: number; oneM: number; velo1D: number | null; velo1M: number | null; themes: Theme[] };
 type MoverEtf   = { ticker: string; name: string; dayChange: number; oneM: number };
 
 const MOVER_STOCKS: MoverStock[] = (() => {
@@ -1609,7 +1609,9 @@ const MOVER_STOCKS: MoverStock[] = (() => {
       if (ex) { if (!ex.themes.includes(t)) ex.themes.push(t); }
       else map.set(eq.ticker, {
         ticker: eq.ticker, name: eq.name, price: eq.price, currency: eq.currency,
-        dayChange: eq.dayChange ?? 0, oneM: eq.periodReturns['1M'], themes: [t],
+        dayChange: eq.dayChange ?? 0, oneM: eq.periodReturns['1M'],
+        velo1D: eq.velocityScore?.['1D'] ?? null, velo1M: eq.velocityScore?.['1M'] ?? null,
+        themes: [t],
       });
     });
   });
@@ -1638,6 +1640,28 @@ function PctPill({ v }: { v: number }) {
           : 'bg-rose-500/15 border-rose-500/30 text-rose-300'
     }`}>
       {pos ? '+' : ''}{v.toFixed(1)}%
+    </span>
+  );
+}
+
+// Velocity Score pill — conviction momentum for the same window. Sign-coloured so
+// it can be read against the price move: matching colours = conviction confirms the
+// move (a win for the model), mismatched = divergence. Muted vs PctPill (⚡ + no %)
+// so the actual return stays the primary number.
+function VeloPill({ v }: { v: number | null }) {
+  if (v === null || v === undefined) {
+    return <span className="text-[11px] text-slate-600 tabular-nums px-1.5 whitespace-nowrap" title="No Velocity Score for this window">⚡ —</span>;
+  }
+  const pos = v >= 0;
+  return (
+    <span
+      title="Velocity Score — weight-change momentum for this window"
+      className={`inline-flex items-center gap-0.5 text-xs font-bold tabular-nums px-2 py-0.5 rounded-full border whitespace-nowrap ${
+        pos ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-400/90'
+            : 'bg-rose-500/10 border-rose-500/20 text-rose-400/90'
+      }`}
+    >
+      ⚡{pos ? '+' : ''}{v.toFixed(1)}
     </span>
   );
 }
@@ -1735,10 +1759,16 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Stocks movers */}
           <div>
-            <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400 mb-2">Stocks</h3>
+            <div className="flex items-baseline justify-between gap-2 mb-2">
+              <h3 className="text-xs font-bold tracking-[0.12em] uppercase text-slate-400">Stocks</h3>
+              <span className="text-[10px] text-slate-500 text-right leading-tight">
+                price move <span className="text-slate-600">·</span> <span className="text-slate-400">⚡ Velocity</span> — matching colours = conviction confirms the move
+              </span>
+            </div>
             <div className="space-y-2">
               {topStocks.map((s, i) => {
-                const val = mode === '1m' ? s.oneM : s.dayChange;
+                const val  = mode === '1m' ? s.oneM : s.dayChange;
+                const velo = mode === '1m' ? s.velo1M : s.velo1D;
                 return (
                   <div key={s.ticker} className="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2">
                     <span className="text-slate-600 font-bold tabular-nums w-5 text-right text-xs flex-shrink-0">{i + 1}</span>
@@ -1755,7 +1785,10 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
                       </div>
                       <span className="text-slate-500 text-[11px] truncate block">{displayName(s.ticker, s.name)}</span>
                     </div>
-                    <PctPill v={val} />
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <PctPill v={val} />
+                      <VeloPill v={velo} />
+                    </div>
                   </div>
                 );
               })}
