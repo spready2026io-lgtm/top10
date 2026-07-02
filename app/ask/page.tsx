@@ -39,7 +39,7 @@ export default function AskTonyPage() {
       const res = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, source }),
       });
       const data = await res.json();
       const latencyMs = Math.round(performance.now() - startedAt);

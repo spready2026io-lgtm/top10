@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { buildTonyContext } from '@/lib/tony-context';
+import { logTonyExchange } from '@/lib/tony-log';
 
 // client is created per-request so missing env var surfaces as a clear error
 
@@ -164,7 +165,7 @@ Format: plain text. Use line breaks for readability. No markdown headers.`;
 
 export async function POST(req: NextRequest) {
   try {
-    const { question } = await req.json();
+    const { question, source } = await req.json();
     if (!question || typeof question !== 'string' || question.trim().length < 3) {
       return NextResponse.json({ error: 'Question required.' }, { status: 400 });
     }
@@ -180,6 +181,7 @@ export async function POST(req: NextRequest) {
 
     const client = new Anthropic({ apiKey });
     const context = buildTonyContext();
+    const startedAt = Date.now();
 
     const message = await client.messages.create({
       model: 'claude-haiku-4-5',
@@ -194,6 +196,16 @@ export async function POST(req: NextRequest) {
     });
 
     const text = message.content[0].type === 'text' ? message.content[0].text : '';
+
+    // fire-and-forget: a logging failure must never break the chat response
+    logTonyExchange({
+      ts: new Date().toISOString(),
+      question: question.trim(),
+      answer: text,
+      latencyMs: Date.now() - startedAt,
+      source: typeof source === 'string' ? source : 'typed',
+    }).catch(() => {});
+
     return NextResponse.json({ answer: text });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
