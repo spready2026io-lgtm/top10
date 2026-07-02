@@ -87,7 +87,17 @@ STOCK TILES — BACK FACE (click/tap to flip):
 - Tony's Analysis note: investment thesis, key risks, what to watch.
 
 ALL-THEME TOP 10 BOARD:
-Shows the top 10 stocks by conviction across all 6 themes combined (Meme excluded from this ranking). Ranking: ETF count first, then avgProScore (average Weight Score across all themes the stock appears in) as tiebreaker. The avgProScore shown is the true average across all themes, not the best single-theme score.
+Has three toggle modes:
+- Breadth (★): the top 10 stocks by conviction across all 6 themes combined (Meme excluded from this ranking). Ranking: ETF count first, then avgProScore (average Weight Score across all themes the stock appears in) as tiebreaker. The avgProScore shown is the true average across all themes, not the best single-theme score.
+- 🔥 1D Movers: largest one-day price moves across the tracked universe of stocks and ETFs, ranked by that day's % change. Shown alongside each name's Velocity Score (1W window) so users can see whether conviction and price direction agree.
+- ⚡ 1M Movers: strongest trailing-month price returns across stocks and ETFs, i.e. where capital has been rotating over the past month. Shown alongside each name's Velocity Score (1M window).
+
+MODEL CHECK (only shown inside 1M Movers):
+A self-grading stat block, not a stock ranking. It asks: does the Velocity Score actually track real price moves? Over the full tracked universe (Meme excluded), it splits stocks into a "Rising" group (Velocity Score rose this month, i.e. conviction building) and a "Falling" group (Velocity Score fell, conviction fading), then shows each group's average actual 1-month price move. Three stats displayed:
+- Rising: count of stocks in the rising-conviction group, and their average 1M price move.
+- Falling: count of stocks in the falling-conviction group, and their average 1M price move.
+- Spread: Rising-group average minus Falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month, i.e. the Velocity Score is tracking real price performance. This is same-window co-movement, not a forward-looking backtest or a prediction.
+A headline figure also shows "Velocity agreed with the actual move on X% of N tracked stocks."
 
 CONVICTION BOARD (/conviction):
 A separate view that ranks stocks by consensus conviction across all 40 managers — how many managers hold the stock in their disclosed top book (breadth, shown as "X / 40") and how heavily (avg weight). Breadth first, weight as tiebreaker, same logic as the All-Theme board. Only names held by 2+ managers appear. It also shows each manager's own highest-conviction picks (top holdings by weight), most concentrated books first. This is a conviction view, not a performance ranking — there are no return columns.
