@@ -1,0 +1,57 @@
+name: Refresh Prices (late morning)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 15:00 UTC = 11:00 ET while EDT is in effect (roughly mid-March to
+    # early November). NASDAQ trading days only. Price-only refresh — does
+    # NOT re-scrape ETF holdings, just pulls fresh Yahoo Finance prices.
+    # Fixed UTC like the other price-refresh jobs, so this drifts to 10:00 ET
+    # once EST resumes in November, matching the existing house pattern.
+    - cron: '0 15 * * 1-5'
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh prices (build-data-ts.js only)
+        run: node scripts/build-data-ts.js
+
+      - name: Verify prices not all zero
+        run: |
+          ZERO_COUNT=$(grep -c 'price: 0\.00' lib/data.ts || true)
+          NONZERO_COUNT=$(grep -cP 'price: [1-9]' lib/data.ts || true)
+          echo "Zero-price entries: $ZERO_COUNT"
+          echo "Non-zero-price entries: $NONZERO_COUNT"
+          if [ "$NONZERO_COUNT" -lt 20 ]; then
+            echo "ERROR: fewer than 20 non-zero prices found. Yahoo Finance auth likely failed. Aborting commit."
+            exit 1
+          fi
+
+      - name: Commit and push
+        run: |
+          git config user.name "top10-bot"
+          git config user.email "bot@spready.io"
+          cp lib/data.ts /tmp/data.ts
+          [ -f lib/history.json ] && cp lib/history.json /tmp/history.json || true
+          git fetch origin master
+          git reset --hard origin/master
+          cp /tmp/data.ts lib/data.ts
+          [ -f /tmp/history.json ] && cp /tmp/history.json lib/history.json || true
+          git add lib/data.ts lib/history.json
+          git diff --staged --quiet || git commit -m "data: late-morning price refresh $(date -u +%Y-%m-%d)"
+          git push
