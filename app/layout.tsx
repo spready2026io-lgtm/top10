@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import ScrollToTop from "./components/ScrollToTop";
 import GoogleAnalytics from "./components/GoogleAnalytics";
+import AskTonyButton from "./components/AskTonyButton";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <ScrollToTop />
+        <AskTonyButton />
         <GoogleAnalytics />
       </body>
     </html>

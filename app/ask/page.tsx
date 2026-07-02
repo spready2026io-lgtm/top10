@@ -29,11 +29,12 @@ export default function AskTonyPage() {
   async function ask(question: string, source: 'typed' | 'suggested' = 'typed') {
     const q = question.trim();
     if (!q || loading) return;
-    trackEvent('ask_tony_question', { source, question_length: q.length });
+    trackEvent('ask_tony_question', { source, question_length: q.length, question_text: q.slice(0, 100) });
     setInput('');
     setError('');
     setMessages(prev => [...prev, { role: 'user', text: q }]);
     setLoading(true);
+    const startedAt = performance.now();
     try {
       const res = await fetch('/api/ask', {
         method: 'POST',
@@ -41,13 +42,17 @@ export default function AskTonyPage() {
         body: JSON.stringify({ question: q }),
       });
       const data = await res.json();
+      const latencyMs = Math.round(performance.now() - startedAt);
       if (!res.ok || data.error) {
         setError(data.error ?? 'Something went wrong.');
+        trackEvent('ask_tony_error', { reason: (data.error ?? 'unknown').slice(0, 100), latency_ms: latencyMs });
       } else {
         setMessages(prev => [...prev, { role: 'tony', text: data.answer }]);
+        trackEvent('ask_tony_answered', { answer_length: data.answer.length, latency_ms: latencyMs, turn: messages.length / 2 + 1 });
       }
     } catch {
       setError('Network error. Try again.');
+      trackEvent('ask_tony_error', { reason: 'network_error', latency_ms: Math.round(performance.now() - startedAt) });
     } finally {
       setLoading(false);
     }
