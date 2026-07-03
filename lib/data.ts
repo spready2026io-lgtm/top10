@@ -267,8 +267,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Elec
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-07-03T13:36:47.487Z';
-export const SCAN_TIMESTAMP_NY = 'July 3, 2026 at 9:36 AM ET';
+export const SCAN_TIMESTAMP    = '2026-07-03T16:27:47.528Z';
+export const SCAN_TIMESTAMP_NY = 'July 3, 2026 at 12:27 PM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
@@ -950,7 +950,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 820.16, weeklyPrices: [899.90, 968.53, 965.00, 915.19, 820.16], weeklyChange: -8.86, dayChange: -10.38, sortRank: 0, periodReturns: { '1M': -11.5, 'YTD': 197.8, '6M': 185.2, '1Y': 448.8 },
       priceHistory: { '1D': [915.19, 909.45, 916.1, 893.2, 872.63, 855.79, 850.53, 850.92, 854.62, 845.19, 836.25, 827.6, 824.59, 820.61, 816.69, 803.4, 799.74, 796.72, 807.09, 815.72, 812.23, 807.8, 815, 820.16], '1W': [899.9, 968.53, 965, 915.19, 820.16], '1M': [926.61, 940.69, 925.99, 847.47, 876.77, 846.01, 815.99, 868.09, 931.04, 1018.8, 1066.07, 1070.23, 1094.04, 1038.59, 993.25, 1025.36, 899.9, 968.53, 965, 915.19, 820.16], 'YTD': [275.39, 284.47, 320.32, 346.1, 407.69, 429.32, 425.99, 407.4, 379.52, 374.33, 398.78, 404.02, 362.43, 468.72, 533.44, 559.9, 579.03, 771.01, 808.8, 733.35, 870.66, 940.69, 815.99, 1066.07, 1025.36, 820.16], '6M': [287.54, 304.01, 326.23, 358.29, 432.95, 425, 415.94, 396.02, 357.62, 384.29, 421.09, 424.96, 391.76, 468.72, 533.44, 559.9, 579.03, 771.01, 808.8, 733.35, 870.66, 940.69, 815.99, 1066.07, 1025.36, 820.16], '1Y': [149.44, 147.18, 149.07, 150.89, 154.81, 150.45, 155.73, 154.6, 172.38, 188.16, 195.99, 221.23, 217.51, 252.79, 214.38, 225.4, 226.41, 268.34, 278.47, 262.56, 240.5, 276.69, 278.79, 287.64, 296.36, 281.3, 289.83, 321.48, 325.99, 371.76, 444.45, 396.23, 424.14, 421.85, 375.01, 385.97, 421.09, 424.96, 391.76, 496.3, 519.6, 579.88, 643.3, 786.42, 817.35, 751.07, 870.66, 940.69, 815.99, 1066.07, 1025.36, 820.16] },
       velocityScore: { '1D': 14.4, '1W': -18.5, '1M': -34.3, '6M': null }, isNew: false,
-      marketCap: '$186B', pe: 77.5, revenueGrowth: 44, eps: 10.58, grossMargin: 42, dividendYield: 0.36,
+      marketCap: '$184B', pe: 77.5, revenueGrowth: 44, eps: 10.58, grossMargin: 42, dividendYield: 0.36,
       etfPresence: { PTF: 3.57, WCLD: false, IGV: false, FDTX: 4.14, GTEK: false, ARKK: false, MARS: false, FRWD: 7.94, BCTK: false, FWD: false, CBSE: false, FCUS: 4.66, WGMI: false, CNEQ: false, SGRT: false, SPMO: false, XMMO: false },
       tonyNote: 'Seagate appears in 4 AI ETFs at 2.73% average weight, positioned alongside WDC as the institutional pair trade on AI storage infrastructure. Revenue grew 44%, gross margin 42%, P/E of 83x — the premium valuation reflects expectations for continued enterprise HDD pricing power. The 646% 1-year return is substantial; at current prices the weight score matters more as a signal of continued institutional support than a fresh entry point.',
     },
