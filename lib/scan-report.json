@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-05T13:37:08.961Z",
-  "scanTimestampNY": "July 5, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-06T13:37:20.174Z",
+  "scanTimestampNY": "July 6, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 42
+        "count": 18
       },
       "ARTY": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "ARKK": {
         "ok": true,
-        "count": 46
+        "count": 45
       },
       "MARS": {
         "ok": true,
@@ -121,7 +121,7 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "XMMO": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 44
+        "count": 15
       },
       "VOLT": {
         "ok": true,
@@ -231,12 +231,20 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 88,
-    "succeeded": 88,
+    "total": 89,
+    "succeeded": 89,
     "failed": []
   }
 }
