@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-06T13:37:20.174Z",
-  "scanTimestampNY": "July 6, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-07T13:37:31.240Z",
+  "scanTimestampNY": "July 7, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 18
+        "count": 42
       },
       "ARTY": {
         "ok": true,
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 32
+        "count": 33
       },
       "IGPT": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 33
+        "count": 35
       },
       "AIFD": {
         "ok": true,
@@ -81,7 +81,7 @@
       },
       "ARKK": {
         "ok": true,
-        "count": 45
+        "count": 44
       },
       "MARS": {
         "ok": true,
@@ -105,7 +105,7 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "WGMI": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 15
+        "count": 44
       },
       "VOLT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 2
+        "count": 3
       },
       "PBW": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 49
+        "count": 48
       },
       "BUZZ": {
         "ok": true,
@@ -173,7 +173,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 17
+        "count": 18
       },
       "RKNG": {
         "ok": true,
@@ -231,20 +231,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 89,
-    "succeeded": 89,
+    "total": 86,
+    "succeeded": 86,
     "failed": []
   }
 }
