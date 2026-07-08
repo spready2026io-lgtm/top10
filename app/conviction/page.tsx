@@ -28,7 +28,8 @@ export default function ConvictionPage() {
   const [showAllManagers, setShowAllManagers] = useState(false);
 
   const chartRows = useMemo(() => CONSENSUS.slice(0, 10), []);
-  const maxBreadth = chartRows[0]?.totalManagers ?? 40;
+  const totalManagers = MANAGERS.length;
+  const maxBreadth = chartRows[0]?.totalManagers ?? totalManagers;
   const managers = showAllManagers ? MANAGERS : MANAGERS.slice(0, 8);
 
   function TabBtn({ k, label }: { k: Tab; label: string }) {
@@ -54,7 +55,7 @@ export default function ConvictionPage() {
         <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Stockscout</Link>
         <div className="text-center">
           <div className="font-bold text-sm">The Conviction Board</div>
-          <div className="text-xs text-slate-500">Where 40 managers concentrate</div>
+          <div className="text-xs text-slate-500">Where {totalManagers} managers concentrate</div>
         </div>
         <Link href="/ask" className="text-emerald-400 hover:text-emerald-300 text-xs transition-colors">Ask Tony</Link>
       </header>
@@ -65,7 +66,7 @@ export default function ConvictionPage() {
         <div className="mb-8 p-6 bg-slate-900 border border-slate-800 rounded-2xl">
           <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-emerald-400 mb-3">The Conviction Board</div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-50 leading-tight">
-            Where 40 active ETF managers put their highest conviction.
+            Where {totalManagers} active ETF managers put their highest conviction.
           </h1>
           <p className="text-sm text-slate-400 leading-relaxed mt-4 max-w-2xl">
             Every manager publishes the handful of names it weights most. When the same stock shows up across many top books, that is consensus you can see. This board ranks by <span className="text-slate-200">how many managers hold it and how heavily</span>. Not performance. Not a formula. Just where conviction is concentrated.
@@ -87,7 +88,7 @@ export default function ConvictionPage() {
         <div className="mb-8 bg-slate-900 border border-slate-800 rounded-xl p-5">
           <div className="font-bold text-sm">Consensus conviction</div>
           <div className="text-xs sm:text-sm font-medium text-slate-300 mt-1 mb-5">
-            Held in N of {maxBreadth} managers&apos; top books. Bar = breadth, label = avg weight where held.
+            {`Held in N of ${maxBreadth} managers' top books. Bar = breadth, label = avg weight where held.`}
           </div>
 
           <div className="flex flex-col gap-2.5">
