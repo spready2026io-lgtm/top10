@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-08T13:37:12.772Z",
-  "scanTimestampNY": "July 8, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-09T13:37:18.597Z",
+  "scanTimestampNY": "July 9, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -121,7 +121,7 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "XMMO": {
         "ok": true,
@@ -169,11 +169,11 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 17
       },
       "RKNG": {
         "ok": true,
@@ -235,8 +235,11 @@
     ]
   },
   "yfScan": {
-    "total": 88,
+    "total": 90,
     "succeeded": 88,
-    "failed": []
+    "failed": [
+      "SHOP",
+      "APLD"
+    ]
   }
 }
