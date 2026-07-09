@@ -126,6 +126,7 @@ export default function Universe() {
             <span className="hidden sm:inline text-emerald-300 text-sm font-medium tracking-[0.18em] uppercase whitespace-nowrap">See it first.</span>
           </div>
           <nav className="flex items-center gap-5 text-sm flex-shrink-0">
+            <Link href="/markets" className="text-slate-400 hover:text-white transition-colors">Markets</Link>
             <Link href="/universe" className="text-emerald-400 font-medium">Universe</Link>
             <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
             <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>

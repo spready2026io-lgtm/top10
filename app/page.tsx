@@ -2508,6 +2508,11 @@ export default function Home() {
               <Link href="/conviction" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 text-xs font-bold transition-colors whitespace-nowrap">
                 Conviction Board
               </Link>
+              <Link href="/markets" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 hover:bg-violet-500/20 hover:border-violet-500/50 text-xs font-bold transition-colors whitespace-nowrap">
+                <span aria-hidden className="text-sm leading-none">🌍</span>
+                World Markets
+                <span className="bg-violet-400/30 border border-violet-300/50 text-violet-50 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full leading-none tracking-wider">NEW</span>
+              </Link>
               <Link href="/ask" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 text-xs font-bold transition-colors whitespace-nowrap">
                 Ask Tony
               </Link>

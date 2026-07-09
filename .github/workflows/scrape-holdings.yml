@@ -67,6 +67,13 @@ jobs:
       - name: Fetch holdings + build data.ts
         run: node scripts/run-all.js
 
+      # International Markets pipeline (lib/markets-data.ts + markets-history.json).
+      # Isolated on purpose: a markets failure must never block the conviction
+      # pipeline commit. On failure the markets files are simply left unchanged.
+      - name: Fetch international markets data
+        continue-on-error: true
+        run: node scripts/fetch-markets.js
+
       - name: Verify prices not all zero
         run: |
           ZERO_COUNT=$(grep -c 'price: 0\.00' lib/data.ts || true)
@@ -87,6 +94,8 @@ jobs:
           cp lib/data.ts           /tmp/data.ts
           [ -f lib/scan-report.json ] && cp lib/scan-report.json /tmp/scan-report.json || true
           [ -f lib/history.json ]   && cp lib/history.json        /tmp/history.json    || true
+          [ -f lib/markets-data.ts ]     && cp lib/markets-data.ts     /tmp/markets-data.ts     || true
+          [ -f lib/markets-history.json ] && cp lib/markets-history.json /tmp/markets-history.json || true
           # Reset to the absolute latest origin/master to avoid rebase conflicts
           git fetch origin master
           git reset --hard origin/master
@@ -95,7 +104,9 @@ jobs:
           cp /tmp/data.ts           lib/data.ts
           [ -f /tmp/scan-report.json ] && cp /tmp/scan-report.json lib/scan-report.json || true
           [ -f /tmp/history.json ]   && cp /tmp/history.json       lib/history.json    || true
-          git add lib/holdings-raw.json lib/data.ts lib/scan-report.json lib/history.json
+          [ -f /tmp/markets-data.ts ]     && cp /tmp/markets-data.ts     lib/markets-data.ts     || true
+          [ -f /tmp/markets-history.json ] && cp /tmp/markets-history.json lib/markets-history.json || true
+          git add lib/holdings-raw.json lib/data.ts lib/scan-report.json lib/history.json lib/markets-data.ts lib/markets-history.json
           git diff --staged --quiet || git commit -m "data: ETF holdings update $(date -u +%Y-%m-%d)"
           git push
 

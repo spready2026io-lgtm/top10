@@ -112,6 +112,17 @@ Users pick a base index core (SPY or QQQ toggle) for market beta, then drag a di
 ETF UNIVERSE PAGE (/universe):
 A sortable table of every ETF Stockscout tracks: symbol, name, manager, theme, size (fund net assets / AUM), and top holding. This is the full underlying universe, not just the Top 10 view.
 
+INTERNATIONAL MARKETS PAGE (/markets, "World Markets" in the home tools row):
+A separate board that maps where money flows across world markets. Every tile is a MARKET, not a stock, measured through the index fund global investors use to enter it. This page is methodologically separate from the conviction rankings: conviction scores come from actively managed funds only; here, index country funds are deliberately used as measuring instruments for market-level money movement. The index-fund exclusion rule does NOT apply here because nothing on this page scores manager conviction.
+- 18 market tiles in 3 region groups. Europe group: Europe as one region tile (via IEUR, covering the whole developed continent) plus a standalone United Kingdom tile (EWU). Asia group: Japan (EWJ), China offshore (MCHI), China A-Shares onshore (CNYA), Hong Kong (EWH), Taiwan (EWT), South Korea (EWY), India (INDA), Singapore (EWS), Indonesia (EIDO), Malaysia (EWM), Thailand (THD), Philippines (EPHE). Latin America group: Brazil (EWZ), Mexico (EWW), Argentina (ARGT, a Global X fund, the only pure Argentina vehicle), Chile (ECH).
+- China appears twice on purpose: MCHI holds the offshore listings foreign money buys (Hong Kong lists, US ADRs); CNYA holds onshore Shanghai/Shenzhen A-shares that domestic money trades. Divergence between the two tiles is a signal about who is buying, locals or foreigners.
+- Each tile shows: flag, market name, instrument fund, price return for the selected window (1W / 1M / YTD / 6M / 1Y toggle), a sparkline, fund price and size (AUM), and NET FLOW.
+- NET FLOW definition: change in the fund's shares outstanding times price, i.e. real fund creations and redemptions in dollars. This measures money actually entering or leaving, and it is independent of price direction. Price and flow agreeing is confirmation; disagreeing is the interesting signal (a falling market with inflows is being bought on the dip; a rally with outflows is running on fumes). Share-count tracking began 2026-07-09, so flow figures show "collecting" until history spans the window (1W flow needs a week, 1M a month).
+- THIN FUND badge: amber chip on any tile whose instrument fund has under $100M in assets. Signal from thin funds is noisier; single-day moves deserve suspicion.
+- Tap/click a tile to open Tony's note on that market.
+- "Where the big international money sits" section: 8 broad international allocation funds (IXUS total international, EFA developed ex-North America, EEM emerging markets, EMXC EM ex-China, IEUR Europe, EZU Eurozone, EEMA EM Asia, ILF Latin America 40) broken down into country weight bars by country of risk of their holdings. When these giants take in money, it lands in markets in these proportions. EMXC versus EEM flows is a direct read on China sentiment inside EM allocations.
+- Coverage limit (state it when relevant, softly): flows are measured through US-listed funds (iShares, plus Global X for Argentina). It is a good window into global allocation, not a census of all cross-border flows.
+
 ABOUT PAGE (/about):
 Plain-language onboarding: what Stockscout is, and what an ETF is, for a user new to the product.
 
