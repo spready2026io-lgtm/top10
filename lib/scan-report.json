@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-09T13:37:18.597Z",
-  "scanTimestampNY": "July 9, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-10T13:37:40.558Z",
+  "scanTimestampNY": "July 10, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 42
+        "count": 18
       },
       "ARTY": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 34
+        "count": 35
       },
       "AIFD": {
         "ok": true,
@@ -97,11 +97,11 @@
       },
       "FWD": {
         "ok": true,
-        "count": 17
+        "count": 18
       },
       "CBSE": {
         "ok": true,
-        "count": 24
+        "count": 22
       },
       "FCUS": {
         "ok": true,
@@ -121,15 +121,15 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "XMMO": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "POW": {
         "ok": true,
-        "count": 44
+        "count": 13
       },
       "VOLT": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 48
+        "count": 47
       },
       "BUZZ": {
         "ok": true,
@@ -173,11 +173,11 @@
       },
       "MEME": {
         "ok": true,
-        "count": 17
+        "count": 18
       },
       "RKNG": {
         "ok": true,
-        "count": 20
+        "count": 24
       }
     },
     "total": 44,
@@ -231,15 +231,20 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 90,
-    "succeeded": 88,
-    "failed": [
-      "SHOP",
-      "APLD"
-    ]
+    "total": 87,
+    "succeeded": 87,
+    "failed": []
   }
 }
