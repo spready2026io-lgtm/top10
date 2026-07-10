@@ -1185,9 +1185,87 @@ function genThemeReps(themeEtfs, etfDataMap) {
   ].join('\n');
 }
 
+// ── Theme fund universe generator (portfolio builder "Why these three?" panel) ─
+// Emits, per theme, the full ranked ETF list with each fund's real indexed price
+// path so the builder can (a) show why the trio was chosen and (b) re-blend a
+// user override client-side the exact same way genThemeReps blends the default.
+// Same ranking + selection + correlation logic as genThemeReps — kept in lockstep.
+// Only PERF_PERIODS paths are shipped (1Y is used for correlation server-side and
+// is not needed by the client chart, which tops out at 6M), keeping the block lean.
+function genThemeUniverse(themeEtfs, etfDataMap) {
+  const SERIES_PERIODS = ['1W', '1M', 'YTD', '6M'];
+  const PERIOD_N = { '1W': 5, '1M': 21, 'YTD': 26, '6M': 26 };
+  const CORR_MAX = 0.8;
+  const TARGET_REPS = 3;
+  const blocks = [];
+
+  for (const [theme, tickers] of Object.entries(themeEtfs)) {
+    const cands = tickers.filter(t => {
+      const d = etfDataMap[t];
+      return d && d.returns?.['6M'] != null && d.returns?.['1Y'] != null && d.paths?.['1Y']?.length === 52;
+    });
+    if (cands.length === 0) continue;
+
+    const score  = t => 0.5 * etfDataMap[t].returns['6M'] + 0.5 * etfDataMap[t].returns['1Y'];
+    const ranked = [...cands].sort((a, b) => score(b) - score(a));
+    const incOf  = t => pathIncrements(etfDataMap[t].paths['1Y']);
+
+    // Replicate the exact trio selection genThemeReps performs.
+    const chosen = [ranked[0]];
+    while (chosen.length < TARGET_REPS && chosen.length < ranked.length) {
+      const chosenInc = chosen.map(incOf);
+      let pick = null, fallback = null, fallbackCorr = Infinity;
+      for (let i = 1; i < ranked.length; i++) {
+        const t = ranked[i];
+        if (chosen.includes(t)) continue;
+        const incT = incOf(t);
+        const maxC = Math.max(...chosenInc.map(c => pearson(c, incT)));
+        if (maxC < fallbackCorr) { fallbackCorr = maxC; fallback = t; }
+        if (maxC < CORR_MAX) { pick = t; break; }
+      }
+      const next = pick || fallback;
+      if (!next) break;
+      chosen.push(next);
+    }
+
+    const rows = ranked.map(t => {
+      const isChosen = chosen.includes(t);
+      const isAnchor = t === chosen[0];
+      // Correlation vs the final trio (for a pick, vs the OTHER picks). This is a
+      // faithful post-hoc reason: a skipped fund with corr >= CORR_MAX moves too
+      // much like a pick; one below it was diverse but simply outranked for a slot.
+      const refs = chosen.filter(c => c !== t);
+      const incT = incOf(t);
+      const corr = refs.length ? Math.max(...refs.map(c => pearson(incOf(c), incT))) : 0;
+      const reason = isAnchor ? 'anchor'
+        : isChosen ? 'diversifier'
+        : corr >= CORR_MAX ? 'correlated'
+        : 'diverse';
+      const seriesStr = SERIES_PERIODS.map(p => {
+        const path = (etfDataMap[t].paths?.[p]?.length === PERIOD_N[p]) ? etfDataMap[t].paths[p] : [];
+        return `'${p}': [${path.join(', ')}]`;
+      }).join(', ');
+      const ret6 = parseFloat(etfDataMap[t].returns['6M'].toFixed(1));
+      const ret1 = parseFloat(etfDataMap[t].returns['1Y'].toFixed(1));
+      return `    { t: '${t}', chosen: ${isChosen}, anchor: ${isAnchor}, score: ${parseFloat(score(t).toFixed(1))}, ret6: ${ret6}, ret1: ${ret1}, corr: ${parseFloat(corr.toFixed(2))}, reason: '${reason}', series: { ${seriesStr} } }`;
+    });
+
+    blocks.push(`  '${theme}': [\n${rows.join(',\n')},\n  ],`);
+  }
+
+  if (blocks.length === 0) return null;
+  return [
+    '// @@GENERATED:THEME_UNIVERSE@@',
+    'export const THEME_UNIVERSE: Partial<Record<Theme, ThemeUniverseFund[]>> = {',
+    ...blocks,
+    '};',
+    '// @@END_GENERATED:THEME_UNIVERSE@@',
+  ].join('\n');
+}
+
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -1272,6 +1350,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
     src = src.replace(
       /\/\/ @@GENERATED:ETF_INFO@@[\s\S]*?\/\/ @@END_GENERATED:ETF_INFO@@/,
       newEtfInfo
+    );
+  }
+  if (newThemeUniverse) {
+    src = src.replace(
+      /\/\/ @@GENERATED:THEME_UNIVERSE@@[\s\S]*?\/\/ @@END_GENERATED:THEME_UNIVERSE@@/,
+      newThemeUniverse
     );
   }
 
@@ -1466,12 +1550,13 @@ async function main() {
   const newEtfTopHoldings  = genEtfTopHoldings(holdingsMap, THEME_ETFS);
   const newBaseIndex       = genBaseIndex(holdingsMap, spyData, qqqData);
   const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
+  const newThemeUniverse   = genThemeUniverse(THEME_ETFS, etfDataMap);
   const newEtfDayChange    = genEtfDayChange(etfReturnsMap, THEME_ETFS);
   const newHoldingsCount   = genHoldingsCount(holdingsMap);
   const newEtfInfo         = genEtfInfo(etfDataMap, THEME_ETFS);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');
@@ -1483,4 +1568,10 @@ async function main() {
   console.log(`Themes: ${Object.entries(themeEquities).map(([t,e]) => `${t}(${e.length})`).join(', ')}`);
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+// Exported so a targeted repopulate script can reuse the Yahoo fetch + generator
+// without triggering a full pipeline run (which rewrites every block + history.json).
+module.exports = { yfInit, fetchEtfData, genThemeReps, genThemeUniverse, pearson, pathIncrements, THEME_ETFS, DATA_PATH };
+
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+}

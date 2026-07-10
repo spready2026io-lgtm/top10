@@ -1,8 +1,9 @@
 import {
   INDEX_CHART_DATA, SAMPLE_DATA as SD,
   BASE_INDEX_HOLDINGS, BASE_INDEX_CHART, BASE_INDEX_NAMES, THEME_REPRESENTATIVES,
+  THEME_UNIVERSE,
 } from './data';
-import type { Theme, Period, BaseIndexId, EtfHolding } from './data';
+import type { Theme, Period, BaseIndexId, EtfHolding, ThemeUniverseFund } from './data';
 import { LENS_FUNDS } from './markets-data';
 import type { LensFund } from './markets-data';
 
@@ -31,6 +32,7 @@ export type Sleeve = {
   convRaw: number;      // underlying proScore average (for the explainer)
   picks: { ticker: string; weight: number }[];  // normalized within the sleeve
   defaultVal: number;
+  repTickers?: string[];  // the ETFs backing a theme sleeve (default trio, or a user override)
 };
 
 // Periods Shuki asked to surface on the performance read-out.
@@ -199,7 +201,11 @@ function rawThemeConviction(theme: Theme): { raw: number; picks: { ticker: strin
 // Build all sleeves with real conviction scores indexed 0–100.
 // baseIndex selects which core (SPY / QQQ / 60-40 blend) backs the passive sleeve;
 // worldChoice selects which instrument backs the world-markets diversifier.
-export function buildSleeves(baseIndex: BaseChoiceId = 'SPY', worldChoice: WorldChoiceId = 'IXUS'): Sleeve[] {
+export function buildSleeves(
+  baseIndex: BaseChoiceId = 'SPY',
+  worldChoice: WorldChoiceId = 'IXUS',
+  overrides: Partial<Record<Theme, string[]>> = {},
+): Sleeve[] {
   const themeData = BUILDER_THEMES.map(t => ({ theme: t, ...rawThemeConviction(t) }));
   const maxRaw = Math.max(...themeData.map(d => d.raw)) || 1;
 
@@ -240,12 +246,17 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY', worldChoice: World
 
   const themes: Sleeve[] = themeData.map(d => {
     const rep = THEME_REPRESENTATIVES[d.theme];
+    const def = rep?.etfs ?? [];
+    // A user override for this theme (from the "Why these three?" panel) replaces
+    // the default trio; otherwise the sleeve uses the algorithm's picks.
+    const override = overrides[d.theme];
+    const repTickers = override && override.length ? override : def;
     return {
       id: d.theme.toLowerCase().replace(/[^a-z]/g, ''),
       name: d.theme,
-      // Dial shows the representative ETF pair (avg of 2 best non-correlated
-      // performers) when available, else the static representative ETF.
-      etf: rep?.etfs?.length ? rep.etfs.join(' + ') : THEME_META[d.theme].etf,
+      // Dial shows the representative ETFs (equal-weight blend of the best
+      // non-correlated performers, or the user's override) when available.
+      etf: repTickers.length ? repTickers.join(' + ') : THEME_META[d.theme].etf,
       color: THEME_META[d.theme].color,
       isCore: false,
       isWorld: false,
@@ -253,15 +264,46 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY', worldChoice: World
       convRaw: d.raw,
       picks: d.picks,
       defaultVal: d.theme === 'AI & ML' ? 20 : d.theme === 'Semiconductors' || d.theme === 'Broad Tech' ? 14 : 6,
+      repTickers,
     };
   });
 
   return world ? [core, world, ...themes] : [core, ...themes];
 }
 
+// Full ranked fund universe for a theme (powers the "Why these three?" panel).
+export function themeUniverse(theme: Theme): ThemeUniverseFund[] {
+  return THEME_UNIVERSE[theme] ?? [];
+}
+
+// The default representative trio for a theme — what the dial picks automatically.
+export function defaultReps(theme: Theme): string[] {
+  return THEME_REPRESENTATIVES[theme]?.etfs ?? [];
+}
+
+// Equal-weight blend of the given tickers' real indexed paths for a period, from
+// THEME_UNIVERSE. Mirrors the pipeline's averagePaths so an override reproduces
+// the exact default series when the ticker set matches the trio. null when the
+// universe (or a needed path) is missing — caller falls back to the default line.
+function blendUniverseSeries(theme: Theme, tickers: string[], period: Period): number[] | null {
+  const uni = THEME_UNIVERSE[theme];
+  if (!uni || !tickers.length) return null;
+  const paths = tickers
+    .map(t => uni.find(u => u.t === t)?.series?.[period])
+    .filter((p): p is number[] => Array.isArray(p) && p.length > 0);
+  if (!paths.length) return null;
+  const len = paths[0].length;
+  const usable = paths.filter(p => p.length === len);
+  if (!usable.length) return null;
+  return Array.from({ length: len }, (_, i) =>
+    +(usable.reduce((s, p) => s + p[i], 0) / usable.length).toFixed(2));
+}
+
 // The real indexed price series for a sleeve over a period.
-// Core uses the selected base index; themes use their representative pair's
-// blended series (falling back to the all-ETF composite if no rep was built).
+// Core uses the selected base index; themes use their representative trio's
+// blended series — re-blended live from THEME_UNIVERSE when the user has
+// overridden the picks, else the pre-blended default (falling back to the
+// all-ETF composite if neither is available).
 function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
   if (sleeve.isCore) {
     return baseChoiceSeries(sleeve.etf as BaseChoiceId, period);
@@ -269,9 +311,19 @@ function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
   if (sleeve.isWorld) {
     return worldChoiceSeries(sleeve.etf as WorldChoiceId, period);
   }
-  const rep = THEME_REPRESENTATIVES[sleeve.name as Theme];
+  const theme = sleeve.name as Theme;
+  const rep = THEME_REPRESENTATIVES[theme];
+  const def = rep?.etfs ?? [];
+  const tickers = sleeve.repTickers ?? def;
+  const isDefault = tickers.length === def.length
+    && [...tickers].sort().join(',') === [...def].sort().join(',');
+  // Default trio: use the pre-blended series so output is byte-identical to today.
+  if (isDefault && rep?.series?.[period]?.length) return rep.series[period];
+  // Override: re-blend the chosen tickers exactly as the pipeline would.
+  const blended = blendUniverseSeries(theme, tickers, period);
+  if (blended?.length) return blended;
   if (rep?.series?.[period]?.length) return rep.series[period];
-  return INDEX_CHART_DATA[sleeve.name as Theme][period].top10;
+  return INDEX_CHART_DATA[theme][period].top10;
 }
 
 // Benchmark line is always the S&P 500, independent of the chosen core index.

@@ -7,10 +7,11 @@ import {
   buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
   baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
   worldChoiceInfo, WORLD_CHOICES, WORLD_AVAILABLE, WORLD_COLOR,
+  themeUniverse, defaultReps,
 } from '@/lib/portfolio';
 import type { BaseChoiceId, WorldChoiceId } from '@/lib/portfolio';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
-import type { Period } from '@/lib/data';
+import type { Period, Theme } from '@/lib/data';
 
 export default function PortfolioPage() {
   const [baseIndex, setBaseIndex] = useState<BaseChoiceId>('SPY');
@@ -19,8 +20,11 @@ export default function PortfolioPage() {
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
   const [showMixTable, setShowMixTable] = useState(false);
+  // Per-theme ETF overrides from the "Why these three?" panel. Absent theme = default trio.
+  const [overrides, setOverrides] = useState<Partial<Record<Theme, string[]>>>({});
+  const [openWhy, setOpenWhy] = useState<Theme | null>(null);
 
-  const SLEEVES = useMemo(() => buildSleeves(baseIndex, worldChoice), [baseIndex, worldChoice]);
+  const SLEEVES = useMemo(() => buildSleeves(baseIndex, worldChoice, overrides), [baseIndex, worldChoice, overrides]);
   const core = baseIndexInfo(baseIndex);
   const world = WORLD_AVAILABLE ? worldChoiceInfo(worldChoice) : null;
 
@@ -38,6 +42,37 @@ export default function PortfolioPage() {
 
   function setVal(i: number, v: number) {
     setVals(prev => prev.map((x, idx) => (idx === i ? v : x)));
+  }
+
+  const activeReps = (theme: Theme): string[] => overrides[theme] ?? defaultReps(theme);
+
+  // Add or remove a fund from a theme's mix. Keeps 1–4 funds; clearing back to the
+  // default trio drops the override entirely so the sleeve reads as "recommended".
+  function toggleFund(theme: Theme, ticker: string) {
+    const def = defaultReps(theme);
+    const current = overrides[theme] ?? def;
+    let next: string[];
+    if (current.includes(ticker)) {
+      if (current.length <= 1) return;               // keep at least one fund
+      next = current.filter(t => t !== ticker);
+    } else {
+      if (current.length >= 4) return;               // cap the blend at four
+      next = [...current, ticker];
+    }
+    const isDefault = next.length === def.length
+      && [...next].sort().join(',') === [...def].sort().join(',');
+    setOverrides(prev => {
+      const copy = { ...prev };
+      if (isDefault) delete copy[theme]; else copy[theme] = next;
+      return copy;
+    });
+    trackEvent('portfolio_theme_override', { theme, ticker, count: next.length });
+  }
+
+  function resetTheme(theme: Theme) {
+    if (!overrides[theme]) return;
+    setOverrides(prev => { const copy = { ...prev }; delete copy[theme]; return copy; });
+    trackEvent('portfolio_theme_override_reset', { theme });
   }
 
   return (
@@ -150,6 +185,18 @@ export default function PortfolioPage() {
                     onPointerUp={e => trackEvent('portfolio_dial_changed', { sleeve: s.name, value: +(e.target as HTMLInputElement).value })}
                     className="w-full" style={{ accentColor: s.color }}
                   />
+                  {!s.isCore && !s.isWorld && (
+                    <ThemeWhyPanel
+                      theme={s.name as Theme}
+                      color={s.color}
+                      active={activeReps(s.name as Theme)}
+                      overridden={!!overrides[s.name as Theme]}
+                      open={openWhy === (s.name as Theme)}
+                      onToggleOpen={() => setOpenWhy(cur => (cur === s.name ? null : (s.name as Theme)))}
+                      onToggleFund={t => toggleFund(s.name as Theme, t)}
+                      onReset={() => resetTheme(s.name as Theme)}
+                    />
+                  )}
                 </div>
               ))}
               <div className="flex justify-between text-xs mt-3 pt-3 border-t border-slate-800">
@@ -424,6 +471,97 @@ export default function PortfolioPage() {
           build yourself; Tony only reflects back its conviction, exposure, and hypothetical past performance from disclosed ETF data.
         </p>
       </div>
+    </div>
+  );
+}
+
+// ── "Why these three?" panel: the theme's ranked fund universe + override ─────
+// Shows every ETF in the theme ranked by 6M/1Y, why the dial chose or skipped it,
+// and lets the user swap the picks. The reason tags describe the ALGORITHM's
+// default decision; the highlight shows what is currently in the user's mix.
+function ThemeWhyPanel({
+  theme, color, active, overridden, open, onToggleOpen, onToggleFund, onReset,
+}: {
+  theme: Theme;
+  color: string;
+  active: string[];
+  overridden: boolean;
+  open: boolean;
+  onToggleOpen: () => void;
+  onToggleFund: (ticker: string) => void;
+  onReset: () => void;
+}) {
+  const uni = themeUniverse(theme);
+  if (!uni.length) return null;
+  const anchor = uni.find(u => u.anchor)?.t ?? uni[0]?.t;
+
+  return (
+    <div className="mt-2">
+      <button
+        onClick={onToggleOpen}
+        className="text-[11px] text-slate-500 hover:text-slate-300 inline-flex items-center gap-1.5 transition-colors"
+      >
+        {open ? 'Hide fund list' : 'Why these ETFs?'}
+        {overridden && (
+          <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">customized</span>
+        )}
+      </button>
+
+      {open && (
+        <div className="mt-2 rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+          <div className="flex items-center justify-between mb-2 gap-2">
+            <span className="text-[11px] text-slate-400">Ranked by 6M/1Y. Tap a fund to add or remove it.</span>
+            {overridden && (
+              <button onClick={onReset} className="text-[10px] text-emerald-400 hover:text-emerald-300 shrink-0 transition-colors">
+                Reset to recommended
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            {uni.map(f => {
+              const inMix = active.includes(f.t);
+              const tag = f.anchor ? 'anchor · top performer'
+                : f.reason === 'diversifier' ? 'in mix · moves differently'
+                : f.reason === 'correlated' ? `skipped · moves like ${anchor}`
+                : 'skipped · outranked';
+              return (
+                <button
+                  key={f.t}
+                  onClick={() => onToggleFund(f.t)}
+                  className={`flex items-center gap-2 rounded px-2 py-1 text-left border transition-colors ${
+                    inMix ? 'border-slate-600 bg-slate-800/70' : 'border-transparent hover:bg-slate-900'
+                  }`}
+                >
+                  <span
+                    className={`inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border text-[9px] leading-none shrink-0 ${
+                      inMix ? 'text-slate-950 border-transparent' : 'text-transparent border-slate-700'
+                    }`}
+                    style={inMix ? { background: color } : undefined}
+                  >
+                    ✓
+                  </span>
+                  <span className="w-11 text-xs font-mono text-slate-200 shrink-0">{f.t}</span>
+                  <span className="flex-1 text-[10px] text-slate-500 truncate">{tag}</span>
+                  <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-14 text-right">
+                    6M <span className={f.ret6 >= 0 ? 'text-slate-300' : 'text-red-400'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
+                  </span>
+                  <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-16 text-right">
+                    1Y <span className={f.ret1 >= 0 ? 'text-emerald-400' : 'text-red-400'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <p className="text-[10px] text-slate-500 leading-relaxed mt-2">
+            The dial anchors on the theme&apos;s top performer, then adds funds that move differently (low
+            correlation) so the sleeve stays diversified instead of tripling the same bet. That is why some
+            higher-returning funds are skipped. Overriding chases return at the cost of that spread. Equal-weight
+            blend of {active.length} fund{active.length === 1 ? '' : 's'}.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
