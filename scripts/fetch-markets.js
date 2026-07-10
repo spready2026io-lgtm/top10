@@ -150,7 +150,7 @@ async function fetchISharesSO(ticker, id) {
 
 // ── Yahoo: 1y chart → period returns + sparkline samples ────────────────────
 async function fetchTileChart(ticker, currentPrice) {
-  const empty = { returns: { '1W': 0, '1M': 0, 'YTD': 0, '6M': 0, '1Y': 0 }, history: null };
+  const empty = { returns: { '1W': 0, '1M': 0, 'YTD': 0, '6M': 0, '1Y': 0 }, history: null, raw: null };
   try {
     const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1y&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
     const res = await fetch(url, { headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' } });
@@ -211,11 +211,42 @@ async function fetchTileChart(ticker, currentPrice) {
         '6M':  sample(last6M, 26),
         '1Y':  sample(valid, 52),
       },
+      raw: valid, // full daily closes with timestamps — used in-script for correlations, never emitted
     };
   } catch (e) {
     console.warn(`  [Yahoo chart] ${ticker} failed: ${e.message}`);
     return empty;
   }
+}
+
+// ── Pearson correlation of daily returns vs a reference series over ~6 months,
+//    matched by trading DAY. Both series must come from the same run: sampled
+//    series from different pipeline runs sit on different date grids, and
+//    pairing those fakes a near-zero correlation (observed 0.07 for IXUS-SPY
+//    where the date-matched truth is ~0.7). Computed here, displayed verbatim.
+function corrVsRef6M(raw, refRaw) {
+  if (!raw || !refRaw || raw.length < 30 || refRaw.length < 30) return null;
+  const refByDay = new Map(refRaw.map(d => [Math.floor(d.ts / 86400), d.close]));
+  const cutoff = raw[raw.length - 1].ts - 183 * 86400;
+  const pairs = raw
+    .filter(d => d.ts >= cutoff && refByDay.has(Math.floor(d.ts / 86400)))
+    .map(d => [d.close, refByDay.get(Math.floor(d.ts / 86400))]);
+  if (pairs.length < 30) return null;
+  const ra = [], rb = [];
+  for (let i = 1; i < pairs.length; i++) {
+    ra.push(pairs[i][0] / pairs[i - 1][0] - 1);
+    rb.push(pairs[i][1] / pairs[i - 1][1] - 1);
+  }
+  const mean = x => x.reduce((s, v) => s + v, 0) / x.length;
+  const ma = mean(ra), mb = mean(rb);
+  let num = 0, da = 0, db = 0;
+  for (let i = 0; i < ra.length; i++) {
+    num += (ra[i] - ma) * (rb[i] - mb);
+    da += (ra[i] - ma) ** 2;
+    db += (rb[i] - mb) ** 2;
+  }
+  const den = Math.sqrt(da * db);
+  return den ? parseFloat((num / den).toFixed(2)) : null;
 }
 
 // ── iShares: countryOfRisk aggregation for a lens fund ──────────────────────
@@ -326,6 +357,20 @@ function calcFlow(history, todayStr, ticker, now, daysBack, tolerance) {
     await sleep(250);
   }
 
+  // Lens funds get the same chart treatment as tiles: their price history powers
+  // the portfolio builder's world sleeve. Reuse a tile's chart when shared (IEUR).
+  console.log('[Markets] fetching lens charts...');
+  const lensCharts = {};
+  for (const l of LENS_FUNDS) {
+    lensCharts[l.ticker] = charts[l.ticker] ?? await fetchTileChart(l.ticker, funds[l.ticker].price);
+    if (!charts[l.ticker]) await sleep(250);
+  }
+
+  // SPY reference from THIS run, so lens-vs-S&P correlations pair by real
+  // trading day instead of across two pipelines' different date grids.
+  console.log('[Markets] fetching SPY reference for correlations...');
+  const spyRef = await fetchTileChart('SPY', null);
+
   console.log('[Markets] fetching lens country weights...');
   const lensCountries = {};
   for (const l of LENS_FUNDS) {
@@ -382,6 +427,9 @@ function calcFlow(history, todayStr, ticker, now, daysBack, tolerance) {
     aum: funds[l.ticker].aum ?? 0,
     flow1W: calcFlow(history, todayStr, l.ticker, { so: funds[l.ticker].so, price: funds[l.ticker].price }, 7, 3),
     flow1M: calcFlow(history, todayStr, l.ticker, { so: funds[l.ticker].so, price: funds[l.ticker].price }, 30, 6),
+    returns: lensCharts[l.ticker].returns,
+    history: lensCharts[l.ticker].history,
+    corrSPY6M: corrVsRef6M(lensCharts[l.ticker].raw, spyRef.raw),
     countries: lensCountries[l.ticker] || [],
   }));
 
@@ -418,6 +466,9 @@ export type LensFund = {
   aum: number;
   flow1W: MarketFlow;
   flow1M: MarketFlow;
+  returns: Record<MarketPeriod, number>;
+  history: Record<MarketPeriod, number[]> | null;  // chart series (powers the portfolio world sleeve)
+  corrSPY6M: number | null;  // 6M daily-return correlation vs SPY, date-matched at generation time
   countries: { c: string; w: number }[];  // % of fund by country of risk
 };
 

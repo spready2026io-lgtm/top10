@@ -6,26 +6,31 @@ import { trackEvent } from '@/lib/gtag';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
   baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
+  worldChoiceInfo, WORLD_CHOICES, WORLD_AVAILABLE, WORLD_COLOR,
 } from '@/lib/portfolio';
-import type { BaseChoiceId } from '@/lib/portfolio';
+import type { BaseChoiceId, WorldChoiceId } from '@/lib/portfolio';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
 import type { Period } from '@/lib/data';
 
 export default function PortfolioPage() {
   const [baseIndex, setBaseIndex] = useState<BaseChoiceId>('SPY');
+  const [worldChoice, setWorldChoice] = useState<WorldChoiceId>('IXUS');
   const [vals, setVals] = useState<number[]>(() => buildSleeves().map(s => s.defaultVal));
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
   const [showMixTable, setShowMixTable] = useState(false);
 
-  const SLEEVES = useMemo(() => buildSleeves(baseIndex), [baseIndex]);
+  const SLEEVES = useMemo(() => buildSleeves(baseIndex, worldChoice), [baseIndex, worldChoice]);
   const core = baseIndexInfo(baseIndex);
+  const world = WORLD_AVAILABLE ? worldChoiceInfo(worldChoice) : null;
 
   const total = vals.reduce((a, b) => a + b, 0) || 1;
   const norm = vals.map(v => v / total);
 
   const conviction = useMemo(() => blendConviction(SLEEVES, norm), [SLEEVES, norm]);
   const coreShare = norm[0] * 100;
+  const worldIdx = SLEEVES.findIndex(s => s.isWorld);
+  const worldShare = worldIdx >= 0 ? norm[worldIdx] * 100 : 0;
   const exposures = useMemo(() => blendExposure(SLEEVES, norm), [SLEEVES, norm]);
   const perf = useMemo(() => blendPerformance(SLEEVES, norm, period), [SLEEVES, norm, period]);
   const mixRows = useMemo(() => sleeveBreakdown(SLEEVES, norm, period), [SLEEVES, norm, period]);
@@ -53,7 +58,9 @@ export default function PortfolioPage() {
           <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-emerald-400 mb-3">Build with Tony</div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-50 leading-tight">Your portfolio, your conviction.</h1>
           <p className="text-sm text-slate-400 leading-relaxed mt-4 max-w-2xl">
-            Set a cheap index core for market beta, then tilt toward the themes you believe in. Tony reflects back
+            Three legs: a cheap <span className="text-slate-200">index core</span> for US market beta,
+            <span className="text-slate-200"> world markets</span> for diversification beyond the US, and the
+            <span className="text-slate-200"> themes</span> you believe in for conviction. Tony reflects back
             the <span className="text-slate-200">conviction</span>, the <span className="text-slate-200">exposure</span>,
             and the <span className="text-slate-200">past performance</span> of whatever you build. You do the choosing.
             This is education, not a recommendation.
@@ -66,6 +73,16 @@ export default function PortfolioPage() {
             ones already chosen), so each tilt stays diversified instead of doubling up on the same names. The tickers shown next to
             each theme are the live result.
           </p>
+          {world && (
+            <p className="text-sm text-slate-400 leading-relaxed mt-3 max-w-2xl">
+              <span className="font-semibold" style={{ color: WORLD_COLOR }}>The world markets sleeve</span> uses the broad
+              index funds global allocators actually use: <span className="text-slate-200">IXUS</span> for everything outside
+              the US, <span className="text-slate-200">EFA</span> for developed markets, <span className="text-slate-200">EEM</span> for
+              emerging. It is passive by design. Like your core it scores zero conviction, but it spreads your risk across
+              dozens of markets that do not move in lockstep with the S&amp;P 500. The same instruments are tracked daily on
+              the <Link href="/markets" className="text-slate-200 underline decoration-slate-600 hover:decoration-slate-300">World Markets</Link> board.
+            </p>
+          )}
           <p className="text-xs text-slate-400 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
         </div>
 
@@ -80,7 +97,12 @@ export default function PortfolioPage() {
                     <span className="text-sm text-slate-300 flex items-center gap-2">
                       <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: s.color }} />
                       {s.name} <span className="text-slate-400 text-xs">{s.etf}</span>
-                      {!s.isCore && (
+                      {s.isWorld && (
+                        <span className="text-[10px] rounded px-1 border" style={{ color: WORLD_COLOR, borderColor: 'rgba(45,212,191,0.25)' }}>
+                          diversifier
+                        </span>
+                      )}
+                      {!s.isCore && !s.isWorld && (
                         <span className="text-[10px] text-emerald-500/80 border border-emerald-500/20 rounded px-1">
                           conv {s.convScore}
                         </span>
@@ -96,6 +118,23 @@ export default function PortfolioPage() {
                           onClick={() => { setBaseIndex(id); trackEvent('portfolio_base_index_changed', { base_index: id }); }}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
                             baseIndex === id
+                              ? 'bg-slate-700 border-slate-600 text-slate-100'
+                              : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {s.isWorld && (
+                    <div className="flex gap-1 mb-2">
+                      {WORLD_CHOICES.map(({ id, label }) => (
+                        <button
+                          key={id}
+                          onClick={() => { setWorldChoice(id); trackEvent('portfolio_world_choice_changed', { world_choice: id }); }}
+                          className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
+                            worldChoice === id
                               ? 'bg-slate-700 border-slate-600 text-slate-100'
                               : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
                           }`}
@@ -144,6 +183,40 @@ export default function PortfolioPage() {
                 ))}
               </div>
             </div>
+
+            {/* World sleeve country weights — the geographic twin of the core panel */}
+            {world && (
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-4">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    Inside your world sleeve
+                  </div>
+                  <span className="text-[11px] text-slate-500">{world.id} · {world.name}</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mb-3">
+                  Where your international money sits, by country of risk of the fund&apos;s holdings.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {world.countries.map(c => (
+                    <div key={c.c} className="flex items-center gap-3">
+                      <div className="w-24 text-xs font-semibold text-slate-300 shrink-0 truncate" title={c.c}>{c.c}</div>
+                      <div className="flex-1 bg-slate-800 rounded h-3">
+                        <div className="h-full rounded" style={{ width: `${(c.w / world.countries[0].w) * 100}%`, background: WORLD_COLOR, opacity: 0.75 }} />
+                      </div>
+                      <div className="w-12 text-right text-[11px] text-slate-400">{c.w.toFixed(1)}%</div>
+                    </div>
+                  ))}
+                </div>
+                {world.corr6M != null && (
+                  <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+                    Diversification check: over the last 6 months this sleeve moved with a correlation of
+                    <span className="text-slate-200 font-semibold"> {world.corr6M.toFixed(2)}</span> to the S&amp;P 500
+                    (1.00 means moving in lockstep). The lower the number, the more this sleeve behaves like a
+                    genuinely different asset.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* ── Right: read-outs ── */}
@@ -213,7 +286,8 @@ export default function PortfolioPage() {
                   </div>
                   <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
                     ETF shows each theme&apos;s suggested tickers (the equal-weight blend of its three strongest non-correlated ETFs).
-                    Return is the past performance of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
+                    The world sleeve shows the international index fund you picked. Return is the past performance of that
+                    sleeve&apos;s real index over {period}. Past performance does not predict future results.
                   </p>
                 </div>
               )}
@@ -241,6 +315,15 @@ export default function PortfolioPage() {
                   <div className="h-full bg-slate-500 rounded" style={{ width: `${Math.round(coreShare)}%` }} />
                 </div>
               </div>
+              {world && (
+                <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-4">
+                  <div className="text-[11px] text-slate-500">Outside the US</div>
+                  <div className="text-2xl font-semibold" style={{ color: WORLD_COLOR }}>{Math.round(worldShare)}%</div>
+                  <div className="h-1.5 bg-slate-800 rounded mt-1.5">
+                    <div className="h-full rounded" style={{ width: `${Math.round(worldShare)}%`, background: WORLD_COLOR }} />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Conviction explainer — Shuki #2 */}
@@ -330,6 +413,7 @@ export default function PortfolioPage() {
               <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
                 Each percentage is the stock&apos;s share of your whole portfolio. For every theme we take your weight in that theme
                 and multiply it by how heavily the theme&apos;s ETFs hold the stock, then add up the same stock across themes.
+                {world ? ' The world sleeve holds markets rather than single stocks, so it adds no single-stock exposure; its geography is shown in the world sleeve panel.' : ''}
               </p>
             </div>
           </div>

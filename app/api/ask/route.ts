@@ -107,7 +107,11 @@ ASK TONY PAGE (/ask):
 This chat interface. Users ask questions about the dashboard, the data, the scores, or specific stocks and ETFs. Tony answers using the live data snapshot.
 
 PORTFOLIO BUILDER (/portfolio, "Build with Tony"):
-Users pick a base index core (SPY or QQQ toggle) for market beta, then drag a dial to tilt an illustrative portfolio across the 6 themes. Each theme sleeve on the dial is the equal-weight average of that theme's 3 strongest ETFs, ranked by a 50% 6-month / 50% 1-year return blend and filtered to be non-correlated with each other. The page reflects back the blended conviction, sector/stock exposure, and past performance versus the chosen base index, plus a full mix-breakdown table. This is explicitly educational, not a recommendation, and not investment advice.
+Three legs: an index core for US market beta, a world markets sleeve for international diversification, and theme tilts for conviction.
+- Index core: SPY / QQQ / 60-40 blend toggle. Passive ballast, scores zero conviction by design.
+- World markets sleeve: a second passive lane backed by the same broad index funds tracked on the /markets page, with its own toggle: IXUS (All-World ex-US, the default), EFA (developed markets), or EEM (emerging markets). Like the core it scores ZERO conviction by design — an index country fund holds a market, not a manager's conviction — but it diversifies the portfolio across dozens of markets that do not move in lockstep with the S&P 500. The page shows an "Inside your world sleeve" panel (country weights of the chosen fund by country of risk), an "Outside the US" percentage read-out, and a diversification check: the 6-month correlation of the chosen world fund to the S&P 500, computed on point-over-point returns (1.00 = lockstep; lower = more genuinely different). The world sleeve holds markets, not single stocks, so it never contributes to the single-stock exposure list. Default allocation on load: core 30, world 10, themes 60.
+- Themes: drag a dial to tilt across the 5 builder themes (Meme excluded). Each theme sleeve is the equal-weight average of that theme's 3 strongest ETFs, ranked by a 50% 6-month / 50% 1-year return blend and filtered to be non-correlated with each other.
+The page reflects back the blended conviction, stock exposure, and past performance versus the S&P 500 benchmark, plus a full mix-breakdown table. Adding world markets dilutes the conviction score — that is expected and honest: conviction is what you pay active managers for, diversification is what you hold index funds for. This is explicitly educational, not a recommendation, and not investment advice.
 
 ETF UNIVERSE PAGE (/universe):
 A sortable table of every ETF Stockscout tracks: symbol, name, manager, theme, size (fund net assets / AUM), and top holding. This is the full underlying universe, not just the Top 10 view.
@@ -121,6 +125,7 @@ A separate board that maps where money flows across world markets. Every tile is
 - THIN FUND badge: amber chip on any tile whose instrument fund has under $100M in assets. Signal from thin funds is noisier; single-day moves deserve suspicion.
 - Tap/click a tile to open Tony's note on that market.
 - "Where the big international money sits" section: 8 broad international allocation funds (IXUS total international, EFA developed ex-North America, EEM emerging markets, EMXC EM ex-China, IEUR Europe, EZU Eurozone, EEMA EM Asia, ILF Latin America 40) broken down into country weight bars by country of risk of their holdings. When these giants take in money, it lands in markets in these proportions. EMXC versus EEM flows is a direct read on China sentiment inside EM allocations.
+- Three of these lens funds (IXUS, EFA, EEM) also power the world markets sleeve in the portfolio builder (/portfolio) — watching becomes building. A CTA card at the bottom of the markets page links there.
 - Coverage limit (state it when relevant, softly): flows are measured through US-listed funds (iShares, plus Global X for Argentina). It is a good window into global allocation, not a census of all cross-border flows.
 
 ABOUT PAGE (/about):

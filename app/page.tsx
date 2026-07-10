@@ -2601,10 +2601,11 @@ export default function Home() {
                   <div className="text-base font-bold text-slate-50 leading-snug mt-1">Build your own portfolio.</div>
                 </div>
 
-                {/* Core-satellite mechanism visual — index core + theme tilts */}
+                {/* Core + world + theme-tilt mechanism visual */}
                 <div className="my-1">
                   <div className="flex h-4 w-full rounded-md overflow-hidden bg-slate-800">
-                    <div style={{ width: '40%', background: '#94a3b8' }} />
+                    <div style={{ width: '30%', background: '#94a3b8' }} />
+                    <div style={{ width: '10%', background: '#2dd4bf' }} />
                     <div style={{ width: '20%', background: '#a78bfa' }} />
                     <div style={{ width: '14%', background: '#60a5fa' }} />
                     <div style={{ width: '14%', background: '#38bdf8' }} />
@@ -2612,14 +2613,14 @@ export default function Home() {
                     <div style={{ width: '6%',  background: '#fb923c' }} />
                   </div>
                   <div className="flex flex-wrap gap-x-2.5 gap-y-1 mt-2">
-                    {[['#94a3b8', 'Core'], ['#a78bfa', 'AI'], ['#60a5fa', 'Semi'], ['#38bdf8', 'Tech'], ['#fbbf24', 'Elec']].map(([c, l]) => (
+                    {[['#94a3b8', 'Core'], ['#2dd4bf', 'World'], ['#a78bfa', 'AI'], ['#60a5fa', 'Semi'], ['#38bdf8', 'Tech'], ['#fbbf24', 'Elec']].map(([c, l]) => (
                       <span key={l} className="text-[10px] text-slate-400 flex items-center gap-1">
                         <span className="inline-block w-2 h-2 rounded-sm" style={{ background: c }} />{l}
                       </span>
                     ))}
                   </div>
                   <p className="text-[11px] text-slate-400 leading-snug mt-2">
-                    Cheap index core, tilt toward your conviction themes. See the mix, exposure, and past performance, so every choice is informed, not a guess.
+                    Cheap index core, world markets for diversification, theme tilts for conviction. See the mix, exposure, and past performance, so every choice is informed, not a guess.
                   </p>
                 </div>
 

@@ -3,6 +3,8 @@ import {
   BASE_INDEX_HOLDINGS, BASE_INDEX_CHART, BASE_INDEX_NAMES, THEME_REPRESENTATIVES,
 } from './data';
 import type { Theme, Period, BaseIndexId, EtfHolding } from './data';
+import { LENS_FUNDS } from './markets-data';
+import type { LensFund } from './markets-data';
 
 // ── Portfolio builder data layer ────────────────────────────────────────────
 // Everything here is DERIVED FROM REAL DATA in lib/data.ts:
@@ -14,7 +16,9 @@ import type { Theme, Period, BaseIndexId, EtfHolding } from './data';
 //     from a single weekly number — see the chart-historical-data house rule.
 //   • Stock exposure            ← each theme's real top holdings by proScore.
 // The index core (SPY) sits in a SEPARATE price-only lane: it scores zero
-// conviction by design and never re-enters the conviction board.
+// conviction by design and never re-enters the conviction board. The world
+// sleeve (lib/markets-data.ts lens funds) is a second price-only lane with the
+// same zero-conviction rule — see the world-markets section below.
 
 export type Sleeve = {
   id: string;
@@ -22,6 +26,7 @@ export type Sleeve = {
   etf: string;          // the representative ticker shown next to the sleeve
   color: string;
   isCore: boolean;
+  isWorld: boolean;     // the international diversifier sleeve (world markets lane)
   convScore: number;    // 0–100, indexed against the strongest theme (core = 0)
   convRaw: number;      // underlying proScore average (for the explainer)
   picks: { ticker: string; weight: number }[];  // normalized within the sleeve
@@ -105,6 +110,78 @@ export function baseIndexInfo(id: BaseChoiceId) {
   return { id, label: BASE_CHOICE_LABEL[id], name: baseChoiceName(id), holdings: baseChoiceHoldings(id) };
 }
 
+// ── World markets — selectable international sleeve, price-only lane ─────────
+// The broad index funds measured on the /markets page double as the builder's
+// diversification leg. Like the core, the world sleeve scores ZERO conviction
+// by design: an index country fund holds a market, not a manager's conviction.
+// Its data comes from the markets pipeline (lib/markets-data.ts), a separate
+// lane from the conviction data, so everything below guards against missing
+// history and resamples to the core series' length instead of assuming the two
+// pipelines stay in lockstep.
+export const WORLD_COLOR = '#2dd4bf';
+export type WorldChoiceId = 'IXUS' | 'EFA' | 'EEM';
+const WORLD_CHOICE_BUTTON: Record<WorldChoiceId, string> = {
+  IXUS: 'All-World ex-US', EFA: 'Developed', EEM: 'Emerging',
+};
+export const WORLD_CHOICES: { id: WorldChoiceId; label: string }[] =
+  (['IXUS', 'EFA', 'EEM'] as WorldChoiceId[]).map(id => ({ id, label: WORLD_CHOICE_BUTTON[id] }));
+
+const worldFund = (id: WorldChoiceId): LensFund | undefined =>
+  LENS_FUNDS.find(l => l.ticker === id);
+
+// The sleeve only ships when every choice has a complete series: a partial
+// markets-pipeline run must degrade to "no world sleeve", not a crashed page.
+const ALL_PERIODS: Period[] = ['1W', '1M', 'YTD', '6M', '1Y'];
+export const WORLD_AVAILABLE: boolean = WORLD_CHOICES.every(({ id }) => {
+  const h = worldFund(id)?.history;
+  return !!h && ALL_PERIODS.every(p => Array.isArray(h[p]) && h[p].length >= 2);
+});
+
+// Linear resample to n points. The markets pipeline emits the same series
+// shape as the conviction pipeline today, but nothing enforces that across two
+// independently generated files, so the world lane never assumes it.
+function resample(arr: number[], n: number): number[] {
+  if (arr.length === n) return arr;
+  if (n <= 1 || arr.length < 2) return new Array(n).fill(arr[0] ?? 0);
+  return Array.from({ length: n }, (_, i) => {
+    const t = (i * (arr.length - 1)) / (n - 1);
+    const lo = Math.floor(t), hi = Math.ceil(t);
+    return arr[lo] + (arr[hi] - arr[lo]) * (t - lo);
+  });
+}
+
+// Real price series of a world instrument, indexed to 100 and aligned to the
+// SPY series length so it blends point-wise like every other sleeve.
+export function worldChoiceSeries(id: WorldChoiceId, period: Period): number[] {
+  const spyLen = BASE_INDEX_CHART.SPY[period].length;
+  const h = worldFund(id)?.history?.[period];
+  if (!h || h.length < 2) return new Array(spyLen).fill(100);
+  const base = h[0] || 1;
+  return resample(h.map(v => (v / base) * 100), spyLen);
+}
+
+// 6M daily-return correlation vs the S&P 500 — the honest "does it move
+// differently" number for the explainer. NOT computed here: the sampled series
+// in data.ts and markets-data.ts sit on different date grids (two pipelines),
+// and pairing them fakes a near-zero correlation (observed 0.07 for IXUS-SPY
+// where the date-matched truth is ~0.7). fetch-markets.js computes it against
+// SPY from the same run, matched by trading day, and emits it per lens fund.
+export function worldCorrelation(id: WorldChoiceId): number | null {
+  return worldFund(id)?.corrSPY6M ?? null;
+}
+
+// Accessor for the page's "inside your world sleeve" read-out.
+export function worldChoiceInfo(id: WorldChoiceId) {
+  const l = worldFund(id);
+  return {
+    id,
+    label: WORLD_CHOICE_BUTTON[id],
+    name: l?.name ?? id,
+    countries: (l?.countries ?? []).slice(0, 8),
+    corr6M: worldCorrelation(id),
+  };
+}
+
 // Raw theme conviction = mean proScore of the theme's top 5 consensus stocks.
 // proScore = avg weight across the theme's ETFs × coverage (linear) — the same
 // signal the conviction board ranks on.
@@ -120,8 +197,9 @@ function rawThemeConviction(theme: Theme): { raw: number; picks: { ticker: strin
 }
 
 // Build all sleeves with real conviction scores indexed 0–100.
-// baseIndex selects which core (SPY / QQQ / 60-40 blend) backs the passive sleeve.
-export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
+// baseIndex selects which core (SPY / QQQ / 60-40 blend) backs the passive sleeve;
+// worldChoice selects which instrument backs the world-markets diversifier.
+export function buildSleeves(baseIndex: BaseChoiceId = 'SPY', worldChoice: WorldChoiceId = 'IXUS'): Sleeve[] {
   const themeData = BUILDER_THEMES.map(t => ({ theme: t, ...rawThemeConviction(t) }));
   const maxRaw = Math.max(...themeData.map(d => d.raw)) || 1;
 
@@ -136,11 +214,29 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
     etf: baseIndex,                      // also carries the base-index id for sleeveSeries
     color: CORE_COLOR,
     isCore: true,
+    isWorld: false,
     convScore: 0,
     convRaw: 0,
     picks: coreHoldings.map(h => ({ ticker: h.t, weight: h.w / coreTot })),
-    defaultVal: 40,
+    // World takes its default 10 from the passive core, so the passive block
+    // stays 40% total, now split US / international (CEO ruling 2026-07-10).
+    defaultVal: WORLD_AVAILABLE ? 30 : 40,
   };
+
+  // The diversifier: passive world beta, zero conviction by design, no
+  // single-stock picks (it holds markets, so it never enters stock exposure).
+  const world: Sleeve | null = WORLD_AVAILABLE ? {
+    id: 'world',
+    name: 'World markets',
+    etf: worldChoice,                    // carries the world-choice id for sleeveSeries
+    color: WORLD_COLOR,
+    isCore: false,
+    isWorld: true,
+    convScore: 0,
+    convRaw: 0,
+    picks: [],
+    defaultVal: 10,
+  } : null;
 
   const themes: Sleeve[] = themeData.map(d => {
     const rep = THEME_REPRESENTATIVES[d.theme];
@@ -152,6 +248,7 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
       etf: rep?.etfs?.length ? rep.etfs.join(' + ') : THEME_META[d.theme].etf,
       color: THEME_META[d.theme].color,
       isCore: false,
+      isWorld: false,
       convScore: Math.round((d.raw / maxRaw) * 100),
       convRaw: d.raw,
       picks: d.picks,
@@ -159,7 +256,7 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
     };
   });
 
-  return [core, ...themes];
+  return world ? [core, world, ...themes] : [core, ...themes];
 }
 
 // The real indexed price series for a sleeve over a period.
@@ -168,6 +265,9 @@ export function buildSleeves(baseIndex: BaseChoiceId = 'SPY'): Sleeve[] {
 function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
   if (sleeve.isCore) {
     return baseChoiceSeries(sleeve.etf as BaseChoiceId, period);
+  }
+  if (sleeve.isWorld) {
+    return worldChoiceSeries(sleeve.etf as WorldChoiceId, period);
   }
   const rep = THEME_REPRESENTATIVES[sleeve.name as Theme];
   if (rep?.series?.[period]?.length) return rep.series[period];

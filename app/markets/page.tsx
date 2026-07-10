@@ -234,6 +234,30 @@ export default function Markets() {
           </div>
         </section>
 
+        {/* Portfolio-builder CTA: the markets above are also the diversifier
+            sleeve in Build with Tony — watching becomes building. */}
+        <section className="mb-10">
+          <Link
+            href="/portfolio"
+            className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-teal-500/30 bg-gradient-to-br from-teal-500/10 to-slate-900 p-5 hover:border-teal-500/60 hover:from-teal-500/20 transition-colors group"
+          >
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-teal-400">Build with Tony</div>
+              <div className="text-base font-bold text-white leading-snug mt-1">
+                Put these markets in your portfolio.
+              </div>
+              <p className="text-xs text-slate-400 leading-relaxed mt-1.5 max-w-2xl">
+                The broad funds above (IXUS, EFA, EEM) now power a world markets sleeve in the portfolio builder.
+                Core for beta, themes for conviction, world markets for diversification beyond the US.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1.5 self-start sm:self-center flex-shrink-0 px-3 py-1.5 rounded-full bg-teal-500/20 border border-teal-500/40 text-teal-200 text-xs font-bold group-hover:bg-teal-500/30 transition-colors">
+              Build your portfolio
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+            </span>
+          </Link>
+        </section>
+
         <p className="text-slate-500 text-xs mt-4">
           Data snapshot: {MARKETS_TIMESTAMP_NY}. Market instruments are US-listed iShares country and regional
           funds (Argentina via Global X ARGT). Size is fund net assets. Performance is price return over each
