@@ -1956,6 +1956,7 @@ function CrossThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Theme) => void 
 const THEME_COUNT     = THEMES.length;
 const ETF_COUNT       = Object.values(THEME_ETF_COUNT).reduce((a, b) => a + b, 0);
 const SCORED_COUNT    = new Set(THEMES.flatMap(t => SAMPLE_DATA[t].map(e => e.ticker))).size;
+const MARKET_COUNT    = MARKET_TILES.length;
 // "1,100+" style: round the raw holdings count down to the nearest 100 so the
 // headline figure stays stable as holdings drift a few names up or down.
 const HOLDINGS_FLOOR  = (Math.floor(HOLDINGS_COUNT / 100) * 100).toLocaleString('en-US');
@@ -1992,7 +1993,7 @@ const HERO_SLIDES = [
     title: 'See what active ETF managers are really buying',
     titleCls: 'text-3xl sm:text-4xl',
     lead: `We track every holding of ${ETF_COUNT} active ETFs, over ${HOLDINGS_FLOOR} shares across ${THEME_COUNT} themes, and rank them by manager conviction.`,
-    body: `When 8 of 10 active ETF managers overweight the same stock, that tells you something. We score ${SCORED_COUNT} names on how many ETFs hold them and at what weight, then rank that conviction fresh every day.`,
+    body: `When 8 of 10 active ETF managers overweight the same stock, that tells you something. We score ${SCORED_COUNT} names on how many ETFs hold them and at what weight, then rank that conviction fresh every day. And we track where money flows across ${MARKET_COUNT} world markets, from Europe to Latin America.`,
     glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
     ctaCls: 'bg-emerald-500 text-black hover:bg-emerald-400',
