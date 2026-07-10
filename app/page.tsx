@@ -28,6 +28,7 @@ import {
   HOLDINGS_COUNT,
 } from '@/lib/data';
 import { fmtMoney } from '@/lib/format';
+import { MARKET_TILES } from '@/lib/markets-data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
 const TICKER_DOMAINS: Record<string, string> = {
@@ -1999,12 +2000,25 @@ const HERO_SLIDES = [
     href: '#live',
   },
   {
+    key: 'world',
+    eyebrow: 'World Markets',
+    title: "See where the world's money is flowing",
+    titleCls: 'text-2xl sm:text-3xl',
+    lead: '',
+    body: 'Markets across Europe, Asia and Latin America, each measured through the index fund global money actually uses to enter it. Watch price and real fund flows, then put the world in your portfolio as the diversification leg.',
+    glow: 'from-violet-500/10',
+    eyebrowCls: 'text-violet-400',
+    ctaCls: 'bg-violet-500 text-white hover:bg-violet-400',
+    cta: 'See the flows',
+    href: '/markets',
+  },
+  {
     key: 'tony',
     eyebrow: 'Build with Tony',
     title: 'Tilt a low-cost core toward your conviction',
     titleCls: 'text-2xl sm:text-3xl',
     lead: '',
-    body: 'Set an index core, then lean into the themes you believe in. See the mix, exposure, and past performance, so every choice is informed, not a guess.',
+    body: 'Set an index core for US beta, add world markets for diversification, then lean into the themes you believe in. See the mix, exposure, and past performance, so every choice is informed, not a guess.',
     glow: 'from-sky-500/10',
     eyebrowCls: 'text-sky-400',
     ctaCls: 'bg-sky-500 text-white hover:bg-sky-400',
@@ -2247,11 +2261,40 @@ function SlideVisual({ kind }: { kind: string }) {
       </div>
     );
   }
+  if (kind === 'world') {
+    // Top movers this month across the tracked world markets — real returns
+    // from the markets pipeline, the same tiles the /markets board shows.
+    const movers = [...MARKET_TILES]
+      .sort((a, b) => Math.abs(b.returns['1M']) - Math.abs(a.returns['1M']))
+      .slice(0, 3);
+    if (!movers.length) return null;
+    const maxAbs = Math.abs(movers[0].returns['1M']) || 1;
+    return (
+      <div className="space-y-2">
+        <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Biggest 1M moves</div>
+        {movers.map(m => (
+          <div key={m.ticker} className="flex items-center gap-2">
+            <span className="w-24 flex-shrink-0 truncate text-xs font-semibold text-slate-300">{m.flag} {m.market}</span>
+            <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-800">
+              <div
+                className={`h-full rounded-full ${m.returns['1M'] >= 0 ? 'bg-violet-400/70' : 'bg-rose-400/60'}`}
+                style={{ width: `${(Math.abs(m.returns['1M']) / maxAbs) * 100}%` }}
+              />
+            </div>
+            <span className={`w-12 text-right text-xs font-bold tabular-nums ${m.returns['1M'] >= 0 ? 'text-violet-300' : 'text-rose-400'}`}>
+              {m.returns['1M'] >= 0 ? '+' : ''}{m.returns['1M'].toFixed(1)}%
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
   if (kind === 'tony') {
     return (
       <div>
         <div className="flex h-3 w-full overflow-hidden rounded-full">
-          <div className="bg-slate-400"  style={{ width: '40%' }} />
+          <div className="bg-slate-400"  style={{ width: '30%' }} />
+          <div className="bg-teal-400"   style={{ width: '10%' }} />
           <div className="bg-violet-400" style={{ width: '20%' }} />
           <div className="bg-blue-400"   style={{ width: '14%' }} />
           <div className="bg-sky-400"    style={{ width: '14%' }} />
@@ -2259,7 +2302,7 @@ function SlideVisual({ kind }: { kind: string }) {
           <div className="bg-orange-400" style={{ width: '6%' }} />
         </div>
         <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-400">
-          {[['Core 40', 'bg-slate-400'], ['AI 20', 'bg-violet-400'], ['Semi 14', 'bg-blue-400'], ['Tech 14', 'bg-sky-400'], ['Elec 6', 'bg-amber-400'], ['Ind 6', 'bg-orange-400']].map(([label, color]) => (
+          {[['Core 30', 'bg-slate-400'], ['World 10', 'bg-teal-400'], ['AI 20', 'bg-violet-400'], ['Semi 14', 'bg-blue-400'], ['Tech 14', 'bg-sky-400'], ['Elec 6', 'bg-amber-400'], ['Ind 6', 'bg-orange-400']].map(([label, color]) => (
             <span key={label} className="flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${color}`} />{label}</span>
           ))}
         </div>

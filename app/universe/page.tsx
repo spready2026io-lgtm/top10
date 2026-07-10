@@ -12,6 +12,7 @@ import {
   type Theme,
   type Period,
 } from '@/lib/data';
+import { MARKET_TILES, LENS_FUNDS } from '@/lib/markets-data';
 
 // One row per tracked ETF, assembled from the generated data blocks.
 type Row = {
@@ -140,7 +141,7 @@ export default function Universe() {
         <section className="mb-7 max-w-3xl">
           <h2 className="text-2xl font-bold text-white mb-3">Our ETF Universe</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Every actively managed ETF we track, in one table. {allRows.length} funds across six themes —
+            Every actively managed ETF we track, in one table. {allRows.length} funds across six themes,
             each one a discretionary book of conviction bets, not a passive index. These are the funds whose
             daily holdings feed every ranking on Stockscout.
           </p>
@@ -194,6 +195,62 @@ export default function Universe() {
           each window (YTD = year to date). Top holding is the single largest position by weight. Indicative
           only, not investment advice.
         </p>
+
+        {/* Measuring instruments — index funds tracked on purpose, never scored */}
+        <section className="mt-12">
+          <h3 className="text-lg font-bold text-white mb-1">The measuring instruments</h3>
+          <p className="text-slate-400 text-sm leading-relaxed mb-2 max-w-3xl">
+            Everything above is the conviction universe: {allRows.length} discretionary books of active bets.
+            The funds below are the opposite, on purpose. An index fund cannot have conviction, so these are
+            never scored. They are instruments. Each one measures a market on
+            the <Link href="/markets" className="text-emerald-400 hover:text-emerald-300 font-semibold">World Markets</Link> board,
+            and three of them (IXUS, EFA, EEM) back the world sleeve in
+            the <Link href="/portfolio" className="text-emerald-400 hover:text-emerald-300 font-semibold">portfolio builder</Link>.
+          </p>
+          <p className="text-slate-400 text-xs mb-5 max-w-3xl">
+            Tony&apos;s read: keep the two lists apart in your head. The table ranks manager conviction.
+            These funds track where market-level money goes. Different question, different tool.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              <div className="flex items-baseline justify-between mb-3">
+                <span className="font-bold text-white text-sm">Market instruments</span>
+                <span className="text-slate-500 text-xs">{MARKET_TILES.length} funds, one per market</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {MARKET_TILES.map(m => (
+                  <Link
+                    key={m.ticker}
+                    href="/markets"
+                    title={`${m.market} via ${m.ticker}`}
+                    className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+                  >
+                    {m.flag} <span className="font-mono">{m.ticker}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              <div className="flex items-baseline justify-between mb-3">
+                <span className="font-bold text-white text-sm">Allocation lenses</span>
+                <span className="text-slate-500 text-xs">{LENS_FUNDS.length} broad international funds</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {LENS_FUNDS.map(l => (
+                  <Link
+                    key={l.ticker}
+                    href="/markets"
+                    title={l.name}
+                    className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+                  >
+                    <span className="font-mono">{l.ticker}</span> <span className="text-slate-500">{l.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Disclaimer */}
         <p className="text-slate-600 text-xs border-t border-slate-800 pt-6 mt-8 max-w-3xl">

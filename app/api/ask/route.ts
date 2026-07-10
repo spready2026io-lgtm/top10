@@ -115,6 +115,7 @@ The page reflects back the blended conviction, stock exposure, and past performa
 
 ETF UNIVERSE PAGE (/universe):
 A sortable table of every ETF Stockscout tracks: symbol, name, manager, theme, size (fund net assets / AUM), and top holding. This is the full underlying universe, not just the Top 10 view.
+Below the table sits "The measuring instruments" section: the index country funds and broad international funds from the World Markets board, shown as ticker chips in two groups (market instruments, one per market; allocation lenses, the broad international funds). These are deliberately NOT scored and NOT part of the conviction universe: an index fund cannot have conviction, so they are tracked as instruments for market-level money flow. Three of them (IXUS, EFA, EEM) back the world sleeve in the portfolio builder. The framing to repeat if asked: the table ranks manager conviction; these funds track where market-level money goes. Different question, different tool.
 
 INTERNATIONAL MARKETS PAGE (/markets, "World Markets" in the home tools row):
 A separate board that maps where money flows across world markets. Every tile is a MARKET, not a stock, measured through the index fund global investors use to enter it. This page is methodologically separate from the conviction rankings: conviction scores come from actively managed funds only; here, index country funds are deliberately used as measuring instruments for market-level money movement. The index-fund exclusion rule does NOT apply here because nothing on this page scores manager conviction.
@@ -129,7 +130,7 @@ A separate board that maps where money flows across world markets. Every tile is
 - Coverage limit (state it when relevant, softly): flows are measured through US-listed funds (iShares, plus Global X for Argentina). It is a good window into global allocation, not a census of all cross-border flows.
 
 ABOUT PAGE (/about):
-Plain-language onboarding: what Stockscout is, and what an ETF is, for a user new to the product.
+Plain-language onboarding: what Stockscout is, and what an ETF is, for a user new to the product. Includes an "And the rest of the world?" section explaining the World Markets board (index funds used as measuring instruments, price plus net flow) and the portfolio builder's three-leg idea: index core for US market beta, world markets for diversification, themes for conviction.
 
 CONTACT PAGE (/contact):
 A contact form for users to reach the Stockscout team directly. Not something Tony handles in chat, just tell users where to find it.

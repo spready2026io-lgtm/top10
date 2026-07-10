@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Logo from '@/app/components/Logo';
-import { THEMES, THEME_ETFS } from '@/lib/data';
+import { THEMES, THEME_ETFS, SCAN_TIMESTAMP_NY } from '@/lib/data';
+import { MARKET_TILES } from '@/lib/markets-data';
 
 export const metadata = { title: 'About | Stockscout' };
 
@@ -8,6 +9,7 @@ export default function About() {
   // Counts are derived from the live universe so this page never drifts stale.
   const totalEtfs   = Object.values(THEME_ETFS).reduce((n, list) => n + list.length, 0);
   const themeCount  = THEMES.length;
+  const aiN         = THEME_ETFS['AI & ML'].length;   // example denominator in the Coverage section
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -65,14 +67,15 @@ export default function About() {
             Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} actively managed ETFs</span> across
             {' '}{themeCount} themes, giving you a view across {totalEtfs} institutional products simultaneously.
             All ETFs in the universe are discretionary, actively managed funds. Index trackers are
-            excluded — passive index construction reflects mechanical rules, not manager conviction.
+            excluded from the rankings: passive index construction reflects mechanical rules, not
+            manager conviction.
           </p>
 
           {/* ETF table */}
           <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
             <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
               <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs, {totalEtfs} active funds</p>
-              <p className="text-slate-500 text-xs">last updated June 2026</p>
+              <p className="text-slate-500 text-xs">as of {SCAN_TIMESTAMP_NY}</p>
             </div>
             {THEMES.map((theme, i) => {
               const list = THEME_ETFS[theme];
@@ -89,6 +92,32 @@ export default function About() {
           </div>
         </section>
 
+        {/* World Markets — the deliberate exception to the no-index-funds rule */}
+        <section>
+          <h2 className="text-xl font-bold text-white mb-4">And the rest of the world?</h2>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            The conviction rankings are built from US-listed active funds. The rest of the world gets
+            its own board.
+          </p>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            The <Link href="/markets" className="text-emerald-400 hover:text-emerald-300 font-semibold">World Markets</Link> page
+            tracks {MARKET_TILES.length} markets across Europe, Asia and Latin America. Each market is measured
+            through the index fund global investors actually use to enter it. Japan through EWJ. India through
+            INDA. Brazil through EWZ.
+          </p>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            On that page an index fund is not a conviction signal. It is a measuring instrument. We watch two
+            things: price, and net flow. Net flow is real money entering or leaving the fund, measured by
+            changes in its share count. Price tells you what happened. Flow tells you whether money agreed.
+          </p>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            The same instruments power the world markets sleeve in the
+            {' '}<Link href="/portfolio" className="text-emerald-400 hover:text-emerald-300 font-semibold">Portfolio Builder</Link>.
+            The idea in one line: index core for US market beta, world markets for diversification, themes for
+            conviction. Three legs, each doing one job.
+          </p>
+        </section>
+
         {/* The scores */}
         <section>
           <h2 className="text-xl font-bold text-white mb-4">The Scores</h2>
@@ -101,27 +130,29 @@ export default function About() {
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">10/11</span>
+                <span className="inline-flex items-center border text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">{aiN - 1}/{aiN}</span>
                 <h3 className="text-white font-semibold">Coverage Score</h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed mb-2">
                 The fraction of tracked ETFs in this theme that hold the stock, shown as x/n and as a
-                percentage. The denominator n varies by theme — AI &amp; ML scores out of 11, Broad Tech
-                out of 13, Semiconductors and Electrification out of 4, and so on. A stock held by
-                10 of 11 AI &amp; ML ETFs has 91% coverage.
+                percentage. The denominator n varies by theme. AI &amp; ML scores out
+                of {aiN}, Broad Tech out of {THEME_ETFS['Broad Tech'].length},
+                Semiconductors out of {THEME_ETFS['Semiconductors'].length}, and so on. A stock held
+                by {aiN - 1} of {aiN}{' '}AI &amp; ML ETFs
+                has {Math.round(((aiN - 1) / aiN) * 100)}% coverage.
               </p>
               <ul className="space-y-1 text-sm">
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">11/11</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 border-emerald-500/40 text-emerald-300">{aiN}/{aiN}</span>
                   <span className="text-slate-400">100% coverage. Every ETF in the theme holds this stock. Maximum breadth.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">8/11</span>
-                  <span className="text-slate-400">Strong. ~73% coverage. A few ETFs are out. Still a high-conviction name.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-sky-500/20 border-sky-500/40 text-sky-300">8/{aiN}</span>
+                  <span className="text-slate-400">Strong. ~{Math.round((8 / aiN) * 100)}% coverage. A few ETFs are out. Still a high-conviction name.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">5/11</span>
-                  <span className="text-slate-400">Moderate. ~45% coverage. Held by roughly half the theme. More specialised exposure.</span>
+                  <span className="inline-flex items-center border text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 border-amber-500/40 text-amber-300">5/{aiN}</span>
+                  <span className="text-slate-400">Moderate. ~{Math.round((5 / aiN) * 100)}% coverage. Held by roughly half the theme. More specialised exposure.</span>
                 </li>
               </ul>
               <p className="text-slate-500 text-xs mt-3">
@@ -213,7 +244,7 @@ export default function About() {
             Top10 selection has outperformed the market over that period.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Use the time toggle (1W / 1M / 6M / 1Y) to zoom in or out. The delta badge in the top
+            Use the time toggle (1W / 1M / YTD / 6M / 1Y) to zoom in or out. The delta badge in the top
             right of the chart shows the performance gap between the two lines.
           </p>
         </section>
@@ -249,7 +280,7 @@ export default function About() {
                 <li><span className="text-slate-300 font-medium">Price and period return.</span> Current price and return for the selected period.</li>
                 <li><span className="text-slate-300 font-medium">Weight Score.</span> Average ETF weighting across holders.</li>
                 <li><span className="text-slate-300 font-medium">Velocity Score badge.</span> Green (+) or red (-) showing how fast Weight Score is changing.</li>
-                <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / 6M / 1Y.</li>
+                <li><span className="text-slate-300 font-medium">Price chart.</span> Adjust the period using 1W / 1M / YTD / 6M / 1Y.</li>
               </ul>
             </div>
             <div className="rounded-xl border border-emerald-900 bg-slate-900 p-4">
@@ -291,7 +322,7 @@ export default function About() {
               { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
               { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Velocity Score tells you if that conviction is growing. All three high means maximum and accelerating conviction.' },
               { n: '5', title: 'Flip the tile.', body: 'Click any tile to see the full ETF breakdown, financials and Tony\'s qualitative analysis note.' },
-              { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
+              { n: '6', title: 'Adjust the chart period.', body: 'Use the 1W / 1M / YTD / 6M / 1Y buttons inside each tile to see the price history over different periods.' },
             ].map(({ n, title, body }) => (
               <li key={n} className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center justify-center mt-0.5">
