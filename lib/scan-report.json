@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-10T13:37:40.558Z",
-  "scanTimestampNY": "July 10, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-11T13:37:30.292Z",
+  "scanTimestampNY": "July 11, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 18
+        "count": 43
       },
       "ARTY": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 35
+        "count": 34
       },
       "AIFD": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 5
+        "count": 6
       },
       "PTF": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "IGV": {
         "ok": true,
@@ -89,15 +89,15 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "BCTK": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "FWD": {
         "ok": true,
-        "count": 18
+        "count": 16
       },
       "CBSE": {
         "ok": true,
@@ -125,11 +125,11 @@
       },
       "XMMO": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "POW": {
         "ok": true,
-        "count": 13
+        "count": 44
       },
       "VOLT": {
         "ok": true,
@@ -173,7 +173,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 19
       },
       "RKNG": {
         "ok": true,
@@ -231,14 +231,6 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
