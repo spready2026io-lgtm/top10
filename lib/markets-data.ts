@@ -4705,7 +4705,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Jul 11, 2026, 9:39 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Jul 12, 2026, 9:39 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
