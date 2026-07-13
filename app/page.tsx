@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
 import Logo from '@/app/components/Logo';
+import EmailCapture from '@/app/components/EmailCapture';
 import {
   Theme,
   Equity,
@@ -2841,6 +2842,9 @@ export default function Home() {
       </div>
       </>
       )}
+
+      {/* Weekly conviction note — email capture */}
+      <EmailCapture variant="band" source="home" />
 
       {/* Footer */}
       {SCAN_TIMESTAMP_NY && (

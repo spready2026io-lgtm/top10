@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { computeConviction, computeManagers } from '@/lib/conviction';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
+import EmailCapture from '@/app/components/EmailCapture';
 
 const THEME_COLOR: Record<string, string> = {
   'AI & ML':        'text-violet-400 bg-violet-500/10 border-violet-500/30',
@@ -176,6 +177,15 @@ export default function ConvictionPage() {
         )}
           </>
         )}
+
+        {/* Weekly conviction note — email capture */}
+        <div className="mt-10 rounded-xl border border-slate-800 bg-slate-900/50 px-5 py-6">
+          <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-1.5">Get the weekly conviction note</p>
+          <p className="text-slate-400 text-sm mb-4 max-w-lg">
+            The names gaining conviction across these 40 managers, in one email a week from Tony. See it first.
+          </p>
+          <EmailCapture variant="inline" source="conviction" />
+        </div>
 
         <p className="text-slate-700 text-xs text-center mt-8">
           For informational purposes only. Not investment advice. Conviction is measured from disclosed top holdings — breadth across managers and weight, not performance. Observed since May 2026.
