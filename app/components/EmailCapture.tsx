@@ -2,13 +2,19 @@
 
 import { useState } from 'react';
 import { trackEvent } from '@/lib/gtag';
+import { computeManagers } from '@/lib/conviction';
+
+// Derived live from the data (same source the Conviction Board counts), so the
+// copy always matches the site and never goes stale when funds are added/removed.
+const FUND_COUNT = computeManagers().length;
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
 /**
- * Weekly conviction-note signup. Two looks:
- *   variant="band"   full-width banded CTA, sits above the footer on the home page
- *   variant="inline" slim single-line version for embedding inside another section
+ * Weekly conviction-note signup. Three looks:
+ *   variant="bar"    slim full-width strip for high placement (above the board)
+ *   variant="band"   full banded CTA (used low on the home page)
+ *   variant="inline" bare form for embedding inside another section
  *
  * On success it fires the GA4 `subscribe` event (source-tagged). That event is
  * the primary conversion the paid-search test optimises toward, so the source
@@ -18,7 +24,7 @@ export default function EmailCapture({
   variant = 'band',
   source = 'home',
 }: {
-  variant?: 'band' | 'inline';
+  variant?: 'bar' | 'band' | 'inline';
   source?: string;
 }) {
   const [email, setEmail] = useState('');
@@ -85,6 +91,24 @@ export default function EmailCapture({
     <p className={`text-xs mt-2 ${status === 'error' ? 'text-rose-400' : 'text-emerald-400'}`}>{msg}</p>
   );
 
+  // ── Bar variant — slim, high on the page so everyone sees it ─────────────────
+  if (variant === 'bar') {
+    return (
+      <section className="border-b border-slate-800 bg-emerald-500/[0.06]">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2.5">
+          <p className="text-sm leading-snug min-w-0">
+            <span className="text-emerald-400 font-semibold">Get Tony&apos;s weekly conviction note.</span>{' '}
+            <span className="text-slate-400">The stocks gaining conviction across {FUND_COUNT} funds, plus world-market flows.</span>
+          </p>
+          <div className="sm:ml-auto w-full sm:w-auto sm:min-w-[21rem]">
+            {form}
+            {note}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   // ── Inline variant ──────────────────────────────────────────────────────────
   if (variant === 'inline') {
     return (
@@ -104,7 +128,7 @@ export default function EmailCapture({
           See which stocks the top managers are backing.
         </h2>
         <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
-          One email a week from Tony. The names gaining conviction across 40 actively managed funds, before the crowd notices. No spam, unsubscribe anytime.
+          One email a week from Tony. The names gaining conviction across {FUND_COUNT} actively managed funds, plus where global money is flowing across world markets. Before the crowd notices. No spam, unsubscribe anytime.
         </p>
         <div className="max-w-md mx-auto">
           {form}

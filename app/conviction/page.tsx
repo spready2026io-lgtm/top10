@@ -182,7 +182,7 @@ export default function ConvictionPage() {
         <div className="mt-10 rounded-xl border border-slate-800 bg-slate-900/50 px-5 py-6">
           <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-1.5">Get the weekly conviction note</p>
           <p className="text-slate-400 text-sm mb-4 max-w-lg">
-            The names gaining conviction across these 40 managers, in one email a week from Tony. See it first.
+            The names gaining conviction across these {totalManagers} managers, plus where global money is flowing across world markets, in one email a week from Tony. See it first.
           </p>
           <EmailCapture variant="inline" source="conviction" />
         </div>
