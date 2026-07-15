@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-14T13:37:46.620Z",
-  "scanTimestampNY": "July 14, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-15T13:37:17.864Z",
+  "scanTimestampNY": "July 15, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 56
+        "count": 57
       },
       "CHAT": {
         "ok": true,
@@ -117,7 +117,7 @@
       },
       "SGRT": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "SPMO": {
         "ok": true,
@@ -125,7 +125,7 @@
       },
       "XMMO": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "POW": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 3
+        "count": 5
       },
       "PBW": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 47
+        "count": 48
       },
       "BUZZ": {
         "ok": true,
@@ -173,11 +173,11 @@
       },
       "MEME": {
         "ok": true,
-        "count": 19
+        "count": 18
       },
       "RKNG": {
         "ok": true,
-        "count": 24
+        "count": 22
       }
     },
     "total": 44,
@@ -235,8 +235,12 @@
     ]
   },
   "yfScan": {
-    "total": 87,
-    "succeeded": 87,
-    "failed": []
+    "total": 88,
+    "succeeded": 85,
+    "failed": [
+      "CRWD",
+      "SHOP",
+      "APLD"
+    ]
   }
 }
