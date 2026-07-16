@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-15T13:37:17.864Z",
-  "scanTimestampNY": "July 15, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-16T13:38:15.056Z",
+  "scanTimestampNY": "July 16, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 9
+        "count": 8
       },
       "IVES": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "IGV": {
         "ok": true,
@@ -77,7 +77,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 7
+        "count": 11
       },
       "ARKK": {
         "ok": true,
@@ -97,7 +97,7 @@
       },
       "FWD": {
         "ok": true,
-        "count": 16
+        "count": 19
       },
       "CBSE": {
         "ok": true,
@@ -113,7 +113,7 @@
       },
       "CNEQ": {
         "ok": true,
-        "count": 27
+        "count": 26
       },
       "SGRT": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 44
+        "count": 47
       },
       "VOLT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 5
+        "count": 4
       },
       "PBW": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 48
+        "count": 49
       },
       "BUZZ": {
         "ok": true,
@@ -177,7 +177,7 @@
       },
       "RKNG": {
         "ok": true,
-        "count": 22
+        "count": 21
       }
     },
     "total": 44,
@@ -235,12 +235,8 @@
     ]
   },
   "yfScan": {
-    "total": 88,
-    "succeeded": 85,
-    "failed": [
-      "CRWD",
-      "SHOP",
-      "APLD"
-    ]
+    "total": 89,
+    "succeeded": 89,
+    "failed": []
   }
 }
