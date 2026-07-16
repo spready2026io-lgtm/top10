@@ -2091,6 +2091,8 @@ function LandingExampleGuide() {
   // same number twice (the live top-consensus name can coincidentally match).
   const exVs = 9.8;
   const exWk = 3.4;
+  const exDomain = TICKER_DOMAINS[tc.ticker];
+  const exLogo = exDomain ? `https://www.google.com/s2/favicons?domain=${exDomain}&sz=64` : null;
   const dot = 'inline-block h-2 w-2 flex-shrink-0 rounded-full bg-amber-400';
   const bubble = 'rounded-md border border-amber-400/30 bg-amber-400/[0.07] px-2 py-1';
 
@@ -2101,11 +2103,23 @@ function LandingExampleGuide() {
       </div>
       <div className="flex items-stretch gap-6">
         {/* Tile top, mirroring a real stock tile */}
-        <div className="w-[210px] flex-shrink-0 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3">
+        <div className="w-[230px] flex-shrink-0 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3">
           <div className="flex items-start justify-between gap-1.5">
-            <div className="min-w-0">
-              <div className="truncate text-[13px] font-bold leading-tight text-white">{tc.name}</div>
-              <div className="font-mono text-[10px] text-slate-500">{tc.ticker}</div>
+            <div className="flex min-w-0 items-start gap-2">
+              {exLogo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={exLogo}
+                  width={20} height={20}
+                  className="mt-0.5 rounded-md flex-shrink-0 bg-white"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  alt=""
+                />
+              )}
+              <div className="min-w-0">
+                <div className="truncate text-[13px] font-bold leading-tight text-white">{tc.name}</div>
+                <div className="font-mono text-[10px] text-slate-500">{tc.ticker}</div>
+              </div>
             </div>
             <span className="flex flex-shrink-0 items-center gap-1">
               <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-bold tabular-nums text-emerald-300">8/10</span>
@@ -2120,7 +2134,7 @@ function LandingExampleGuide() {
                 <span ref={mk2} className={dot} />
               </span>
               <span className="flex items-center gap-1">
-                <span className={`text-base font-bold leading-none tabular-nums ${exVs >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exVs >= 0 ? '+' : ''}{exVs.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% Velocity 1W</span></span>
+                <span className={`whitespace-nowrap text-base font-bold leading-none tabular-nums ${exVs >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{exVs >= 0 ? '+' : ''}{exVs.toFixed(1)}<span className="ml-0.5 text-[10px] font-medium opacity-70">% Velocity 1W</span></span>
                 <span ref={mk3} className={dot} />
               </span>
             </div>
@@ -2171,6 +2185,8 @@ function LandingExampleGuide() {
 function SlideVisual({ kind }: { kind: string }) {
   if (kind === 'etfs') {
     const tc = TOP_CONSENSUS;
+    const tcDomain = tc ? TICKER_DOMAINS[tc.ticker] : undefined;
+    const tcLogo = tcDomain ? `https://www.google.com/s2/favicons?domain=${tcDomain}&sz=64` : null;
     const sampleTickers = ['AIS', 'SOXX', 'ARKK', 'IGV', 'AIRR', 'PSI'];
     return (
       <div className="space-y-3">
@@ -2190,9 +2206,21 @@ function SlideVisual({ kind }: { kind: string }) {
             {/* Mirror of a real tile top, with amber markers keyed to the legend below */}
             <div className="rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-3">
               <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-bold leading-tight text-white">{tc.name}</div>
-                  <div className="font-mono text-[11px] text-slate-500">{tc.ticker}</div>
+                <div className="flex min-w-0 items-start gap-2">
+                  {tcLogo && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={tcLogo}
+                      width={22} height={22}
+                      className="mt-0.5 rounded-md flex-shrink-0 bg-white"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      alt=""
+                    />
+                  )}
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-bold leading-tight text-white">{tc.name}</div>
+                    <div className="font-mono text-[11px] text-slate-500">{tc.ticker}</div>
+                  </div>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
                   <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-xs font-bold tabular-nums text-emerald-300">8/10</span>
@@ -2209,7 +2237,7 @@ function SlideVisual({ kind }: { kind: string }) {
                   </div>
                   {tc.vs1w !== null && (
                     <div className="flex items-center">
-                      <span className={`text-lg font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium opacity-70">% Velocity 1W</span></span>
+                      <span className={`whitespace-nowrap text-lg font-bold leading-none tabular-nums ${tc.vs1w >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{tc.vs1w >= 0 ? '+' : ''}{tc.vs1w.toFixed(1)}<span className="ml-0.5 text-[11px] font-medium opacity-70">% Velocity 1W</span></span>
                       <GuideMark n={3} className="ml-1" />
                     </div>
                   )}
