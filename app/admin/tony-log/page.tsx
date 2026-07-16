@@ -1,7 +1,7 @@
 import TonyLogClient from './TonyLogClient';
 
 export const metadata = {
-  title: 'Tony Q&A Log',
+  title: 'Stockscout Admin',
   robots: { index: false, follow: false },
 };
 
