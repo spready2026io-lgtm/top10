@@ -6,16 +6,20 @@ import { trackEvent } from '@/lib/gtag';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
   baseIndexInfo, BASE_CHOICES, PERF_PERIODS,
-  worldChoiceInfo, WORLD_CHOICES, WORLD_AVAILABLE, WORLD_COLOR,
+  worldChoiceInfo, worldMarketsInfo, WORLD_CHOICES, WORLD_AVAILABLE, WORLD_COLOR,
+  WORLD_MARKET_UNIVERSE, WORLD_MARKET_MAX,
   themeUniverse, defaultReps,
 } from '@/lib/portfolio';
-import type { BaseChoiceId, WorldChoiceId } from '@/lib/portfolio';
+import type { BaseChoiceId, WorldChoiceId, WorldMarketFund } from '@/lib/portfolio';
 import { SCAN_TIMESTAMP_NY } from '@/lib/data';
 import type { Period, Theme } from '@/lib/data';
 
 export default function PortfolioPage() {
   const [baseIndex, setBaseIndex] = useState<BaseChoiceId>('SPY');
   const [worldChoice, setWorldChoice] = useState<WorldChoiceId>('IXUS');
+  // Custom international mix from the "Why these markets?" picker. Empty = broad preset.
+  const [worldMarkets, setWorldMarkets] = useState<string[]>([]);
+  const [openWorldWhy, setOpenWorldWhy] = useState(false);
   const [vals, setVals] = useState<number[]>(() => buildSleeves().map(s => s.defaultVal));
   const [period, setPeriod] = useState<Period>('1M');
   const [showConvHelp, setShowConvHelp] = useState(false);
@@ -24,9 +28,15 @@ export default function PortfolioPage() {
   const [overrides, setOverrides] = useState<Partial<Record<Theme, string[]>>>({});
   const [openWhy, setOpenWhy] = useState<Theme | null>(null);
 
-  const SLEEVES = useMemo(() => buildSleeves(baseIndex, worldChoice, overrides), [baseIndex, worldChoice, overrides]);
+  const worldCustom = worldMarkets.length > 0;
+  const SLEEVES = useMemo(
+    () => buildSleeves(baseIndex, worldChoice, overrides, worldMarkets),
+    [baseIndex, worldChoice, overrides, worldMarkets],
+  );
   const core = baseIndexInfo(baseIndex);
-  const world = WORLD_AVAILABLE ? worldChoiceInfo(worldChoice) : null;
+  const world = WORLD_AVAILABLE
+    ? (worldCustom ? worldMarketsInfo(worldMarkets) : worldChoiceInfo(worldChoice))
+    : null;
 
   const total = vals.reduce((a, b) => a + b, 0) || 1;
   const norm = vals.map(v => v / total);
@@ -75,6 +85,36 @@ export default function PortfolioPage() {
     trackEvent('portfolio_theme_override_reset', { theme });
   }
 
+  // Add or remove an international market from the custom world mix. Capped at
+  // WORLD_MARKET_MAX; clearing all markets falls back to the broad preset.
+  function toggleWorldMarket(ticker: string) {
+    setWorldMarkets(prev => {
+      let next: string[];
+      if (prev.includes(ticker)) {
+        next = prev.filter(t => t !== ticker);
+      } else {
+        if (prev.length >= WORLD_MARKET_MAX) return prev;   // cap the blend
+        next = [...prev, ticker];
+      }
+      trackEvent('portfolio_world_markets_changed', { ticker, count: next.length });
+      return next;
+    });
+  }
+
+  function resetWorldMarkets() {
+    if (!worldMarkets.length) return;
+    setWorldMarkets([]);
+    trackEvent('portfolio_world_markets_reset', {});
+  }
+
+  // Selecting a broad preset clears any custom market mix — presets and a custom
+  // blend are mutually exclusive ways to fill the same sleeve.
+  function pickWorldPreset(id: WorldChoiceId) {
+    setWorldChoice(id);
+    setWorldMarkets([]);
+    trackEvent('portfolio_world_choice_changed', { world_choice: id });
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* Header */}
@@ -114,7 +154,9 @@ export default function PortfolioPage() {
               index funds global allocators actually use: <span className="text-slate-200">IXUS</span> for everything outside
               the US, <span className="text-slate-200">EFA</span> for developed markets, <span className="text-slate-200">EEM</span> for
               emerging. It is passive by design. Like your core it scores zero conviction, but it spreads your risk across
-              dozens of markets that do not move in lockstep with the S&amp;P 500. The same instruments are tracked daily on
+              dozens of markets that do not move in lockstep with the S&amp;P 500. Want a sharper tilt? Open
+              <span className="text-slate-200"> Why these markets?</span> to swap the broad fund for a hand-picked blend of
+              specific countries or regions. The same instruments are tracked daily on
               the <Link href="/markets" className="text-slate-200 underline decoration-slate-600 hover:decoration-slate-300">World Markets</Link> board.
             </p>
           )}
@@ -163,13 +205,13 @@ export default function PortfolioPage() {
                     </div>
                   )}
                   {s.isWorld && (
-                    <div className="flex gap-1 mb-2">
+                    <div className="flex flex-wrap items-center gap-1 mb-2">
                       {WORLD_CHOICES.map(({ id, label }) => (
                         <button
                           key={id}
-                          onClick={() => { setWorldChoice(id); trackEvent('portfolio_world_choice_changed', { world_choice: id }); }}
+                          onClick={() => pickWorldPreset(id)}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
-                            worldChoice === id
+                            !worldCustom && worldChoice === id
                               ? 'bg-slate-700 border-slate-600 text-slate-100'
                               : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
                           }`}
@@ -177,6 +219,11 @@ export default function PortfolioPage() {
                           {label}
                         </button>
                       ))}
+                      {worldCustom && (
+                        <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">
+                          custom mix
+                        </span>
+                      )}
                     </div>
                   )}
                   <input
@@ -195,6 +242,17 @@ export default function PortfolioPage() {
                       onToggleOpen={() => setOpenWhy(cur => (cur === s.name ? null : (s.name as Theme)))}
                       onToggleFund={t => toggleFund(s.name as Theme, t)}
                       onReset={() => resetTheme(s.name as Theme)}
+                    />
+                  )}
+                  {s.isWorld && (
+                    <WorldWhyPanel
+                      active={worldMarkets}
+                      overridden={worldCustom}
+                      open={openWorldWhy}
+                      atCap={worldMarkets.length >= WORLD_MARKET_MAX}
+                      onToggleOpen={() => setOpenWorldWhy(v => !v)}
+                      onToggleMarket={toggleWorldMarket}
+                      onReset={resetWorldMarkets}
                     />
                   )}
                 </div>
@@ -231,7 +289,8 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-            {/* World sleeve country weights — the geographic twin of the core panel */}
+            {/* World sleeve geography — country weights for a broad preset, or the
+                hand-picked markets for a custom mix. Twin of the core panel. */}
             {world && (
               <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-4">
                 <div className="flex items-center justify-between mb-1">
@@ -240,27 +299,56 @@ export default function PortfolioPage() {
                   </div>
                   <span className="text-[11px] text-slate-500">{world.id} · {world.name}</span>
                 </div>
-                <p className="text-[11px] text-slate-500 mb-3">
-                  Where your international money sits, by country of risk of the fund&apos;s holdings.
-                </p>
-                <div className="flex flex-col gap-2">
-                  {world.countries.map(c => (
-                    <div key={c.c} className="flex items-center gap-3">
-                      <div className="w-24 text-xs font-semibold text-slate-300 shrink-0 truncate" title={c.c}>{c.c}</div>
-                      <div className="flex-1 bg-slate-800 rounded h-3">
-                        <div className="h-full rounded" style={{ width: `${(c.w / world.countries[0].w) * 100}%`, background: WORLD_COLOR, opacity: 0.75 }} />
-                      </div>
-                      <div className="w-12 text-right text-[11px] text-slate-400">{c.w.toFixed(1)}%</div>
+                {'markets' in world ? (
+                  <>
+                    <p className="text-[11px] text-slate-500 mb-3">
+                      Your international money, split equally across the markets you picked.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {world.markets.map(m => (
+                        <span
+                          key={m.ticker}
+                          className="flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/60 px-2 py-1 text-[11px] text-slate-300"
+                          title={`${m.market} · ${m.region}`}
+                        >
+                          <span aria-hidden>{m.flag}</span>
+                          <span className="font-semibold text-slate-200">{m.market}</span>
+                          <span className="font-mono text-[10px] text-slate-500">{m.ticker}</span>
+                          <span className="tabular-nums text-slate-400">{(100 / world.markets.length).toFixed(0)}%</span>
+                        </span>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                {world.corr6M != null && (
-                  <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
-                    Diversification check: over the last 6 months this sleeve moved with a correlation of
-                    <span className="text-slate-200 font-semibold"> {world.corr6M.toFixed(2)}</span> to the S&amp;P 500
-                    (1.00 means moving in lockstep). The lower the number, the more this sleeve behaves like a
-                    genuinely different asset.
-                  </p>
+                    <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+                      An equal-weight blend of these markets, each an index fund tracked daily on the
+                      <Link href="/markets" className="text-slate-200 underline decoration-slate-600 hover:decoration-slate-300"> World Markets</Link> board.
+                      The S&amp;P 500 correlation is shown for the broad presets; a hand-built mix carries no single blended number.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[11px] text-slate-500 mb-3">
+                      Where your international money sits, by country of risk of the fund&apos;s holdings.
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {world.countries.map(c => (
+                        <div key={c.c} className="flex items-center gap-3">
+                          <div className="w-24 text-xs font-semibold text-slate-300 shrink-0 truncate" title={c.c}>{c.c}</div>
+                          <div className="flex-1 bg-slate-800 rounded h-3">
+                            <div className="h-full rounded" style={{ width: `${(c.w / world.countries[0].w) * 100}%`, background: WORLD_COLOR, opacity: 0.75 }} />
+                          </div>
+                          <div className="w-12 text-right text-[11px] text-slate-400">{c.w.toFixed(1)}%</div>
+                        </div>
+                      ))}
+                    </div>
+                    {world.corr6M != null && (
+                      <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+                        Diversification check: over the last 6 months this sleeve moved with a correlation of
+                        <span className="text-slate-200 font-semibold"> {world.corr6M.toFixed(2)}</span> to the S&amp;P 500
+                        (1.00 means moving in lockstep). The lower the number, the more this sleeve behaves like a
+                        genuinely different asset.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             )}
@@ -333,8 +421,8 @@ export default function PortfolioPage() {
                   </div>
                   <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
                     ETF shows each theme&apos;s suggested tickers (the equal-weight blend of its three strongest non-correlated ETFs).
-                    The world sleeve shows the international index fund you picked. Return is the past performance of that
-                    sleeve&apos;s real index over {period}. Past performance does not predict future results.
+                    The world sleeve shows the broad index fund or the specific markets you picked. Return is the past performance
+                    of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
                   </p>
                 </div>
               )}
@@ -559,6 +647,110 @@ function ThemeWhyPanel({
             correlation) so the sleeve stays diversified instead of tripling the same bet. That is why some
             higher-returning funds are skipped. Overriding chases return at the cost of that spread. Equal-weight
             blend of {active.length} fund{active.length === 1 ? '' : 's'}.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── "Why these markets?" panel: hand-pick the international sleeve ────────────
+// The geographic twin of ThemeWhyPanel. Lists the /markets board tiles grouped
+// by region and lets the user blend specific markets into the world sleeve
+// instead of a single broad index fund. Zero conviction either way — these are
+// index instruments — so there are no reason tags, just returns to compare.
+const WORLD_REGION_ORDER: WorldMarketFund['region'][] = ['Europe', 'Asia', 'Latin America'];
+
+function WorldWhyPanel({
+  active, overridden, open, atCap, onToggleOpen, onToggleMarket, onReset,
+}: {
+  active: string[];
+  overridden: boolean;
+  open: boolean;
+  atCap: boolean;
+  onToggleOpen: () => void;
+  onToggleMarket: (ticker: string) => void;
+  onReset: () => void;
+}) {
+  if (!WORLD_MARKET_UNIVERSE.length) return null;
+  const byRegion = WORLD_REGION_ORDER
+    .map(region => ({ region, funds: WORLD_MARKET_UNIVERSE.filter(f => f.region === region) }))
+    .filter(g => g.funds.length);
+
+  return (
+    <div className="mt-2">
+      <button
+        onClick={onToggleOpen}
+        className="text-[11px] text-slate-500 hover:text-slate-300 inline-flex items-center gap-1.5 transition-colors"
+      >
+        {open ? 'Hide market list' : 'Why these markets?'}
+        {overridden && (
+          <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">customized</span>
+        )}
+      </button>
+
+      {open && (
+        <div className="mt-2 rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+          <div className="flex items-center justify-between mb-2 gap-2">
+            <span className="text-[11px] text-slate-400">
+              Tap a market to add or remove it. {active.length ? `${active.length} of ${WORLD_MARKET_MAX} picked.` : 'Pick markets to build a custom mix.'}
+            </span>
+            {overridden && (
+              <button onClick={onReset} className="text-[10px] text-emerald-400 hover:text-emerald-300 shrink-0 transition-colors">
+                Reset to broad index
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {byRegion.map(({ region, funds }) => (
+              <div key={region}>
+                <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{region}</div>
+                <div className="flex flex-col gap-1">
+                  {funds.map(f => {
+                    const inMix = active.includes(f.ticker);
+                    const disabled = !inMix && atCap;
+                    return (
+                      <button
+                        key={f.ticker}
+                        onClick={() => onToggleMarket(f.ticker)}
+                        disabled={disabled}
+                        title={disabled ? `Up to ${WORLD_MARKET_MAX} markets` : undefined}
+                        className={`flex items-center gap-2 rounded px-2 py-1 text-left border transition-colors ${
+                          inMix ? 'border-slate-600 bg-slate-800/70' : 'border-transparent hover:bg-slate-900'
+                        } ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      >
+                        <span
+                          className={`inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border text-[9px] leading-none shrink-0 ${
+                            inMix ? 'text-slate-950 border-transparent' : 'text-transparent border-slate-700'
+                          }`}
+                          style={inMix ? { background: WORLD_COLOR } : undefined}
+                        >
+                          ✓
+                        </span>
+                        <span aria-hidden className="shrink-0">{f.flag}</span>
+                        <span className="w-11 text-xs font-mono text-slate-200 shrink-0">{f.ticker}</span>
+                        <span className="flex-1 text-[10px] text-slate-500 truncate">
+                          {f.market}{f.thin ? ' · thin' : ''}
+                        </span>
+                        <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-14 text-right">
+                          6M <span className={f.ret6 >= 0 ? 'text-slate-300' : 'text-red-400'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
+                        </span>
+                        <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-16 text-right">
+                          1Y <span className={f.ret1 >= 0 ? 'text-emerald-400' : 'text-red-400'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[10px] text-slate-500 leading-relaxed mt-2">
+            Each market is a single index fund tracked on the World Markets board. Your world sleeve becomes an
+            equal-weight blend of {active.length ? `the ${active.length} market${active.length === 1 ? '' : 's'}` : 'the markets'} you
+            pick, replacing the broad preset. Concentrating in fewer markets trades diversification for a sharper regional bet.
           </p>
         </div>
       )}

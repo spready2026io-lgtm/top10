@@ -4,8 +4,8 @@ import {
   THEME_UNIVERSE,
 } from './data';
 import type { Theme, Period, BaseIndexId, EtfHolding, ThemeUniverseFund } from './data';
-import { LENS_FUNDS } from './markets-data';
-import type { LensFund } from './markets-data';
+import { LENS_FUNDS, MARKET_TILES } from './markets-data';
+import type { LensFund, MarketTile, MarketRegion } from './markets-data';
 
 // ── Portfolio builder data layer ────────────────────────────────────────────
 // Everything here is DERIVED FROM REAL DATA in lib/data.ts:
@@ -184,6 +184,67 @@ export function worldChoiceInfo(id: WorldChoiceId) {
   };
 }
 
+// ── Custom international mix — hand-pick markets, price-only lane ─────────────
+// The /markets board tiles (single country / region funds) double as a picker:
+// instead of one broad fund, the user can blend specific markets into their
+// world sleeve. Same zero-conviction rule as the broad presets — these are
+// index instruments, not manager conviction. Only tiles with a complete series
+// across every period are offered, so a custom blend always has real data.
+export type WorldMarketFund = {
+  ticker: string; market: string; flag: string;
+  region: MarketRegion; kind: 'region' | 'country';
+  ret6: number; ret1: number; thin: boolean;
+};
+const worldTileUsable = (t: MarketTile): boolean =>
+  !!t.history && ALL_PERIODS.every(p => Array.isArray(t.history![p]) && t.history![p].length >= 2);
+
+// Cap on a custom blend — enough to build a real regional tilt, few enough that
+// the sleeve stays legible. Parallels the theme override's small-blend spirit.
+export const WORLD_MARKET_MAX = 8;
+
+// The pickable universe, ranked within each region by 1Y return (the board's
+// own ordering signal) so the strongest markets surface first.
+export const WORLD_MARKET_UNIVERSE: WorldMarketFund[] =
+  MARKET_TILES.filter(worldTileUsable)
+    .map(t => ({
+      ticker: t.ticker, market: t.market, flag: t.flag,
+      region: t.region, kind: t.kind,
+      ret6: t.returns['6M'], ret1: t.returns['1Y'], thin: t.thin,
+    }))
+    .sort((a, b) => b.ret1 - a.ret1);
+
+const worldTile = (ticker: string): MarketTile | undefined =>
+  MARKET_TILES.find(t => t.ticker === ticker);
+
+// Equal-weight blend of the chosen markets' real indexed paths, aligned to the
+// SPY series length. Mirrors worldChoiceSeries but across several markets.
+export function worldMarketsSeries(tickers: string[], period: Period): number[] {
+  const spyLen = BASE_INDEX_CHART.SPY[period].length;
+  const paths = tickers
+    .map(t => worldTile(t)?.history?.[period])
+    .filter((h): h is number[] => Array.isArray(h) && h.length >= 2)
+    .map(h => { const base = h[0] || 1; return resample(h.map(v => (v / base) * 100), spyLen); });
+  if (!paths.length) return new Array(spyLen).fill(100);
+  return Array.from({ length: spyLen }, (_, i) =>
+    paths.reduce((s, p) => s + p[i], 0) / paths.length);
+}
+
+// Read-out for a custom world blend (the geographic mirror of worldChoiceInfo).
+// No corr6M: the per-tile SPY correlation is not emitted by the markets pipeline
+// (only the broad lens funds carry it), so the page shows it for presets only.
+export function worldMarketsInfo(tickers: string[]) {
+  const picks = tickers
+    .map(t => worldTile(t))
+    .filter((t): t is MarketTile => !!t);
+  return {
+    id: 'custom',
+    label: `${picks.length} market${picks.length === 1 ? '' : 's'}`,
+    name: 'Custom international mix',
+    markets: picks.map(t => ({ ticker: t.ticker, market: t.market, flag: t.flag, region: t.region })),
+    corr6M: null as number | null,
+  };
+}
+
 // Raw theme conviction = mean proScore of the theme's top 5 consensus stocks.
 // proScore = avg weight across the theme's ETFs × coverage (linear) — the same
 // signal the conviction board ranks on.
@@ -205,6 +266,7 @@ export function buildSleeves(
   baseIndex: BaseChoiceId = 'SPY',
   worldChoice: WorldChoiceId = 'IXUS',
   overrides: Partial<Record<Theme, string[]>> = {},
+  worldMarkets: string[] = [],
 ): Sleeve[] {
   const themeData = BUILDER_THEMES.map(t => ({ theme: t, ...rawThemeConviction(t) }));
   const maxRaw = Math.max(...themeData.map(d => d.raw)) || 1;
@@ -231,10 +293,16 @@ export function buildSleeves(
 
   // The diversifier: passive world beta, zero conviction by design, no
   // single-stock picks (it holds markets, so it never enters stock exposure).
+  // A custom market mix (from the "Why these markets?" picker) replaces the
+  // broad preset — repTickers carries the chosen markets for sleeveSeries,
+  // exactly as a theme override does.
+  const worldCustom = worldMarkets.filter(t => t).length > 0;
   const world: Sleeve | null = WORLD_AVAILABLE ? {
     id: 'world',
     name: 'World markets',
-    etf: worldChoice,                    // carries the world-choice id for sleeveSeries
+    // Broad preset carries the WorldChoiceId; a custom mix shows the picked
+    // markets (like a theme's "ARTY + IVES + SPRX").
+    etf: worldCustom ? worldMarkets.join(' + ') : worldChoice,
     color: WORLD_COLOR,
     isCore: false,
     isWorld: true,
@@ -242,6 +310,7 @@ export function buildSleeves(
     convRaw: 0,
     picks: [],
     defaultVal: 10,
+    repTickers: worldCustom ? worldMarkets : undefined,
   } : null;
 
   const themes: Sleeve[] = themeData.map(d => {
@@ -309,6 +378,10 @@ function sleeveSeries(sleeve: Sleeve, period: Period): number[] {
     return baseChoiceSeries(sleeve.etf as BaseChoiceId, period);
   }
   if (sleeve.isWorld) {
+    // A custom market mix blends the chosen tiles; otherwise the broad preset.
+    if (sleeve.repTickers && sleeve.repTickers.length) {
+      return worldMarketsSeries(sleeve.repTickers, period);
+    }
     return worldChoiceSeries(sleeve.etf as WorldChoiceId, period);
   }
   const theme = sleeve.name as Theme;
