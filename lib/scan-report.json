@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-16T13:38:15.056Z",
-  "scanTimestampNY": "July 16, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-07-17T13:38:57.986Z",
+  "scanTimestampNY": "July 17, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -25,11 +25,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 57
+        "count": 59
       },
       "CHAT": {
         "ok": true,
-        "count": 34
+        "count": 19
       },
       "AIFD": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 5
+        "count": 4
       },
       "PTF": {
         "ok": true,
@@ -85,11 +85,11 @@
       },
       "MARS": {
         "ok": true,
-        "count": 23
+        "count": 14
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "BCTK": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 22
+        "count": 25
       },
       "FCUS": {
         "ok": true,
@@ -125,11 +125,11 @@
       },
       "XMMO": {
         "ok": true,
-        "count": 24
+        "count": 22
       },
       "POW": {
         "ok": true,
-        "count": 47
+        "count": 45
       },
       "VOLT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 4
+        "count": 6
       },
       "PBW": {
         "ok": true,
@@ -173,7 +173,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 19
       },
       "RKNG": {
         "ok": true,
@@ -235,8 +235,10 @@
     ]
   },
   "yfScan": {
-    "total": 89,
-    "succeeded": 89,
-    "failed": []
+    "total": 88,
+    "succeeded": 87,
+    "failed": [
+      "CAT"
+    ]
   }
 }
