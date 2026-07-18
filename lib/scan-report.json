@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-17T13:38:57.986Z",
-  "scanTimestampNY": "July 17, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-07-18T13:36:56.672Z",
+  "scanTimestampNY": "July 18, 2026 at 9:36 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 19
+        "count": 31
       },
       "AIFD": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 4
+        "count": 5
       },
       "PTF": {
         "ok": true,
@@ -85,7 +85,7 @@
       },
       "MARS": {
         "ok": true,
-        "count": 14
+        "count": 23
       },
       "FRWD": {
         "ok": true,
@@ -109,7 +109,7 @@
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "CNEQ": {
         "ok": true,
@@ -121,7 +121,7 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "XMMO": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 45
+        "count": 44
       },
       "VOLT": {
         "ok": true,
@@ -149,7 +149,7 @@
       },
       "AIRR": {
         "ok": true,
-        "count": 51
+        "count": 57
       },
       "PRN": {
         "ok": true,
@@ -236,9 +236,7 @@
   },
   "yfScan": {
     "total": 88,
-    "succeeded": 87,
-    "failed": [
-      "CAT"
-    ]
+    "succeeded": 88,
+    "failed": []
   }
 }
