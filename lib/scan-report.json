@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-19T13:37:14.668Z",
-  "scanTimestampNY": "July 19, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-20T13:39:37.067Z",
+  "scanTimestampNY": "July 20, 2026 at 9:39 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 31
+        "count": 35
       },
       "AIFD": {
         "ok": true,
@@ -77,7 +77,7 @@
       },
       "GTEK": {
         "ok": true,
-        "count": 11
+        "count": 10
       },
       "ARKK": {
         "ok": true,
@@ -89,7 +89,7 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "BCTK": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 25
+        "count": 23
       },
       "FCUS": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 6
+        "count": 7
       },
       "PBW": {
         "ok": true,
@@ -173,7 +173,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 19
+        "count": 18
       },
       "RKNG": {
         "ok": true,
@@ -235,8 +235,12 @@
     ]
   },
   "yfScan": {
-    "total": 89,
-    "succeeded": 89,
-    "failed": []
+    "total": 88,
+    "succeeded": 85,
+    "failed": [
+      "PWR",
+      "AEP",
+      "DCO"
+    ]
   }
 }
