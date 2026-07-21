@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-20T13:39:37.067Z",
-  "scanTimestampNY": "July 20, 2026 at 9:39 AM ET",
+  "scanTimestamp": "2026-07-21T13:38:16.789Z",
+  "scanTimestampNY": "July 21, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 43
+        "count": 20
       },
       "ARTY": {
         "ok": true,
@@ -13,11 +13,11 @@
       },
       "BAI": {
         "ok": true,
-        "count": 33
+        "count": 34
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 9
       },
       "IVES": {
         "ok": true,
@@ -25,11 +25,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 59
+        "count": 60
       },
       "CHAT": {
         "ok": true,
-        "count": 35
+        "count": 34
       },
       "AIFD": {
         "ok": true,
@@ -109,7 +109,7 @@
       },
       "WGMI": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "CNEQ": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 44
+        "count": 13
       },
       "VOLT": {
         "ok": true,
@@ -137,7 +137,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 7
+        "count": 6
       },
       "PBW": {
         "ok": true,
@@ -169,7 +169,7 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 23
+        "count": 21
       },
       "MEME": {
         "ok": true,
@@ -231,6 +231,14 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
+        "error": "HTTP 415"
+      },
+      {
+        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
+        "error": "HTTP 415"
       }
     ]
   },
@@ -238,9 +246,9 @@
     "total": 88,
     "succeeded": 85,
     "failed": [
-      "PWR",
-      "AEP",
-      "DCO"
+      "NVDA",
+      "ALAB",
+      "INTC"
     ]
   }
 }
