@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-22T13:38:16.131Z",
-  "scanTimestampNY": "July 22, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-07-23T13:37:02.177Z",
+  "scanTimestampNY": "July 23, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -21,7 +21,7 @@
       },
       "IVES": {
         "ok": true,
-        "count": 29
+        "count": 30
       },
       "ALAI": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "FCUS": {
         "ok": true,
@@ -125,11 +125,11 @@
       },
       "XMMO": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "POW": {
         "ok": true,
-        "count": 44
+        "count": 45
       },
       "VOLT": {
         "ok": true,
@@ -173,7 +173,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 17
       },
       "RKNG": {
         "ok": true,
@@ -235,11 +235,8 @@
     ]
   },
   "yfScan": {
-    "total": 86,
-    "succeeded": 84,
-    "failed": [
-      "PWR",
-      "HWM"
-    ]
+    "total": 87,
+    "succeeded": 87,
+    "failed": []
   }
 }
