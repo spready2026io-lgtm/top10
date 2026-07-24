@@ -24,6 +24,8 @@ export default function ExpandedTile({
 }) {
   const [range, setRange] = useState<Range>('1W');
   const [flipped, setFlipped] = useState(false);
+  const [wtOpen, setWtOpen] = useState(false); // avg-wt breakdown tooltip
+  const [vsOpen, setVsOpen] = useState(false); // velocity calculation tooltip
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -40,9 +42,17 @@ export default function ExpandedTile({
   const stroke = chart.up ? GREEN : '#c2743a';
   const conv = conviction(equity.coverage);
   const coveragePct = `${Math.round(equity.coverage * 100)}%`;
-  const vel = equity.velocityScore?.[range as '1D' | '1W' | '1M' | '6M'] ?? equity.velocityScore?.['1W'];
   const sector = homeSector(equity.ticker) ?? '';
   const xs = xLabels(range);
+
+  // Weight Score = avg weight (across holders) × coverage — the product's headline
+  // "% avg wt". Velocity uses the canonical 1W window with its own explainer.
+  const ws = equity.proScore;
+  const v1w = equity.velocityScore?.['1W'] ?? null;
+  const pastWs = v1w != null ? ws / (1 + v1w / 100) : null;
+  const heldEtfs = themeEtfs
+    .map((e) => ({ etf: e, w: equity.etfPresence?.[e] }))
+    .filter((x): x is { etf: string; w: number } => typeof x.w === 'number' && x.w !== 0);
 
   return (
     <div
@@ -73,9 +83,50 @@ export default function ExpandedTile({
                   <div style={{ fontFamily: MONO, fontSize: 32, fontWeight: 700, letterSpacing: '-0.5px', color: '#0B1220', lineHeight: 1 }}>${equity.price.toFixed(2)}</div>
                   <div style={{ fontSize: 13, color: '#8a94a3', marginTop: 6 }}>1W change <span style={{ fontFamily: MONO, fontWeight: 700, color: moveColor(equity.weeklyChange), marginLeft: 4 }}>{signed(equity.weeklyChange)}</span></div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700, color: '#0B1220', lineHeight: 1.1 }}>{equity.avgWeight?.toFixed(1) ?? '—'}<span style={{ fontSize: 12, color: '#8a94a3', fontWeight: 600 }}> % avg wt</span></div>
-                  <div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700, color: vel == null ? '#8a94a3' : moveColor(vel), lineHeight: 1.1, marginTop: 4 }}>{vel == null ? 'New' : signed(vel)}<span style={{ fontSize: 12, color: '#8a94a3', fontWeight: 600 }}> velocity</span></div>
+                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+                  {/* avg wt = Weight Score, with per-ETF breakdown tooltip */}
+                  <div
+                    style={{ position: 'relative', cursor: 'pointer' }}
+                    onMouseEnter={() => setWtOpen(true)}
+                    onMouseLeave={() => setWtOpen(false)}
+                    onClick={() => { setWtOpen((o) => !o); setVsOpen(false); }}
+                  >
+                    <div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700, color: '#0B1220', lineHeight: 1.1, borderBottom: '1px dotted #c7cdd6' }}>{ws.toFixed(1)}<span style={{ fontSize: 12, color: '#8a94a3', fontWeight: 600 }}> % avg wt</span></div>
+                    {wtOpen && (
+                      <Tip>
+                        <TipTitle>ETF weight breakdown</TipTitle>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          {heldEtfs.map(({ etf, w }) => (
+                            <Row key={etf} l={etf} r={`${w.toFixed(1)}%`} mono rColor={GREEN} />
+                          ))}
+                        </div>
+                        <TipRule />
+                        <Row l="Avg weight" r={`${equity.avgWeight?.toFixed(2) ?? '—'}%`} rColor={GREEN} />
+                        <Row l="Coverage" r={coveragePct} />
+                        <Row l="Coverage coeff" r={`×${equity.coverage.toFixed(2)}`} />
+                        <p style={{ fontSize: 11, color: '#8a94a3', margin: '6px 0 0' }}>Weight Score = avg weight × coverage</p>
+                      </Tip>
+                    )}
+                  </div>
+                  {/* velocity (1W) with calculation tooltip */}
+                  <div
+                    style={{ position: 'relative', cursor: v1w == null ? 'default' : 'pointer' }}
+                    onMouseEnter={() => v1w != null && setVsOpen(true)}
+                    onMouseLeave={() => setVsOpen(false)}
+                    onClick={() => { if (v1w != null) { setVsOpen((o) => !o); setWtOpen(false); } }}
+                  >
+                    <div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700, color: v1w == null ? '#8a94a3' : moveColor(v1w), lineHeight: 1.1, borderBottom: v1w == null ? 'none' : '1px dotted #c7cdd6' }}>{v1w == null ? 'New' : signed(v1w)}<span style={{ fontSize: 12, color: '#8a94a3', fontWeight: 600 }}> velocity</span></div>
+                    {vsOpen && pastWs != null && v1w != null && (
+                      <Tip>
+                        <TipTitle>Velocity Score · 1W window</TipTitle>
+                        <Row l="Weight Score now" r={`${ws.toFixed(2)}%`} />
+                        <Row l="Weight Score 1W ago" r={`${pastWs.toFixed(2)}%`} />
+                        <TipRule />
+                        <Row l="Change" r={signed(v1w)} rColor={moveColor(v1w)} />
+                        <p style={{ fontSize: 11, color: '#8a94a3', margin: '6px 0 0' }}>Velocity = (now ÷ then − 1) × 100</p>
+                      </Tip>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -179,6 +230,29 @@ export default function ExpandedTile({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Tooltip primitives ────────────────────────────────────────────────────────
+function Tip({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 6, zIndex: 60, width: 210, textAlign: 'left', background: '#fff', border: '1px solid #e6e9ef', borderRadius: 12, padding: '12px 14px', boxShadow: '0 16px 36px rgba(11,18,32,0.16)' }}>
+      {children}
+    </div>
+  );
+}
+function TipTitle({ children }: { children: React.ReactNode }) {
+  return <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.4, color: '#8a94a3', textTransform: 'uppercase', margin: '0 0 8px' }}>{children}</p>;
+}
+function TipRule() {
+  return <div style={{ borderTop: '1px solid #eef1f5', margin: '8px 0 6px' }} />;
+}
+function Row({ l, r, mono, rColor = '#0B1220' }: { l: string; r: string; mono?: boolean; rColor?: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <span style={{ fontSize: 12, color: '#55606e', fontFamily: mono ? MONO : undefined, fontWeight: mono ? 700 : 400 }}>{l}</span>
+      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: rColor }}>{r}</span>
     </div>
   );
 }

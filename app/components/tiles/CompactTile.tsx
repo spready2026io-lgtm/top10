@@ -73,17 +73,17 @@ export default function CompactTile({
 
       {/* insets */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-        <Inset label="Coverage" value={cov} />
-        <Inset label="Avg wt" value={`${equity.avgWeight?.toFixed(1) ?? '—'}%`} />
-        <Inset label="Velocity" value={vel == null ? 'New' : signed(vel)} color={vel == null ? '#8a94a3' : moveColor(vel)} />
+        <Inset label="Coverage" value={cov} title={`Held by ${equity.easyScore} of ${n} ETFs in this theme (${Math.round(equity.coverage * 100)}%)`} />
+        <Inset label="Avg wt" value={`${equity.proScore.toFixed(1)}%`} title={`Weight Score = avg weight (${equity.avgWeight?.toFixed(2) ?? '—'}%) × coverage (${equity.coverage.toFixed(2)}). Tap the tile for the full breakdown.`} />
+        <Inset label="Velocity" value={vel == null ? 'New' : signed(vel)} color={vel == null ? '#8a94a3' : moveColor(vel)} title={vel == null ? 'No 1-week history yet — new to the ranking.' : 'Velocity = (Weight Score now ÷ 1 week ago − 1) × 100. Tap the tile for the calculation.'} />
       </div>
     </button>
   );
 }
 
-function Inset({ label, value, color = '#0B1220' }: { label: string; value: string; color?: string }) {
+function Inset({ label, value, color = '#0B1220', title }: { label: string; value: string; color?: string; title?: string }) {
   return (
-    <div style={{ background: '#f4f6f9', borderRadius: 10, padding: '11px 12px' }}>
+    <div title={title} style={{ background: '#f4f6f9', borderRadius: 10, padding: '11px 12px', cursor: title ? 'help' : undefined }}>
       <div style={{ fontSize: 10, letterSpacing: 0.5, color: '#8a94a3', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
       <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 700, color }}>{value}</div>
     </div>
