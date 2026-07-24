@@ -7,6 +7,7 @@ import {
   ETF_RETURNS,
   ETF_DAY_CHANGE,
   ETF_INFO,
+  ETF_TOP_HOLDINGS,
   THEME_ETFS,
   THEME_ETF_COUNT,
   type Theme,
@@ -105,6 +106,7 @@ function Legend({ color, label, value }: { color: string; label: string; value: 
 // ── Theme ETFs ranked by return ───────────────────────────────────────────────
 function EtfPanel({ theme, period }: { theme: Theme; period: ChartPeriod }) {
   const [showAll, setShowAll] = useState(false);
+  const [openEtf, setOpenEtf] = useState<string | null>(null);
   const n = THEME_ETF_COUNT[theme];
   const rows = THEME_ETFS[theme]
     .map((ticker) => ({ ticker, ret: period === '1D' ? (ETF_DAY_CHANGE[ticker] ?? 0) : (ETF_RETURNS[ticker]?.[period as Exclude<ChartPeriod, '1D'>] ?? 0) }))
@@ -127,10 +129,18 @@ function EtfPanel({ theme, period }: { theme: Theme; period: ChartPeriod }) {
         {visible.map(({ ticker, ret }) => {
           const pos = ret >= 0;
           const info = ETF_INFO[ticker];
+          const holdings = ETF_TOP_HOLDINGS[ticker] ?? [];
+          const open = openEtf === ticker;
           return (
-            <div key={ticker}>
+            <div
+              key={ticker}
+              style={{ position: 'relative', cursor: holdings.length ? 'pointer' : 'default', userSelect: 'none' }}
+              onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpenEtf(ticker); }}
+              onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpenEtf(null); }}
+              onClick={() => setOpenEtf((prev) => (prev === ticker ? null : ticker))}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
-                <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: '#0B1220' }}>{ticker}</span>
+                <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: '#0B1220', borderBottom: holdings.length ? `1px dotted ${open ? '#059669' : '#c7cdd6'}` : 'none' }}>{ticker}</span>
                 <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: pos ? GREEN : AMBER }}>{pos ? '+' : ''}{ret.toFixed(1)}%</span>
               </div>
               {info && (
@@ -141,6 +151,21 @@ function EtfPanel({ theme, period }: { theme: Theme; period: ChartPeriod }) {
               <div style={{ height: 6, background: '#eef1f5', borderRadius: 999, overflow: 'hidden' }}>
                 <div style={{ height: '100%', borderRadius: 999, background: pos ? 'rgba(5,150,105,0.5)' : 'rgba(194,116,58,0.5)', width: `${(Math.abs(ret) / maxAbs) * 100}%` }} />
               </div>
+
+              {/* Top-holdings tooltip — floats over the row, never reflows the list */}
+              {open && holdings.length > 0 && (
+                <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, zIndex: 30, width: 150, background: '#fff', border: '1px solid #e6e9ef', borderRadius: 10, padding: '10px 12px', boxShadow: '0 12px 28px rgba(11,18,32,0.14)' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: '#8a94a3', textTransform: 'uppercase', marginBottom: 7 }}>Top holdings</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                    {holdings.map((h) => (
+                      <div key={h.t} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12 }}>
+                        <span style={{ fontFamily: MONO, color: '#0B1220', fontWeight: 600 }}>{h.t}</span>
+                        <span style={{ fontFamily: MONO, color: '#8a94a3' }}>{h.w.toFixed(1)}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
