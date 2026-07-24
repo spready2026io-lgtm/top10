@@ -1,22 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import { conviction, homeSector, moveColor, signed, MONO, type Equity } from './tileUtils';
+import { AvgWtTip, VelocityTip } from './MetricTooltips';
 
 /**
  * Compact conviction tile (theme-grid variant, light redesign).
- * Click opens the ExpandedTile.
+ * Click opens the ExpandedTile. Hovering the Avg-wt / Velocity insets reveals
+ * the same styled breakdown popovers as the expanded card (tap opens the card).
  */
 export default function CompactTile({
   equity,
   rank,
   n,
+  themeEtfs,
   onOpen,
 }: {
   equity: Equity;
   rank: number;
   n: number; // ETF denominator for this theme
+  themeEtfs: string[];
   onOpen: () => void;
 }) {
+  const [tip, setTip] = useState<'wt' | 'vel' | null>(null);
   const conv = conviction(equity.coverage);
   const cov = `${equity.easyScore}/${n}`;
   const vel = equity.velocityScore?.['1W'];
@@ -37,6 +43,8 @@ export default function CompactTile({
         cursor: 'pointer',
         transition: 'box-shadow .15s, transform .15s, border-color .15s',
         font: 'inherit',
+        position: 'relative',
+        zIndex: tip ? 40 : 'auto', // lift above sibling tiles while a popover is open
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 14px 32px rgba(11,18,32,0.10)';
@@ -71,21 +79,27 @@ export default function CompactTile({
         </div>
       </div>
 
-      {/* insets */}
+      {/* insets — Avg wt & Velocity reveal the styled breakdown on hover */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-        <Inset label="Coverage" value={cov} title={`Held by ${equity.easyScore} of ${n} ETFs in this theme (${Math.round(equity.coverage * 100)}%)`} />
-        <Inset label="Avg wt" value={`${equity.proScore.toFixed(1)}%`} title={`Weight Score = avg weight (${equity.avgWeight?.toFixed(2) ?? '—'}%) × coverage (${equity.coverage.toFixed(2)}). Tap the tile for the full breakdown.`} />
-        <Inset label="Velocity" value={vel == null ? 'New' : signed(vel)} color={vel == null ? '#8a94a3' : moveColor(vel)} title={vel == null ? 'No 1-week history yet — new to the ranking.' : 'Velocity = (Weight Score now ÷ 1 week ago − 1) × 100. Tap the tile for the calculation.'} />
+        <Inset label="Coverage" value={cov} />
+        <div style={{ position: 'relative' }} onMouseEnter={() => setTip('wt')} onMouseLeave={() => setTip(null)}>
+          <Inset label="Avg wt" value={`${equity.proScore.toFixed(1)}%`} hint />
+          {tip === 'wt' && <AvgWtTip equity={equity} themeEtfs={themeEtfs} align="left" />}
+        </div>
+        <div style={{ position: 'relative' }} onMouseEnter={() => setTip('vel')} onMouseLeave={() => setTip(null)}>
+          <Inset label="Velocity" value={vel == null ? 'New' : signed(vel)} color={vel == null ? '#8a94a3' : moveColor(vel)} hint />
+          {tip === 'vel' && <VelocityTip equity={equity} align="right" />}
+        </div>
       </div>
     </button>
   );
 }
 
-function Inset({ label, value, color = '#0B1220', title }: { label: string; value: string; color?: string; title?: string }) {
+function Inset({ label, value, color = '#0B1220', hint }: { label: string; value: string; color?: string; hint?: boolean }) {
   return (
-    <div title={title} style={{ background: '#f4f6f9', borderRadius: 10, padding: '11px 12px', cursor: title ? 'help' : undefined }}>
+    <div style={{ background: '#f4f6f9', borderRadius: 10, padding: '11px 12px' }}>
       <div style={{ fontSize: 10, letterSpacing: 0.5, color: '#8a94a3', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 700, color }}>{value}</div>
+      <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 700, color, borderBottom: hint ? '1px dotted #c7cdd6' : 'none', display: 'inline-block' }}>{value}</div>
     </div>
   );
 }

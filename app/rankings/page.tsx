@@ -135,7 +135,7 @@ function ThemePage() {
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 32px 72px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
           {top10.map((e, i) => (
-            <CompactTile key={e.ticker} equity={e} rank={i + 1} n={n} onOpen={() => setOpenTicker(e.ticker)} />
+            <CompactTile key={e.ticker} equity={e} rank={i + 1} n={n} themeEtfs={themeEtfs} onOpen={() => setOpenTicker(e.ticker)} />
           ))}
         </div>
       </section>
