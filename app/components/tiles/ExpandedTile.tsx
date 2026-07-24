@@ -44,6 +44,13 @@ export default function ExpandedTile({
   const conv = conviction(equity.coverage);
   const coveragePct = `${Math.round(equity.coverage * 100)}%`;
   const sector = homeSector(equity.ticker) ?? '';
+
+  // Price change synced to the chart toggle: 1D→dayChange, 1W→weeklyChange,
+  // else the matching periodReturns entry (falls back to 1W if absent).
+  const rangeChange =
+    range === '1D' ? (equity.dayChange ?? equity.weeklyChange)
+    : range === '1W' ? equity.weeklyChange
+    : equity.periodReturns?.[range as '1M' | 'YTD' | '6M' | '1Y'] ?? equity.weeklyChange;
   const xs = xLabels(range);
 
   // Weight Score = avg weight (across holders) × coverage — the product's headline
@@ -78,7 +85,7 @@ export default function ExpandedTile({
               <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 16 }}>
                 <div>
                   <div style={{ fontFamily: MONO, fontSize: 32, fontWeight: 700, letterSpacing: '-0.5px', color: '#0B1220', lineHeight: 1 }}>${equity.price.toFixed(2)}</div>
-                  <div style={{ fontSize: 13, color: '#8a94a3', marginTop: 6 }}>1W change <span style={{ fontFamily: MONO, fontWeight: 700, color: moveColor(equity.weeklyChange), marginLeft: 4 }}>{signed(equity.weeklyChange)}</span></div>
+                  <div style={{ fontSize: 13, color: '#8a94a3', marginTop: 6 }}>{range} change <span style={{ fontFamily: MONO, fontWeight: 700, color: moveColor(rangeChange), marginLeft: 4 }}>{signed(rangeChange)}</span></div>
                 </div>
                 <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                   {/* avg wt = Weight Score, with per-ETF breakdown tooltip */}
