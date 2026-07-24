@@ -93,6 +93,9 @@ body {
 @media (max-width: 760px) {
   .ss-how-grid { grid-template-columns:1fr; }
 }
+@media (max-width: 860px) {
+  .ss-perf-grid { grid-template-columns:1fr !important; }
+}
 
 /* Flip tile — ensure both faces stack in the same cell */
 .tile-container {

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Crosshair, { Wordmark } from '@/app/components/brand/Crosshair';
 import CompactTile from '@/app/components/tiles/CompactTile';
 import ExpandedTile from '@/app/components/tiles/ExpandedTile';
+import ThemePerformance from '@/app/components/tiles/ThemePerformance';
 import { MONO, GREEN, moveColor, signed } from '@/app/components/tiles/tileUtils';
 import {
   SAMPLE_DATA,
@@ -113,8 +114,25 @@ function ThemePage() {
         </div>
       </section>
 
+      {/* PERFORMANCE — Top10 vs S&P500 chart + ETFs ranked by return */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 32px 0' }}>
+        <ThemePerformance theme={theme} />
+      </section>
+
+      {/* COVERAGE LEGEND */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 32px 4px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+        <p style={{ fontSize: 13, color: '#8a94a3', margin: 0, maxWidth: 560 }}>
+          <span style={{ fontWeight: 700, color: '#55606e' }}>Coverage Score</span> is how many of this theme&apos;s {n} ETFs hold the stock — a higher score means broader institutional consensus.
+        </p>
+        <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+          <CovBadge n={n} pct="≥80%" color="#0a7350" bg="#e7f7f0" border="#b8e6d3" />
+          <CovBadge n={n} pct="≥60%" color="#3b6fd4" bg="#eef2fb" border="#d4e0f6" />
+          <CovBadge n={n} pct="≥40%" color="#a06a12" bg="#fcf3e1" border="#f0d9a8" />
+        </div>
+      </section>
+
       {/* TILE GRID */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '28px 32px 72px' }}>
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 32px 72px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
           {top10.map((e, i) => (
             <CompactTile key={e.ticker} equity={e} rank={i + 1} n={n} onOpen={() => setOpenTicker(e.ticker)} />
@@ -137,6 +155,13 @@ function Stat({ value, label, color = '#0B1220' }: { value: string; label: strin
 }
 function Div() {
   return <div style={{ width: 1, height: 30, background: '#e0e4ea' }} />;
+}
+function CovBadge({ n, pct, color, bg, border }: { n: number; pct: string; color: string; bg: string; border: string }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color, background: bg, border: `1px solid ${border}`, padding: '4px 10px', borderRadius: 999 }}>
+      <span>x/{n}</span><span style={{ opacity: 0.75, fontWeight: 600 }}>{pct}</span>
+    </span>
+  );
 }
 
 export default function RankingsPage() {
