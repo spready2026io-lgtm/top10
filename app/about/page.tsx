@@ -66,8 +66,8 @@ export default function About() {
             in one name.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} ETFs</span> across
-            {' '}{themeCount} themes, giving you a view across {totalEtfs} institutional products simultaneously.
+            Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} ETFs</span>
+            {` across ${themeCount} themes, giving you a view across ${totalEtfs} institutional products simultaneously.`}
             The core universe is discretionary, actively managed funds. Broad index trackers are
             excluded from the rankings: passive index construction reflects mechanical rules, not
             manager conviction. Two themes, Software and Cyber, are a declared exception: they are
