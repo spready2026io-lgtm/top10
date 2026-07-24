@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-24T13:36:57.801Z",
-  "scanTimestampNY": "July 24, 2026 at 9:36 AM ET",
+  "scanTimestamp": "2026-07-24T14:52:11.178Z",
+  "scanTimestampNY": "July 24, 2026 at 10:52 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 9
+        "count": 67
       },
       "IVES": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 34
+        "count": 17
       },
       "AIFD": {
         "ok": true,
@@ -49,7 +49,7 @@
       },
       "PSI": {
         "ok": true,
-        "count": 10
+        "count": 30
       },
       "XSD": {
         "ok": true,
@@ -61,7 +61,7 @@
       },
       "PTF": {
         "ok": true,
-        "count": 10
+        "count": 37
       },
       "WCLD": {
         "ok": true,
@@ -85,7 +85,7 @@
       },
       "MARS": {
         "ok": true,
-        "count": 24
+        "count": 14
       },
       "FRWD": {
         "ok": true,
@@ -127,6 +127,34 @@
         "ok": true,
         "count": 23
       },
+      "XSW": {
+        "ok": true,
+        "count": 16
+      },
+      "SKYY": {
+        "ok": true,
+        "count": 19
+      },
+      "CLOU": {
+        "ok": true,
+        "count": 23
+      },
+      "CIBR": {
+        "ok": true,
+        "count": 24
+      },
+      "HACK": {
+        "ok": true,
+        "count": 21
+      },
+      "BUG": {
+        "ok": true,
+        "count": 20
+      },
+      "IHAK": {
+        "ok": true,
+        "count": 20
+      },
       "POW": {
         "ok": true,
         "count": 45
@@ -137,11 +165,11 @@
       },
       "PBD": {
         "ok": true,
-        "count": 5
+        "count": 58
       },
       "PBW": {
         "ok": true,
-        "count": 10
+        "count": 64
       },
       "IVEP": {
         "ok": true,
@@ -153,7 +181,7 @@
       },
       "PRN": {
         "ok": true,
-        "count": 10
+        "count": 42
       },
       "RSHO": {
         "ok": true,
@@ -180,45 +208,17 @@
         "count": 23
       }
     },
-    "total": 44,
-    "ok": 44,
+    "total": 51,
+    "ok": 51,
     "failed": [],
     "fetchErrors": [
       {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V647/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V811/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G847/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V134/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V845/holdings/fund?idType=cusip&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/SPMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
+        "error": "HTTP 500"
       },
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/XMMO/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
+        "error": "HTTP 500"
       },
       {
         "url": "https://www.wisdomtree.com/document-library/etf-downloads/daily-holdings/WCLD.csv",
@@ -235,8 +235,8 @@
     ]
   },
   "yfScan": {
-    "total": 86,
-    "succeeded": 86,
+    "total": 116,
+    "succeeded": 116,
     "failed": []
   }
 }

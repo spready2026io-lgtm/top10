@@ -7,7 +7,9 @@ export const metadata = { title: 'About | Stockscout' };
 
 export default function About() {
   // Counts are derived from the live universe so this page never drifts stale.
-  const totalEtfs   = Object.values(THEME_ETFS).reduce((n, list) => n + list.length, 0);
+  // Unique tickers — IGV and WCLD back both Broad Tech and Software, so a plain
+  // per-theme sum would double-count them.
+  const totalEtfs   = new Set(Object.values(THEME_ETFS).flat()).size;
   const themeCount  = THEMES.length;
   const aiN         = THEME_ETFS['AI & ML'].length;   // example denominator in the Coverage section
 
@@ -64,17 +66,20 @@ export default function About() {
             in one name.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} actively managed ETFs</span> across
+            Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} ETFs</span> across
             {' '}{themeCount} themes, giving you a view across {totalEtfs} institutional products simultaneously.
-            All ETFs in the universe are discretionary, actively managed funds. Index trackers are
+            The core universe is discretionary, actively managed funds. Broad index trackers are
             excluded from the rankings: passive index construction reflects mechanical rules, not
-            manager conviction.
+            manager conviction. Two themes, Software and Cyber, are a declared exception: they are
+            built from specialist sector baskets because no meaningful active pure-play funds exist
+            in those sectors. There, the score measures how consistently the sector&apos;s specialist
+            funds concentrate on a name.
           </p>
 
           {/* ETF table */}
           <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
             <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs, {totalEtfs} active funds</p>
+              <p className="text-white text-xs font-semibold uppercase tracking-wider">Tracked ETFs, {totalEtfs} funds</p>
               <p className="text-slate-500 text-xs">as of {SCAN_TIMESTAMP_NY}</p>
             </div>
             {THEMES.map((theme, i) => {

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-const THEMES = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Electrification', 'Industrials', 'Meme'] as const;
+const THEMES = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials', 'Meme'] as const;
 
 export default function ThemeNav() {
   const router = useRouter();

@@ -33,6 +33,20 @@ import { MARKET_TILES } from '@/lib/markets-data';
 
 // ── Ticker → domain map for Google favicon logos ─────────────────────────────
 const TICKER_DOMAINS: Record<string, string> = {
+  // Software & Cyber themes (added 2026-07-24) + backfill of missing logos
+  CHKP: 'checkpoint.com',  CRM:  'salesforce.com',   CSCO: 'cisco.com',
+  DDOG: 'datadoghq.com',   DOCN: 'digitalocean.com', FRSH: 'freshworks.com',
+  FTNT: 'fortinet.com',    GEN:  'gendigital.com',   GTLB: 'gitlab.com',
+  HUBS: 'hubspot.com',     NOW:  'servicenow.com',   NTNX: 'nutanix.com',
+  NTSK: 'netskope.com',    OKTA: 'okta.com',         QLYS: 'qualys.com',
+  RBRK: 'rubrik.com',      RDWR: 'radware.com',      S:    'sentinelone.com',
+  SNOW: 'snowflake.com',   TENB: 'tenable.com',      TWLO: 'twilio.com',
+  VRNS: 'varonis.com',     ZS:   'zscaler.com',      ATEN: 'a10networks.com',
+  BRZE: 'braze.com',       WK:   'workiva.com',      XMTR: 'xometry.com',
+  AIR:  'airbus.com',      ATI:  'atimaterials.com', BMNR: 'bitminetech.io',
+  CW:   'curtisswright.com', DIOD: 'diodes.com',     IESC: 'ies-co.com',
+  LSCC: 'latticesemi.com', ORA:  'ormat.com',        SPCX: 'spacex.com',
+  TER:  'teradyne.com',    WULF: 'terawulf.com',
   // Semiconductors & chip design
   NVDA: 'nvidia.com',    AVGO: 'broadcom.com',       AMD:  'amd.com',
   INTC: 'intel.com',     MU:   'micron.com',          TXN:  'ti.com',
@@ -1438,7 +1452,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'ETF Holdings',
       color: 'text-sky-400',
       borderColor: 'border-sky-500/30',
-      desc: 'Every day we read the published holdings of 40 actively managed sector ETFs. These funds manage billions in real capital. Their holdings are public record.',
+      desc: 'Every day we read the published holdings of 51 sector ETFs. These funds manage billions in real capital. Their holdings are public record.',
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['ARTY','BAI','SOXX','ARKK','AIRR'].map(t => (
@@ -1454,7 +1468,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'Pick a Theme',
       color: 'text-violet-400',
       borderColor: 'border-violet-500/30',
-      desc: 'Choose a sector. Each theme groups 3–13 actively managed ETFs. Stockscout then ranks every stock those ETFs collectively hold.',
+      desc: 'Choose a sector. Each theme groups 3–17 specialist ETFs. Stockscout then ranks every stock those ETFs collectively hold.',
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['AI & ML','Semis','Broad Tech'].map(t => (

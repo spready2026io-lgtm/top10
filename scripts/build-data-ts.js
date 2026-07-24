@@ -46,6 +46,8 @@ const THEME_ETFS = {
   'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
   'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
   'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI', 'CNEQ', 'SGRT', 'SPMO', 'XMMO'],
+  'Software':       ['IGV', 'WCLD', 'XSW', 'SKYY', 'CLOU'],
+  'Cyber':          ['CIBR', 'HACK', 'BUG', 'IHAK'],
   'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
@@ -111,6 +113,25 @@ const COMPANY_NAMES = {
   OKLO: 'Oklo Inc',                RGTI: 'Rigetti Computing',
   ASML: 'ASML Holding',            CRWD: 'CrowdStrike',
   NET:  'Cloudflare',
+  // Software + Cyber themes (2026-07-24) — StockAnalysis emits ticker-only names
+  FTNT: 'Fortinet',                OKTA: 'Okta',
+  ZS:   'Zscaler',                 CHKP: 'Check Point Software',
+  CSCO: 'Cisco Systems',           QLYS: 'Qualys',
+  TENB: 'Tenable',                 VRNS: 'Varonis Systems',
+  RDWR: 'Radware',                 RBRK: 'Rubrik',
+  S:    'SentinelOne',             NTSK: 'Netskope',
+  ATEN: 'A10 Networks',            AKAM: 'Akamai Technologies',
+  GEN:  'Gen Digital',             SNOW: 'Snowflake',
+  DOCN: 'DigitalOcean',            TWLO: 'Twilio',
+  // Backfill: older tickers surfacing with ticker-only names
+  AMD:  'Advanced Micro Devices',  AVGO: 'Broadcom',
+  ALAB: 'Astera Labs',             CRDO: 'Credo Technology',
+  WDC:  'Western Digital',         CRWV: 'CoreWeave',
+  LITE: 'Lumentum',                STX:  'Seagate Technology',
+  INTC: 'Intel',                   TER:  'Teradyne',
+  DELL: 'Dell Technologies',       GD:   'General Dynamics',
+  WULF: 'TeraWulf',                COHR: 'Coherent',
+  BMNR: 'BitMine Immersion',
 };
 
 function resolveName(ticker, rawName) {
@@ -868,9 +889,14 @@ function genIndexChartData(themeEtfs, etfDataMap, spyData, todayStr) {
 
 function genEtfReturns(etfReturnsMap, themeEtfs) {
   const lines = [];
+  // An ETF can back two themes (IGV/WCLD: Broad Tech + Software) — emit each
+  // ticker once or the object literal gets duplicate keys and TS refuses it.
+  const emitted = new Set();
   for (const [theme, tickers] of Object.entries(themeEtfs)) {
     lines.push(`  // ${theme}`);
     for (const ticker of tickers) {
+      if (emitted.has(ticker)) continue;
+      emitted.add(ticker);
       const r = etfReturnsMap[ticker];
       if (r) {
         const pad = ' '.repeat(Math.max(0, 4 - ticker.length));
@@ -949,6 +975,8 @@ const BENCHMARK_ETF = {
   'AI & ML':         'ARTY',
   'Semiconductors':  'SOXX',
   'Broad Tech':      'QQQ',
+  'Software':        'IGV',
+  'Cyber':           'CIBR',
   'Electrification': 'PBD',
   'Industrials':     'AIRR',
   'Meme':            'BUZZ',
@@ -963,7 +991,7 @@ function genThemeBenchmarks(etfReturnsMap) {
     const pad = ' '.repeat(Math.max(0, 16 - theme.length));
     lines.push(`  '${theme}':${pad}${ret},`);
   }
-  if (!allFound || lines.length < 6) return null; // keep existing if any benchmark ETF failed
+  if (!allFound || lines.length < 8) return null; // keep existing if any benchmark ETF failed
   return [
     '// @@GENERATED:THEME_BENCHMARKS@@',
     'export const THEME_BENCHMARKS: Record<Theme, number> = {',
@@ -1508,6 +1536,10 @@ async function main() {
   const qqqData = await fetchEtfData('QQQ');
   if (qqqData?.returns) {
     const q = qqqData.returns;
+    // QQQ is not a theme ETF, so it never enters etfReturnsMap in the theme loop —
+    // but genThemeBenchmarks needs it (Broad Tech benchmark). Without this line the
+    // generator silently kept a stale THEME_BENCHMARKS block on every run.
+    etfReturnsMap['QQQ'] = q;
     console.log(`1W:${q['1W']}% 1M:${q['1M']}% 6M:${q['6M']}% 1Y:${q['1Y']}%`);
   } else {
     console.log('FAILED — QQQ base index unchanged');
@@ -1563,7 +1595,7 @@ async function main() {
   console.log(`Timestamp: ${nyTs}`);
   console.log(`ETFs: ${scanReport.etfScan.ok}/${scanReport.etfScan.total} ok`);
   console.log(`ETF data (returns+paths): ${etfDataOk}/${allEtfTickers.length} ok${spyRet ? ' + SPY' : ' (SPY FAILED)'}`);
-  console.log(`Index chart: real historical paths written for all 5 themes`);
+  console.log(`Index chart: real historical paths written for all ${Object.keys(THEME_ETFS).length} themes`);
   console.log(`Yahoo Finance: ${yfSucceeded.length}/${allTickers.length} ok`);
   console.log(`Themes: ${Object.entries(themeEquities).map(([t,e]) => `${t}(${e.length})`).join(', ')}`);
 }

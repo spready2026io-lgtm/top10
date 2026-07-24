@@ -607,7 +607,11 @@ const MEME_ETFS = ['BUZZ', 'MEME', 'RKNG'];
 //   CHAT (AI & ML) — Roundhill Generative AI & Technology ETF
 //   DRAM (Semiconductors) — Roundhill Memory ETF (launched Apr 2026; ~4 US equities after foreign filter)
 //   MARS (Broad Tech) — Roundhill Space & Technology ETF (launched Mar 2026)
-const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI', 'SGRT'];
+const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CHAT', 'DRAM', 'MARS', 'WGMI', 'SGRT',
+  // Software theme (2026-07-24): XSW (SPDR), SKYY (First Trust), CLOU (Global X). IGV/WCLD already fetched above.
+  'XSW', 'SKYY', 'CLOU',
+  // Cyber theme (2026-07-24): CIBR (First Trust), HACK (Amplify), BUG (Global X), IHAK (iShares).
+  'CIBR', 'HACK', 'BUG', 'IHAK'];
 
 // ── Base index holdings for the portfolio builder core (SPY, QQQ) ─────────────
 // QQQ already comes from the Invesco block above; SPY has no clean issuer API,

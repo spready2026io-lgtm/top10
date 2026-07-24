@@ -40,12 +40,14 @@ export const PERF_PERIODS: Period[] = ['1W', '1M', 'YTD', '6M'];
 
 // Themes the user can tilt toward. Meme is excluded — speculative/retail
 // sentiment, kept off the conviction board, so it stays out of the builder too.
-const BUILDER_THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Electrification', 'Industrials'];
+const BUILDER_THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials'];
 
 const THEME_META: Record<Theme, { etf: string; color: string }> = {
   'AI & ML':         { etf: 'ARTY', color: '#a78bfa' },
   'Semiconductors':  { etf: 'SOXX', color: '#60a5fa' },
   'Broad Tech':      { etf: 'IGV',  color: '#38bdf8' },
+  'Software':        { etf: 'XSW',  color: '#22d3ee' },
+  'Cyber':           { etf: 'CIBR', color: '#f87171' },
   'Electrification': { etf: 'POW',  color: '#fbbf24' },
   'Industrials':     { etf: 'AIRR', color: '#fb923c' },
   'Meme':            { etf: 'BUZZ', color: '#f472b6' },

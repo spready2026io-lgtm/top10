@@ -10,6 +10,8 @@ const THEME_COLOR: Record<string, string> = {
   'AI & ML':        'text-violet-400 bg-violet-500/10 border-violet-500/30',
   'Semiconductors': 'text-blue-400 bg-blue-500/10 border-blue-500/30',
   'Broad Tech':     'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  'Software':       'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+  'Cyber':          'text-red-400 bg-red-500/10 border-red-500/30',
   'Electrification':'text-amber-400 bg-amber-500/10 border-amber-500/30',
   'Industrials':    'text-orange-400 bg-orange-500/10 border-orange-500/30',
   'Meme':           'text-pink-400 bg-pink-500/10 border-pink-500/30',
