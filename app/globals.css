@@ -1,14 +1,52 @@
 @import "tailwindcss";
 
+/* ── 2026-07 light redesign tokens (Claude Design handoff) ────────────────────
+   Dark legacy pages set their own bg-slate-* wrappers and override these; the
+   light surfaces (landing first, then the rest) read from these vars. */
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
+  --background: #F7F8FB;
+  --foreground: #0B1220;
+
+  /* Brand */
+  --ss-green:        #059669;
+  --ss-green-hover:  #047857;
+  --ss-green-bright: #10B981;
+  --ss-green-glow:   #34D399;
+  --ss-green-tint:   #e7f7f0;
+  --ss-green-tint-border: #b8e6d3;
+  --ss-green-tint-text:   #0a7350;
+
+  /* Text */
+  --ss-ink:    #0B1220;
+  --ss-text:   #55606e;
+  --ss-muted:  #8a94a3;
+  --ss-faint:  #a4adba;
+
+  /* Surfaces */
+  --ss-page:   #F7F8FB;
+  --ss-canvas: #EDEFF3;
+  --ss-card:   #ffffff;
+  --ss-border: #e6e9ef;
+  --ss-border-nav: #e9ecf1;
+  --ss-inset:  #f4f6f9;
+  --ss-track:  #eef1f5;
+  --ss-divider:#eef1f5;
+
+  /* Amber (down moves / medium conviction / coverage badge) */
+  --ss-amber-text:   #a06a12;
+  --ss-amber-bg:     #fcf3e1;
+  --ss-amber-border: #f0d9a8;
+  --ss-amber-chart:  #c2743a;
+
+  /* Fonts (wired in layout.tsx) */
+  --font-display: var(--font-jakarta), system-ui, sans-serif;
+  --font-numeric: var(--font-mono-brand), ui-monospace, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -38,6 +76,22 @@ body {
 }
 .animate-intro {
   animation: introFade 0.5s ease forwards;
+}
+
+/* ── Landing (light redesign) responsive helpers ─────────────────────────────
+   Inline token styles carry the look; these classes carry the reflow. */
+.ss-hero-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center; }
+.ss-how-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.ss-lb-scroll { overflow-x:auto; }
+.ss-lb-grid   { display:grid; grid-template-columns:56px 1.6fr 1fr 0.9fr 0.9fr; min-width:640px; }
+.ss-link-muted { color:#55606e; }
+.ss-link-muted:hover { color:#0B1220; }
+@media (max-width: 900px) {
+  .ss-hero-grid { grid-template-columns:1fr; gap:40px; }
+  .ss-nav-links-secondary { display:none !important; }
+}
+@media (max-width: 760px) {
+  .ss-how-grid { grid-template-columns:1fr; }
 }
 
 /* Flip tile — ensure both faces stack in the same cell */
