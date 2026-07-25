@@ -1,14 +1,89 @@
 @import "tailwindcss";
 
+/* ── 2026-07 redesign theme tokens (light default, dark via data-theme) ───────
+   Components reference var(--ss-*); switching data-theme on <html> flips the
+   whole app. Dark values are tuned for a near-black background. */
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
+  /* Surfaces */
+  --ss-page:          #F7F8FB;
+  --ss-canvas:        #EDEFF3;
+  --ss-card:          #ffffff;
+  --ss-inset:         #f4f6f9;
+  --ss-track:         #eef1f5;
+  --ss-border:        #e6e9ef;
+  --ss-border-strong: #d7dce3;
+  --ss-nav-bg:        rgba(255,255,255,0.88);
+  --ss-avatar-bg:     #eef2f7;
+  --ss-avatar-blue-1: #eef2fb;
+  --ss-avatar-blue-2: #d4e0f6;
+
+  /* Text */
+  --ss-ink:   #0B1220;
+  --ss-text:  #55606e;
+  --ss-muted: #8a94a3;
+  --ss-faint: #a4adba;
+
+  /* Green (brand / up) */
+  --ss-green:             #059669;
+  --ss-green-hover:       #047857;
+  --ss-green-text:        #0a7350;
+  --ss-green-tint:        #e7f7f0;
+  --ss-green-tint-border: #b8e6d3;
+
+  /* Amber (down / medium conviction) */
+  --ss-amber:        #c2743a;
+  --ss-amber-text:   #a06a12;
+  --ss-amber-bg:     #fcf3e1;
+  --ss-amber-border: #f0d9a8;
+
+  /* Blue (S&P benchmark / ticker avatar) */
+  --ss-blue: #3b6fd4;
+
+  --background: var(--ss-page);
+  --foreground: var(--ss-ink);
+  --font-display: var(--font-jakarta), system-ui, sans-serif;
+  --font-numeric: var(--font-mono-brand), ui-monospace, monospace;
 }
+
+:root[data-theme="dark"] {
+  /* Surfaces stack light→dark: card (raised) > track > inset > page (base). */
+  --ss-page:          #0b0f17;
+  --ss-canvas:        #0d121b;
+  --ss-inset:         #141b25;
+  --ss-track:         #1a222e;
+  --ss-card:          #1e2736;
+  --ss-border:        #2a3341;
+  --ss-border-strong: #3a4453;
+  --ss-nav-bg:        rgba(14,19,28,0.85);
+  --ss-avatar-bg:     #232d3d;
+  --ss-avatar-blue-1: #1c2740;
+  --ss-avatar-blue-2: #223052;
+
+  --ss-ink:   #f1f5f9;
+  --ss-text:  #a7b2c2;
+  --ss-muted: #7f8b9b;
+  --ss-faint: #5f6b7a;
+
+  --ss-green:             #10b981;
+  --ss-green-hover:       #34d399;
+  --ss-green-text:        #6ee7b7;
+  --ss-green-tint:        rgba(16,185,129,0.14);
+  --ss-green-tint-border: rgba(16,185,129,0.34);
+
+  --ss-amber:        #e0955c;
+  --ss-amber-text:   #e0a94a;
+  --ss-amber-bg:     rgba(224,149,92,0.14);
+  --ss-amber-border: rgba(224,149,92,0.32);
+
+  --ss-blue: #6ea8ff;
+}
+
+html { background: var(--ss-page); }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -38,6 +113,25 @@ body {
 }
 .animate-intro {
   animation: introFade 0.5s ease forwards;
+}
+
+/* ── Landing (light redesign) responsive helpers ─────────────────────────────
+   Inline token styles carry the look; these classes carry the reflow. */
+.ss-hero-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center; }
+.ss-how-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.ss-lb-scroll { overflow-x:auto; }
+.ss-lb-grid   { display:grid; grid-template-columns:56px 1.6fr 1fr 0.9fr 0.9fr; min-width:640px; }
+.ss-link-muted { color:#55606e; }
+.ss-link-muted:hover { color:#0B1220; }
+@media (max-width: 900px) {
+  .ss-hero-grid { grid-template-columns:1fr; gap:40px; }
+  .ss-nav-links-secondary { display:none !important; }
+}
+@media (max-width: 760px) {
+  .ss-how-grid { grid-template-columns:1fr; }
+}
+@media (max-width: 860px) {
+  .ss-perf-grid { grid-template-columns:1fr !important; }
 }
 
 /* Flip tile — ensure both faces stack in the same cell */

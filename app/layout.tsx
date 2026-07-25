@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import ScrollToTop from "./components/ScrollToTop";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import AskTonyButton from "./components/AskTonyButton";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,6 +13,20 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Brand fonts (2026-07 redesign): Plus Jakarta Sans for UI/display, JetBrains
+// Mono for all numerics (prices, %, tickers, ranks, axis labels).
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono-brand",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const viewport: Viewport = {
@@ -51,9 +65,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('ss-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}" }} />
         {children}
         <ScrollToTop />
         <AskTonyButton />

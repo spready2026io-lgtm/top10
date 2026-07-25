@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Logo from '@/app/components/Logo';
+import SiteNav from '@/app/components/brand/SiteNav';
+import SiteFooter from '@/app/components/brand/SiteFooter';
 import {
   THEME_ETFS,
   ETF_INFO,
@@ -65,7 +66,7 @@ function fmtAum(v: number): string {
 function Perf({ v }: { v: number }) {
   const pos = v >= 0;
   return (
-    <span className={`tabular-nums font-semibold ${pos ? 'text-emerald-400' : 'text-rose-400'}`}>
+    <span className={`tabular-nums font-semibold ${pos ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}`}>
       {pos ? '+' : ''}{v.toFixed(1)}%
     </span>
   );
@@ -106,47 +107,31 @@ export default function Universe() {
   const Th = ({ k, label, align = 'left' }: { k: SortKey; label: string; align?: 'left' | 'right' }) => (
     <th
       onClick={() => clickSort(k)}
-      className={`px-3 py-2.5 font-semibold uppercase tracking-wide text-[11px] cursor-pointer select-none whitespace-nowrap transition-colors hover:text-emerald-300 ${
-        sort.key === k ? 'text-emerald-300' : 'text-slate-400'
+      className={`px-3 py-2.5 font-semibold uppercase tracking-wide text-[11px] cursor-pointer select-none whitespace-nowrap transition-colors hover:text-[var(--ss-green)] ${
+        sort.key === k ? 'text-[var(--ss-green)]' : 'text-[var(--ss-text)]'
       } ${align === 'right' ? 'text-right' : 'text-left'}`}
     >
-      {label}<span className="text-emerald-400">{arrow(k)}</span>
+      {label}<span className="text-[var(--ss-green)]">{arrow(k)}</span>
     </th>
   );
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen" style={{ background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
 
-      {/* Header — brand bar matching the home page */}
-      <header className="border-b border-slate-800 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <Link href="/" aria-label="Stockscout home">
-              <Logo />
-            </Link>
-            <span className="hidden sm:inline text-emerald-300 text-sm font-medium tracking-[0.18em] uppercase whitespace-nowrap">See it first.</span>
-          </div>
-          <nav className="flex items-center gap-5 text-sm flex-shrink-0">
-            <Link href="/markets" className="text-slate-400 hover:text-white transition-colors">Markets</Link>
-            <Link href="/universe" className="text-emerald-400 font-medium">Universe</Link>
-            <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About</Link>
-            <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">Contact</Link>
-          </nav>
-        </div>
-      </header>
+      <SiteNav active="Universe" />
 
       <div className="max-w-7xl mx-auto px-4 py-10">
 
         {/* Intro */}
         <section className="mb-7 max-w-3xl">
-          <h2 className="text-2xl font-bold text-white mb-3">Our ETF Universe</h2>
-          <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Every actively managed ETF we track, in one table. {allRows.length} funds across six themes,
-            each one a discretionary book of conviction bets, not a passive index. These are the funds whose
-            daily holdings feed every ranking on Stockscout.
+          <h2 className="text-2xl font-bold text-[var(--ss-ink)] mb-3">Our ETF Universe</h2>
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
+            Every ETF we track, in one table. {allRows.length} funds across eight themes. Most are
+            discretionary books of conviction bets; the Software and Cyber themes use specialist sector
+            baskets. These are the funds whose daily holdings feed every ranking on Stockscout.
           </p>
-          <p className="text-slate-400 text-sm leading-relaxed">
-            <span className="text-emerald-400 font-semibold">Tony&apos;s read:</span> use the manager column to
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed">
+            <span className="text-[var(--ss-green)] font-semibold">Tony&apos;s read:</span> use the manager column to
             see who is behind each fund, the top holding to see its single biggest bet, and the performance
             windows to compare momentum. A fund leading on 1-year but lagging YTD has cooled off; the reverse
             is one heating up. Click any column header to sort.
@@ -154,10 +139,10 @@ export default function Universe() {
         </section>
 
         {/* Table */}
-        <div className="rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+        <div className="rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-900/80 border-b border-slate-800">
+              <thead className="bg-[var(--ss-inset)] border-b border-[var(--ss-border)]">
                 <tr>
                   <Th k="ticker"  label="Symbol" />
                   <Th k="name"    label="Name" />
@@ -170,15 +155,15 @@ export default function Universe() {
               </thead>
               <tbody>
                 {rows.map((r, i) => (
-                  <tr key={r.ticker} className={`border-b border-slate-800/60 ${i % 2 ? 'bg-slate-900/40' : ''} hover:bg-slate-800/40 transition-colors`}>
-                    <td className="px-3 py-2.5 font-mono font-bold text-white whitespace-nowrap">{r.ticker}</td>
-                    <td className="px-3 py-2.5 text-slate-300 max-w-[10rem] truncate" title={r.name}>{r.name}</td>
-                    <td className="px-3 py-2.5 text-slate-400 max-w-[8rem] truncate" title={r.manager}>{r.manager}</td>
-                    <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">{r.theme}</td>
-                    <td className="px-3 py-2.5 text-right text-slate-300 tabular-nums whitespace-nowrap">{fmtAum(r.aum)}</td>
+                  <tr key={r.ticker} className={`border-b border-[var(--ss-track)] ${i % 2 ? 'bg-[var(--ss-inset)]' : ''} hover:bg-[var(--ss-inset)] transition-colors`}>
+                    <td className="px-3 py-2.5 font-mono font-bold text-[var(--ss-ink)] whitespace-nowrap">{r.ticker}</td>
+                    <td className="px-3 py-2.5 text-[var(--ss-text)] max-w-[10rem] truncate" title={r.name}>{r.name}</td>
+                    <td className="px-3 py-2.5 text-[var(--ss-text)] max-w-[8rem] truncate" title={r.manager}>{r.manager}</td>
+                    <td className="px-3 py-2.5 text-[var(--ss-text)] whitespace-nowrap">{r.theme}</td>
+                    <td className="px-3 py-2.5 text-right text-[var(--ss-text)] tabular-nums whitespace-nowrap">{fmtAum(r.aum)}</td>
                     <td className="px-3 py-2.5 whitespace-nowrap">
-                      <span className="font-mono text-slate-300">{r.topT}</span>
-                      {r.topW > 0 && <span className="text-slate-500 text-xs ml-1.5">{r.topW.toFixed(1)}%</span>}
+                      <span className="font-mono text-[var(--ss-text)]">{r.topT}</span>
+                      {r.topW > 0 && <span className="text-[var(--ss-muted)] text-xs ml-1.5">{r.topW.toFixed(1)}%</span>}
                     </td>
                     {PERF_COLS.map(p => (
                       <td key={p} className="px-3 py-2.5 text-right whitespace-nowrap"><Perf v={r.ret[p]} /></td>
@@ -190,7 +175,7 @@ export default function Universe() {
           </div>
         </div>
 
-        <p className="text-slate-500 text-xs mt-4">
+        <p className="text-[var(--ss-muted)] text-xs mt-4">
           Data snapshot: {SCAN_TIMESTAMP_NY}. Size is fund net assets (AUM). Performance is price return over
           each window (YTD = year to date). Top holding is the single largest position by weight. Indicative
           only, not investment advice.
@@ -198,25 +183,25 @@ export default function Universe() {
 
         {/* Measuring instruments — index funds tracked on purpose, never scored */}
         <section className="mt-12">
-          <h3 className="text-lg font-bold text-white mb-1">The measuring instruments</h3>
-          <p className="text-slate-400 text-sm leading-relaxed mb-2 max-w-3xl">
-            Everything above is the conviction universe: {allRows.length} discretionary books of active bets.
-            The funds below are the opposite, on purpose. An index fund cannot have conviction, so these are
+          <h3 className="text-lg font-bold text-[var(--ss-ink)] mb-1">The measuring instruments</h3>
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-2 max-w-3xl">
+            Everything above is the tracked universe: {allRows.length} funds across eight themes.
+            The funds below are a different tool, on purpose. A broad index fund cannot have conviction, so these are
             never scored. They are instruments. Each one measures a market on
-            the <Link href="/markets" className="text-emerald-400 hover:text-emerald-300 font-semibold">World Markets</Link> board,
+            the <Link href="/markets" className="text-[var(--ss-green)] hover:text-[var(--ss-green)] font-semibold">World Markets</Link> board,
             and three of them (IXUS, EFA, EEM) back the world sleeve in
-            the <Link href="/portfolio" className="text-emerald-400 hover:text-emerald-300 font-semibold">portfolio builder</Link>.
+            the <Link href="/portfolio" className="text-[var(--ss-green)] hover:text-[var(--ss-green)] font-semibold">portfolio builder</Link>.
           </p>
-          <p className="text-slate-400 text-xs mb-5 max-w-3xl">
+          <p className="text-[var(--ss-text)] text-xs mb-5 max-w-3xl">
             Tony&apos;s read: keep the two lists apart in your head. The table ranks manager conviction.
             These funds track where market-level money goes. Different question, different tool.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <div className="rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] p-4">
               <div className="flex items-baseline justify-between mb-3">
-                <span className="font-bold text-white text-sm">Market instruments</span>
-                <span className="text-slate-500 text-xs">{MARKET_TILES.length} funds, one per market</span>
+                <span className="font-bold text-[var(--ss-ink)] text-sm">Market instruments</span>
+                <span className="text-[var(--ss-muted)] text-xs">{MARKET_TILES.length} funds, one per market</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {MARKET_TILES.map(m => (
@@ -224,17 +209,17 @@ export default function Universe() {
                     key={m.ticker}
                     href="/markets"
                     title={`${m.market} via ${m.ticker}`}
-                    className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+                    className="rounded-full border border-[var(--ss-border-strong)] bg-[var(--ss-inset)] px-2 py-0.5 text-[11px] font-semibold text-[var(--ss-text)] hover:border-[var(--ss-border-strong)] hover:text-[var(--ss-ink)] transition-colors"
                   >
                     {m.flag} <span className="font-mono">{m.ticker}</span>
                   </Link>
                 ))}
               </div>
             </div>
-            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <div className="rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] p-4">
               <div className="flex items-baseline justify-between mb-3">
-                <span className="font-bold text-white text-sm">Allocation lenses</span>
-                <span className="text-slate-500 text-xs">{LENS_FUNDS.length} broad international funds</span>
+                <span className="font-bold text-[var(--ss-ink)] text-sm">Allocation lenses</span>
+                <span className="text-[var(--ss-muted)] text-xs">{LENS_FUNDS.length} broad international funds</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {LENS_FUNDS.map(l => (
@@ -242,9 +227,9 @@ export default function Universe() {
                     key={l.ticker}
                     href="/markets"
                     title={l.name}
-                    className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+                    className="rounded-full border border-[var(--ss-border-strong)] bg-[var(--ss-inset)] px-2 py-0.5 text-[11px] font-semibold text-[var(--ss-text)] hover:border-[var(--ss-border-strong)] hover:text-[var(--ss-ink)] transition-colors"
                   >
-                    <span className="font-mono">{l.ticker}</span> <span className="text-slate-500">{l.label}</span>
+                    <span className="font-mono">{l.ticker}</span> <span className="text-[var(--ss-muted)]">{l.label}</span>
                   </Link>
                 ))}
               </div>
@@ -253,13 +238,14 @@ export default function Universe() {
         </section>
 
         {/* Disclaimer */}
-        <p className="text-slate-600 text-xs border-t border-slate-800 pt-6 mt-8 max-w-3xl">
+        <p className="text-[var(--ss-faint)] text-xs border-t border-[var(--ss-border)] pt-6 mt-8 max-w-3xl">
           Stockscout is for informational purposes only and does not constitute financial advice. All data is
           indicative and sourced from public ETF disclosures and market feeds. Past performance is not a
           guarantee of future results. Always do your own research.
         </p>
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

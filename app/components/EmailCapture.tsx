@@ -23,9 +23,11 @@ type Status = 'idle' | 'sending' | 'done' | 'error';
 export default function EmailCapture({
   variant = 'band',
   source = 'home',
+  light = false,
 }: {
   variant?: 'bar' | 'band' | 'inline';
   source?: string;
+  light?: boolean;
 }) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
@@ -72,15 +74,20 @@ export default function EmailCapture({
         disabled={done}
         placeholder="you@example.com"
         aria-label="Your email"
-        className="flex-1 min-w-0 rounded-lg border border-slate-700 bg-slate-800 text-white placeholder-slate-500
-                   px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50
-                   transition-colors disabled:opacity-60"
+        className={`flex-1 min-w-0 rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-1 transition-colors disabled:opacity-60 ${
+          light
+            ? 'border-[var(--ss-border-strong)] bg-[var(--ss-card)] text-[var(--ss-ink)] placeholder-[var(--ss-muted)] focus:border-[var(--ss-green)] focus:ring-[var(--ss-green)]/40'
+            : 'border-slate-700 bg-slate-800 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-emerald-500/50'
+        }`}
       />
       <button
         type="submit"
         disabled={status === 'sending' || done}
-        className="shrink-0 bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 disabled:text-emerald-600
-                   text-black font-semibold text-sm px-6 py-2.5 rounded-full transition-colors whitespace-nowrap"
+        className={`shrink-0 font-semibold text-sm px-6 py-2.5 rounded-full transition-colors whitespace-nowrap ${
+          light
+            ? 'bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-60 text-white'
+            : 'bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 disabled:text-emerald-600 text-black'
+        }`}
       >
         {status === 'sending' ? 'Sending…' : done ? 'Subscribed ✓' : 'Get the note'}
       </button>
