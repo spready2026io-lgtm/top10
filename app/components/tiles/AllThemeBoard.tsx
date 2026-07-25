@@ -146,9 +146,9 @@ export default function AllThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Th
                 Velocity agreed with the actual move on <span style={{ fontFamily: MONO, fontWeight: 800, color: 'var(--ss-ink)' }}>{mc.matchPct}%</span> of {mc.n} tracked stocks
               </div>
               <div style={{ display: 'flex', gap: 22, flexWrap: 'wrap', fontSize: 13 }}>
-                <ModelStat label={`Rising ⚡+ (${mc.upN})`} value={mc.upAvg} />
-                <ModelStat label={`Falling ⚡− (${mc.downN})`} value={mc.downAvg} />
-                <ModelStat label="Spread" value={mc.spread} strong />
+                <ModelStat label={`Rising ⚡+ (${mc.upN})`} value={mc.upAvg} tip={`Average 1-month price move of the ${mc.upN} stocks whose Velocity Score rose this month (conviction building). If the model works, this should beat the falling group.`} />
+                <ModelStat label={`Falling ⚡− (${mc.downN})`} value={mc.downAvg} tip={`Average 1-month price move of the ${mc.downN} stocks whose Velocity Score fell this month (conviction fading).`} />
+                <ModelStat label="Spread" value={mc.spread} strong tip="Rising-group average minus falling-group average. A positive spread means rising-conviction names outperformed falling-conviction ones this month — the Velocity Score is tracking real price performance, not noise." />
               </div>
             </div>
           )}
@@ -163,13 +163,27 @@ export default function AllThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Th
   );
 }
 
-function ModelStat({ label, value, strong }: { label: string; value: number | null; strong?: boolean }) {
+function ModelStat({ label, value, strong, tip }: { label: string; value: number | null; strong?: boolean; tip?: string }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div style={{ textAlign: 'right' }}>
-      <div style={{ fontSize: 11, color: 'var(--ss-muted)', whiteSpace: 'nowrap' }}>{label}</div>
+    <div
+      style={{ textAlign: 'right', position: 'relative', cursor: tip ? 'help' : 'default' }}
+      onMouseEnter={() => tip && setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onClick={() => tip && setOpen((o) => !o)}
+    >
+      <div style={{ fontSize: 11, color: 'var(--ss-muted)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        {label}
+        {tip && <span aria-hidden style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 13, height: 13, borderRadius: 999, border: '1px solid var(--ss-border-strong)', color: 'var(--ss-muted)', fontSize: 9, fontWeight: 700, lineHeight: 1 }}>?</span>}
+      </div>
       <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: value == null ? 'var(--ss-muted)' : moveColor(value) }}>
         {value == null ? '—' : `${strong ? '' : 'avg '}${signed(value)}`}
       </div>
+      {open && tip && (
+        <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, zIndex: 60, width: 240, textAlign: 'left', background: 'var(--ss-card)', border: '1px solid var(--ss-border)', borderRadius: 12, padding: '10px 12px', boxShadow: '0 16px 36px rgba(11,18,32,0.16)', pointerEvents: 'none' }}>
+          <p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--ss-text)', margin: 0 }}>{tip}</p>
+        </div>
+      )}
     </div>
   );
 }
