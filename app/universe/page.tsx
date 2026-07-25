@@ -35,8 +35,13 @@ const PERF_COLS: Period[] = ['1M', 'YTD', '6M', '1Y'];
 
 function buildRows(): Row[] {
   const rows: Row[] = [];
+  // One row per unique fund. IGV and WCLD sit in both Broad Tech and Software,
+  // so dedupe by ticker (first theme wins) — the table lists 51 unique funds.
+  const seen = new Set<string>();
   for (const theme of Object.keys(THEME_ETFS) as Theme[]) {
     for (const ticker of THEME_ETFS[theme]) {
+      if (seen.has(ticker)) continue;
+      seen.add(ticker);
       const info = ETF_INFO[ticker];
       const top  = (ETF_TOP_HOLDINGS[ticker] ?? [])[0];
       const ret  = ETF_RETURNS[ticker] ?? { '1W': 0, '1M': 0, 'YTD': 0, '6M': 0, '1Y': 0 };
