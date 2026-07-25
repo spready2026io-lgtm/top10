@@ -8,8 +8,8 @@ import SiteFooter from '@/app/components/brand/SiteFooter';
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
 const inputCls =
-  'w-full rounded-xl border border-[#d7dce3] bg-white text-[#0B1220] placeholder-[#98a2b0] ' +
-  'px-4 py-2.5 text-sm focus:outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]/40 transition-colors';
+  'w-full rounded-xl border border-[var(--ss-border-strong)] bg-[var(--ss-card)] text-[var(--ss-ink)] placeholder-[var(--ss-muted)] ' +
+  'px-4 py-2.5 text-sm focus:outline-none focus:border-[var(--ss-green)] focus:ring-1 focus:ring-[var(--ss-green)]/40 transition-colors';
 
 export default function ContactPage() {
   const [email, setEmail] = useState('');
@@ -44,37 +44,37 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#F7F8FB', color: '#0B1220' }}>
+    <main className="min-h-screen" style={{ background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
       <SiteNav />
 
       <div className="max-w-lg mx-auto px-4 py-16">
         {status === 'sent' ? (
-          <div className="rounded-2xl border p-8 text-center" style={{ borderColor: '#b8e6d3', background: '#e7f7f0' }}>
+          <div className="rounded-2xl border p-8 text-center" style={{ borderColor: 'var(--ss-green-tint-border)', background: 'var(--ss-green-tint)' }}>
             <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(5,150,105,0.14)' }}>
-              <svg className="w-7 h-7" style={{ color: '#059669' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-7 h-7" style={{ color: 'var(--ss-green)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="font-bold text-lg mb-2" style={{ color: '#0B1220' }}>Message sent!</h2>
-            <p className="text-sm mb-6" style={{ color: '#55606e' }}>
-              Thanks for reaching out. We&apos;ll get back to you at <span style={{ color: '#0B1220', fontWeight: 600 }}>{email}</span>.
+            <h2 className="font-bold text-lg mb-2" style={{ color: 'var(--ss-ink)' }}>Message sent!</h2>
+            <p className="text-sm mb-6" style={{ color: 'var(--ss-text)' }}>
+              Thanks for reaching out. We&apos;ll get back to you at <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{email}</span>.
             </p>
-            <Link href="/" className="inline-block font-semibold text-sm px-6 py-2.5 rounded-full text-white" style={{ background: '#059669' }}>
+            <Link href="/" className="inline-block font-semibold text-sm px-6 py-2.5 rounded-full text-white" style={{ background: 'var(--ss-green)' }}>
               Back to Stockscout →
             </Link>
           </div>
         ) : (
           <>
             <div className="mb-8">
-              <p className="text-sm font-semibold uppercase tracking-widest mb-2" style={{ color: '#059669', fontFamily: 'var(--font-mono-brand), monospace' }}>Contact</p>
-              <h2 className="text-3xl font-extrabold mb-2" style={{ color: '#0B1220', letterSpacing: '-1px' }}>Get in touch</h2>
-              <p className="text-sm leading-relaxed" style={{ color: '#55606e' }}>
+              <p className="text-sm font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--ss-green)', fontFamily: 'var(--font-mono-brand), monospace' }}>Contact</p>
+              <h2 className="text-3xl font-extrabold mb-2" style={{ color: 'var(--ss-ink)', letterSpacing: '-1px' }}>Get in touch</h2>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--ss-text)' }}>
                 Questions about the data, ETF suggestions, stock requests, or anything else — we&apos;d love to hear from you.
               </p>
             </div>
 
             {status === 'error' && (
-              <div className="rounded-lg border px-4 py-3 text-sm mb-6 flex items-start gap-2" style={{ borderColor: '#f0d9a8', background: '#fcf3e1', color: '#a06a12' }}>
+              <div className="rounded-lg border px-4 py-3 text-sm mb-6 flex items-start gap-2" style={{ borderColor: 'var(--ss-amber-border)', background: 'var(--ss-amber-bg)', color: 'var(--ss-amber-text)' }}>
                 <svg className="w-4 h-4 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
@@ -92,7 +92,7 @@ export default function ContactPage() {
               <Field id="message" label="Message">
                 <textarea id="message" required rows={6} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Your message…" className={`${inputCls} resize-none`} />
               </Field>
-              <button type="submit" disabled={status === 'sending'} className="w-full text-white font-semibold text-sm py-3 rounded-full transition-colors disabled:opacity-60" style={{ background: '#059669' }}>
+              <button type="submit" disabled={status === 'sending'} className="w-full text-white font-semibold text-sm py-3 rounded-full transition-colors disabled:opacity-60" style={{ background: 'var(--ss-green)' }}>
                 {status === 'sending' ? 'Sending…' : 'Send message'}
               </button>
             </form>
@@ -108,8 +108,8 @@ export default function ContactPage() {
 function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium mb-1.5" style={{ color: '#55606e' }}>
-        {label} <span style={{ color: '#c2743a' }}>*</span>
+      <label htmlFor={id} className="block text-sm font-medium mb-1.5" style={{ color: 'var(--ss-text)' }}>
+        {label} <span style={{ color: 'var(--ss-amber)' }}>*</span>
       </label>
       {children}
     </div>

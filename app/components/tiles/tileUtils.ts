@@ -1,8 +1,8 @@
 import { SAMPLE_DATA, THEMES, type Theme, type Equity } from '@/lib/data';
 
 // ── Palette (redesign tokens) ─────────────────────────────────────────────────
-export const GREEN = '#059669';
-export const AMBER = '#c2743a';
+export const GREEN = 'var(--ss-green)';
+export const AMBER = 'var(--ss-amber)';
 export const MONO = 'var(--font-mono-brand), monospace';
 
 export const moveColor = (n: number) => (n >= 0 ? GREEN : AMBER);
@@ -13,9 +13,9 @@ export function signed(n: number, digits = 1): string {
 }
 
 export function conviction(coverage: number): { label: string; color: string; bg: string } {
-  if (coverage >= 0.6) return { label: 'High', color: '#0a7350', bg: '#e7f7f0' };
-  if (coverage >= 0.35) return { label: 'Medium', color: '#a06a12', bg: '#fcf3e1' };
-  return { label: 'Low', color: '#5b6675', bg: '#eef1f5' };
+  if (coverage >= 0.6) return { label: 'High', color: 'var(--ss-green-text)', bg: 'var(--ss-green-tint)' };
+  if (coverage >= 0.35) return { label: 'Medium', color: 'var(--ss-amber-text)', bg: 'var(--ss-amber-bg)' };
+  return { label: 'Low', color: 'var(--ss-text)', bg: 'var(--ss-track)' };
 }
 
 /**

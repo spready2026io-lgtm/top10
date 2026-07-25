@@ -9,7 +9,7 @@ const MARKET_COUNT = MARKET_TILES.length;
 /** Shared light footer (2026 redesign). */
 export default function SiteFooter() {
   return (
-    <footer style={{ background: '#fff', borderTop: '1px solid #eef1f5' }}>
+    <footer style={{ background: 'var(--ss-card)', borderTop: '1px solid var(--ss-track)' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 32px' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32, marginBottom: 36 }}>
           <div style={{ maxWidth: 340 }}>
@@ -17,7 +17,7 @@ export default function SiteFooter() {
               <Crosshair size={24} />
               <Wordmark size={20} />
             </div>
-            <p style={{ fontSize: 15, lineHeight: 1.55, color: '#8a94a3', margin: 0 }}>
+            <p style={{ fontSize: 15, lineHeight: 1.55, color: 'var(--ss-muted)', margin: 0 }}>
               Tracking {ACTIVE_ETFS} ETFs across {MARKET_COUNT} world markets. Rankings for information only — not investment advice.
             </p>
           </div>
@@ -26,7 +26,7 @@ export default function SiteFooter() {
             <Col title="Company" links={[['About', '/about'], ['Contact', '/contact'], ['ETF Universe', '/universe'], ['Conviction Board', '/conviction']]} />
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, paddingTop: 24, borderTop: '1px solid #eef1f5', fontSize: 14, color: '#a4adba' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, paddingTop: 24, borderTop: '1px solid var(--ss-track)', fontSize: 14, color: 'var(--ss-faint)' }}>
           <span>© 2026 Stockscout. All rights reserved.</span>
           <span>Updated daily · Free · No login</span>
         </div>
@@ -38,9 +38,9 @@ export default function SiteFooter() {
 function Col({ title, links }: { title: string; links: [string, string][] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <div style={{ fontSize: 12, letterSpacing: 0.8, color: '#a4adba', textTransform: 'uppercase', fontWeight: 700, marginBottom: 2 }}>{title}</div>
+      <div style={{ fontSize: 12, letterSpacing: 0.8, color: 'var(--ss-faint)', textTransform: 'uppercase', fontWeight: 700, marginBottom: 2 }}>{title}</div>
       {links.map(([label, href]) => (
-        <Link key={label} href={href} style={{ fontSize: 15, color: '#55606e' }}>{label}</Link>
+        <Link key={label} href={href} style={{ fontSize: 15, color: 'var(--ss-text)' }}>{label}</Link>
       ))}
     </div>
   );

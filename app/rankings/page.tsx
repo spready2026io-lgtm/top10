@@ -9,6 +9,7 @@ import ExpandedTile from '@/app/components/tiles/ExpandedTile';
 import ThemePerformance from '@/app/components/tiles/ThemePerformance';
 import { MONO, GREEN, moveColor, signed, homeSector, conviction, type Equity } from '@/app/components/tiles/tileUtils';
 import StockAvatar from '@/app/components/tiles/StockAvatar';
+import ThemeToggle from '@/app/components/brand/ThemeToggle';
 import {
   SAMPLE_DATA,
   THEMES,
@@ -66,19 +67,20 @@ function ThemePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F7F8FB', color: '#0B1220' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
       {/* NAV */}
-      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid #e9ecf1' }}>
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'var(--ss-nav-bg)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--ss-border)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <Crosshair size={26} />
             <Wordmark size={22} />
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: 3, color: '#98a2b0', marginLeft: 8 }} className="ss-nav-links-secondary">SEE IT FIRST</span>
+            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: 3, color: 'var(--ss-muted)', marginLeft: 8 }} className="ss-nav-links-secondary">SEE IT FIRST</span>
           </Link>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 30 }}>
             <Link href="/rankings" className="ss-link-muted" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
             <Link href="/about" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>About</Link>
             <Link href="/rankings/classic" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>Classic view</Link>
+            <ThemeToggle />
             <Link href="/portfolio" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>Build Portfolio</Link>
           </nav>
         </div>
@@ -86,8 +88,8 @@ function ThemePage() {
 
       {/* THEME HEADER */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '44px 32px 8px' }}>
-        <div style={{ fontSize: 14, color: '#8a94a3', marginBottom: 20 }}>
-          <Link href="/rankings" style={{ color: '#8a94a3' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: '#0B1220', fontWeight: 600 }}>{theme}</span>
+        <div style={{ fontSize: 14, color: 'var(--ss-muted)', marginBottom: 20 }}>
+          <Link href="/rankings" style={{ color: 'var(--ss-muted)' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{theme}</span>
         </div>
 
         {/* theme selector */}
@@ -100,9 +102,9 @@ function ThemePage() {
                 onClick={() => pick(t)}
                 style={{
                   fontSize: 14, fontWeight: active ? 700 : 600, cursor: 'pointer',
-                  color: active ? '#fff' : '#3f4a58',
-                  background: active ? GREEN : '#fff',
-                  border: active ? 'none' : '1px solid #dfe4ea',
+                  color: active ? 'var(--ss-card)' : 'var(--ss-text)',
+                  background: active ? GREEN : 'var(--ss-card)',
+                  border: active ? 'none' : '1px solid var(--ss-border-strong)',
                   padding: active ? '10px 16px' : '9px 16px',
                   borderRadius: 999,
                 }}
@@ -116,12 +118,12 @@ function ThemePage() {
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 8 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
-              <h1 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-1.2px', color: '#0B1220', margin: 0 }}>{theme}</h1>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color: '#0a7350', background: '#e7f7f0', border: '1px solid #b8e6d3', padding: '5px 11px', borderRadius: 999 }}>
+              <h1 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-1.2px', color: 'var(--ss-ink)', margin: 0 }}>{theme}</h1>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color: 'var(--ss-green-text)', background: 'var(--ss-green-tint)', border: '1px solid var(--ss-green-tint-border)', padding: '5px 11px', borderRadius: 999 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />LIVE · UPDATED TODAY
               </span>
             </div>
-            <p style={{ fontSize: 18, lineHeight: 1.5, color: '#55606e', margin: 0, maxWidth: 560 }}>{describe(theme, n)}</p>
+            <p style={{ fontSize: 18, lineHeight: 1.5, color: 'var(--ss-text)', margin: 0, maxWidth: 560 }}>{describe(theme, n)}</p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
             <Stat value={String(n)} label="ETFs" />
@@ -140,13 +142,13 @@ function ThemePage() {
 
       {/* COVERAGE LEGEND */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 32px 4px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-        <p style={{ fontSize: 13, color: '#8a94a3', margin: 0, maxWidth: 560 }}>
-          <span style={{ fontWeight: 700, color: '#55606e' }}>Coverage Score</span> is how many of this theme&apos;s {n} ETFs hold the stock — a higher score means broader institutional consensus.
+        <p style={{ fontSize: 13, color: 'var(--ss-muted)', margin: 0, maxWidth: 560 }}>
+          <span style={{ fontWeight: 700, color: 'var(--ss-text)' }}>Coverage Score</span> is how many of this theme&apos;s {n} ETFs hold the stock — a higher score means broader institutional consensus.
         </p>
         <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
-          <CovBadge n={n} pct="≥80%" color="#0a7350" bg="#e7f7f0" border="#b8e6d3" />
-          <CovBadge n={n} pct="≥60%" color="#3b6fd4" bg="#eef2fb" border="#d4e0f6" />
-          <CovBadge n={n} pct="≥40%" color="#a06a12" bg="#fcf3e1" border="#f0d9a8" />
+          <CovBadge n={n} pct="≥80%" color="var(--ss-green-text)" bg="var(--ss-green-tint)" border="var(--ss-green-tint-border)" />
+          <CovBadge n={n} pct="≥60%" color="var(--ss-blue)" bg="var(--ss-avatar-blue-1)" border="var(--ss-avatar-blue-2)" />
+          <CovBadge n={n} pct="≥40%" color="var(--ss-amber-text)" bg="var(--ss-amber-bg)" border="var(--ss-amber-border)" />
         </div>
       </section>
 
@@ -157,10 +159,10 @@ function ThemePage() {
             onClick={() => { setShowNew((v) => !v); setShowAll(false); }}
             title="New entrants — first time in the theme's Top 20 today"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 700, padding: '7px 12px', borderRadius: 999, cursor: 'pointer',
-              color: showNew ? '#fff' : '#a06a12', background: showNew ? '#c2743a' : '#fcf3e1', border: `1px solid ${showNew ? '#c2743a' : '#f0d9a8'}` }}
+              color: showNew ? 'var(--ss-card)' : 'var(--ss-amber-text)', background: showNew ? 'var(--ss-amber)' : 'var(--ss-amber-bg)', border: `1px solid ${showNew ? 'var(--ss-amber)' : 'var(--ss-amber-border)'}` }}
           >
             ✦ New
-            <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, padding: '1px 7px', borderRadius: 999, color: showNew ? '#fff' : '#a06a12', background: showNew ? 'rgba(255,255,255,0.22)' : '#f6e2b8' }}>{newCount}</span>
+            <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, padding: '1px 7px', borderRadius: 999, color: showNew ? 'var(--ss-card)' : 'var(--ss-amber-text)', background: showNew ? 'rgba(255,255,255,0.22)' : 'var(--ss-amber-bg)' }}>{newCount}</span>
           </button>
         )}
 
@@ -179,7 +181,7 @@ function ThemePage() {
         <button
           onClick={() => setShowGuide(true)}
           title="How the scores work"
-          style={{ fontSize: 13, fontWeight: 600, padding: '7px 14px', borderRadius: 999, cursor: 'pointer', color: '#3f4a58', background: '#fff', border: '1px solid #dfe4ea', marginLeft: 4 }}
+          style={{ fontSize: 13, fontWeight: 600, padding: '7px 14px', borderRadius: 999, cursor: 'pointer', color: 'var(--ss-text)', background: 'var(--ss-card)', border: '1px solid var(--ss-border-strong)', marginLeft: 4 }}
         >
           Guide
         </button>
@@ -188,7 +190,7 @@ function ThemePage() {
       {/* GRID / LIST */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 32px 72px' }}>
         {filtered.length === 0 ? (
-          <p style={{ color: '#8a94a3', fontSize: 14 }}>No new entrants in {theme} today.</p>
+          <p style={{ color: 'var(--ss-muted)', fontSize: 14 }}>No new entrants in {theme} today.</p>
         ) : layout === 'grid' ? (
           <>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
@@ -198,7 +200,7 @@ function ThemePage() {
             </div>
             {!showAll && !showNew && filtered.length > 10 && (
               <div style={{ textAlign: 'center', marginTop: 24 }}>
-                <button onClick={() => setShowAll(true)} style={{ fontSize: 14, fontWeight: 700, color: GREEN, background: '#fff', border: '1px solid #dfe4ea', padding: '10px 20px', borderRadius: 999, cursor: 'pointer' }}>
+                <button onClick={() => setShowAll(true)} style={{ fontSize: 14, fontWeight: 700, color: GREEN, background: 'var(--ss-card)', border: '1px solid var(--ss-border-strong)', padding: '10px 20px', borderRadius: 999, cursor: 'pointer' }}>
                   Show all {filtered.length} ↓
                 </button>
               </div>
@@ -215,16 +217,16 @@ function ThemePage() {
   );
 }
 
-function Stat({ value, label, color = '#0B1220' }: { value: string; label: string; color?: string }) {
+function Stat({ value, label, color = 'var(--ss-ink)' }: { value: string; label: string; color?: string }) {
   return (
     <div>
       <div style={{ fontFamily: MONO, fontSize: 24, fontWeight: 700, color }}>{value}</div>
-      <div style={{ fontSize: 12, letterSpacing: 0.6, color: '#8a94a3', textTransform: 'uppercase', marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 12, letterSpacing: 0.6, color: 'var(--ss-muted)', textTransform: 'uppercase', marginTop: 2 }}>{label}</div>
     </div>
   );
 }
 function Div() {
-  return <div style={{ width: 1, height: 30, background: '#e0e4ea' }} />;
+  return <div style={{ width: 1, height: 30, background: 'var(--ss-border-strong)' }} />;
 }
 function CovBadge({ n, pct, color, bg, border }: { n: number; pct: string; color: string; bg: string; border: string }) {
   return (
@@ -237,11 +239,11 @@ function CovBadge({ n, pct, color, bg, border }: { n: number; pct: string; color
 // ── Light segmented control (sort / layout toggles) ───────────────────────────
 function Segmented({ value, onChange, options, style }: { value: string; onChange: (v: string) => void; options: { v: string; label: string }[]; style?: React.CSSProperties }) {
   return (
-    <div style={{ display: 'inline-flex', gap: 2, background: '#f4f6f9', border: '1px solid #eaeef2', borderRadius: 10, padding: 3, ...style }}>
+    <div style={{ display: 'inline-flex', gap: 2, background: 'var(--ss-inset)', border: '1px solid var(--ss-track)', borderRadius: 10, padding: 3, ...style }}>
       {options.map((o) => {
         const active = o.v === value;
         return (
-          <button key={o.v} onClick={() => onChange(o.v)} style={{ fontSize: 13, fontWeight: active ? 700 : 600, color: active ? '#0B1220' : '#8a94a3', background: active ? '#fff' : 'transparent', padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', boxShadow: active ? '0 1px 2px rgba(11,18,32,0.08)' : 'none', whiteSpace: 'nowrap' }}>{o.label}</button>
+          <button key={o.v} onClick={() => onChange(o.v)} style={{ fontSize: 13, fontWeight: active ? 700 : 600, color: active ? 'var(--ss-ink)' : 'var(--ss-muted)', background: active ? 'var(--ss-card)' : 'transparent', padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', boxShadow: active ? '0 1px 2px rgba(11,18,32,0.08)' : 'none', whiteSpace: 'nowrap' }}>{o.label}</button>
         );
       })}
     </div>
@@ -251,26 +253,26 @@ function Segmented({ value, onChange, options, style }: { value: string; onChang
 // ── Compact list view (≡ List) ────────────────────────────────────────────────
 function ListView({ rows, n, sortBy, onOpen }: { rows: Equity[]; n: number; sortBy: 'wt' | 'vs'; onOpen: (t: string) => void }) {
   return (
-    <div style={{ background: '#fff', border: '1px solid #e6e9ef', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 22px rgba(11,18,32,0.05)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '40px 1.6fr 0.8fr 0.8fr 0.8fr 0.8fr', padding: '12px 18px', background: '#f4f6f9', borderBottom: '1px solid #e9ecf1', fontSize: 11, letterSpacing: 0.6, color: '#8a94a3', textTransform: 'uppercase', fontWeight: 700 }}>
+    <div style={{ background: 'var(--ss-card)', border: '1px solid var(--ss-border)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 22px rgba(11,18,32,0.05)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '40px 1.6fr 0.8fr 0.8fr 0.8fr 0.8fr', padding: '12px 18px', background: 'var(--ss-inset)', borderBottom: '1px solid var(--ss-border)', fontSize: 11, letterSpacing: 0.6, color: 'var(--ss-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
         <div>#</div><div>Company</div><div style={{ textAlign: 'right' }}>Cov</div><div style={{ textAlign: 'right' }}>Avg wt</div><div style={{ textAlign: 'right' }}>{sortBy === 'vs' ? 'Velocity' : 'Vel'}</div><div style={{ textAlign: 'right' }}>1W</div>
       </div>
       {rows.map((e, i) => {
         const vel = e.velocityScore?.['1W'];
         const conv = conviction(e.coverage);
         return (
-          <button key={e.ticker} onClick={() => onOpen(e.ticker)} style={{ width: '100%', textAlign: 'left', display: 'grid', gridTemplateColumns: '40px 1.6fr 0.8fr 0.8fr 0.8fr 0.8fr', alignItems: 'center', padding: '12px 18px', borderBottom: i === rows.length - 1 ? 'none' : '1px solid #f0f2f6', background: '#fff', border: 'none', cursor: 'pointer', font: 'inherit' }}>
-            <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: i === 0 ? GREEN : '#8a94a3' }}>{i + 1}</div>
+          <button key={e.ticker} onClick={() => onOpen(e.ticker)} style={{ width: '100%', textAlign: 'left', display: 'grid', gridTemplateColumns: '40px 1.6fr 0.8fr 0.8fr 0.8fr 0.8fr', alignItems: 'center', padding: '12px 18px', borderBottom: i === rows.length - 1 ? 'none' : '1px solid var(--ss-track)', background: 'var(--ss-card)', border: 'none', cursor: 'pointer', font: 'inherit' }}>
+            <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: i === 0 ? GREEN : 'var(--ss-muted)' }}>{i + 1}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
               <StockAvatar ticker={e.ticker} size={30} radius={8} fontSize={11} />
               <span style={{ minWidth: 0 }}>
-                <span style={{ fontSize: 15, fontWeight: 600, color: '#0B1220', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{e.name}</span>
-                <span style={{ fontSize: 12, color: '#8a94a3' }}>{homeSector(e.ticker) ?? ''}</span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--ss-ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{e.name}</span>
+                <span style={{ fontSize: 12, color: 'var(--ss-muted)' }}>{homeSector(e.ticker) ?? ''}</span>
               </span>
             </div>
             <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: conv.color }}>{e.easyScore}/{n}</div>
-            <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: '#0B1220' }}>{e.proScore.toFixed(1)}%</div>
-            <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: vel == null ? '#8a94a3' : moveColor(vel) }}>{vel == null ? 'New' : signed(vel)}</div>
+            <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: 'var(--ss-ink)' }}>{e.proScore.toFixed(1)}%</div>
+            <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: vel == null ? 'var(--ss-muted)' : moveColor(vel) }}>{vel == null ? 'New' : signed(vel)}</div>
             <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 13, fontWeight: 700, color: moveColor(e.weeklyChange) }}>{signed(e.weeklyChange)}</div>
           </button>
         );
@@ -283,12 +285,12 @@ function ListView({ rows, n, sortBy, onOpen }: { rows: Equity[]; n: number; sort
 function GuideModal({ onClose }: { onClose: () => void }) {
   return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(11,18,32,0.45)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ width: 440, maxWidth: '92vw', maxHeight: '88vh', overflowY: 'auto', background: '#fff', border: '1px solid #e6e9ef', borderRadius: 20, boxShadow: '0 24px 60px rgba(11,18,32,0.16)', padding: 26 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ width: 440, maxWidth: '92vw', maxHeight: '88vh', overflowY: 'auto', background: 'var(--ss-card)', border: '1px solid var(--ss-border)', borderRadius: 20, boxShadow: '0 24px 60px rgba(11,18,32,0.16)', padding: 26 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
           <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: 1, color: GREEN }}>HOW CONVICTION WORKS</div>
-          <button onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#8a94a3', lineHeight: 1 }}>×</button>
+          <button onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: 'var(--ss-muted)', lineHeight: 1 }}>×</button>
         </div>
-        <h3 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: '#0B1220', margin: '0 0 16px' }}>Reading the board</h3>
+        <h3 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: 'var(--ss-ink)', margin: '0 0 16px' }}>Reading the board</h3>
         <GuideRow title="Coverage (x/n)" body="How many of the theme's ETFs hold the stock. Higher = broader consensus. The x/n badge is colour-coded by level." />
         <GuideRow title="Avg wt = Weight Score" body="Average portfolio weight across holders × coverage. The primary conviction metric. Hover the number on a tile for the full ETF-by-ETF breakdown." />
         <GuideRow title="Velocity" body="The 1-week change in Weight Score — who's climbing before they reach #1. Switch the sort to ▲ Velocity to surface fast-movers." />
@@ -303,15 +305,15 @@ function GuideModal({ onClose }: { onClose: () => void }) {
 function GuideRow({ title, body }: { title: string; body: string }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{ fontSize: 15, fontWeight: 700, color: '#0B1220', marginBottom: 3 }}>{title}</div>
-      <p style={{ fontSize: 14, lineHeight: 1.5, color: '#55606e', margin: 0 }}>{body}</p>
+      <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--ss-ink)', marginBottom: 3 }}>{title}</div>
+      <p style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ss-text)', margin: 0 }}>{body}</p>
     </div>
   );
 }
 
 export default function RankingsPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#F7F8FB' }} />}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--ss-page)' }} />}>
       <ThemePage />
     </Suspense>
   );

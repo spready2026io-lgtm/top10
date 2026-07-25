@@ -43,7 +43,7 @@ function Sparkline({ data, positive }: { data: number[]; positive: boolean }) {
     .map((v, i) => `${(i / (data.length - 1)) * 100},${30 - ((v - min) / span) * 28 + 1}`)
     .join(' ');
   return (
-    <svg viewBox="0 0 100 32" preserveAspectRatio="none" className={`w-full h-9 ${positive ? 'text-[#059669]' : 'text-[#c2743a]'}`} aria-hidden>
+    <svg viewBox="0 0 100 32" preserveAspectRatio="none" className={`w-full h-9 ${positive ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}`} aria-hidden>
       <polyline points={pts} fill="none" stroke="currentColor" strokeWidth="1.6" vectorEffect="non-scaling-stroke" />
     </svg>
   );
@@ -58,29 +58,29 @@ function Tile({ t, period, open, onToggle }: { t: MarketTile; period: MarketPeri
   return (
     <button
       onClick={onToggle}
-      className="text-left w-full rounded-xl border border-[#e6e9ef] bg-white p-4 hover:border-[#d7dce3] transition-colors"
+      className="text-left w-full rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] p-4 hover:border-[var(--ss-border-strong)] transition-colors"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="text-3xl leading-none" aria-hidden>{t.flag}</span>
           <div className="min-w-0">
-            <div className="font-bold text-[#0B1220] truncate">{t.market}</div>
-            <div className="text-[#55606e] text-xs truncate">
+            <div className="font-bold text-[var(--ss-ink)] truncate">{t.market}</div>
+            <div className="text-[var(--ss-text)] text-xs truncate">
               <span className="font-mono">{t.ticker}</span>
-              <span className="mx-1.5 text-[#a4adba]">·</span>
+              <span className="mx-1.5 text-[var(--ss-faint)]">·</span>
               {t.name}
             </div>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
-          <span className={`font-bold tabular-nums ${pos ? 'text-[#059669]' : 'text-[#c2743a]'}`}>
+          <span className={`font-bold tabular-nums ${pos ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}`}>
             {pos ? '+' : ''}{ret.toFixed(1)}%
           </span>
           {t.kind === 'region' && (
-            <span className="text-[9px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-[#eef2fb] border border-[#d4e0f6] text-[#3b6fd4]">Region</span>
+            <span className="text-[9px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-[var(--ss-avatar-blue-1)] border border-[var(--ss-avatar-blue-2)] text-[var(--ss-blue)]">Region</span>
           )}
           {t.thin && (
-            <span className="text-[9px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-[#fcf3e1] border border-[#f0d9a8] text-[#a06a12]">Thin fund</span>
+            <span className="text-[9px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-[var(--ss-amber-bg)] border border-[var(--ss-amber-border)] text-[var(--ss-amber-text)]">Thin fund</span>
           )}
         </div>
       </div>
@@ -88,24 +88,24 @@ function Tile({ t, period, open, onToggle }: { t: MarketTile; period: MarketPeri
       {series && <div className="mt-2"><Sparkline data={series} positive={pos} /></div>}
 
       <div className="mt-2 flex items-center justify-between text-xs">
-        <span className="text-[#55606e]">
+        <span className="text-[var(--ss-text)]">
           ${t.price.toFixed(2)}
-          <span className="mx-1.5 text-[#a4adba]">·</span>
+          <span className="mx-1.5 text-[var(--ss-faint)]">·</span>
           {fmtAum(t.aum)}
         </span>
-        <span className="text-[#55606e]">
+        <span className="text-[var(--ss-text)]">
           {flowLabel}:{' '}
           {flow ? (
-            <span className={`font-semibold tabular-nums ${flow.usd >= 0 ? 'text-[#059669]' : 'text-[#c2743a]'}`}>{fmtFlow(flow.usd)}</span>
+            <span className={`font-semibold tabular-nums ${flow.usd >= 0 ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}`}>{fmtFlow(flow.usd)}</span>
           ) : (
-            <span className="text-[#8a94a3]" title={`Share-count tracking started ${FLOW_SINCE}. Flow figures appear once history spans the window.`}>collecting</span>
+            <span className="text-[var(--ss-muted)]" title={`Share-count tracking started ${FLOW_SINCE}. Flow figures appear once history spans the window.`}>collecting</span>
           )}
         </span>
       </div>
 
       {open && (
-        <div className="mt-3 pt-3 border-t border-[#e6e9ef] text-xs text-[#55606e] leading-relaxed">
-          <span className="text-[#059669] font-semibold">Tony&apos;s note:</span> {t.note}
+        <div className="mt-3 pt-3 border-t border-[var(--ss-border)] text-xs text-[var(--ss-text)] leading-relaxed">
+          <span className="text-[var(--ss-green)] font-semibold">Tony&apos;s note:</span> {t.note}
         </div>
       )}
     </button>
@@ -117,7 +117,7 @@ export default function Markets() {
   const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <main className="min-h-screen" style={{ background: '#F7F8FB', color: '#0B1220' }}>
+    <main className="min-h-screen" style={{ background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
 
       <SiteNav active="Markets" />
 
@@ -125,19 +125,19 @@ export default function Markets() {
 
         {/* Intro */}
         <section className="mb-7 max-w-3xl">
-          <h2 className="text-2xl font-bold text-[#0B1220] mb-3">International Markets</h2>
-          <p className="text-[#55606e] text-sm leading-relaxed mb-3">
+          <h2 className="text-2xl font-bold text-[var(--ss-ink)] mb-3">International Markets</h2>
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
             Where in the world is the money going? Every tile below is a market, not a stock. Each one is
             measured through the fund global investors actually use to enter it, so price tells you how the
             market is doing and fund flows tell you whether money is arriving or leaving.
           </p>
-          <p className="text-[#55606e] text-sm leading-relaxed mb-3">
-            <span className="text-[#059669] font-semibold">Tony&apos;s read:</span> price and flow agreeing is
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
+            <span className="text-[var(--ss-green)] font-semibold">Tony&apos;s read:</span> price and flow agreeing is
             confirmation. Price and flow disagreeing is the interesting part: a market that falls while money
             keeps arriving is being bought on the dip, and a rally nobody funds is running on fumes. Tap any
             tile for my note on that market.
           </p>
-          <p className="text-[#8a94a3] text-xs leading-relaxed">
+          <p className="text-[var(--ss-muted)] text-xs leading-relaxed">
             This board is separate from our conviction rankings. Conviction scores come from actively managed
             funds; these tiles use index country funds as measuring instruments for market-level money movement.
             Net flow = change in shares outstanding times price (fund creations and redemptions). Share-count
@@ -146,13 +146,13 @@ export default function Markets() {
         </section>
 
         {/* Period toggle */}
-        <div className="flex items-center bg-[#f4f6f9] rounded-full p-0.5 text-xs font-bold border border-[#d7dce3] w-max mb-8">
+        <div className="flex items-center bg-[var(--ss-inset)] rounded-full p-0.5 text-xs font-bold border border-[var(--ss-border-strong)] w-max mb-8">
           {PERIODS.map(p => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
               className={`px-4 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
-                period === p ? 'bg-[#059669] text-white shadow-sm' : 'text-[#55606e] hover:text-[#0B1220]'
+                period === p ? 'bg-[var(--ss-green)] text-white shadow-sm' : 'text-[var(--ss-text)] hover:text-[var(--ss-ink)]'
               }`}
             >
               {p}
@@ -165,8 +165,8 @@ export default function Markets() {
           const tiles = MARKET_TILES.filter(t => t.region === region);
           return (
             <section key={region} className="mb-10">
-              <h3 className="text-lg font-bold text-[#0B1220] mb-1">{region}</h3>
-              <p className="text-[#55606e] text-xs mb-4">{tiles.length} market{tiles.length > 1 ? 's' : ''}, sorted by fund size</p>
+              <h3 className="text-lg font-bold text-[var(--ss-ink)] mb-1">{region}</h3>
+              <p className="text-[var(--ss-text)] text-xs mb-4">{tiles.length} market{tiles.length > 1 ? 's' : ''}, sorted by fund size</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {[...tiles].sort((a, b) => b.aum - a.aum).map(t => (
                   <Tile
@@ -184,8 +184,8 @@ export default function Markets() {
 
         {/* Regional lens */}
         <section className="mb-10">
-          <h3 className="text-lg font-bold text-[#0B1220] mb-1">Where the big international money sits</h3>
-          <p className="text-[#55606e] text-xs mb-4 max-w-3xl">
+          <h3 className="text-lg font-bold text-[var(--ss-ink)] mb-1">Where the big international money sits</h3>
+          <p className="text-[var(--ss-text)] text-xs mb-4 max-w-3xl">
             The broad international allocation funds, broken down by country of risk. When these giants take
             in new money, it lands in markets in these proportions. The mix is the map.
           </p>
@@ -194,22 +194,22 @@ export default function Markets() {
               const top = l.countries.slice(0, 8);
               const maxW = top[0]?.w || 1;
               return (
-                <div key={l.ticker} className="rounded-xl border border-[#e6e9ef] bg-white p-4">
+                <div key={l.ticker} className="rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] p-4">
                   <div className="flex items-baseline justify-between gap-2 mb-3">
                     <div className="min-w-0">
-                      <span className="font-bold text-[#0B1220]">{l.label}</span>
-                      <span className="text-[#55606e] text-xs ml-2 font-mono">{l.ticker}</span>
+                      <span className="font-bold text-[var(--ss-ink)]">{l.label}</span>
+                      <span className="text-[var(--ss-text)] text-xs ml-2 font-mono">{l.ticker}</span>
                     </div>
-                    <span className="text-[#55606e] text-xs flex-shrink-0">{fmtAum(l.aum)}</span>
+                    <span className="text-[var(--ss-text)] text-xs flex-shrink-0">{fmtAum(l.aum)}</span>
                   </div>
                   <div className="space-y-1.5">
                     {top.map(c => (
                       <div key={c.c} className="flex items-center gap-2 text-xs">
-                        <span className="w-28 flex-shrink-0 text-[#55606e] truncate" title={c.c}>{c.c}</span>
-                        <div className="flex-1 h-2 rounded-full bg-[#f4f6f9] overflow-hidden">
-                          <div className="h-full rounded-full bg-[#059669]/70" style={{ width: `${(c.w / maxW) * 100}%` }} />
+                        <span className="w-28 flex-shrink-0 text-[var(--ss-text)] truncate" title={c.c}>{c.c}</span>
+                        <div className="flex-1 h-2 rounded-full bg-[var(--ss-inset)] overflow-hidden">
+                          <div className="h-full rounded-full bg-[var(--ss-green)]/70" style={{ width: `${(c.w / maxW) * 100}%` }} />
                         </div>
-                        <span className="w-11 text-right tabular-nums text-[#0a7350] font-semibold">{c.w.toFixed(1)}%</span>
+                        <span className="w-11 text-right tabular-nums text-[var(--ss-green-text)] font-semibold">{c.w.toFixed(1)}%</span>
                       </div>
                     ))}
                   </div>
@@ -224,26 +224,26 @@ export default function Markets() {
         <section className="mb-10">
           <Link
             href="/portfolio"
-            className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-[#b8e6d3] bg-[#e7f7f0] p-5 hover:border-[#059669] transition-colors group"
+            className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-[var(--ss-green-tint-border)] bg-[var(--ss-green-tint)] p-5 hover:border-[var(--ss-green)] transition-colors group"
           >
             <div className="flex-1 min-w-0">
-              <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#059669]">Build with Tony</div>
-              <div className="text-base font-bold text-[#0B1220] leading-snug mt-1">
+              <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--ss-green)]">Build with Tony</div>
+              <div className="text-base font-bold text-[var(--ss-ink)] leading-snug mt-1">
                 Put these markets in your portfolio.
               </div>
-              <p className="text-xs text-[#55606e] leading-relaxed mt-1.5 max-w-2xl">
+              <p className="text-xs text-[var(--ss-text)] leading-relaxed mt-1.5 max-w-2xl">
                 The broad funds above (IXUS, EFA, EEM) now power a world markets sleeve in the portfolio builder.
                 Core for beta, themes for conviction, world markets for diversification beyond the US.
               </p>
             </div>
-            <span className="inline-flex items-center gap-1.5 self-start sm:self-center flex-shrink-0 px-3 py-1.5 rounded-full bg-[#e7f7f0] border border-[#b8e6d3] text-[#0a7350] text-xs font-bold group-hover:bg-[#d6f0e4] transition-colors">
+            <span className="inline-flex items-center gap-1.5 self-start sm:self-center flex-shrink-0 px-3 py-1.5 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] text-[var(--ss-green-text)] text-xs font-bold group-hover:bg-[var(--ss-green-tint)] transition-colors">
               Build your portfolio
               <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </span>
           </Link>
         </section>
 
-        <p className="text-[#8a94a3] text-xs mt-4">
+        <p className="text-[var(--ss-muted)] text-xs mt-4">
           Data snapshot: {MARKETS_TIMESTAMP_NY}. Market instruments are US-listed iShares country and regional
           funds (Argentina via Global X ARGT). Size is fund net assets. Performance is price return over each
           window. Net flow is the change in fund shares outstanding times price, our measure of money entering
@@ -252,7 +252,7 @@ export default function Markets() {
         </p>
 
         {/* Disclaimer */}
-        <p className="text-[#a4adba] text-xs border-t border-[#e6e9ef] pt-6 mt-8 max-w-3xl">
+        <p className="text-[var(--ss-faint)] text-xs border-t border-[var(--ss-border)] pt-6 mt-8 max-w-3xl">
           Stockscout is for informational purposes only and does not constitute financial advice. All data is
           indicative and sourced from public ETF disclosures and market feeds. Past performance is not a
           guarantee of future results. Always do your own research.

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '@/app/components/brand/ThemeToggle';
 import { trackEvent } from '@/lib/gtag';
 
 const SUGGESTED = [
@@ -59,36 +60,36 @@ export default function AskTonyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FB] text-[#0B1220] flex flex-col">
+    <div className="min-h-screen bg-[var(--ss-page)] text-[var(--ss-ink)] flex flex-col">
 
       {/* Header */}
-      <header className="border-b border-[#e6e9ef] px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-[#55606e] hover:text-[#0B1220] text-sm transition-colors">
+      <header className="border-b border-[var(--ss-border)] px-4 py-4 flex items-center justify-between">
+        <Link href="/" className="text-[var(--ss-text)] hover:text-[var(--ss-ink)] text-sm transition-colors">
           ← Stockscout
         </Link>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#e7f7f0] border border-[#b8e6d3] flex items-center justify-center text-[#059669] font-bold text-sm">
+          <div className="w-8 h-8 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-sm">
             T
           </div>
           <div>
             <div className="font-semibold text-sm leading-tight">Tony</div>
-            <div className="text-xs text-[#8a94a3] leading-tight">AI Equity &amp; ETF Analyst</div>
+            <div className="text-xs text-[var(--ss-muted)] leading-tight">AI Equity &amp; ETF Analyst</div>
           </div>
         </div>
-        <div className="w-16" />
+        <div className="w-16 flex justify-end"><ThemeToggle /></div>
       </header>
 
       {/* Intro (shown before first message) */}
       {messages.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-[#e7f7f0] border border-[#b8e6d3] flex items-center justify-center text-[#059669] text-2xl font-bold mb-6">
+          <div className="w-16 h-16 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] text-2xl font-bold mb-6">
             T
           </div>
           <h1 className="text-2xl font-bold mb-2">Ask Tony</h1>
-          <p className="text-[#55606e] text-sm max-w-sm mb-1">
+          <p className="text-[var(--ss-text)] text-sm max-w-sm mb-1">
             I&apos;m not human. That&apos;s my advantage.
           </p>
-          <p className="text-[#8a94a3] text-xs max-w-sm mb-6">
+          <p className="text-[var(--ss-muted)] text-xs max-w-sm mb-6">
             I cover 116 equities and 51 ETFs across 8 themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
           </p>
 
@@ -106,17 +107,17 @@ export default function AskTonyPage() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                style={{ fontSize: '16px' }} className="flex-1 min-w-0 bg-white border border-[#d7dce3] focus:border-[#059669] rounded-lg px-4 py-3 text-[#0B1220] placeholder-[#98a2b0] outline-none transition-colors"
+                style={{ fontSize: '16px' }} className="flex-1 min-w-0 bg-[var(--ss-card)] border border-[var(--ss-border-strong)] focus:border-[var(--ss-green)] rounded-lg px-4 py-3 text-[var(--ss-ink)] placeholder-[var(--ss-muted)] outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="shrink-0 bg-[#059669] hover:bg-[#047857] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
+                className="shrink-0 bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
             </form>
-            <p className="text-[#a4adba] text-[10px] mt-2 text-center">
+            <p className="text-[var(--ss-faint)] text-[10px] mt-2 text-center">
               For information only. Not financial advice. Updated daily.
             </p>
           </div>
@@ -127,7 +128,7 @@ export default function AskTonyPage() {
               <button
                 key={q}
                 onClick={() => ask(q, 'suggested')}
-                className="text-left text-xs text-[#55606e] bg-white hover:bg-[#f4f6f9] border border-[#d7dce3] hover:border-[#b3bcc7] rounded-lg px-3 py-2.5 transition-colors"
+                className="text-left text-xs text-[var(--ss-text)] bg-[var(--ss-card)] hover:bg-[var(--ss-inset)] border border-[var(--ss-border-strong)] hover:border-[var(--ss-border-strong)] rounded-lg px-3 py-2.5 transition-colors"
               >
                 {q}
               </button>
@@ -142,15 +143,15 @@ export default function AskTonyPage() {
           {messages.map((m, i) => (
             <div key={i} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {m.role === 'tony' && (
-                <div className="w-7 h-7 rounded-full bg-[#e7f7f0] border border-[#b8e6d3] flex items-center justify-center text-[#059669] font-bold text-xs shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-xs shrink-0 mt-0.5">
                   T
                 </div>
               )}
               <div
                 className={`max-w-[82%] rounded-xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-[#059669] text-white'
-                    : 'bg-white border border-[#e6e9ef] text-[#0B1220] shadow-[0_4px_14px_rgba(11,18,32,0.05)]'
+                    ? 'bg-[var(--ss-green)] text-white'
+                    : 'bg-[var(--ss-card)] border border-[var(--ss-border)] text-[var(--ss-ink)] shadow-[0_4px_14px_rgba(11,18,32,0.05)]'
                 }`}
               >
                 {m.text}
@@ -160,21 +161,21 @@ export default function AskTonyPage() {
 
           {loading && (
             <div className="flex gap-3 justify-start">
-              <div className="w-7 h-7 rounded-full bg-[#e7f7f0] border border-[#b8e6d3] flex items-center justify-center text-[#059669] font-bold text-xs shrink-0 mt-0.5">
+              <div className="w-7 h-7 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-xs shrink-0 mt-0.5">
                 T
               </div>
-              <div className="bg-white border border-[#d7dce3] rounded-xl px-4 py-3">
+              <div className="bg-[var(--ss-card)] border border-[var(--ss-border-strong)] rounded-xl px-4 py-3">
                 <div className="flex gap-1 items-center h-4">
-                  <span className="w-1.5 h-1.5 bg-[#059669] rounded-full animate-bounce [animation-delay:0ms]" />
-                  <span className="w-1.5 h-1.5 bg-[#059669] rounded-full animate-bounce [animation-delay:150ms]" />
-                  <span className="w-1.5 h-1.5 bg-[#059669] rounded-full animate-bounce [animation-delay:300ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:0ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:150ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:300ms]" />
                 </div>
               </div>
             </div>
           )}
 
           {error && (
-            <div className="text-[#c2743a] text-xs text-center py-1">{error}</div>
+            <div className="text-[var(--ss-amber)] text-xs text-center py-1">{error}</div>
           )}
 
           <div ref={bottomRef} />
@@ -183,7 +184,7 @@ export default function AskTonyPage() {
 
       {/* Bottom input bar — only shown once conversation has started */}
       {messages.length > 0 && (
-        <div className="border-t border-[#e6e9ef] px-4 py-3 bg-[#F7F8FB]">
+        <div className="border-t border-[var(--ss-border)] px-4 py-3 bg-[var(--ss-page)]">
           <div className="max-w-2xl mx-auto">
             <form
               onSubmit={e => { e.preventDefault(); ask(input); }}
@@ -200,17 +201,17 @@ export default function AskTonyPage() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                className="flex-1 min-w-0 bg-white border border-[#d7dce3] focus:border-[#059669] rounded-lg px-4 py-2.5 text-sm text-[#0B1220] placeholder-[#98a2b0] outline-none transition-colors"
+                className="flex-1 min-w-0 bg-[var(--ss-card)] border border-[var(--ss-border-strong)] focus:border-[var(--ss-green)] rounded-lg px-4 py-2.5 text-sm text-[var(--ss-ink)] placeholder-[var(--ss-muted)] outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="shrink-0 bg-[#059669] hover:bg-[#047857] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+                className="shrink-0 bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
             </form>
-            <p className="text-[#a4adba] text-[10px] mt-2 text-center">
+            <p className="text-[var(--ss-faint)] text-[10px] mt-2 text-center">
               For information only. Not financial advice. Updated daily.
             </p>
           </div>

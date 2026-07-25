@@ -12,8 +12,8 @@ export default function StockAvatar({
   ticker,
   size = 40,
   radius = 11,
-  bg = '#eef2f7',
-  textColor = '#3f4a58',
+  bg = 'var(--ss-avatar-bg)',
+  textColor = 'var(--ss-text)',
   fontSize = 12,
 }: {
   ticker: string;

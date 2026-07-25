@@ -68,6 +68,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('ss-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}" }} />
         {children}
         <ScrollToTop />
         <AskTonyButton />

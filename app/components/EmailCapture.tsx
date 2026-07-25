@@ -76,7 +76,7 @@ export default function EmailCapture({
         aria-label="Your email"
         className={`flex-1 min-w-0 rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-1 transition-colors disabled:opacity-60 ${
           light
-            ? 'border-[#d7dce3] bg-white text-[#0B1220] placeholder-[#98a2b0] focus:border-[#059669] focus:ring-[#059669]/40'
+            ? 'border-[var(--ss-border-strong)] bg-[var(--ss-card)] text-[var(--ss-ink)] placeholder-[var(--ss-muted)] focus:border-[var(--ss-green)] focus:ring-[var(--ss-green)]/40'
             : 'border-slate-700 bg-slate-800 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-emerald-500/50'
         }`}
       />
@@ -85,7 +85,7 @@ export default function EmailCapture({
         disabled={status === 'sending' || done}
         className={`shrink-0 font-semibold text-sm px-6 py-2.5 rounded-full transition-colors whitespace-nowrap ${
           light
-            ? 'bg-[#059669] hover:bg-[#047857] disabled:opacity-60 text-white'
+            ? 'bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-60 text-white'
             : 'bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 disabled:text-emerald-600 text-black'
         }`}
       >

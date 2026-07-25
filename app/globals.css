@@ -1,47 +1,84 @@
 @import "tailwindcss";
 
-/* ── 2026-07 light redesign tokens (Claude Design handoff) ────────────────────
-   Dark legacy pages set their own bg-slate-* wrappers and override these; the
-   light surfaces (landing first, then the rest) read from these vars. */
+/* ── 2026-07 redesign theme tokens (light default, dark via data-theme) ───────
+   Components reference var(--ss-*); switching data-theme on <html> flips the
+   whole app. Dark values are tuned for a near-black background. */
 :root {
-  --background: #F7F8FB;
-  --foreground: #0B1220;
-
-  /* Brand */
-  --ss-green:        #059669;
-  --ss-green-hover:  #047857;
-  --ss-green-bright: #10B981;
-  --ss-green-glow:   #34D399;
-  --ss-green-tint:   #e7f7f0;
-  --ss-green-tint-border: #b8e6d3;
-  --ss-green-tint-text:   #0a7350;
+  /* Surfaces */
+  --ss-page:          #F7F8FB;
+  --ss-canvas:        #EDEFF3;
+  --ss-card:          #ffffff;
+  --ss-inset:         #f4f6f9;
+  --ss-track:         #eef1f5;
+  --ss-border:        #e6e9ef;
+  --ss-border-strong: #d7dce3;
+  --ss-nav-bg:        rgba(255,255,255,0.88);
+  --ss-avatar-bg:     #eef2f7;
+  --ss-avatar-blue-1: #eef2fb;
+  --ss-avatar-blue-2: #d4e0f6;
 
   /* Text */
-  --ss-ink:    #0B1220;
-  --ss-text:   #55606e;
-  --ss-muted:  #8a94a3;
-  --ss-faint:  #a4adba;
+  --ss-ink:   #0B1220;
+  --ss-text:  #55606e;
+  --ss-muted: #8a94a3;
+  --ss-faint: #a4adba;
 
-  /* Surfaces */
-  --ss-page:   #F7F8FB;
-  --ss-canvas: #EDEFF3;
-  --ss-card:   #ffffff;
-  --ss-border: #e6e9ef;
-  --ss-border-nav: #e9ecf1;
-  --ss-inset:  #f4f6f9;
-  --ss-track:  #eef1f5;
-  --ss-divider:#eef1f5;
+  /* Green (brand / up) */
+  --ss-green:             #059669;
+  --ss-green-hover:       #047857;
+  --ss-green-text:        #0a7350;
+  --ss-green-tint:        #e7f7f0;
+  --ss-green-tint-border: #b8e6d3;
 
-  /* Amber (down moves / medium conviction / coverage badge) */
+  /* Amber (down / medium conviction) */
+  --ss-amber:        #c2743a;
   --ss-amber-text:   #a06a12;
   --ss-amber-bg:     #fcf3e1;
   --ss-amber-border: #f0d9a8;
-  --ss-amber-chart:  #c2743a;
 
-  /* Fonts (wired in layout.tsx) */
+  /* Blue (S&P benchmark / ticker avatar) */
+  --ss-blue: #3b6fd4;
+
+  --background: var(--ss-page);
+  --foreground: var(--ss-ink);
   --font-display: var(--font-jakarta), system-ui, sans-serif;
   --font-numeric: var(--font-mono-brand), ui-monospace, monospace;
 }
+
+:root[data-theme="dark"] {
+  /* Surfaces stack light→dark: card (raised) > track > inset > page (base). */
+  --ss-page:          #0b0f17;
+  --ss-canvas:        #0d121b;
+  --ss-inset:         #141b25;
+  --ss-track:         #1a222e;
+  --ss-card:          #1e2736;
+  --ss-border:        #2a3341;
+  --ss-border-strong: #3a4453;
+  --ss-nav-bg:        rgba(14,19,28,0.85);
+  --ss-avatar-bg:     #232d3d;
+  --ss-avatar-blue-1: #1c2740;
+  --ss-avatar-blue-2: #223052;
+
+  --ss-ink:   #f1f5f9;
+  --ss-text:  #a7b2c2;
+  --ss-muted: #7f8b9b;
+  --ss-faint: #5f6b7a;
+
+  --ss-green:             #10b981;
+  --ss-green-hover:       #34d399;
+  --ss-green-text:        #6ee7b7;
+  --ss-green-tint:        rgba(16,185,129,0.14);
+  --ss-green-tint-border: rgba(16,185,129,0.34);
+
+  --ss-amber:        #e0955c;
+  --ss-amber-text:   #e0a94a;
+  --ss-amber-bg:     rgba(224,149,92,0.14);
+  --ss-amber-border: rgba(224,149,92,0.32);
+
+  --ss-blue: #6ea8ff;
+}
+
+html { background: var(--ss-page); }
 
 body {
   background: var(--background);
