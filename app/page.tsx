@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Crosshair, { Wordmark } from '@/app/components/brand/Crosshair';
 import NewsletterSignup from '@/app/components/landing/NewsletterSignup';
+import StockAvatar from '@/app/components/tiles/StockAvatar';
 import {
   SAMPLE_DATA,
   CROSS_THEME_TOP10,
@@ -115,7 +116,7 @@ export default function Landing() {
             <div style={{ background: '#fff', border: '1px solid #e6e9ef', borderRadius: 18, padding: 24, boxShadow: '0 18px 40px rgba(11,18,32,0.08)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: 12, background: 'linear-gradient(135deg,#eef2fb,#dde6f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#3b6fd4', fontSize: 14 }}>{ex.ticker}</div>
+                  <StockAvatar ticker={ex.ticker} size={42} radius={12} bg="linear-gradient(135deg,#eef2fb,#dde6f7)" textColor="#3b6fd4" fontSize={14} />
                   <div>
                     <div style={{ fontSize: 17, fontWeight: 700, color: '#0B1220' }}>{ex.name}</div>
                     <div style={{ fontSize: 13, color: '#8a94a3' }}>{ex.ticker} · Broad Tech</div>
@@ -184,7 +185,7 @@ export default function Landing() {
               <div key={r.ticker} className="ss-lb-grid" style={{ alignItems: 'center', padding: '16px 24px', borderBottom: i === rows.length - 1 ? 'none' : '1px solid #f0f2f6' }}>
                 <div style={{ ...mono, fontSize: 16, fontWeight: 700, color: i === 0 ? GREEN : '#8a94a3' }}>{i + 1}</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ ...mono, width: 38, height: 38, borderRadius: 10, background: '#eef2f7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 12, color: '#3f4a58' }}>{r.ticker}</div>
+                  <StockAvatar ticker={r.ticker} size={38} radius={10} />
                   <div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: '#0B1220' }}>{r.name}</div>
                     <div style={{ fontSize: 13, color: '#8a94a3' }}>{r.themeCount} themes</div>

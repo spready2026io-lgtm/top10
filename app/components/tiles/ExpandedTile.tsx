@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { buildChart, conviction, homeSector, moveColor, signed, xLabels, MONO, GREEN, type Equity } from './tileUtils';
 import { AvgWtTip, VelocityTip } from './MetricTooltips';
+import StockAvatar from './StockAvatar';
 
 const RANGES = ['1D', '1W', '1M', 'YTD', '6M', '1Y'] as const;
 type Range = (typeof RANGES)[number];
@@ -73,7 +74,7 @@ export default function ExpandedTile({
             <div style={{ padding: '22px 22px 0' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
-                  <div style={{ width: 46, height: 46, borderRadius: 13, background: 'linear-gradient(135deg,#e7edfb,#d4e0f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#3b6fd4', fontSize: 14 }}>{equity.ticker}</div>
+                  <StockAvatar ticker={equity.ticker} size={46} radius={13} bg="linear-gradient(135deg,#e7edfb,#d4e0f6)" textColor="#3b6fd4" fontSize={14} />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px', color: '#0B1220', lineHeight: 1.2 }}>{equity.name}</div>
                     <div style={{ fontSize: 13, color: '#8a94a3', marginTop: 2 }}>{equity.ticker} · {sector}</div>

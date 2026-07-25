@@ -8,6 +8,7 @@ import CompactTile from '@/app/components/tiles/CompactTile';
 import ExpandedTile from '@/app/components/tiles/ExpandedTile';
 import ThemePerformance from '@/app/components/tiles/ThemePerformance';
 import { MONO, GREEN, moveColor, signed, homeSector, conviction, type Equity } from '@/app/components/tiles/tileUtils';
+import StockAvatar from '@/app/components/tiles/StockAvatar';
 import {
   SAMPLE_DATA,
   THEMES,
@@ -261,7 +262,7 @@ function ListView({ rows, n, sortBy, onOpen }: { rows: Equity[]; n: number; sort
           <button key={e.ticker} onClick={() => onOpen(e.ticker)} style={{ width: '100%', textAlign: 'left', display: 'grid', gridTemplateColumns: '40px 1.6fr 0.8fr 0.8fr 0.8fr 0.8fr', alignItems: 'center', padding: '12px 18px', borderBottom: i === rows.length - 1 ? 'none' : '1px solid #f0f2f6', background: '#fff', border: 'none', cursor: 'pointer', font: 'inherit' }}>
             <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: i === 0 ? GREEN : '#8a94a3' }}>{i + 1}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-              <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: '#3f4a58', background: '#eef2f7', borderRadius: 7, padding: '4px 7px' }}>{e.ticker}</span>
+              <StockAvatar ticker={e.ticker} size={30} radius={8} fontSize={11} />
               <span style={{ minWidth: 0 }}>
                 <span style={{ fontSize: 15, fontWeight: 600, color: '#0B1220', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{e.name}</span>
                 <span style={{ fontSize: 12, color: '#8a94a3' }}>{homeSector(e.ticker) ?? ''}</span>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { conviction, homeSector, moveColor, signed, MONO, type Equity } from './tileUtils';
 import { AvgWtTip, VelocityTip } from './MetricTooltips';
+import StockAvatar from './StockAvatar';
 
 /**
  * Compact conviction tile (theme-grid variant, light redesign).
@@ -67,7 +68,7 @@ export default function CompactTile({
       {/* identity + price */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-          <div style={{ width: 40, height: 40, borderRadius: 11, background: '#eef2f7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 12, color: '#3f4a58', flexShrink: 0 }}>{equity.ticker}</div>
+          <StockAvatar ticker={equity.ticker} size={40} radius={11} />
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: '#0B1220', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{equity.name}</div>
             <div style={{ fontSize: 13, color: '#8a94a3' }}>{equity.ticker} · {sector}</div>
