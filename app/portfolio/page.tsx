@@ -512,16 +512,16 @@ export default function PortfolioPage() {
 
               <div className="flex justify-between mt-3 text-xs">
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-3 h-0.5 bg-[#059669]" />
+                  <span className="inline-block w-3.5 h-[3px] rounded-full bg-[#059669]" />
                   <span className="text-[#55606e]">Your mix</span>
                   <span className={`font-semibold ${perf.portfolioReturn >= 0 ? 'text-[#059669]' : 'text-[#c2743a]'}`}>
                     {perf.portfolioReturn >= 0 ? '+' : ''}{perf.portfolioReturn.toFixed(1)}%
                   </span>
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-3 h-0.5 bg-[#94a3b8]" />
+                  <span className="inline-block w-3.5 h-[3px] rounded-full bg-[#3b6fd4]" />
                   <span className="text-[#55606e]">S&P 500</span>
-                  <span className={`font-semibold ${perf.spyReturn >= 0 ? 'text-[#55606e]' : 'text-[#c2743a]'}`}>
+                  <span className={`font-semibold ${perf.spyReturn >= 0 ? 'text-[#3b6fd4]' : 'text-[#c2743a]'}`}>
                     {perf.spyReturn >= 0 ? '+' : ''}{perf.spyReturn.toFixed(1)}%
                   </span>
                 </span>
@@ -775,8 +775,8 @@ function PerfChart({ perf }: { perf: ReturnType<typeof blendPerformance> }) {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="none" style={{ height: 150 }}>
-      <path d={toPath(perf.spy)} fill="none" stroke="#64748b" strokeWidth={1.5} />
-      <path d={toPath(perf.portfolio)} fill="none" stroke="#059669" strokeWidth={2} />
+      <path d={toPath(perf.spy)} fill="none" stroke="#3b6fd4" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={toPath(perf.portfolio)} fill="none" stroke="#059669" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
 }
