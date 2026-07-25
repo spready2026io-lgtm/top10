@@ -10,6 +10,7 @@ import ThemePerformance from '@/app/components/tiles/ThemePerformance';
 import { MONO, GREEN, moveColor, signed, homeSector, conviction, type Equity } from '@/app/components/tiles/tileUtils';
 import StockAvatar from '@/app/components/tiles/StockAvatar';
 import ThemeToggle from '@/app/components/brand/ThemeToggle';
+import AllThemeBoard from '@/app/components/tiles/AllThemeBoard';
 import {
   SAMPLE_DATA,
   THEMES,
@@ -34,6 +35,7 @@ function ThemePage() {
   const initial: Theme = urlTheme && THEMES.includes(urlTheme) ? urlTheme : 'Broad Tech';
 
   const [theme, setTheme] = useState<Theme>(initial);
+  const [board, setBoard] = useState<'theme' | 'all'>(urlTheme === ('all' as Theme) ? 'all' : 'theme');
   const [openTicker, setOpenTicker] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'wt' | 'vs'>('wt');   // Avg Wt (conviction) | Velocity
   const [layout, setLayout] = useState<'grid' | 'list'>('grid');
@@ -60,10 +62,16 @@ function ThemePage() {
 
   function pick(t: Theme) {
     setTheme(t);
+    setBoard('theme');
     setOpenTicker(null);
     setShowNew(false);
     setShowAll(false);
     router.replace(`/rankings?theme=${encodeURIComponent(t)}`, { scroll: false });
+  }
+  function pickAll() {
+    setBoard('all');
+    setOpenTicker(null);
+    router.replace('/rankings?theme=all', { scroll: false });
   }
 
   return (
@@ -89,13 +97,25 @@ function ThemePage() {
       {/* THEME HEADER */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '44px 32px 8px' }}>
         <div style={{ fontSize: 14, color: 'var(--ss-muted)', marginBottom: 20 }}>
-          <Link href="/rankings" style={{ color: 'var(--ss-muted)' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{theme}</span>
+          <Link href="/rankings" style={{ color: 'var(--ss-muted)' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{board === 'all' ? 'All Themes' : theme}</span>
         </div>
 
         {/* theme selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
+          <button
+            onClick={pickAll}
+            style={{
+              fontSize: 14, fontWeight: board === 'all' ? 700 : 600, cursor: 'pointer',
+              color: board === 'all' ? 'var(--ss-card)' : 'var(--ss-text)',
+              background: board === 'all' ? GREEN : 'var(--ss-card)',
+              border: board === 'all' ? 'none' : '1px solid var(--ss-border-strong)',
+              padding: board === 'all' ? '10px 16px' : '9px 16px', borderRadius: 999,
+            }}
+          >
+            ★ All Themes
+          </button>
           {THEMES.map((t) => {
-            const active = t === theme;
+            const active = board === 'theme' && t === theme;
             return (
               <button
                 key={t}
@@ -115,24 +135,42 @@ function ThemePage() {
           })}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 8 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
-              <h1 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-1.2px', color: 'var(--ss-ink)', margin: 0 }}>{theme}</h1>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color: 'var(--ss-green-text)', background: 'var(--ss-green-tint)', border: '1px solid var(--ss-green-tint-border)', padding: '5px 11px', borderRadius: 999 }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />LIVE · UPDATED TODAY
-              </span>
+        {board === 'theme' ? (
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 8 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-1.2px', color: 'var(--ss-ink)', margin: 0 }}>{theme}</h1>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color: 'var(--ss-green-text)', background: 'var(--ss-green-tint)', border: '1px solid var(--ss-green-tint-border)', padding: '5px 11px', borderRadius: 999 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />LIVE · UPDATED TODAY
+                </span>
+              </div>
+              <p style={{ fontSize: 18, lineHeight: 1.5, color: 'var(--ss-text)', margin: 0, maxWidth: 560 }}>{describe(theme, n)}</p>
             </div>
-            <p style={{ fontSize: 18, lineHeight: 1.5, color: 'var(--ss-text)', margin: 0, maxWidth: 560 }}>{describe(theme, n)}</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+              <Stat value={String(n)} label="ETFs" />
+              <Div />
+              <Stat value={String(SAMPLE_DATA[theme].length)} label="Names ranked" />
+              <Div />
+              <Stat value={signed(theme1W)} label="Theme 1W" color={moveColor(theme1W)} />
+            </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            <Stat value={String(n)} label="ETFs" />
-            <Div />
-            <Stat value={String(SAMPLE_DATA[theme].length)} label="Names ranked" />
-            <Div />
-            <Stat value={signed(theme1W)} label="Theme 1W" color={moveColor(theme1W)} />
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-1.2px', color: 'var(--ss-ink)', margin: 0 }}>All Themes</h1>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MONO, fontSize: 12, fontWeight: 700, color: 'var(--ss-green-text)', background: 'var(--ss-green-tint)', border: '1px solid var(--ss-green-tint-border)', padding: '5px 11px', borderRadius: 999 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />LIVE · UPDATED TODAY
+            </span>
           </div>
-        </div>
+        )}
+      </section>
+
+      {board === 'all' ? (
+        <AllThemeBoard onSelectTheme={pick} />
+      ) : (
+      <>
+      {/* PERFORMANCE — Top10 vs S&P500 chart + ETFs ranked by return */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 32px 0' }}>
+        <ThemePerformance theme={theme} />
       </section>
 
       {/* PERFORMANCE — Top10 vs S&P500 chart + ETFs ranked by return */}
@@ -210,6 +248,8 @@ function ThemePage() {
           <ListView rows={filtered} n={n} sortBy={sortBy} onOpen={(t) => setOpenTicker(t)} />
         )}
       </section>
+      </>
+      )}
 
       {open && <ExpandedTile equity={open} n={n} themeEtfs={themeEtfs} onClose={() => setOpenTicker(null)} />}
       {showGuide && <GuideModal onClose={() => setShowGuide(false)} />}

@@ -143,7 +143,7 @@ export default function Landing() {
         {/* explore pills */}
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px 64px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <Link href="/rankings" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '10px 16px', borderRadius: 999 }}>🔥 All-Theme Top 10</Link>
+            <Link href="/rankings?theme=all" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '10px 16px', borderRadius: 999 }}>🔥 All-Theme Top 10</Link>
             {EXPLORE.map((p) => (
               <Link key={p.href} href={p.href} style={{ fontSize: 14, fontWeight: 600, color: 'var(--ss-text)', background: 'var(--ss-card)', border: '1px solid var(--ss-border-strong)', padding: '10px 16px', borderRadius: 999 }}>{p.label}</Link>
             ))}
@@ -174,7 +174,7 @@ export default function Landing() {
             <div style={{ ...mono, fontSize: 13, letterSpacing: 1, color: GREEN, marginBottom: 12 }}>LIVE · ALL THEMES</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-1px', color: 'var(--ss-ink)', margin: 0 }}>Today&apos;s highest-conviction names</h2>
           </div>
-          <Link href="/rankings" style={{ fontSize: 15, fontWeight: 700, color: GREEN }}>View full rankings →</Link>
+          <Link href="/rankings?theme=all" style={{ fontSize: 15, fontWeight: 700, color: GREEN }}>View full rankings →</Link>
         </div>
 
         <div className="ss-lb-scroll" style={{ background: 'var(--ss-card)', border: '1px solid var(--ss-border)', borderRadius: 18, overflow: 'hidden', boxShadow: '0 12px 30px rgba(11,18,32,0.05)' }}>
