@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-07-26T13:37:43.853Z",
-  "scanTimestampNY": "July 26, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-07-27T13:37:51.229Z",
+  "scanTimestampNY": "July 27, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 20
+        "count": 43
       },
       "ARTY": {
         "ok": true,
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 9
+        "count": 8
       },
       "IVES": {
         "ok": true,
@@ -89,7 +89,7 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "BCTK": {
         "ok": true,
@@ -105,7 +105,7 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "WGMI": {
         "ok": true,
@@ -141,7 +141,7 @@
       },
       "CIBR": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "HACK": {
         "ok": true,
@@ -153,11 +153,11 @@
       },
       "IHAK": {
         "ok": true,
-        "count": 21
+        "count": 19
       },
       "POW": {
         "ok": true,
-        "count": 14
+        "count": 44
       },
       "VOLT": {
         "ok": true,
@@ -259,20 +259,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "HTTP 415"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "HTTP 415"
       }
     ]
   },
   "yfScan": {
-    "total": 115,
-    "succeeded": 115,
+    "total": 116,
+    "succeeded": 116,
     "failed": []
   }
 }
