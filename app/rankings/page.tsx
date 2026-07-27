@@ -175,11 +175,6 @@ function ThemePage() {
         <ThemePerformance theme={theme} />
       </section>
 
-      {/* PERFORMANCE — Top10 vs S&P500 chart + ETFs ranked by return */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 32px 0' }}>
-        <ThemePerformance theme={theme} />
-      </section>
-
       {/* COVERAGE LEGEND */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 32px 4px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
         <p style={{ fontSize: 13, color: 'var(--ss-muted)', margin: 0, maxWidth: 560 }}>

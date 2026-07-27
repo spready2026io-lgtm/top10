@@ -105,7 +105,7 @@ export default function AllThemeBoard({ onSelectTheme }: { onSelectTheme: (t: Th
           <h2 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: 'var(--ss-ink)', margin: 0 }}>{heading}</h2>
           <p style={{ fontSize: 13, color: 'var(--ss-muted)', margin: '6px 0 0', maxWidth: 620 }}>{blurb}</p>
         </div>
-        <div style={{ display: 'inline-flex', gap: 2, background: 'var(--ss-inset)', border: '1px solid var(--ss-track)', borderRadius: 10, padding: 3, flexShrink: 0 }}>
+        <div style={{ display: 'inline-flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, background: 'var(--ss-inset)', border: '1px solid var(--ss-track)', borderRadius: 10, padding: 3 }}>
           {segs.map(([m, label]) => {
             const active = m === mode;
             return <button key={m} onClick={() => setMode(m)} style={{ fontFamily: MONO, fontSize: 12, fontWeight: active ? 700 : 600, color: active ? 'var(--ss-ink)' : 'var(--ss-muted)', background: active ? 'var(--ss-card)' : 'transparent', padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', boxShadow: active ? '0 1px 2px rgba(11,18,32,0.08)' : 'none', whiteSpace: 'nowrap' }}>{label}</button>;
