@@ -65,19 +65,21 @@ export default function Landing() {
           WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--ss-border)',
         }}
       >
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+        <div className="ss-nav-bar" style={{ maxWidth: 1200, margin: '0 auto', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
             <Crosshair size={26} />
-            <Wordmark size={22} />
-            <span style={{ ...mono, fontSize: 11, letterSpacing: 3, color: 'var(--ss-muted)', marginLeft: 8 }}>SEE IT FIRST</span>
+            <span className="ss-nav-lockup">
+              <Wordmark size={22} />
+              <span className="ss-nav-links-secondary ss-tagline" style={{ ...mono, fontSize: 11, letterSpacing: 3 }}>SEE IT FIRST</span>
+            </span>
           </div>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 30 }}>
-            <Link href="/rankings" className="ss-link-muted" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
+          <nav className="ss-nav-row">
+            <Link href="/rankings" className="ss-link-muted ss-nav-links-tertiary" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
             <a href="#how" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>How it works</a>
             <Link href="/about" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>About</Link>
             <Link href="/contact" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>Contact</Link>
             <ThemeToggle />
-            <Link href="/rankings" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>See rankings</Link>
+            <Link href="/rankings" className="ss-nav-cta" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>See rankings</Link>
           </nav>
         </div>
       </header>

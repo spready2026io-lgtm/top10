@@ -25,7 +25,7 @@ export default function Crosshair({ size = 26 }: { size?: number }) {
 /** Wordmark: "stock" ink + "scout" green, weight 800. */
 export function Wordmark({ size = 22 }: { size?: number }) {
   return (
-    <span style={{ fontSize: size, fontWeight: 800, letterSpacing: '-0.5px', color: 'var(--ss-ink)' }}>
+    <span className="ss-wordmark" style={{ fontSize: size, fontWeight: 800, letterSpacing: '-0.5px', color: 'var(--ss-ink)' }}>
       stock<span style={{ color: 'var(--ss-green)' }}>scout</span>
     </span>
   );

@@ -123,6 +123,16 @@ body {
 .ss-lb-grid   { display:grid; grid-template-columns:56px 1.6fr 1fr 0.9fr 0.9fr; min-width:640px; }
 .ss-link-muted { color:#55606e; }
 .ss-link-muted:hover { color:#0B1220; }
+
+/* Nav lockup: the wordmark and the tagline share a baseline, and the tagline
+   uses --ss-text (not --ss-muted) so it clears AA at 11px. */
+.ss-nav-lockup  { display:flex; align-items:baseline; gap:10px; min-width:0; }
+.ss-tagline     { color:var(--ss-text); white-space:nowrap; }
+.ss-nav-bar     { padding:0 32px; gap:12px; }
+.ss-nav-row     { display:flex; align-items:center; gap:28px; flex-shrink:0; }
+.ss-nav-cta     { white-space:nowrap; flex-shrink:0; }
+.ss-tile-grid   { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:18px; }
+
 @media (max-width: 900px) {
   .ss-hero-grid { grid-template-columns:1fr; gap:40px; }
   .ss-nav-links-secondary { display:none !important; }
@@ -131,7 +141,22 @@ body {
   .ss-how-grid { grid-template-columns:1fr; }
 }
 @media (max-width: 860px) {
-  .ss-perf-grid { grid-template-columns:1fr !important; }
+  /* minmax(0,1fr), not 1fr: a plain fr track floors at the item's min-content,
+     which let the chart card push the page 20px wider than the viewport. */
+  .ss-perf-grid { grid-template-columns:minmax(0,1fr) !important; }
+}
+/* Compact nav: below this the row overflowed and the wordmark collided with
+   the first link, pushing the CTA off-screen. */
+@media (max-width: 620px) {
+  .ss-nav-bar  { padding:0 16px !important; }
+  .ss-nav-row  { gap:12px !important; }
+  .ss-nav-cta  { font-size:13px !important; padding:9px 14px !important; }
+  .ss-wordmark { font-size:20px !important; }
+  /* Last text link to go. The logo and the CTA carry navigation from here down. */
+  .ss-nav-links-tertiary { display:none !important; }
+  /* A 340px min track plus 32px of page padding needs 404px, so narrow phones
+     were scrolling sideways. One column below this. */
+  .ss-tile-grid { grid-template-columns:minmax(0,1fr); }
 }
 
 /* Flip tile — ensure both faces stack in the same cell */

@@ -78,18 +78,20 @@ function ThemePage() {
     <div style={{ minHeight: '100vh', background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
       {/* NAV */}
       <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'var(--ss-nav-bg)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--ss-border)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+        <div className="ss-nav-bar" style={{ maxWidth: 1200, margin: '0 auto', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
             <Crosshair size={26} />
-            <Wordmark size={22} />
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: 3, color: 'var(--ss-muted)', marginLeft: 8 }} className="ss-nav-links-secondary">SEE IT FIRST</span>
+            <span className="ss-nav-lockup">
+              <Wordmark size={22} />
+              <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: 3 }} className="ss-nav-links-secondary ss-tagline">SEE IT FIRST</span>
+            </span>
           </Link>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 30 }}>
-            <Link href="/rankings" className="ss-link-muted" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
+          <nav className="ss-nav-row">
+            <Link href="/rankings" className="ss-link-muted ss-nav-links-tertiary" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
             <Link href="/about" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>About</Link>
             <Link href="/rankings/classic" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>Classic view</Link>
             <ThemeToggle />
-            <Link href="/portfolio" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>Build Portfolio</Link>
+            <Link href="/portfolio" className="ss-nav-cta" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>Build Portfolio</Link>
           </nav>
         </div>
       </header>
@@ -231,7 +233,7 @@ function ThemePage() {
           <p style={{ color: 'var(--ss-muted)', fontSize: 14 }}>No new entrants in {theme} today.</p>
         ) : layout === 'grid' ? (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
+            <div className="ss-tile-grid">
               {gridList.map((e, i) => (
                 <CompactTile key={e.ticker} equity={e} rank={i + 1} n={n} themeEtfs={themeEtfs} onOpen={() => setOpenTicker(e.ticker)} />
               ))}

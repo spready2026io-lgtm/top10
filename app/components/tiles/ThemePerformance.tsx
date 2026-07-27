@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MONO, GREEN } from './tileUtils';
 import {
   INDEX_CHART_DATA,
@@ -17,6 +17,19 @@ import {
 const SPY_BLUE = 'var(--ss-blue)';
 const AMBER = 'var(--ss-amber)';
 const RANGES: ChartPeriod[] = ['1D', '1W', '1M', 'YTD', '6M', '1Y'];
+
+/** True once the perf grid has collapsed to one column (see .ss-perf-grid). */
+function useNarrow() {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 860px)');
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+  return narrow;
+}
 
 /**
  * Theme performance block (light redesign) — ported from the classic dashboard:
@@ -39,7 +52,21 @@ export default function ThemePerformance({ theme }: { theme: Theme }) {
 
 // ── Top10 vs S&P 500 chart ────────────────────────────────────────────────────
 function PerfChart({ theme, d, period, setPeriod }: { theme: Theme; d: { top10: number[]; spy: number[]; top10Return: number; spyReturn: number; xLabels: string[] }; period: ChartPeriod; setPeriod: (p: ChartPeriod) => void }) {
-  const VW = 800, VH = 260, padL = 52, padR = 20, padT = 12, padB = 30;
+  // The SVG scales to the card width, so everything inside it shrinks with the
+  // viewport. Below the ss-perf-grid breakpoint the card is roughly 320px wide,
+  // which put the plot at ~90px tall and the axis labels under 5px. The narrow
+  // geometry is a squarer viewBox with proportionally larger type and strokes.
+  const narrow = useNarrow();
+  const VW = 800;
+  const VH   = narrow ? 560 : 300;
+  const padL = narrow ? 92  : 52;
+  const padR = narrow ? 26  : 20;
+  const padT = narrow ? 20  : 12;
+  const padB = narrow ? 58  : 30;
+  const fs     = narrow ? 30  : 12;   // rendered ~10px either way
+  const swSpy  = narrow ? 5   : 2;
+  const swTop  = narrow ? 6.5 : 2.5;
+  const dotR   = narrow ? 10  : 4;
   const chartW = VW - padL - padR, chartH = VH - padT - padB;
   const all = [...d.top10, ...d.spy];
   const rawMin = Math.min(...all), rawMax = Math.max(...all);
@@ -65,18 +92,18 @@ function PerfChart({ theme, d, period, setPeriod }: { theme: Theme; d: { top10: 
       </div>
 
       <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" style={{ display: 'block' }}>
-        {yTicks.map((t, i) => <line key={i} x1={padL} y1={toY(t)} x2={VW - padR} y2={toY(t)} stroke="var(--ss-track)" strokeWidth="1" />)}
-        {zeroInRange && <line x1={padL} y1={toY(100)} x2={VW - padR} y2={toY(100)} stroke="var(--ss-border-strong)" strokeWidth="1.5" strokeDasharray="5 3" />}
-        {yTicks.map((t, i) => <text key={`l${i}`} x={padL - 8} y={toY(t) + 3} textAnchor="end" fontSize="11" fill="var(--ss-faint)" fontFamily="var(--font-mono-brand), monospace">{fmtY(t)}</text>)}
-        <polyline points={line(d.spy)} fill="none" stroke={SPY_BLUE} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-        <polyline points={line(d.top10)} fill="none" stroke={GREEN} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
-        <circle cx={toX(d.top10.length - 1, d.top10.length)} cy={toY(d.top10[d.top10.length - 1])} r="4" fill={GREEN} stroke="var(--ss-card)" strokeWidth="2" />
-        {xl.map((lab, i) => <text key={`x${i}`} x={padL + (i / (xl.length - 1)) * chartW} y={VH - 8} textAnchor="middle" fontSize="11" fill="var(--ss-faint)">{lab}</text>)}
+        {yTicks.map((t, i) => <line key={i} x1={padL} y1={toY(t)} x2={VW - padR} y2={toY(t)} stroke="var(--ss-track)" strokeWidth={narrow ? 2 : 1} />)}
+        {zeroInRange && <line x1={padL} y1={toY(100)} x2={VW - padR} y2={toY(100)} stroke="var(--ss-border-strong)" strokeWidth={narrow ? 3 : 1.5} strokeDasharray={narrow ? '10 6' : '5 3'} />}
+        {yTicks.map((t, i) => <text key={`l${i}`} x={padL - fs * 0.7} y={toY(t) + fs * 0.34} textAnchor="end" fontSize={fs} fill="var(--ss-faint)" fontFamily="var(--font-mono-brand), monospace">{fmtY(t)}</text>)}
+        <polyline points={line(d.spy)} fill="none" stroke={SPY_BLUE} strokeWidth={swSpy} strokeLinejoin="round" strokeLinecap="round" />
+        <polyline points={line(d.top10)} fill="none" stroke={GREEN} strokeWidth={swTop} strokeLinejoin="round" strokeLinecap="round" />
+        <circle cx={toX(d.top10.length - 1, d.top10.length)} cy={toY(d.top10[d.top10.length - 1])} r={dotR} fill={GREEN} stroke="var(--ss-card)" strokeWidth={narrow ? 4 : 2} />
+        {xl.map((lab, i) => <text key={`x${i}`} x={padL + (i / (xl.length - 1)) * chartW} y={VH - fs * 0.7} textAnchor="middle" fontSize={fs} fill="var(--ss-faint)">{lab}</text>)}
       </svg>
 
       {/* period toggle */}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-        <div style={{ display: 'inline-flex', gap: 2, background: 'var(--ss-inset)', border: '1px solid var(--ss-track)', borderRadius: 10, padding: 3 }}>
+        <div style={{ display: 'inline-flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, background: 'var(--ss-inset)', border: '1px solid var(--ss-track)', borderRadius: 10, padding: 3 }}>
           {RANGES.map((r) => {
             const active = r === period;
             return <button key={r} onClick={() => setPeriod(r)} style={{ fontFamily: MONO, fontSize: 12, fontWeight: active ? 700 : 600, color: active ? 'var(--ss-ink)' : 'var(--ss-muted)', background: active ? 'var(--ss-card)' : 'transparent', padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', boxShadow: active ? '0 1px 2px rgba(11,18,32,0.08)' : 'none' }}>{r}</button>;
