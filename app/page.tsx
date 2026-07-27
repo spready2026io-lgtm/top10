@@ -94,7 +94,7 @@ export default function Landing() {
               See what active ETF managers are <span style={{ color: GREEN }}>really buying</span>
             </h1>
             <p style={{ fontSize: 20, lineHeight: 1.55, color: 'var(--ss-text)', margin: '0 0 36px', maxWidth: 520 }}>
-              We track every holding across {ACTIVE_ETFS} ETFs and rank them by manager conviction. When 8 of 10 funds overweight the same name, you&apos;ll see it first.
+              {`We track every holding across ${ACTIVE_ETFS} ETFs and rank them by manager conviction. When 8 of 10 funds overweight the same name, you'll see it first.`}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24, flexWrap: 'wrap' }}>
               <Link href="/rankings" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontSize: 16, fontWeight: 700, color: '#fff', background: GREEN, padding: '16px 28px', borderRadius: 14 }}>See the rankings <span style={{ fontSize: 18 }}>↓</span></Link>

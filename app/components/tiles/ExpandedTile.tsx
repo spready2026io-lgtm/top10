@@ -195,9 +195,12 @@ export default function ExpandedTile({
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 18 }}>
               {themeEtfs.map((etf) => {
                 const held = equity.etfPresence?.[etf];
-                const on = held !== undefined && held !== false;
+                const on = held !== undefined && held !== false && held !== 0;
                 return (
-                  <span key={etf} style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, padding: '4px 8px', borderRadius: 6, color: on ? 'var(--ss-green-text)' : 'var(--ss-faint)', background: on ? 'var(--ss-green-tint)' : 'var(--ss-inset)', border: `1px solid ${on ? 'var(--ss-green-tint-border)' : 'var(--ss-border)'}` }}>{etf}</span>
+                  <span key={etf} style={{ display: 'inline-flex', alignItems: 'baseline', gap: 4, fontFamily: MONO, fontSize: 11, fontWeight: 700, padding: '4px 8px', borderRadius: 6, color: on ? 'var(--ss-green-text)' : 'var(--ss-faint)', background: on ? 'var(--ss-green-tint)' : 'var(--ss-inset)', border: `1px solid ${on ? 'var(--ss-green-tint-border)' : 'var(--ss-border)'}` }}>
+                    {etf}
+                    {on && <span style={{ fontWeight: 500, opacity: 0.75, fontVariantNumeric: 'tabular-nums' }}>{(held as number).toFixed(1)}%</span>}
+                  </span>
                 );
               })}
             </div>
