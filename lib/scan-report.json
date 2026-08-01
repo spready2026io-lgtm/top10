@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-07-31T13:38:57.154Z",
-  "scanTimestampNY": "July 31, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-08-01T13:37:35.184Z",
+  "scanTimestampNY": "August 1, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 9
       },
       "IVES": {
         "ok": true,
@@ -25,11 +25,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 63
+        "count": 64
       },
       "CHAT": {
         "ok": true,
-        "count": 34
+        "count": 37
       },
       "AIFD": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 5
+        "count": 6
       },
       "PTF": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "IGV": {
         "ok": true,
@@ -93,15 +93,15 @@
       },
       "BCTK": {
         "ok": true,
-        "count": 22
+        "count": 24
       },
       "FWD": {
         "ok": true,
-        "count": 17
+        "count": 18
       },
       "CBSE": {
         "ok": true,
-        "count": 24
+        "count": 21
       },
       "FCUS": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "XSW": {
         "ok": true,
-        "count": 11
+        "count": 13
       },
       "SKYY": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 14
+        "count": 15
       },
       "VOLT": {
         "ok": true,
@@ -259,20 +259,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=AIS",
-        "error": "fetch failed"
-      },
-      {
-        "url": "https://www.vistashares.com/csv/top-holdings/?etf=POW",
-        "error": "fetch failed"
       }
     ]
   },
   "yfScan": {
-    "total": 116,
-    "succeeded": 116,
+    "total": 115,
+    "succeeded": 115,
     "failed": []
   }
 }
