@@ -201,7 +201,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 122704000,
+      "pct": 1.39
+    },
     "note": "One tile for the whole continent. IEUR spans developed Europe end to end, from UK banks to French luxury to German industrials. Watch it against the single-market tiles below: when Europe rises but a member market lags, that divergence is the story."
   },
   {
@@ -210,7 +213,7 @@ export const MARKET_TILES: MarketTile[] = [
     "flag": "🇬🇧",
     "region": "Europe",
     "kind": "country",
-    "name": "iShares MSCI",
+    "name": "iShares MSCI United Kingdom ETF",
     "price": 48.41,
     "aum": 3667788800,
     "thin": false,
@@ -367,7 +370,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 19364000,
+      "pct": 0.47
+    },
     "note": "The UK trades apart from the continent: heavy in energy, miners and global banks, light in tech. It behaves more like a value-and-dividends block than a growth market, which is exactly why it earns its own tile next to Europe."
   },
   {
@@ -376,7 +382,7 @@ export const MARKET_TILES: MarketTile[] = [
     "flag": "🇯🇵",
     "region": "Asia",
     "kind": "country",
-    "name": "iShares MSCI Japan Index Fund",
+    "name": "iShares MSCI Japan ETF",
     "price": 92.39,
     "aum": 22312462336,
     "thin": false,
@@ -533,7 +539,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": -55434000,
       "pct": -0.25
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -221736000,
+      "pct": -1.01
+    },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
   {
@@ -699,7 +708,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": -22320000,
       "pct": -0.35
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -78120000,
+      "pct": -1.23
+    },
     "note": "Broad China through offshore listings, the shares global money can actually buy: Hong Kong lists and US ADRs, led by the internet platforms. This is the tile that moves when foreign sentiment on China turns."
   },
   {
@@ -865,7 +877,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -21090000,
+      "pct": -9.52
+    },
     "note": "Onshore Shanghai and Shenzhen A-shares, the market domestic Chinese money trades. Read it against the China tile: onshore and offshore China regularly disagree, and the gap between the two is its own signal about who is buying, locals or foreigners."
   },
   {
@@ -1031,7 +1046,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -5193000,
+      "pct": -0.42
+    },
     "note": "Hong Kong is not a China duplicate: property, insurance and the exchange itself, priced in a USD-pegged currency. It is the rate-sensitive, capital-markets face of the region."
   },
   {
@@ -1197,7 +1215,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 540680000,
       "pct": 5.48
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 540680000,
+      "pct": 5.48
+    },
     "note": "Taiwan is the semiconductor supply chain wearing a flag. TSMC dominates this fund outright, so the tile doubles as a read on global chip demand, with geopolitical risk permanently in the price."
   },
   {
@@ -1363,7 +1384,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 1288220000,
       "pct": 5.78
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 4948650000,
+      "pct": 26.56
+    },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
   {
@@ -1529,7 +1553,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": -261450000,
       "pct": -3.83
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -395910000,
+      "pct": -5.69
+    },
     "note": "The structural growth story of the decade: demographics, infrastructure build-out and a deep domestic investor base. India trades at a premium multiple, so flows here tell you how much growth investors are willing to pay for."
   },
   {
@@ -1695,7 +1722,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 4842000,
       "pct": 0.46
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 40350000,
+      "pct": 3.99
+    },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
   {
@@ -1861,7 +1891,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 8659000,
+      "pct": 1.84
+    },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
   },
   {
@@ -2027,7 +2060,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 14742000,
       "pct": 4.76
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 14742000,
+      "pct": 4.76
+    },
     "note": "Malaysia is one of the quieter ASEAN markets: banks, utilities and a data-center construction wave. Low drama, moderate beta, occasionally rediscovered by regional flows."
   },
   {
@@ -2193,7 +2229,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 7304000,
+      "pct": 2.02
+    },
     "note": "Thailand leans on tourism, banks and energy. It has spent years out of favor, which makes any sustained inflow here a genuine change-of-mind signal rather than momentum chasing."
   },
   {
@@ -2359,7 +2398,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 7668000,
       "pct": 5.66
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 14058000,
+      "pct": 10.89
+    },
     "note": "The Philippines is a small, domestically driven market: conglomerates, banks and property, powered by remittances and services. Thin fund, thin liquidity, treat single-day moves with suspicion."
   },
   {
@@ -2525,7 +2567,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -190580000,
+      "pct": -2.01
+    },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
   {
@@ -2691,7 +2736,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 38405000,
       "pct": 2
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 46086000,
+      "pct": 2.41
+    },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
   {
@@ -2854,10 +2902,13 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -24871829,
-      "pct": -2.9
+      "usd": -16742975,
+      "pct": -1.95
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -24431285,
+      "pct": -2.82
+    },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
   {
@@ -3023,7 +3074,10 @@ export const MARKET_TILES: MarketTile[] = [
       "usd": 1966500,
       "pct": 0.19
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -13765500,
+      "pct": -1.34
+    },
     "note": "Chile is effectively a copper call with a banking system attached: the lithium story adds a second commodity leg. Small market, big sensitivity to Chinese demand."
   }
 ];
@@ -3038,7 +3092,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 75632000,
       "pct": 0.13
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 75632000,
+      "pct": 0.13
+    },
     "returns": {
       "1W": 1,
       "1M": 0.2,
@@ -3192,83 +3249,83 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Japan",
-        "w": 14.99
+        "w": 14.88
       },
       {
         "c": "United Kingdom",
-        "w": 8.81
-      },
-      {
-        "c": "Canada",
-        "w": 8.45
+        "w": 8.63
       },
       {
         "c": "Taiwan",
-        "w": 7.66
+        "w": 8.19
       },
       {
-        "c": "China",
-        "w": 5.85
-      },
-      {
-        "c": "France",
-        "w": 5.48
-      },
-      {
-        "c": "Switzerland",
-        "w": 5.4
+        "c": "Canada",
+        "w": 8.17
       },
       {
         "c": "Korea (South)",
-        "w": 4.94
+        "w": 5.97
+      },
+      {
+        "c": "China",
+        "w": 5.74
+      },
+      {
+        "c": "France",
+        "w": 5.36
+      },
+      {
+        "c": "Switzerland",
+        "w": 5.28
       },
       {
         "c": "Germany",
-        "w": 4.91
+        "w": 4.86
       },
       {
         "c": "Australia",
-        "w": 4.3
+        "w": 4.26
       },
       {
         "c": "India",
-        "w": 4.05
+        "w": 4.02
       },
       {
         "c": "Netherlands",
-        "w": 3.14
-      },
-      {
-        "c": "Spain",
-        "w": 2.23
+        "w": 3.05
       },
       {
         "c": "Sweden",
-        "w": 2.23
+        "w": 2.18
+      },
+      {
+        "c": "Spain",
+        "w": 2.14
       },
       {
         "c": "Italy",
-        "w": 1.95
+        "w": 1.9
       },
       {
         "c": "Brazil",
-        "w": 1.3
+        "w": 1.26
       },
       {
         "c": "Singapore",
-        "w": 1.16
+        "w": 1.11
       },
       {
         "c": "Hong Kong",
-        "w": 1.14
-      },
-      {
-        "c": "Denmark",
         "w": 1.08
       },
       {
+        "c": "Denmark",
+        "w": 1.03
+      },
+      {
         "c": "South Africa",
-        "w": 0.96
+        "w": 0.93
       },
       {
         "c": "Israel",
@@ -3280,11 +3337,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Belgium",
-        "w": 0.71
+        "w": 0.7
       },
       {
         "c": "Finland",
-        "w": 0.7
+        "w": 0.64
       },
       {
         "c": "Norway",
@@ -3292,7 +3349,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Mexico",
-        "w": 0.54
+        "w": 0.53
       }
     ]
   },
@@ -3305,7 +3362,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -126696000,
+      "pct": -0.16
+    },
     "returns": {
       "1W": 1.61,
       "1M": 2.5,
@@ -3459,39 +3519,39 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Japan",
-        "w": 22.93
+        "w": 23.23
       },
       {
         "c": "United Kingdom",
-        "w": 14.74
+        "w": 14.64
       },
       {
         "c": "France",
-        "w": 9.92
+        "w": 9.91
       },
       {
         "c": "Switzerland",
-        "w": 9.58
+        "w": 9.5
       },
       {
         "c": "Germany",
-        "w": 8.84
+        "w": 8.82
       },
       {
         "c": "Australia",
-        "w": 6.66
+        "w": 6.63
       },
       {
         "c": "Netherlands",
-        "w": 5.69
+        "w": 5.67
       },
       {
         "c": "Spain",
-        "w": 4.02
+        "w": 4
       },
       {
         "c": "Sweden",
-        "w": 3.58
+        "w": 3.54
       },
       {
         "c": "Italy",
@@ -3499,15 +3559,15 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Hong Kong",
-        "w": 1.88
+        "w": 1.86
       },
       {
         "c": "Singapore",
-        "w": 1.83
+        "w": 1.82
       },
       {
         "c": "Denmark",
-        "w": 1.75
+        "w": 1.69
       },
       {
         "c": "Finland",
@@ -3523,20 +3583,23 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Norway",
-        "w": 0.64
+        "w": 0.63
       }
     ]
   },
   {
     "ticker": "EEM",
     "label": "Emerging Markets",
-    "name": "iShares MSCI Emerging Index Fun",
+    "name": "iShares MSCI Emerging Markets ETF",
     "aum": 30315917312,
     "flow1W": {
       "usd": 201883500,
       "pct": 0.7
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 634491000,
+      "pct": 2.24
+    },
     "returns": {
       "1W": 0.74,
       "1M": -3.6,
@@ -3690,67 +3753,63 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Taiwan",
-        "w": 25.89
+        "w": 26.47
       },
       {
         "c": "China",
-        "w": 22.29
+        "w": 20.97
       },
       {
         "c": "Korea (South)",
-        "w": 17.67
+        "w": 20.29
       },
       {
         "c": "India",
-        "w": 12.24
+        "w": 11.65
       },
       {
         "c": "Brazil",
-        "w": 4.43
+        "w": 4.13
       },
       {
         "c": "South Africa",
-        "w": 3.24
+        "w": 3
       },
       {
         "c": "Saudi Arabia",
-        "w": 2.61
+        "w": 2.41
       },
       {
         "c": "Mexico",
-        "w": 1.85
+        "w": 1.76
       },
       {
         "c": "United Arab Emirates",
-        "w": 1.26
+        "w": 1.17
       },
       {
         "c": "Poland",
-        "w": 1.23
+        "w": 1.15
       },
       {
         "c": "Thailand",
-        "w": 1.04
+        "w": 0.99
       },
       {
         "c": "Malaysia",
-        "w": 1
+        "w": 0.96
+      },
+      {
+        "c": "United States",
+        "w": 0.82
       },
       {
         "c": "Greece",
-        "w": 0.6
+        "w": 0.57
       },
       {
         "c": "Kuwait",
-        "w": 0.59
-      },
-      {
-        "c": "Qatar",
-        "w": 0.54
-      },
-      {
-        "c": "Indonesia",
-        "w": 0.54
+        "w": 0.56
       }
     ]
   },
@@ -3763,7 +3822,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 0,
+      "pct": 0
+    },
     "returns": {
       "1W": 0.46,
       "1M": -6.5,
@@ -4002,7 +4064,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 122704000,
+      "pct": 1.39
+    },
     "returns": {
       "1W": 1.87,
       "1M": 3,
@@ -4160,11 +4225,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "France",
-        "w": 14.51
+        "w": 14.53
       },
       {
         "c": "Switzerland",
-        "w": 14.17
+        "w": 14.11
       },
       {
         "c": "Germany",
@@ -4172,7 +4237,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Netherlands",
-        "w": 8.25
+        "w": 8.17
       },
       {
         "c": "Sweden",
@@ -4180,31 +4245,31 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Spain",
-        "w": 5.81
+        "w": 5.83
       },
       {
         "c": "Italy",
-        "w": 5.19
+        "w": 5.2
       },
       {
         "c": "Denmark",
-        "w": 2.86
+        "w": 2.77
       },
       {
         "c": "Belgium",
-        "w": 1.82
+        "w": 1.86
       },
       {
         "c": "Finland",
-        "w": 1.79
+        "w": 1.8
       },
       {
         "c": "Norway",
-        "w": 1.44
+        "w": 1.46
       },
       {
         "c": "Austria",
-        "w": 0.68
+        "w": 0.7
       },
       {
         "c": "Ireland",
@@ -4221,7 +4286,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": 0,
+      "pct": 0
+    },
     "returns": {
       "1W": 1.92,
       "1M": 1.8,
@@ -4375,7 +4443,7 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "France",
-        "w": 28.21
+        "w": 28.27
       },
       {
         "c": "Germany",
@@ -4383,15 +4451,15 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Netherlands",
-        "w": 16.27
+        "w": 16.18
       },
       {
         "c": "Spain",
-        "w": 11.41
+        "w": 11.46
       },
       {
         "c": "Italy",
-        "w": 9.54
+        "w": 9.55
       },
       {
         "c": "Finland",
@@ -4399,19 +4467,19 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Belgium",
-        "w": 3.15
+        "w": 3.18
       },
       {
         "c": "Ireland",
-        "w": 1.12
+        "w": 1.11
       },
       {
         "c": "Austria",
-        "w": 1.03
+        "w": 1.04
       },
       {
         "c": "Portugal",
-        "w": 0.57
+        "w": 0.58
       }
     ]
   },
@@ -4424,7 +4492,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -22206000,
+      "pct": -2.6
+    },
     "returns": {
       "1W": 0.38,
       "1M": -3.1,
@@ -4578,31 +4649,31 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "China",
-        "w": 33.89
+        "w": 32.31
       },
       {
         "c": "Taiwan",
-        "w": 29.31
-      },
-      {
-        "c": "India",
-        "w": 17.31
+        "w": 30.26
       },
       {
         "c": "Korea (South)",
-        "w": 15.16
+        "w": 16.84
       },
       {
-        "c": "Malaysia",
-        "w": 1.51
+        "c": "India",
+        "w": 16.43
       },
       {
         "c": "Thailand",
-        "w": 1.49
+        "w": 1.47
+      },
+      {
+        "c": "Malaysia",
+        "w": 1.42
       },
       {
         "c": "Indonesia",
-        "w": 0.82
+        "w": 0.79
       }
     ]
   },
@@ -4615,7 +4686,10 @@ export const LENS_FUNDS: LensFund[] = [
       "usd": 0,
       "pct": 0
     },
-    "flow1M": null,
+    "flow1M": {
+      "usd": -17685000,
+      "pct": -0.46
+    },
     "returns": {
       "1W": 1.61,
       "1M": 5.5,
@@ -4799,7 +4873,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Aug 1, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Aug 2, 2026, 9:39 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
