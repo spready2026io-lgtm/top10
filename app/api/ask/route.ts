@@ -217,7 +217,14 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : '';
+    // Stays on Haiku 4.5 deliberately: short answers over a prepared context.
+    // Take the text blocks rather than content[0] so a later model swap to one
+    // with thinking on by default doesn't silently return an empty answer.
+    const text = message.content
+      .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+      .map((b) => b.text)
+      .join('\n')
+      .trim();
 
     // fire-and-forget: a logging failure must never break the chat response
     logTonyExchange({
