@@ -209,13 +209,28 @@ export async function POST(req: NextRequest) {
       model: 'claude-haiku-4-5',
       max_tokens: 512,
       system: SYSTEM_PROMPT,
+      // The snapshot stays in the user turn where it has always been, just as its own content
+      // block with a cache breakpoint after it. buildTonyContext() is built from data.ts, so it
+      // is byte-identical for every question asked between deploys: prompt plus snapshot is a
+      // stable prefix, and only the question below the breakpoint is billed at full price.
+      // Note Haiku's minimum cacheable prefix is 4096 tokens, higher than the Opus models',
+      // which is why the [tony] usage line below is worth keeping an eye on after a data rebuild.
       messages: [
         {
           role: 'user',
-          content: `DATA:\n${context}\n\nQUESTION: ${question.trim()}`,
+          content: [
+            { type: 'text', text: `DATA:\n${context}`, cache_control: { type: 'ephemeral' } },
+            { type: 'text', text: `QUESTION: ${question.trim()}` },
+          ],
         },
       ],
     });
+
+    const u = message.usage;
+    console.log(
+      `[tony] cache write=${u.cache_creation_input_tokens ?? 0} ` +
+        `read=${u.cache_read_input_tokens ?? 0} uncached=${u.input_tokens}`
+    );
 
     // Stays on Haiku 4.5 deliberately: short answers over a prepared context.
     // Take the text blocks rather than content[0] so a later model swap to one
