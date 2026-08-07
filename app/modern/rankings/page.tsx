@@ -66,12 +66,12 @@ function ThemePage() {
     setOpenTicker(null);
     setShowNew(false);
     setShowAll(false);
-    router.replace(`/rankings?theme=${encodeURIComponent(t)}`, { scroll: false });
+    router.replace(`/modern/rankings?theme=${encodeURIComponent(t)}`, { scroll: false });
   }
   function pickAll() {
     setBoard('all');
     setOpenTicker(null);
-    router.replace('/rankings?theme=all', { scroll: false });
+    router.replace('/modern/rankings?theme=all', { scroll: false });
   }
 
   return (
@@ -79,7 +79,7 @@ function ThemePage() {
       {/* NAV */}
       <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'var(--ss-nav-bg)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--ss-border)' }}>
         <div className="ss-nav-bar" style={{ maxWidth: 1200, margin: '0 auto', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
+          <Link href="/modern" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
             <Crosshair size={26} />
             <span className="ss-nav-lockup">
               <Wordmark size={22} />
@@ -87,11 +87,11 @@ function ThemePage() {
             </span>
           </Link>
           <nav className="ss-nav-row">
-            <Link href="/rankings" className="ss-link-muted ss-nav-links-tertiary" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
-            <Link href="/about" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>About</Link>
-            <Link href="/rankings/classic" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>Classic view</Link>
+            <Link href="/modern/rankings" className="ss-link-muted ss-nav-links-tertiary" style={{ fontSize: 15, fontWeight: 500 }}>Rankings</Link>
+            <Link href="/modern/about" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>About</Link>
+            <Link href="/" className="ss-link-muted ss-nav-links-secondary" style={{ fontSize: 15, fontWeight: 500 }}>Classic view</Link>
             <ThemeToggle />
-            <Link href="/portfolio" className="ss-nav-cta" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>Build Portfolio</Link>
+            <Link href="/modern/portfolio" className="ss-nav-cta" style={{ fontSize: 14, fontWeight: 700, color: '#fff', background: GREEN, padding: '11px 20px', borderRadius: 999 }}>Build Portfolio</Link>
           </nav>
         </div>
       </header>
@@ -99,7 +99,7 @@ function ThemePage() {
       {/* THEME HEADER */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '44px 32px 8px' }}>
         <div style={{ fontSize: 14, color: 'var(--ss-muted)', marginBottom: 20 }}>
-          <Link href="/rankings" style={{ color: 'var(--ss-muted)' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{board === 'all' ? 'All Themes' : theme}</span>
+          <Link href="/modern/rankings" style={{ color: 'var(--ss-muted)' }}>Themes</Link> &nbsp;/&nbsp; <span style={{ color: 'var(--ss-ink)', fontWeight: 600 }}>{board === 'all' ? 'All Themes' : theme}</span>
         </div>
 
         {/* theme selector */}
@@ -333,7 +333,7 @@ function GuideModal({ onClose }: { onClose: () => void }) {
         <GuideRow title="Velocity" body="The 1-week change in Weight Score — who's climbing before they reach #1. Switch the sort to ▲ Velocity to surface fast-movers." />
         <GuideRow title="✦ New" body="Stocks appearing in the theme's Top 20 for the first time today. Tap the New pill to filter to just them." />
         <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
-          <Link href="/about" style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>Full guide on About →</Link>
+          <Link href="/modern/about" style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>Full guide on About →</Link>
         </div>
       </div>
     </div>

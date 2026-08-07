@@ -4,6 +4,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: '/scorecard', destination: '/conviction', permanent: true },
+      // Routes the 2026-07 redesign introduced at the root. Classic is the
+      // default again, and its dashboard is the home page, so both land on /.
+      // 307, not 308: if Modern is ever promoted back, a cached permanent
+      // redirect would be very hard to unwind in the wild.
+      { source: '/rankings', destination: '/', permanent: false },
+      { source: '/rankings/classic', destination: '/', permanent: false },
     ];
   },
   async headers() {

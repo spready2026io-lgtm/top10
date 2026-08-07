@@ -12,12 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1.0,
     },
-    {
-      url: `${BASE_URL}/rankings`,
-      lastModified: now,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
+    // No /rankings entry: the Classic dashboard at / is the rankings page, and
+    // /rankings now redirects there. The /modern/* skin is noindex on purpose,
+    // so it stays out of the sitemap too.
     {
       url: `${BASE_URL}/universe`,
       lastModified: now,

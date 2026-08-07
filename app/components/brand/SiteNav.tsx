@@ -6,10 +6,10 @@ const MONO = 'var(--font-mono-brand), monospace';
 const GREEN = 'var(--ss-green)';
 
 const DEFAULT_LINKS = [
-  { label: 'Rankings', href: '/rankings' },
-  { label: 'Markets', href: '/markets' },
-  { label: 'Universe', href: '/universe' },
-  { label: 'About', href: '/about' },
+  { label: 'Rankings', href: '/modern/rankings' },
+  { label: 'Markets', href: '/modern/markets' },
+  { label: 'Universe', href: '/modern/universe' },
+  { label: 'About', href: '/modern/about' },
 ];
 
 /**
@@ -19,7 +19,7 @@ const DEFAULT_LINKS = [
 export default function SiteNav({
   active,
   links = DEFAULT_LINKS,
-  cta = { label: 'Ask Tony', href: '/ask' },
+  cta = { label: 'Ask Tony', href: '/modern/ask' },
 }: {
   active?: string;
   links?: { label: string; href: string }[];
@@ -28,7 +28,7 @@ export default function SiteNav({
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'var(--ss-nav-bg)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--ss-border)' }}>
       <div className="ss-nav-bar" style={{ maxWidth: 1200, margin: '0 auto', height: 70, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/" aria-label="Stockscout home" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
+        <Link href="/modern" aria-label="Stockscout home" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
           <Crosshair size={26} />
           <span className="ss-nav-lockup">
             <Wordmark size={22} />

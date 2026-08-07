@@ -2,14 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '@/app/components/brand/ThemeToggle';
 import { trackEvent } from '@/lib/gtag';
-import { SAMPLE_DATA, THEME_ETFS, THEMES } from '@/lib/data';
-
-// Derived at build time. The old copy hardcoded "~87 equities and ~40 ETFs
-// across 6 themes" and was wrong on all three counts by the time it shipped.
-const ETF_COUNT   = new Set(Object.values(THEME_ETFS).flat()).size;
-const NAMES_COUNT = new Set(THEMES.flatMap((t) => SAMPLE_DATA[t].map((e) => e.ticker))).size;
-const THEME_COUNT = THEMES.length;
 
 const SUGGESTED = [
   'Which stocks have the strongest ETF consensus right now?',
@@ -66,37 +60,37 @@ export default function AskTonyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[var(--ss-page)] text-[var(--ss-ink)] flex flex-col">
 
       {/* Header */}
-      <header className="border-b border-slate-800 px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">
+      <header className="border-b border-[var(--ss-border)] px-4 py-4 flex items-center justify-between">
+        <Link href="/modern" className="text-[var(--ss-text)] hover:text-[var(--ss-ink)] text-sm transition-colors">
           ← Stockscout
         </Link>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-sm">
+          <div className="w-8 h-8 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-sm">
             T
           </div>
           <div>
             <div className="font-semibold text-sm leading-tight">Tony</div>
-            <div className="text-xs text-slate-500 leading-tight">AI Equity &amp; ETF Analyst</div>
+            <div className="text-xs text-[var(--ss-muted)] leading-tight">AI Equity &amp; ETF Analyst</div>
           </div>
         </div>
-        <div className="w-16" />
+        <div className="w-16 flex justify-end"><ThemeToggle /></div>
       </header>
 
       {/* Intro (shown before first message) */}
       {messages.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl font-bold mb-6">
+          <div className="w-16 h-16 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] text-2xl font-bold mb-6">
             T
           </div>
           <h1 className="text-2xl font-bold mb-2">Ask Tony</h1>
-          <p className="text-slate-400 text-sm max-w-sm mb-1">
+          <p className="text-[var(--ss-text)] text-sm max-w-sm mb-1">
             I&apos;m not human. That&apos;s my advantage.
           </p>
-          <p className="text-slate-500 text-xs max-w-sm mb-6">
-            I cover {NAMES_COUNT} equities and {ETF_COUNT} active-managed ETFs across {THEME_COUNT} themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
+          <p className="text-[var(--ss-muted)] text-xs max-w-sm mb-6">
+            I cover 116 equities and 51 ETFs across 8 themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
           </p>
 
           {/* Input — prominent, above suggested questions */}
@@ -113,18 +107,18 @@ export default function AskTonyPage() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                style={{ fontSize: '16px' }} className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-500 outline-none transition-colors"
+                style={{ fontSize: '16px' }} className="flex-1 min-w-0 bg-[var(--ss-card)] border border-[var(--ss-border-strong)] focus:border-[var(--ss-green)] rounded-lg px-4 py-3 text-[var(--ss-ink)] placeholder-[var(--ss-muted)] outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="shrink-0 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
+                className="shrink-0 bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-3 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
             </form>
-            <p className="text-slate-600 text-[10px] mt-2 text-center">
-              For information only. Not financial advice. Data snapshot: June 10, 2026.
+            <p className="text-[var(--ss-faint)] text-[10px] mt-2 text-center">
+              For information only. Not financial advice. Updated daily.
             </p>
           </div>
 
@@ -134,7 +128,7 @@ export default function AskTonyPage() {
               <button
                 key={q}
                 onClick={() => ask(q, 'suggested')}
-                className="text-left text-xs text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-2.5 transition-colors"
+                className="text-left text-xs text-[var(--ss-text)] bg-[var(--ss-card)] hover:bg-[var(--ss-inset)] border border-[var(--ss-border-strong)] hover:border-[var(--ss-border-strong)] rounded-lg px-3 py-2.5 transition-colors"
               >
                 {q}
               </button>
@@ -149,15 +143,15 @@ export default function AskTonyPage() {
           {messages.map((m, i) => (
             <div key={i} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {m.role === 'tony' && (
-                <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-xs shrink-0 mt-0.5">
                   T
                 </div>
               )}
               <div
                 className={`max-w-[82%] rounded-xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-slate-700 text-slate-100'
-                    : 'bg-slate-900 border border-slate-700 text-slate-200'
+                    ? 'bg-[var(--ss-green)] text-white'
+                    : 'bg-[var(--ss-card)] border border-[var(--ss-border)] text-[var(--ss-ink)] shadow-[0_4px_14px_rgba(11,18,32,0.05)]'
                 }`}
               >
                 {m.text}
@@ -167,21 +161,21 @@ export default function AskTonyPage() {
 
           {loading && (
             <div className="flex gap-3 justify-start">
-              <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs shrink-0 mt-0.5">
+              <div className="w-7 h-7 rounded-full bg-[var(--ss-green-tint)] border border-[var(--ss-green-tint-border)] flex items-center justify-center text-[var(--ss-green)] font-bold text-xs shrink-0 mt-0.5">
                 T
               </div>
-              <div className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-3">
+              <div className="bg-[var(--ss-card)] border border-[var(--ss-border-strong)] rounded-xl px-4 py-3">
                 <div className="flex gap-1 items-center h-4">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:300ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:0ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:150ms]" />
+                  <span className="w-1.5 h-1.5 bg-[var(--ss-green)] rounded-full animate-bounce [animation-delay:300ms]" />
                 </div>
               </div>
             </div>
           )}
 
           {error && (
-            <div className="text-rose-400 text-xs text-center py-1">{error}</div>
+            <div className="text-[var(--ss-amber)] text-xs text-center py-1">{error}</div>
           )}
 
           <div ref={bottomRef} />
@@ -190,7 +184,7 @@ export default function AskTonyPage() {
 
       {/* Bottom input bar — only shown once conversation has started */}
       {messages.length > 0 && (
-        <div className="border-t border-slate-800 px-4 py-3 bg-slate-950">
+        <div className="border-t border-[var(--ss-border)] px-4 py-3 bg-[var(--ss-page)]">
           <div className="max-w-2xl mx-auto">
             <form
               onSubmit={e => { e.preventDefault(); ask(input); }}
@@ -207,18 +201,18 @@ export default function AskTonyPage() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                className="flex-1 min-w-0 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors"
+                className="flex-1 min-w-0 bg-[var(--ss-card)] border border-[var(--ss-border-strong)] focus:border-[var(--ss-green)] rounded-lg px-4 py-2.5 text-sm text-[var(--ss-ink)] placeholder-[var(--ss-muted)] outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="shrink-0 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+                className="shrink-0 bg-[var(--ss-green)] hover:bg-[var(--ss-green-hover)] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
               >
                 Ask
               </button>
             </form>
-            <p className="text-slate-600 text-[10px] mt-2 text-center">
-              For information only. Not financial advice. Data snapshot: June 10, 2026.
+            <p className="text-[var(--ss-faint)] text-[10px] mt-2 text-center">
+              For information only. Not financial advice. Updated daily.
             </p>
           </div>
         </div>

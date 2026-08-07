@@ -8,7 +8,7 @@ export default function ThemeNav() {
   const router = useRouter();
 
   function selectTheme(theme: string) {
-    router.push(`/rankings?theme=${encodeURIComponent(theme)}`);
+    router.push(`/?theme=${encodeURIComponent(theme)}`);
   }
 
   return (

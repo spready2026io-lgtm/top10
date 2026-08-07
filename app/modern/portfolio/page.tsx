@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '@/app/components/brand/ThemeToggle';
 import { trackEvent } from '@/lib/gtag';
 import {
   buildSleeves, blendPerformance, blendConviction, blendExposure, sleeveBreakdown,
@@ -116,76 +117,79 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-[var(--ss-page)] text-[var(--ss-ink)]">
       {/* Header */}
-      <header className="border-b border-slate-800 px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm transition-colors">← Stockscout</Link>
+      <header className="border-b border-[var(--ss-border)] px-4 py-4 flex items-center justify-between">
+        <Link href="/modern" className="text-[var(--ss-text)] hover:text-[var(--ss-ink)] text-sm transition-colors">← Stockscout</Link>
         <div className="text-center">
           <div className="font-bold text-sm">Build with Tony</div>
-          <div className="text-xs text-slate-500">Your portfolio, your conviction</div>
+          <div className="text-xs text-[var(--ss-muted)]">Your portfolio, your conviction</div>
         </div>
-        <Link href="/conviction" className="text-emerald-400 hover:text-emerald-300 text-xs transition-colors">Conviction Board</Link>
+        <span className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link href="/modern/conviction" className="text-[var(--ss-green)] hover:text-[var(--ss-green-text)] text-xs transition-colors">Conviction Board</Link>
+        </span>
       </header>
 
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Hero */}
-        <div className="mb-8 p-6 bg-slate-900 border border-slate-800 rounded-2xl">
-          <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-emerald-400 mb-3">Build with Tony</div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-50 leading-tight">Your portfolio, your conviction.</h1>
-          <p className="text-sm text-slate-400 leading-relaxed mt-4 max-w-2xl">
-            Three legs: a cheap <span className="text-slate-200">index core</span> for US market beta,
-            <span className="text-slate-200"> world markets</span> for diversification beyond the US, and the
-            <span className="text-slate-200"> themes</span> you believe in for conviction. Tony reflects back
-            the <span className="text-slate-200">conviction</span>, the <span className="text-slate-200">exposure</span>,
-            and the <span className="text-slate-200">past performance</span> of whatever you build. You do the choosing.
+        <div className="mb-8 p-6 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-2xl">
+          <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--ss-green)] mb-3">Build with Tony</div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--ss-ink)] leading-tight">Your portfolio, your conviction.</h1>
+          <p className="text-sm text-[var(--ss-text)] leading-relaxed mt-4 max-w-2xl">
+            Three legs: a cheap <span className="text-[var(--ss-ink)]">index core</span> for US market beta,
+            <span className="text-[var(--ss-ink)]"> world markets</span> for diversification beyond the US, and the
+            <span className="text-[var(--ss-ink)]"> themes</span> you believe in for conviction. Tony reflects back
+            the <span className="text-[var(--ss-ink)]">conviction</span>, the <span className="text-[var(--ss-ink)]">exposure</span>,
+            and the <span className="text-[var(--ss-ink)]">past performance</span> of whatever you build. You do the choosing.
             This is education, not a recommendation.
           </p>
-          <p className="text-sm text-slate-400 leading-relaxed mt-3 max-w-2xl">
-            <span className="text-emerald-400 font-semibold">How each theme is built:</span> every theme on the dial is the
-            equal-weight average of its <span className="text-slate-200">three strongest ETFs</span>, ranked by a blend of
-            <span className="text-slate-200"> 50% 6-month and 50% 1-year</span> return and filtered to be
-            <span className="text-slate-200"> non-correlated</span> (each added ETF has to move differently enough from the
+          <p className="text-sm text-[var(--ss-text)] leading-relaxed mt-3 max-w-2xl">
+            <span className="text-[var(--ss-green)] font-semibold">How each theme is built:</span> every theme on the dial is the
+            equal-weight average of its <span className="text-[var(--ss-ink)]">three strongest ETFs</span>, ranked by a blend of
+            <span className="text-[var(--ss-ink)]"> 50% 6-month and 50% 1-year</span> return and filtered to be
+            <span className="text-[var(--ss-ink)]"> non-correlated</span> (each added ETF has to move differently enough from the
             ones already chosen), so each tilt stays diversified instead of doubling up on the same names. The tickers shown next to
             each theme are the live result.
           </p>
           {world && (
-            <p className="text-sm text-slate-400 leading-relaxed mt-3 max-w-2xl">
+            <p className="text-sm text-[var(--ss-text)] leading-relaxed mt-3 max-w-2xl">
               <span className="font-semibold" style={{ color: WORLD_COLOR }}>The world markets sleeve</span> uses the broad
-              index funds global allocators actually use: <span className="text-slate-200">IXUS</span> for everything outside
-              the US, <span className="text-slate-200">EFA</span> for developed markets, <span className="text-slate-200">EEM</span> for
+              index funds global allocators actually use: <span className="text-[var(--ss-ink)]">IXUS</span> for everything outside
+              the US, <span className="text-[var(--ss-ink)]">EFA</span> for developed markets, <span className="text-[var(--ss-ink)]">EEM</span> for
               emerging. It is passive by design. Like your core it scores zero conviction, but it spreads your risk across
               dozens of markets that do not move in lockstep with the S&amp;P 500. Want a sharper tilt? Open
-              <span className="text-slate-200"> Why these markets?</span> to swap the broad fund for a hand-picked blend of
+              <span className="text-[var(--ss-ink)]"> Why these markets?</span> to swap the broad fund for a hand-picked blend of
               specific countries or regions. The same instruments are tracked daily on
-              the <Link href="/markets" className="text-slate-200 underline decoration-slate-600 hover:decoration-slate-300">World Markets</Link> board.
+              the <Link href="/modern/markets" className="text-[var(--ss-ink)] underline decoration-[var(--ss-border-strong)] hover:decoration-[var(--ss-muted)]">World Markets</Link> board.
             </p>
           )}
-          <p className="text-xs text-slate-400 mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
+          <p className="text-xs text-[var(--ss-text)] mt-4">Data snapshot: {SCAN_TIMESTAMP_NY}. Illustrative and not investment advice.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-5">
           {/* ── Left: sliders ── */}
           <div className="flex-1 min-w-0">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Set your mix</div>
+            <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-5">
+              <div className="text-xs font-bold text-[var(--ss-muted)] uppercase tracking-widest mb-4">Set your mix</div>
               {SLEEVES.map((s, i) => (
                 <div key={s.id} className="mb-4">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-slate-300 flex items-center gap-2">
+                    <span className="text-sm text-[var(--ss-text)] flex items-center gap-2">
                       <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: s.color }} />
-                      {s.name} <span className="text-slate-400 text-xs">{s.etf}</span>
+                      {s.name} <span className="text-[var(--ss-text)] text-xs">{s.etf}</span>
                       {s.isWorld && (
                         <span className="text-[10px] rounded px-1 border" style={{ color: WORLD_COLOR, borderColor: 'rgba(45,212,191,0.25)' }}>
                           diversifier
                         </span>
                       )}
                       {!s.isCore && !s.isWorld && (
-                        <span className="text-[10px] text-emerald-500/80 border border-emerald-500/20 rounded px-1">
+                        <span className="text-[10px] text-[var(--ss-green)] border border-[var(--ss-green-tint-border)] rounded px-1">
                           conv {s.convScore}
                         </span>
                       )}
                     </span>
-                    <span className="text-sm font-semibold text-slate-200">{Math.round(norm[i] * 100)}%</span>
+                    <span className="text-sm font-semibold text-[var(--ss-ink)]">{Math.round(norm[i] * 100)}%</span>
                   </div>
                   {s.isCore && (
                     <div className="flex gap-1 mb-2">
@@ -195,8 +199,8 @@ export default function PortfolioPage() {
                           onClick={() => { setBaseIndex(id); trackEvent('portfolio_base_index_changed', { base_index: id }); }}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
                             baseIndex === id
-                              ? 'bg-slate-700 border-slate-600 text-slate-100'
-                              : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                              ? 'bg-[var(--ss-green-tint)] border-[var(--ss-green-tint-border)] text-[var(--ss-green-text)]'
+                              : 'bg-[var(--ss-inset)] border-[var(--ss-border-strong)] text-[var(--ss-text)] hover:text-[var(--ss-ink)]'
                           }`}
                         >
                           {label}
@@ -212,15 +216,15 @@ export default function PortfolioPage() {
                           onClick={() => pickWorldPreset(id)}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
                             !worldCustom && worldChoice === id
-                              ? 'bg-slate-700 border-slate-600 text-slate-100'
-                              : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                              ? 'bg-[var(--ss-green-tint)] border-[var(--ss-green-tint-border)] text-[var(--ss-green-text)]'
+                              : 'bg-[var(--ss-inset)] border-[var(--ss-border-strong)] text-[var(--ss-text)] hover:text-[var(--ss-ink)]'
                           }`}
                         >
                           {label}
                         </button>
                       ))}
                       {worldCustom && (
-                        <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">
+                        <span className="text-[10px] text-[var(--ss-amber-text)] border border-[var(--ss-amber-border)] rounded px-1">
                           custom mix
                         </span>
                       )}
@@ -257,33 +261,33 @@ export default function PortfolioPage() {
                   )}
                 </div>
               ))}
-              <div className="flex justify-between text-xs mt-3 pt-3 border-t border-slate-800">
-                <span className="text-slate-500">Total allocated</span>
-                <span className="font-semibold text-emerald-400">
+              <div className="flex justify-between text-xs mt-3 pt-3 border-t border-[var(--ss-border)]">
+                <span className="text-[var(--ss-muted)]">Total allocated</span>
+                <span className="font-semibold text-[var(--ss-green)]">
                   {vals.some(v => v > 0) ? 100 : 0}%
                 </span>
               </div>
             </div>
 
             {/* Index core holdings + base-index selector */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-4">
+            <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-5 mt-4">
               <div className="flex items-center justify-between mb-1">
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                <div className="text-xs font-bold text-[var(--ss-muted)] uppercase tracking-widest">
                   Inside your index core
                 </div>
-                <span className="text-[11px] text-slate-500">{core.label} · {core.name}</span>
+                <span className="text-[11px] text-[var(--ss-muted)]">{core.label} · {core.name}</span>
               </div>
-              <p className="text-[11px] text-slate-500 mb-3">
+              <p className="text-[11px] text-[var(--ss-muted)] mb-3">
                 Top 5 holdings of your ballast leg. {core.name} weights — your cheap beta.
               </p>
               <div className="flex flex-col gap-2">
                 {core.holdings.map(h => (
                   <div key={h.t} className="flex items-center gap-3">
-                    <div className="w-12 text-xs font-semibold text-slate-300 shrink-0">{h.t}</div>
-                    <div className="flex-1 bg-slate-800 rounded h-3">
-                      <div className="h-full rounded bg-slate-500" style={{ width: `${(h.w / core.holdings[0].w) * 100}%` }} />
+                    <div className="w-12 text-xs font-semibold text-[var(--ss-text)] shrink-0">{h.t}</div>
+                    <div className="flex-1 bg-[var(--ss-inset)] rounded h-3">
+                      <div className="h-full rounded bg-[var(--ss-muted)]" style={{ width: `${(h.w / core.holdings[0].w) * 100}%` }} />
                     </div>
-                    <div className="w-12 text-right text-[11px] text-slate-400">{h.w.toFixed(1)}%</div>
+                    <div className="w-12 text-right text-[11px] text-[var(--ss-text)]">{h.w.toFixed(1)}%</div>
                   </div>
                 ))}
               </div>
@@ -292,58 +296,58 @@ export default function PortfolioPage() {
             {/* World sleeve geography — country weights for a broad preset, or the
                 hand-picked markets for a custom mix. Twin of the core panel. */}
             {world && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-4">
+              <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-5 mt-4">
                 <div className="flex items-center justify-between mb-1">
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                  <div className="text-xs font-bold text-[var(--ss-muted)] uppercase tracking-widest">
                     Inside your world sleeve
                   </div>
-                  <span className="text-[11px] text-slate-500">{world.id} · {world.name}</span>
+                  <span className="text-[11px] text-[var(--ss-muted)]">{world.id} · {world.name}</span>
                 </div>
                 {'markets' in world ? (
                   <>
-                    <p className="text-[11px] text-slate-500 mb-3">
+                    <p className="text-[11px] text-[var(--ss-muted)] mb-3">
                       Your international money, split equally across the markets you picked.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {world.markets.map(m => (
                         <span
                           key={m.ticker}
-                          className="flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/60 px-2 py-1 text-[11px] text-slate-300"
+                          className="flex items-center gap-1.5 rounded-md border border-[var(--ss-border-strong)] bg-[var(--ss-inset)]/60 px-2 py-1 text-[11px] text-[var(--ss-text)]"
                           title={`${m.market} · ${m.region}`}
                         >
                           <span aria-hidden>{m.flag}</span>
-                          <span className="font-semibold text-slate-200">{m.market}</span>
-                          <span className="font-mono text-[10px] text-slate-500">{m.ticker}</span>
-                          <span className="tabular-nums text-slate-400">{(100 / world.markets.length).toFixed(0)}%</span>
+                          <span className="font-semibold text-[var(--ss-ink)]">{m.market}</span>
+                          <span className="font-mono text-[10px] text-[var(--ss-muted)]">{m.ticker}</span>
+                          <span className="tabular-nums text-[var(--ss-text)]">{(100 / world.markets.length).toFixed(0)}%</span>
                         </span>
                       ))}
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+                    <p className="text-[11px] text-[var(--ss-text)] mt-3 leading-relaxed">
                       An equal-weight blend of these markets, each an index fund tracked daily on the
-                      <Link href="/markets" className="text-slate-200 underline decoration-slate-600 hover:decoration-slate-300"> World Markets</Link> board.
+                      <Link href="/modern/markets" className="text-[var(--ss-ink)] underline decoration-[var(--ss-border-strong)] hover:decoration-[var(--ss-muted)]"> World Markets</Link> board.
                       The S&amp;P 500 correlation is shown for the broad presets; a hand-built mix carries no single blended number.
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="text-[11px] text-slate-500 mb-3">
+                    <p className="text-[11px] text-[var(--ss-muted)] mb-3">
                       Where your international money sits, by country of risk of the fund&apos;s holdings.
                     </p>
                     <div className="flex flex-col gap-2">
                       {world.countries.map(c => (
                         <div key={c.c} className="flex items-center gap-3">
-                          <div className="w-24 text-xs font-semibold text-slate-300 shrink-0 truncate" title={c.c}>{c.c}</div>
-                          <div className="flex-1 bg-slate-800 rounded h-3">
+                          <div className="w-24 text-xs font-semibold text-[var(--ss-text)] shrink-0 truncate" title={c.c}>{c.c}</div>
+                          <div className="flex-1 bg-[var(--ss-inset)] rounded h-3">
                             <div className="h-full rounded" style={{ width: `${(c.w / world.countries[0].w) * 100}%`, background: WORLD_COLOR, opacity: 0.75 }} />
                           </div>
-                          <div className="w-12 text-right text-[11px] text-slate-400">{c.w.toFixed(1)}%</div>
+                          <div className="w-12 text-right text-[11px] text-[var(--ss-text)]">{c.w.toFixed(1)}%</div>
                         </div>
                       ))}
                     </div>
                     {world.corr6M != null && (
-                      <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+                      <p className="text-[11px] text-[var(--ss-text)] mt-3 leading-relaxed">
                         Diversification check: over the last 6 months this sleeve moved with a correlation of
-                        <span className="text-slate-200 font-semibold"> {world.corr6M.toFixed(2)}</span> to the S&amp;P 500
+                        <span className="text-[var(--ss-ink)] font-semibold"> {world.corr6M.toFixed(2)}</span> to the S&amp;P 500
                         (1.00 means moving in lockstep). The lower the number, the more this sleeve behaves like a
                         genuinely different asset.
                       </p>
@@ -357,24 +361,24 @@ export default function PortfolioPage() {
           {/* ── Right: read-outs ── */}
           <div className="flex-1 min-w-0">
             {/* Mix bar */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
+            <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4 mb-4">
               <div className="flex items-center justify-between mb-2">
-                <div className="text-[11px] text-slate-500">Your mix</div>
+                <div className="text-[11px] text-[var(--ss-muted)]">Your mix</div>
                 <button
                   onClick={() => setShowMixTable(v => !v)}
-                  className="text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+                  className="text-[11px] font-semibold text-[var(--ss-green)] hover:text-[var(--ss-green-text)] transition-colors"
                 >
                   {showMixTable ? 'Hide breakdown' : 'View breakdown'}
                 </button>
               </div>
-              <div className="flex h-5 w-full rounded-md overflow-hidden bg-slate-800">
+              <div className="flex h-5 w-full rounded-md overflow-hidden bg-[var(--ss-inset)]">
                 {SLEEVES.map((s, i) => norm[i] > 0 && (
                   <div key={s.id} style={{ width: `${(norm[i] * 100).toFixed(1)}%`, background: s.color }} />
                 ))}
               </div>
               <div className="flex flex-wrap gap-x-3.5 gap-y-2 mt-3">
                 {SLEEVES.map((s, i) => norm[i] > 0 && (
-                  <span key={s.id} className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                  <span key={s.id} className="text-[11px] text-[var(--ss-text)] flex items-center gap-1.5">
                     <span className="inline-block w-2 h-2 rounded-sm" style={{ background: s.color }} />
                     {s.etf} {Math.round(norm[i] * 100)}%
                   </span>
@@ -383,15 +387,15 @@ export default function PortfolioPage() {
 
               {/* Detailed per-ETF breakdown — user feedback #3 */}
               {showMixTable && (
-                <div className="mt-4 pt-3 border-t border-slate-800">
+                <div className="mt-4 pt-3 border-t border-[var(--ss-border)]">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-semibold text-slate-300">Breakdown by sleeve</span>
-                    <span className="text-[11px] text-slate-400">Performance over {period}</span>
+                    <span className="text-[11px] font-semibold text-[var(--ss-text)]">Breakdown by sleeve</span>
+                    <span className="text-[11px] text-[var(--ss-text)]">Performance over {period}</span>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left">
                       <thead>
-                        <tr className="text-[10px] uppercase tracking-wider text-slate-400">
+                        <tr className="text-[10px] uppercase tracking-wider text-[var(--ss-text)]">
                           <th className="font-semibold py-1 pr-2">Sleeve</th>
                           <th className="font-semibold py-1 pr-2">ETF</th>
                           <th className="font-semibold py-1 pr-2 text-right">Weight</th>
@@ -400,17 +404,17 @@ export default function PortfolioPage() {
                       </thead>
                       <tbody>
                         {mixRows.map((r, i) => norm[i] > 0 && (
-                          <tr key={r.id} className="border-t border-slate-800/60">
+                          <tr key={r.id} className="border-t border-[var(--ss-border)]/60">
                             <td className="py-1.5 pr-2">
-                              <span className="flex items-center gap-1.5 text-xs text-slate-300">
+                              <span className="flex items-center gap-1.5 text-xs text-[var(--ss-text)]">
                                 <span className="inline-block w-2 h-2 rounded-sm" style={{ background: SLEEVES[i].color }} />
                                 {r.name}
                               </span>
                             </td>
-                            <td className="py-1.5 pr-2 text-xs text-slate-400 font-mono">{r.etf}</td>
-                            <td className="py-1.5 pr-2 text-xs text-slate-200 text-right tabular-nums">{Math.round(r.weight * 100)}%</td>
+                            <td className="py-1.5 pr-2 text-xs text-[var(--ss-text)] font-mono">{r.etf}</td>
+                            <td className="py-1.5 pr-2 text-xs text-[var(--ss-ink)] text-right tabular-nums">{Math.round(r.weight * 100)}%</td>
                             <td className={`py-1.5 text-xs font-semibold text-right tabular-nums ${
-                              r.isCore ? 'text-slate-400' : r.ret >= 0 ? 'text-emerald-400' : 'text-red-400'
+                              r.isCore ? 'text-[var(--ss-text)]' : r.ret >= 0 ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'
                             }`}>
                               {r.ret >= 0 ? '+' : ''}{r.ret.toFixed(1)}%
                             </td>
@@ -419,7 +423,7 @@ export default function PortfolioPage() {
                       </tbody>
                     </table>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                  <p className="text-[11px] text-[var(--ss-text)] mt-2 leading-relaxed">
                     ETF shows each theme&apos;s suggested tickers (the equal-weight blend of its three strongest non-correlated ETFs).
                     The world sleeve shows the broad index fund or the specific markets you picked. Return is the past performance
                     of that sleeve&apos;s real index over {period}. Past performance does not predict future results.
@@ -430,31 +434,31 @@ export default function PortfolioPage() {
 
             {/* Conviction + core dials */}
             <div className="flex gap-3 mb-4">
-              <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <div className="flex-1 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4">
                 <button
                   onClick={() => setShowConvHelp(v => !v)}
-                  className="text-[11px] text-slate-500 flex items-center gap-1 hover:text-slate-300"
+                  className="text-[11px] text-[var(--ss-muted)] flex items-center gap-1 hover:text-[var(--ss-text)]"
                 >
                   Conviction score
-                  <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-slate-600 text-[9px] leading-none">?</span>
+                  <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-[var(--ss-border-strong)] text-[9px] leading-none">?</span>
                 </button>
-                <div className="text-2xl font-semibold text-emerald-400">{Math.round(conviction)}</div>
-                <div className="h-1.5 bg-slate-800 rounded mt-1.5">
-                  <div className="h-full bg-emerald-500 rounded" style={{ width: `${Math.round(conviction)}%` }} />
+                <div className="text-2xl font-semibold text-[var(--ss-green)]">{Math.round(conviction)}</div>
+                <div className="h-1.5 bg-[var(--ss-inset)] rounded mt-1.5">
+                  <div className="h-full bg-[var(--ss-green)] rounded" style={{ width: `${Math.round(conviction)}%` }} />
                 </div>
               </div>
-              <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-4">
-                <div className="text-[11px] text-slate-500">Index core (ballast)</div>
-                <div className="text-2xl font-semibold text-slate-200">{Math.round(coreShare)}%</div>
-                <div className="h-1.5 bg-slate-800 rounded mt-1.5">
-                  <div className="h-full bg-slate-500 rounded" style={{ width: `${Math.round(coreShare)}%` }} />
+              <div className="flex-1 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4">
+                <div className="text-[11px] text-[var(--ss-muted)]">Index core (ballast)</div>
+                <div className="text-2xl font-semibold text-[var(--ss-ink)]">{Math.round(coreShare)}%</div>
+                <div className="h-1.5 bg-[var(--ss-inset)] rounded mt-1.5">
+                  <div className="h-full bg-[var(--ss-muted)] rounded" style={{ width: `${Math.round(coreShare)}%` }} />
                 </div>
               </div>
               {world && (
-                <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-4">
-                  <div className="text-[11px] text-slate-500">Outside the US</div>
+                <div className="flex-1 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4">
+                  <div className="text-[11px] text-[var(--ss-muted)]">Outside the US</div>
                   <div className="text-2xl font-semibold" style={{ color: WORLD_COLOR }}>{Math.round(worldShare)}%</div>
-                  <div className="h-1.5 bg-slate-800 rounded mt-1.5">
+                  <div className="h-1.5 bg-[var(--ss-inset)] rounded mt-1.5">
                     <div className="h-full rounded" style={{ width: `${Math.round(worldShare)}%`, background: WORLD_COLOR }} />
                   </div>
                 </div>
@@ -463,34 +467,34 @@ export default function PortfolioPage() {
 
             {/* Conviction explainer — Shuki #2 */}
             {showConvHelp && (
-              <div className="bg-slate-900/80 border border-emerald-500/20 rounded-xl p-4 mb-4 text-xs text-slate-400 leading-relaxed space-y-2">
-                <div className="text-emerald-400 font-semibold">How the conviction score is calculated</div>
+              <div className="bg-[var(--ss-inset)] border border-[var(--ss-green-tint-border)] rounded-xl p-4 mb-4 text-xs text-[var(--ss-text)] leading-relaxed space-y-2">
+                <div className="text-[var(--ss-green)] font-semibold">How the conviction score is calculated</div>
                 <p>
                   Conviction measures how strongly active fund managers back a theme. For each theme we look at its
-                  top 5 consensus stocks and ask two things: the <span className="text-slate-200">average weight</span> the
-                  theme&apos;s ETFs give a stock, and its <span className="text-slate-200">coverage</span> (how many of those
+                  top 5 consensus stocks and ask two things: the <span className="text-[var(--ss-ink)]">average weight</span> the
+                  theme&apos;s ETFs give a stock, and its <span className="text-[var(--ss-ink)]">coverage</span> (how many of those
                   ETFs actually hold it). We multiply the two, so a stock held heavily by most managers scores far higher
                   than one held lightly by a few.
                 </p>
-                <p className="text-slate-300">
-                  Example: if NVDA gets an <span className="text-slate-100">average weight of 8%</span> across the AI ETFs and
-                  <span className="text-slate-100"> 9 of 10</span> of them hold it (90% coverage), its signal is
-                  8 × 0.9 = <span className="text-emerald-300 font-semibold">7.2</span>. A stock at 3% weight held by only
+                <p className="text-[var(--ss-text)]">
+                  Example: if NVDA gets an <span className="text-[var(--ss-ink)]">average weight of 8%</span> across the AI ETFs and
+                  <span className="text-[var(--ss-ink)]"> 9 of 10</span> of them hold it (90% coverage), its signal is
+                  8 × 0.9 = <span className="text-[var(--ss-green-text)] font-semibold">7.2</span>. A stock at 3% weight held by only
                   4 of 10 scores 3 × 0.4 = 1.2, much lower.
                 </p>
                 <p>
                   We average that signal across the five names, then index every theme from 0 to 100 against the strongest
                   theme. Your portfolio score is the allocation-weighted blend of the themes you picked. The index core is
-                  pure passive beta, so it scores <span className="text-slate-200">0</span> by design. Conviction is what you
+                  pure passive beta, so it scores <span className="text-[var(--ss-ink)]">0</span> by design. Conviction is what you
                   pay active managers for.
                 </p>
               </div>
             )}
 
             {/* Performance vs SPY — Shuki #1 */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
+            <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
-                <div className="text-[11px] text-slate-500">Past performance of your mix</div>
+                <div className="text-[11px] text-[var(--ss-muted)]">Past performance of your mix</div>
                 <div className="flex gap-1">
                   {PERF_PERIODS.map(p => (
                     <button
@@ -498,8 +502,8 @@ export default function PortfolioPage() {
                       onClick={() => setPeriod(p)}
                       className={`px-2 py-0.5 rounded text-[11px] font-bold border transition-colors ${
                         period === p
-                          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-                          : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                          ? 'bg-[var(--ss-green-tint)] border-[var(--ss-green-tint-border)] text-[var(--ss-green-text)]'
+                          : 'bg-[var(--ss-inset)] border-[var(--ss-border-strong)] text-[var(--ss-text)] hover:text-[var(--ss-ink)]'
                       }`}
                     >
                       {p}
@@ -512,40 +516,40 @@ export default function PortfolioPage() {
 
               <div className="flex justify-between mt-3 text-xs">
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-3 h-0.5 bg-emerald-400" />
-                  <span className="text-slate-400">Your mix</span>
-                  <span className={`font-semibold ${perf.portfolioReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  <span className="inline-block w-3.5 h-[3px] rounded-full bg-[var(--ss-green)]" />
+                  <span className="text-[var(--ss-text)]">Your mix</span>
+                  <span className={`font-semibold ${perf.portfolioReturn >= 0 ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}`}>
                     {perf.portfolioReturn >= 0 ? '+' : ''}{perf.portfolioReturn.toFixed(1)}%
                   </span>
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-3 h-0.5 bg-slate-500" />
-                  <span className="text-slate-400">S&P 500</span>
-                  <span className={`font-semibold ${perf.spyReturn >= 0 ? 'text-slate-300' : 'text-red-400'}`}>
+                  <span className="inline-block w-3.5 h-[3px] rounded-full bg-[var(--ss-blue)]" />
+                  <span className="text-[var(--ss-text)]">S&P 500</span>
+                  <span className={`font-semibold ${perf.spyReturn >= 0 ? 'text-[var(--ss-blue)]' : 'text-[var(--ss-amber)]'}`}>
                     {perf.spyReturn >= 0 ? '+' : ''}{perf.spyReturn.toFixed(1)}%
                   </span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-2">
+              <p className="text-[11px] text-[var(--ss-text)] mt-2">
                 Hypothetical past performance of this exact mix, blended from each theme&apos;s real index. Past performance does not predict future results.
               </p>
             </div>
 
             {/* Exposures */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-              <div className="text-[11px] text-slate-500 mb-3">Your biggest single-stock exposures</div>
+            <div className="bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-xl p-4">
+              <div className="text-[11px] text-[var(--ss-muted)] mb-3">Your biggest single-stock exposures</div>
               <div className="flex flex-col gap-2">
                 {exposures.length ? exposures.map(e => (
                   <div key={e.ticker} className="flex items-center gap-3">
-                    <div className="w-12 text-xs font-semibold text-slate-300 shrink-0">{e.ticker}</div>
-                    <div className="flex-1 bg-slate-800 rounded h-3">
-                      <div className="h-full rounded bg-emerald-500" style={{ width: `${(e.weight / maxExp) * 100}%` }} />
+                    <div className="w-12 text-xs font-semibold text-[var(--ss-text)] shrink-0">{e.ticker}</div>
+                    <div className="flex-1 bg-[var(--ss-inset)] rounded h-3">
+                      <div className="h-full rounded bg-[var(--ss-green)]" style={{ width: `${(e.weight / maxExp) * 100}%` }} />
                     </div>
-                    <div className="w-12 text-right text-[11px] text-slate-400">{(e.weight * 100).toFixed(1)}%</div>
+                    <div className="w-12 text-right text-[11px] text-[var(--ss-text)]">{(e.weight * 100).toFixed(1)}%</div>
                   </div>
-                )) : <div className="text-xs text-slate-400">Add some allocation to see exposures.</div>}
+                )) : <div className="text-xs text-[var(--ss-text)]">Add some allocation to see exposures.</div>}
               </div>
-              <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+              <p className="text-[11px] text-[var(--ss-text)] mt-3 leading-relaxed">
                 Each percentage is the stock&apos;s share of your whole portfolio. For every theme we take your weight in that theme
                 and multiply it by how heavily the theme&apos;s ETFs hold the stock, then add up the same stock across themes.
                 {world ? ' The world sleeve holds markets rather than single stocks, so it adds no single-stock exposure; its geography is shown in the world sleeve panel.' : ''}
@@ -554,7 +558,7 @@ export default function PortfolioPage() {
           </div>
         </div>
 
-        <p className="text-slate-500 text-xs text-center mt-8 max-w-2xl mx-auto">
+        <p className="text-[var(--ss-muted)] text-xs text-center mt-8 max-w-2xl mx-auto">
           For informational and educational purposes only. Not investment advice and not personalised. The portfolio is one you
           build yourself; Tony only reflects back its conviction, exposure, and hypothetical past performance from disclosed ETF data.
         </p>
@@ -587,20 +591,20 @@ function ThemeWhyPanel({
     <div className="mt-2">
       <button
         onClick={onToggleOpen}
-        className="text-[11px] text-slate-500 hover:text-slate-300 inline-flex items-center gap-1.5 transition-colors"
+        className="text-[11px] text-[var(--ss-muted)] hover:text-[var(--ss-text)] inline-flex items-center gap-1.5 transition-colors"
       >
         {open ? 'Hide fund list' : 'Why these ETFs?'}
         {overridden && (
-          <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">customized</span>
+          <span className="text-[10px] text-[var(--ss-amber-text)] border border-[var(--ss-amber-border)] rounded px-1">customized</span>
         )}
       </button>
 
       {open && (
-        <div className="mt-2 rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+        <div className="mt-2 rounded-lg border border-[var(--ss-border)] bg-[var(--ss-inset)] p-3">
           <div className="flex items-center justify-between mb-2 gap-2">
-            <span className="text-[11px] text-slate-400">Ranked by 6M/1Y. Tap a fund to add or remove it.</span>
+            <span className="text-[11px] text-[var(--ss-text)]">Ranked by 6M/1Y. Tap a fund to add or remove it.</span>
             {overridden && (
-              <button onClick={onReset} className="text-[10px] text-emerald-400 hover:text-emerald-300 shrink-0 transition-colors">
+              <button onClick={onReset} className="text-[10px] text-[var(--ss-green)] hover:text-[var(--ss-green-text)] shrink-0 transition-colors">
                 Reset to recommended
               </button>
             )}
@@ -618,31 +622,31 @@ function ThemeWhyPanel({
                   key={f.t}
                   onClick={() => onToggleFund(f.t)}
                   className={`flex items-center gap-2 rounded px-2 py-1 text-left border transition-colors ${
-                    inMix ? 'border-slate-600 bg-slate-800/70' : 'border-transparent hover:bg-slate-900'
+                    inMix ? 'border-[var(--ss-border-strong)] bg-[var(--ss-inset)]/70' : 'border-transparent hover:bg-[var(--ss-card)]'
                   }`}
                 >
                   <span
                     className={`inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border text-[9px] leading-none shrink-0 ${
-                      inMix ? 'text-slate-950 border-transparent' : 'text-transparent border-slate-700'
+                      inMix ? 'text-[var(--ss-ink)] border-transparent' : 'text-transparent border-[var(--ss-border-strong)]'
                     }`}
                     style={inMix ? { background: color } : undefined}
                   >
                     ✓
                   </span>
-                  <span className="w-11 text-xs font-mono text-slate-200 shrink-0">{f.t}</span>
-                  <span className="flex-1 text-[10px] text-slate-500 truncate">{tag}</span>
-                  <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-14 text-right">
-                    6M <span className={f.ret6 >= 0 ? 'text-slate-300' : 'text-red-400'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
+                  <span className="w-11 text-xs font-mono text-[var(--ss-ink)] shrink-0">{f.t}</span>
+                  <span className="flex-1 text-[10px] text-[var(--ss-muted)] truncate">{tag}</span>
+                  <span className="text-[10px] tabular-nums text-[var(--ss-muted)] shrink-0 w-14 text-right">
+                    6M <span className={f.ret6 >= 0 ? 'text-[var(--ss-text)]' : 'text-[var(--ss-amber)]'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
                   </span>
-                  <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-16 text-right">
-                    1Y <span className={f.ret1 >= 0 ? 'text-emerald-400' : 'text-red-400'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
+                  <span className="text-[10px] tabular-nums text-[var(--ss-muted)] shrink-0 w-16 text-right">
+                    1Y <span className={f.ret1 >= 0 ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
                   </span>
                 </button>
               );
             })}
           </div>
 
-          <p className="text-[10px] text-slate-500 leading-relaxed mt-2">
+          <p className="text-[10px] text-[var(--ss-muted)] leading-relaxed mt-2">
             The dial anchors on the theme&apos;s top performer, then adds funds that move differently (low
             correlation) so the sleeve stays diversified instead of tripling the same bet. That is why some
             higher-returning funds are skipped. Overriding chases return at the cost of that spread. Equal-weight
@@ -681,22 +685,22 @@ function WorldWhyPanel({
     <div className="mt-2">
       <button
         onClick={onToggleOpen}
-        className="text-[11px] text-slate-500 hover:text-slate-300 inline-flex items-center gap-1.5 transition-colors"
+        className="text-[11px] text-[var(--ss-muted)] hover:text-[var(--ss-text)] inline-flex items-center gap-1.5 transition-colors"
       >
         {open ? 'Hide market list' : 'Why these markets?'}
         {overridden && (
-          <span className="text-[10px] text-amber-400/90 border border-amber-500/30 rounded px-1">customized</span>
+          <span className="text-[10px] text-[var(--ss-amber-text)] border border-[var(--ss-amber-border)] rounded px-1">customized</span>
         )}
       </button>
 
       {open && (
-        <div className="mt-2 rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+        <div className="mt-2 rounded-lg border border-[var(--ss-border)] bg-[var(--ss-inset)] p-3">
           <div className="flex items-center justify-between mb-2 gap-2">
-            <span className="text-[11px] text-slate-400">
+            <span className="text-[11px] text-[var(--ss-text)]">
               Tap a market to add or remove it. {active.length ? `${active.length} of ${WORLD_MARKET_MAX} picked.` : 'Pick markets to build a custom mix.'}
             </span>
             {overridden && (
-              <button onClick={onReset} className="text-[10px] text-emerald-400 hover:text-emerald-300 shrink-0 transition-colors">
+              <button onClick={onReset} className="text-[10px] text-[var(--ss-green)] hover:text-[var(--ss-green-text)] shrink-0 transition-colors">
                 Reset to broad index
               </button>
             )}
@@ -705,7 +709,7 @@ function WorldWhyPanel({
           <div className="flex flex-col gap-2">
             {byRegion.map(({ region, funds }) => (
               <div key={region}>
-                <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{region}</div>
+                <div className="text-[10px] uppercase tracking-wider text-[var(--ss-muted)] mb-1">{region}</div>
                 <div className="flex flex-col gap-1">
                   {funds.map(f => {
                     const inMix = active.includes(f.ticker);
@@ -717,27 +721,27 @@ function WorldWhyPanel({
                         disabled={disabled}
                         title={disabled ? `Up to ${WORLD_MARKET_MAX} markets` : undefined}
                         className={`flex items-center gap-2 rounded px-2 py-1 text-left border transition-colors ${
-                          inMix ? 'border-slate-600 bg-slate-800/70' : 'border-transparent hover:bg-slate-900'
+                          inMix ? 'border-[var(--ss-border-strong)] bg-[var(--ss-inset)]/70' : 'border-transparent hover:bg-[var(--ss-card)]'
                         } ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
                       >
                         <span
                           className={`inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border text-[9px] leading-none shrink-0 ${
-                            inMix ? 'text-slate-950 border-transparent' : 'text-transparent border-slate-700'
+                            inMix ? 'text-[var(--ss-ink)] border-transparent' : 'text-transparent border-[var(--ss-border-strong)]'
                           }`}
                           style={inMix ? { background: WORLD_COLOR } : undefined}
                         >
                           ✓
                         </span>
                         <span aria-hidden className="shrink-0">{f.flag}</span>
-                        <span className="w-11 text-xs font-mono text-slate-200 shrink-0">{f.ticker}</span>
-                        <span className="flex-1 text-[10px] text-slate-500 truncate">
+                        <span className="w-11 text-xs font-mono text-[var(--ss-ink)] shrink-0">{f.ticker}</span>
+                        <span className="flex-1 text-[10px] text-[var(--ss-muted)] truncate">
                           {f.market}{f.thin ? ' · thin' : ''}
                         </span>
-                        <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-14 text-right">
-                          6M <span className={f.ret6 >= 0 ? 'text-slate-300' : 'text-red-400'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
+                        <span className="text-[10px] tabular-nums text-[var(--ss-muted)] shrink-0 w-14 text-right">
+                          6M <span className={f.ret6 >= 0 ? 'text-[var(--ss-text)]' : 'text-[var(--ss-amber)]'}>{f.ret6 >= 0 ? '+' : ''}{f.ret6}%</span>
                         </span>
-                        <span className="text-[10px] tabular-nums text-slate-500 shrink-0 w-16 text-right">
-                          1Y <span className={f.ret1 >= 0 ? 'text-emerald-400' : 'text-red-400'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
+                        <span className="text-[10px] tabular-nums text-[var(--ss-muted)] shrink-0 w-16 text-right">
+                          1Y <span className={f.ret1 >= 0 ? 'text-[var(--ss-green)]' : 'text-[var(--ss-amber)]'}>{f.ret1 >= 0 ? '+' : ''}{f.ret1}%</span>
                         </span>
                       </button>
                     );
@@ -747,7 +751,7 @@ function WorldWhyPanel({
             ))}
           </div>
 
-          <p className="text-[10px] text-slate-500 leading-relaxed mt-2">
+          <p className="text-[10px] text-[var(--ss-muted)] leading-relaxed mt-2">
             Each market is a single index fund tracked on the World Markets board. Your world sleeve becomes an
             equal-weight blend of {active.length ? `the ${active.length} market${active.length === 1 ? '' : 's'}` : 'the markets'} you
             pick, replacing the broad preset. Concentrating in fewer markets trades diversification for a sharper regional bet.
@@ -775,8 +779,8 @@ function PerfChart({ perf }: { perf: ReturnType<typeof blendPerformance> }) {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="none" style={{ height: 150 }}>
-      <path d={toPath(perf.spy)} fill="none" stroke="#64748b" strokeWidth={1.5} />
-      <path d={toPath(perf.portfolio)} fill="none" stroke="#34d399" strokeWidth={2} />
+      <path d={toPath(perf.spy)} fill="none" stroke="var(--ss-blue)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={toPath(perf.portfolio)} fill="none" stroke="var(--ss-green)" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
 }

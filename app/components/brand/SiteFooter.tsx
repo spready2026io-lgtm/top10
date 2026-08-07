@@ -22,8 +22,8 @@ export default function SiteFooter() {
             </p>
           </div>
           <div style={{ display: 'flex', gap: 64, flexWrap: 'wrap' }}>
-            <Col title="Product" links={[['Rankings', '/rankings'], ['Build Portfolio', '/portfolio'], ['World Markets', '/markets'], ['Ask Tony', '/ask']]} />
-            <Col title="Company" links={[['About', '/about'], ['Contact', '/contact'], ['ETF Universe', '/universe'], ['Conviction Board', '/conviction']]} />
+            <Col title="Product" links={[['Rankings', '/modern/rankings'], ['Build Portfolio', '/modern/portfolio'], ['World Markets', '/modern/markets'], ['Ask Tony', '/modern/ask']]} />
+            <Col title="Company" links={[['About', '/modern/about'], ['Contact', '/modern/contact'], ['ETF Universe', '/modern/universe'], ['Conviction Board', '/modern/conviction']]} />
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, paddingTop: 24, borderTop: '1px solid var(--ss-track)', fontSize: 14, color: 'var(--ss-faint)' }}>

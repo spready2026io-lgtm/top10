@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
-/* ── 2026-07 redesign theme tokens (light default, dark via data-theme) ───────
-   Components reference var(--ss-*); switching data-theme on <html> flips the
-   whole app. Dark values are tuned for a near-black background. */
+/* ── Two surfaces, one app ────────────────────────────────────────────────────
+   Classic (the original black dashboard) is the default and owns the bare
+   html/body styling. Modern (the 2026-07 light redesign) lives under /modern
+   and is scoped to the .ss-modern wrapper that app/modern/layout.tsx renders.
+   Nothing in Classic reads a --ss-* token, so the two never collide. */
+
+/* ── Classic base ─────────────────────────────────────────────────────────── */
+:root {
+  --background: #020617;
+  --foreground: #f8fafc;
+}
+
+/* ── Modern theme tokens (light default, dark via data-theme) ─────────────────
+   Modern components reference var(--ss-*); switching data-theme on <html>
+   flips them. Dark values are tuned for a near-black background. */
 :root {
   /* Surfaces */
   --ss-page:          #F7F8FB;
@@ -39,8 +51,6 @@
   /* Blue (S&P benchmark / ticker avatar) */
   --ss-blue: #3b6fd4;
 
-  --background: var(--ss-page);
-  --foreground: var(--ss-ink);
   --font-display: var(--font-jakarta), system-ui, sans-serif;
   --font-numeric: var(--font-mono-brand), ui-monospace, monospace;
 }
@@ -78,11 +88,24 @@
   --ss-blue: #6ea8ff;
 }
 
-html { background: var(--ss-page); }
+/* Classic owns html/body. The overscroll gutter above and below the page has to
+   match the surface, so html flips to the Modern page colour only when the
+   Modern wrapper is present. */
+html { background: var(--background); }
+html:has(.ss-modern) { background: var(--ss-page); }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Modern surface. app/modern/layout.tsx wraps every /modern route in this, so
+   the light palette and the brand font stop at the /modern boundary. */
+.ss-modern {
+  flex: 1 1 auto;
+  background: var(--ss-page);
+  color: var(--ss-ink);
   font-family: var(--font-jakarta), system-ui, sans-serif;
 }
 
