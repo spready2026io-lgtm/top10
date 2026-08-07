@@ -2642,9 +2642,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Weekly conviction note — slim capture strip, high on the page so it is seen */}
-      <EmailCapture variant="bar" source="home-bar" />
-
       {crossView ? (
         <CrossThemeBoard onSelectTheme={(t) => { setCrossView(false); setTheme(t); }} />
       ) : (
