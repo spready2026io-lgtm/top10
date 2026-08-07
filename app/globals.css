@@ -144,8 +144,11 @@ body {
 .ss-how-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
 .ss-lb-scroll { overflow-x:auto; }
 .ss-lb-grid   { display:grid; grid-template-columns:56px 1.6fr 1fr 0.9fr 0.9fr; min-width:640px; }
-.ss-link-muted { color:#55606e; }
-.ss-link-muted:hover { color:#0B1220; }
+/* Tokens, not literals. These were the light theme's --ss-text and --ss-ink
+   hardcoded, so in dark mode the hover state resolved to near-black on a
+   near-black nav and the link vanished under the cursor. */
+.ss-link-muted { color:var(--ss-text); }
+.ss-link-muted:hover { color:var(--ss-ink); }
 
 /* Nav lockup: the wordmark and the tagline share a baseline, and the tagline
    uses --ss-text (not --ss-muted) so it clears AA at 11px. */
