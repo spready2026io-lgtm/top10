@@ -202,8 +202,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0.34
     },
     "flow1M": {
-      "usd": 156680000,
-      "pct": 1.73
+      "usd": 125344000,
+      "pct": 1.38
     },
     "note": "One tile for the whole continent. IEUR spans developed Europe end to end, from UK banks to French luxury to German industrials. Watch it against the single-market tiles below: when Europe rises but a member market lags, that divergence is the story."
   },
@@ -371,8 +371,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 19456000,
-      "pct": 0.47
+      "usd": 0,
+      "pct": 0
     },
     "note": "The UK trades apart from the continent: heavy in energy, miners and global banks, light in tech. It behaves more like a value-and-dividends block than a growth market, which is exactly why it earns its own tile next to Europe."
   },
@@ -540,8 +540,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -232560000,
-      "pct": -1.01
+      "usd": -218025000,
+      "pct": -0.95
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 33852407,
-      "pct": 4.16
+      "usd": 25910648,
+      "pct": 3.15
     },
     "flow1M": {
-      "usd": 2041680,
-      "pct": 0.24
+      "usd": -1534398,
+      "pct": -0.18
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3249,23 +3249,23 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Japan",
-        "w": 14.93
+        "w": 15
       },
       {
         "c": "United Kingdom",
-        "w": 8.57
+        "w": 8.58
       },
       {
         "c": "Canada",
-        "w": 8.31
+        "w": 8.37
       },
       {
         "c": "Taiwan",
-        "w": 8.28
+        "w": 8.2
       },
       {
         "c": "China",
-        "w": 5.64
+        "w": 5.62
       },
       {
         "c": "Korea (South)",
@@ -3273,7 +3273,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "France",
-        "w": 5.49
+        "w": 5.45
       },
       {
         "c": "Switzerland",
@@ -3281,11 +3281,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Germany",
-        "w": 4.88
+        "w": 4.91
       },
       {
         "c": "Australia",
-        "w": 4.33
+        "w": 4.35
       },
       {
         "c": "India",
@@ -3293,11 +3293,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Netherlands",
-        "w": 3.12
+        "w": 3.13
       },
       {
         "c": "Sweden",
-        "w": 2.21
+        "w": 2.24
       },
       {
         "c": "Spain",
@@ -3309,11 +3309,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Brazil",
-        "w": 1.24
+        "w": 1.23
       },
       {
         "c": "Singapore",
-        "w": 1.12
+        "w": 1.13
       },
       {
         "c": "Hong Kong",
@@ -3321,11 +3321,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Denmark",
-        "w": 1.01
+        "w": 1.02
       },
       {
         "c": "South Africa",
-        "w": 0.98
+        "w": 1.01
       },
       {
         "c": "Israel",
@@ -3333,11 +3333,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Saudi Arabia",
-        "w": 0.73
+        "w": 0.72
       },
       {
         "c": "Belgium",
-        "w": 0.69
+        "w": 0.68
       },
       {
         "c": "Finland",
@@ -3519,35 +3519,35 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Japan",
-        "w": 23.28
+        "w": 23.3
       },
       {
         "c": "United Kingdom",
-        "w": 14.49
+        "w": 14.47
       },
       {
         "c": "France",
-        "w": 9.96
+        "w": 9.92
       },
       {
         "c": "Switzerland",
-        "w": 9.46
+        "w": 9.48
       },
       {
         "c": "Germany",
-        "w": 8.87
+        "w": 8.88
       },
       {
         "c": "Australia",
-        "w": 6.7
+        "w": 6.69
       },
       {
         "c": "Netherlands",
-        "w": 5.77
+        "w": 5.76
       },
       {
         "c": "Spain",
-        "w": 4.04
+        "w": 4.03
       },
       {
         "c": "Sweden",
@@ -3559,27 +3559,27 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Singapore",
-        "w": 1.82
+        "w": 1.85
       },
       {
         "c": "Hong Kong",
-        "w": 1.81
+        "w": 1.79
       },
       {
         "c": "Denmark",
-        "w": 1.62
-      },
-      {
-        "c": "Finland",
-        "w": 1.13
+        "w": 1.65
       },
       {
         "c": "Israel",
-        "w": 1.12
+        "w": 1.14
+      },
+      {
+        "c": "Finland",
+        "w": 1.11
       },
       {
         "c": "Belgium",
-        "w": 1.1
+        "w": 1.09
       },
       {
         "c": "Norway",
@@ -3753,27 +3753,27 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Taiwan",
-        "w": 27.12
+        "w": 26.92
       },
       {
         "c": "China",
-        "w": 21.21
+        "w": 21.41
       },
       {
         "c": "Korea (South)",
-        "w": 18.97
+        "w": 18.93
       },
       {
         "c": "India",
-        "w": 11.81
+        "w": 11.83
       },
       {
         "c": "Brazil",
-        "w": 4.14
+        "w": 4.1
       },
       {
         "c": "South Africa",
-        "w": 3.21
+        "w": 3.34
       },
       {
         "c": "Saudi Arabia",
@@ -3781,19 +3781,19 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Mexico",
-        "w": 1.74
+        "w": 1.77
       },
       {
         "c": "United Arab Emirates",
-        "w": 1.23
-      },
-      {
-        "c": "Poland",
         "w": 1.22
       },
       {
+        "c": "Poland",
+        "w": 1.21
+      },
+      {
         "c": "Thailand",
-        "w": 1
+        "w": 0.99
       },
       {
         "c": "Malaysia",
@@ -3805,7 +3805,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Greece",
-        "w": 0.56
+        "w": 0.57
       },
       {
         "c": "Indonesia",
@@ -3979,23 +3979,23 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Taiwan",
-        "w": 34.62
+        "w": 34.49
       },
       {
         "c": "Korea (South)",
-        "w": 24.19
+        "w": 24.18
       },
       {
         "c": "India",
-        "w": 15.16
+        "w": 15.2
       },
       {
         "c": "Brazil",
-        "w": 5.24
+        "w": 5.18
       },
       {
         "c": "South Africa",
-        "w": 4.11
+        "w": 4.26
       },
       {
         "c": "Saudi Arabia",
@@ -4003,11 +4003,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Mexico",
-        "w": 2.22
+        "w": 2.25
       },
       {
         "c": "United Arab Emirates",
-        "w": 1.56
+        "w": 1.57
       },
       {
         "c": "Poland",
@@ -4019,7 +4019,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Thailand",
-        "w": 1.27
+        "w": 1.25
       },
       {
         "c": "Kuwait",
@@ -4031,7 +4031,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Indonesia",
-        "w": 0.65
+        "w": 0.66
       },
       {
         "c": "Qatar",
@@ -4039,7 +4039,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Chile",
-        "w": 0.61
+        "w": 0.62
       },
       {
         "c": "Peru",
@@ -4057,8 +4057,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0.34
     },
     "flow1M": {
-      "usd": 156680000,
-      "pct": 1.73
+      "usd": 125344000,
+      "pct": 1.38
     },
     "returns": {
       "1W": 1.73,
@@ -4213,43 +4213,43 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "United Kingdom",
-        "w": 23.09
+        "w": 23.1
       },
       {
         "c": "France",
-        "w": 14.6
+        "w": 14.63
       },
       {
         "c": "Switzerland",
-        "w": 14.05
+        "w": 14.06
       },
       {
         "c": "Germany",
-        "w": 13.12
+        "w": 13.19
       },
       {
         "c": "Netherlands",
-        "w": 8.31
+        "w": 8.27
       },
       {
         "c": "Sweden",
-        "w": 6.09
+        "w": 6.08
       },
       {
         "c": "Spain",
-        "w": 5.88
+        "w": 5.85
       },
       {
         "c": "Italy",
-        "w": 5.28
+        "w": 5.25
       },
       {
         "c": "Denmark",
-        "w": 2.67
+        "w": 2.68
       },
       {
         "c": "Belgium",
-        "w": 1.85
+        "w": 1.83
       },
       {
         "c": "Finland",
@@ -4257,15 +4257,15 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Norway",
-        "w": 1.41
+        "w": 1.4
       },
       {
         "c": "Austria",
-        "w": 0.72
+        "w": 0.71
       },
       {
         "c": "Ireland",
-        "w": 0.61
+        "w": 0.62
       }
     ]
   },
@@ -4435,27 +4435,27 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "France",
-        "w": 28.26
+        "w": 28.2
       },
       {
         "c": "Germany",
-        "w": 25.09
+        "w": 25.24
       },
       {
         "c": "Netherlands",
-        "w": 16.29
+        "w": 16.3
       },
       {
         "c": "Spain",
-        "w": 11.41
+        "w": 11.37
       },
       {
         "c": "Italy",
-        "w": 9.59
+        "w": 9.58
       },
       {
         "c": "Finland",
-        "w": 3.19
+        "w": 3.17
       },
       {
         "c": "Belgium",
@@ -4463,11 +4463,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Ireland",
-        "w": 1.12
+        "w": 1.14
       },
       {
         "c": "Austria",
-        "w": 1.06
+        "w": 1.05
       },
       {
         "c": "Portugal",
@@ -4641,23 +4641,23 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "China",
-        "w": 32.27
+        "w": 32.51
       },
       {
         "c": "Taiwan",
-        "w": 30.68
+        "w": 30.49
       },
       {
         "c": "India",
-        "w": 16.57
+        "w": 16.54
       },
       {
         "c": "Korea (South)",
-        "w": 16.19
+        "w": 16.28
       },
       {
         "c": "Thailand",
-        "w": 1.46
+        "w": 1.45
       },
       {
         "c": "Malaysia",
@@ -4666,6 +4666,10 @@ export const LENS_FUNDS: LensFund[] = [
       {
         "c": "Indonesia",
         "w": 0.79
+      },
+      {
+        "c": "United States",
+        "w": 0.53
       }
     ]
   },
@@ -4679,8 +4683,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 2.53
     },
     "flow1M": {
-      "usd": 77895000,
-      "pct": 2.06
+      "usd": 86550000,
+      "pct": 2.29
     },
     "returns": {
       "1W": -1.54,
@@ -4835,37 +4839,37 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Brazil",
-        "w": 55.08
+        "w": 54.63
       },
       {
         "c": "Mexico",
-        "w": 26.29
+        "w": 26.81
       },
       {
         "c": "Chile",
-        "w": 6.8
+        "w": 6.78
       },
       {
         "c": "Peru",
-        "w": 6.61
+        "w": 6.69
       },
       {
         "c": "Colombia",
-        "w": 2.83
+        "w": 2.82
       },
       {
         "c": "Sweden",
-        "w": 1.57
+        "w": 1.47
       },
       {
         "c": "United States",
-        "w": 0.8
+        "w": 0.79
       }
     ]
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Aug 8, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Aug 9, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
