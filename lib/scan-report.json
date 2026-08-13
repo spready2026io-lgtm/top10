@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-08-12T13:38:03.711Z",
-  "scanTimestampNY": "August 12, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-08-13T13:37:35.081Z",
+  "scanTimestampNY": "August 13, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 65
+        "count": 66
       },
       "CHAT": {
         "ok": true,
@@ -33,7 +33,7 @@
       },
       "AIFD": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "SPRX": {
         "ok": true,
@@ -129,7 +129,7 @@
       },
       "XSW": {
         "ok": true,
-        "count": 15
+        "count": 17
       },
       "SKYY": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 43
+        "count": 42
       },
       "VOLT": {
         "ok": true,
@@ -193,11 +193,11 @@
       },
       "BILT": {
         "ok": true,
-        "count": 46
+        "count": 47
       },
       "BUZZ": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "MEME": {
         "ok": true,
@@ -263,8 +263,10 @@
     ]
   },
   "yfScan": {
-    "total": 116,
-    "succeeded": 116,
-    "failed": []
+    "total": 115,
+    "succeeded": 114,
+    "failed": [
+      "ZETA"
+    ]
   }
 }
