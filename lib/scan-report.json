@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-08-13T13:37:35.081Z",
-  "scanTimestampNY": "August 13, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-08-14T13:37:38.056Z",
+  "scanTimestampNY": "August 14, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 43
+        "count": 19
       },
       "ARTY": {
         "ok": true,
@@ -81,11 +81,11 @@
       },
       "ARKK": {
         "ok": true,
-        "count": 43
+        "count": 42
       },
       "MARS": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "FRWD": {
         "ok": true,
@@ -97,19 +97,19 @@
       },
       "FWD": {
         "ok": true,
-        "count": 21
+        "count": 20
       },
       "CBSE": {
         "ok": true,
-        "count": 20
+        "count": 23
       },
       "FCUS": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "CNEQ": {
         "ok": true,
@@ -121,7 +121,7 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "XMMO": {
         "ok": true,
@@ -145,7 +145,7 @@
       },
       "HACK": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "BUG": {
         "ok": true,
@@ -153,11 +153,11 @@
       },
       "IHAK": {
         "ok": true,
-        "count": 20
+        "count": 21
       },
       "POW": {
         "ok": true,
-        "count": 42
+        "count": 14
       },
       "VOLT": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 7
+        "count": 5
       },
       "PBW": {
         "ok": true,
@@ -263,8 +263,8 @@
     ]
   },
   "yfScan": {
-    "total": 115,
-    "succeeded": 114,
+    "total": 117,
+    "succeeded": 116,
     "failed": [
       "ZETA"
     ]
