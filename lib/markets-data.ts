@@ -213,7 +213,7 @@ export const MARKET_TILES: MarketTile[] = [
     "flag": "🇬🇧",
     "region": "Europe",
     "kind": "country",
-    "name": "iShares MSCI",
+    "name": "iShares MSCI United Kingdom ETF",
     "price": 48.94,
     "aum": 4143223040,
     "thin": false,
@@ -382,7 +382,7 @@ export const MARKET_TILES: MarketTile[] = [
     "flag": "🇯🇵",
     "region": "Asia",
     "kind": "country",
-    "name": "iShares MSCI Japan Index Fund",
+    "name": "iShares MSCI Japan ETF",
     "price": 95.18,
     "aum": 21752143872,
     "thin": false,
@@ -1385,8 +1385,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -0.99
     },
     "flow1M": {
-      "usd": 3022863000,
-      "pct": 12.27
+      "usd": 2817772000,
+      "pct": 11.34
     },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
@@ -1723,8 +1723,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 143522500,
-      "pct": 13.26
+      "usd": 136768500,
+      "pct": 12.56
     },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -9982644,
-      "pct": -1.16
+      "usd": -16683247,
+      "pct": -1.94
     },
     "flow1M": {
-      "usd": 38234936,
-      "pct": 4.7
+      "usd": 32101030,
+      "pct": 3.95
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3590,7 +3590,7 @@ export const LENS_FUNDS: LensFund[] = [
   {
     "ticker": "EEM",
     "label": "Emerging Markets",
-    "name": "iShares MSCI Emerging Index Fun",
+    "name": "iShares MSCI Emerging Markets ETF",
     "aum": 29159098368,
     "flow1W": {
       "usd": 483264000,
@@ -4861,7 +4861,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Aug 22, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Aug 23, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
