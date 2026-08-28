@@ -5,12 +5,15 @@ export const TICKER_DOMAINS: Record<string, string> = {
   CHKP: 'checkpoint.com',  CRM:  'salesforce.com',   CSCO: 'cisco.com',
   DDOG: 'datadoghq.com',   DOCN: 'digitalocean.com', FRSH: 'freshworks.com',
   FTNT: 'fortinet.com',    GEN:  'gendigital.com',   GTLB: 'gitlab.com',
-  HUBS: 'hubspot.com',     NOW:  'servicenow.com',   NTNX: 'nutanix.com',
+  HUBS: 'hubspot.com',     NOW:  'servicenow.com',   NTNX: 'www.nutanix.com',
   NTSK: 'netskope.com',    OKTA: 'okta.com',         QLYS: 'qualys.com',
   RBRK: 'rubrik.com',      RDWR: 'radware.com',      S:    'sentinelone.com',
   SNOW: 'snowflake.com',   TENB: 'tenable.com',      TWLO: 'twilio.com',
   VRNS: 'varonis.com',     ZS:   'zscaler.com',      ATEN: 'a10networks.com',
   BRZE: 'braze.com',       WK:   'workiva.com',      XMTR: 'xometry.com',
+  // ATI and IESC below are the correct company domains, but Google's favicon
+  // service has no icon for either, so those two fall back to the lettermark.
+  // Do not swap them: ati.com is AMD's, iesholdings.com is Epiroc's.
   AIR:  'airbus.com',      ATI:  'atimaterials.com', BMNR: 'bitminetech.io',
   CW:   'curtisswright.com', DIOD: 'diodes.com',     IESC: 'ies-co.com',
   LSCC: 'latticesemi.com', ORA:  'ormat.com',        SPCX: 'spacex.com',
@@ -19,9 +22,9 @@ export const TICKER_DOMAINS: Record<string, string> = {
   NVDA: 'nvidia.com',    AVGO: 'broadcom.com',       AMD:  'amd.com',
   INTC: 'intel.com',     MU:   'micron.com',          TXN:  'ti.com',
   ADI:  'analog.com',    MCHP: 'microchip.com',       ON:   'onsemi.com',
-  MPWR: 'monolithicpower.com', MTSI: 'macom.com',     SWKS: 'skyworks.com',
+  MPWR: 'monolithicpower.com', MTSI: 'macom.com',     SWKS: 'skyworksinc.com',
   MXL:  'maxlinear.com', LRCX: 'lamresearch.com',     AMAT: 'appliedmaterials.com',
-  KLAC: 'kla.com',       QCOM: 'qualcomm.com',        SNPS: 'synopsys.com',
+  KLAC: 'kla.com',       QCOM: 'qualcomm.com',        SNPS: 'www.synopsys.com',
   // AI & Cloud infrastructure
   CRWV: 'coreweave.com', ALAB: 'asteralabs.com',      ANET: 'arista.com',
   PLTR: 'palantir.com',  CRDO: 'credotech.com',       CLS:  'celestica.com',
@@ -44,7 +47,7 @@ export const TICKER_DOMAINS: Record<string, string> = {
   DELL: 'dell.com',     AKAM: 'akamai.com',           HPE:  'hpe.com',
   GOOG: 'google.com',   SNDK: 'sandisk.com',           MRVL: 'marvell.com',
   RKLB: 'rocketlabusa.com', SATS: 'echostar.com',     ARM:  'arm.com',
-  OHB:  'ohb.de',       PL:   'planet.com',            VICR: 'vicr.com',
+  OHB:  'ohb.de',       PL:   'planet.com',            VICR: 'vicorpower.com',
   // Energy & utilities
   OGE:  'oge.com',      ET:   'energytransfer.com',   ETR:  'entergy.com',
   VRT:  'vertiv.com',   NVT:  'nvent.com',
@@ -68,7 +71,7 @@ export const TICKER_DOMAINS: Record<string, string> = {
   NXPI: 'nxp.com',       COHR: 'coherent.com',    LITE: 'lumentum.com',
   RMBS: 'rambus.com',    CDNS: 'cadence.com',
   // Software & cloud
-  ORCL: 'oracle.com',    PANW: 'paloaltonetworks.com', SHOP: 'shopify.com',
+  ORCL: 'oracle.com',    PANW: 'www.paloaltonetworks.com', SHOP: 'shopify.com',
   CRWD: 'crowdstrike.com',  NET: 'cloudflare.com',
   // Industrials & power
   AEP:  'aep.com',       XEL:  'xcelenergy.com',  UNP:  'up.com',
