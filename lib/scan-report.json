@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-09-01T13:38:10.453Z",
-  "scanTimestampNY": "September 1, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-09-02T13:37:30.343Z",
+  "scanTimestampNY": "September 2, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -17,7 +17,7 @@
       },
       "IGPT": {
         "ok": true,
-        "count": 8
+        "count": 66
       },
       "IVES": {
         "ok": true,
@@ -25,11 +25,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 65
+        "count": 59
       },
       "CHAT": {
         "ok": true,
-        "count": 35
+        "count": 34
       },
       "AIFD": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 6
+        "count": 5
       },
       "PTF": {
         "ok": true,
@@ -73,7 +73,7 @@
       },
       "FDTX": {
         "ok": true,
-        "count": 35
+        "count": 18
       },
       "GTEK": {
         "ok": true,
@@ -93,7 +93,7 @@
       },
       "BCTK": {
         "ok": true,
-        "count": 22
+        "count": 25
       },
       "FWD": {
         "ok": true,
@@ -193,7 +193,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 50
+        "count": 49
       },
       "BUZZ": {
         "ok": true,
@@ -201,7 +201,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 16
       },
       "RKNG": {
         "ok": true,
@@ -214,10 +214,6 @@
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
-        "error": "HTTP 406"
-      },
-      {
-        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
         "error": "HTTP 406"
       },
       {
@@ -263,8 +259,8 @@
     ]
   },
   "yfScan": {
-    "total": 119,
-    "succeeded": 119,
+    "total": 120,
+    "succeeded": 120,
     "failed": []
   }
 }
