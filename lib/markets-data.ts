@@ -45,15 +45,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Europe",
     "kind": "region",
     "name": "iShares Core MSCI Europe ETF",
-    "price": 77.49,
+    "price": 77.58,
     "aum": 9348355072,
     "thin": false,
     "returns": {
-      "1W": -0.01,
-      "1M": -0.4,
-      "YTD": 9.2,
-      "6M": 5.3,
-      "1Y": 16.6
+      "1W": 0.1,
+      "1M": -0.3,
+      "YTD": 9.3,
+      "6M": 5.4,
+      "1Y": 16.1
     },
     "history": {
       "1W": [
@@ -61,7 +61,7 @@ export const MARKET_TILES: MarketTile[] = [
         76.7,
         76.93,
         77.56,
-        77.49
+        77.58
       ],
       "1M": [
         77.79,
@@ -84,7 +84,7 @@ export const MARKET_TILES: MarketTile[] = [
         76.7,
         76.93,
         77.56,
-        77.49
+        77.58
       ],
       "YTD": [
         70.98,
@@ -112,7 +112,7 @@ export const MARKET_TILES: MarketTile[] = [
         78.34,
         78.05,
         78.5,
-        77.49
+        77.58
       ],
       "6M": [
         73.6,
@@ -140,41 +140,41 @@ export const MARKET_TILES: MarketTile[] = [
         78.24,
         78.41,
         77.86,
-        77.49
+        77.58
       ],
       "1Y": [
-        66.48,
-        67.66,
-        67.81,
-        66.67,
-        69.08,
-        68.38,
-        68.9,
+        66.83,
+        67.47,
+        67.57,
+        67.36,
+        69.48,
+        67.62,
+        68.95,
         69.22,
         68.79,
-        68.26,
-        70.2,
-        67.41,
-        69.08,
-        69.87,
-        70.88,
-        70.01,
-        71.26,
-        72.33,
-        73.13,
-        72.12,
+        67.95,
+        69.72,
+        66.5,
+        69.52,
+        69.85,
+        70.45,
+        70.33,
+        70.98,
+        72.47,
+        72.84,
+        72.86,
         75.38,
         74.55,
         75.56,
         75.88,
         76.75,
         73.6,
-        71.93,
-        71.31,
-        68.71,
-        70.27,
-        73.99,
-        75.11,
+        71.87,
+        69.84,
+        69.71,
+        71.34,
+        73.92,
+        74.86,
         74.37,
         72.6,
         76.07,
@@ -186,15 +186,15 @@ export const MARKET_TILES: MarketTile[] = [
         74.7,
         73.99,
         76.37,
-        75.13,
-        75.11,
+        74.54,
+        74.31,
         74.89,
         76.69,
         78.34,
         78.24,
         78.41,
         77.86,
-        77.49
+        77.58
       ]
     },
     "flow1W": {
@@ -202,7 +202,7 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 294462000,
+      "usd": 294804000,
       "pct": 3.25
     },
     "note": "One tile for the whole continent. IEUR spans developed Europe end to end, from UK banks to French luxury to German industrials. Watch it against the single-market tiles below: when Europe rises but a member market lags, that divergence is the story."
@@ -214,15 +214,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Europe",
     "kind": "country",
     "name": "iShares MSCI United Kingdom ETF",
-    "price": 48.5276,
+    "price": 48.59,
     "aum": 3788491776,
     "thin": false,
     "returns": {
-      "1W": 0.33,
-      "1M": 0.4,
-      "YTD": 10.3,
-      "6M": 2.7,
-      "1Y": 17.2
+      "1W": 0.45,
+      "1M": 0.5,
+      "YTD": 10.5,
+      "6M": 2.9,
+      "1Y": 16.9
     },
     "history": {
       "1W": [
@@ -230,7 +230,7 @@ export const MARKET_TILES: MarketTile[] = [
         48.19,
         48.22,
         48.68,
-        48.53
+        48.59
       ],
       "1M": [
         48.34,
@@ -253,7 +253,7 @@ export const MARKET_TILES: MarketTile[] = [
         48.19,
         48.22,
         48.68,
-        48.53
+        48.59
       ],
       "YTD": [
         43.98,
@@ -281,7 +281,7 @@ export const MARKET_TILES: MarketTile[] = [
         48.64,
         48.16,
         48.86,
-        48.53
+        48.59
       ],
       "6M": [
         47.24,
@@ -309,41 +309,41 @@ export const MARKET_TILES: MarketTile[] = [
         48.26,
         48.94,
         48.55,
-        48.53
+        48.59
       ],
       "1Y": [
-        41.39,
-        42.19,
-        41.66,
-        41.04,
-        42.26,
+        41.55,
+        41.94,
+        41.36,
+        41.58,
+        42.64,
+        41.73,
         42.07,
-        41.99,
         42.6,
         42.75,
-        42.61,
-        43.51,
-        41.73,
-        42.99,
-        43.42,
-        43.65,
-        43.13,
-        44.24,
-        44.81,
-        45.09,
-        44.7,
+        42.62,
+        43.04,
+        41.34,
+        43.15,
+        43.22,
+        43.28,
+        43.54,
+        44.02,
+        45.05,
+        44.98,
+        45.16,
         46.5,
         46.47,
         46.74,
         47.88,
         48.66,
         47.24,
-        46.41,
-        46.3,
-        44.4,
-        45.56,
-        47.82,
-        47.8,
+        46.31,
+        45.38,
+        45.14,
+        46.35,
+        47.64,
+        47.84,
         47.15,
         45.99,
         47.44,
@@ -355,24 +355,24 @@ export const MARKET_TILES: MarketTile[] = [
         45.46,
         45.76,
         47.22,
-        46.6,
-        46.94,
+        46.36,
+        46.39,
         47.23,
         48.41,
         48.64,
         48.26,
         48.94,
         48.55,
-        48.53
+        48.59
       ]
     },
     "flow1W": {
-      "usd": 0,
-      "pct": 0
+      "usd": -43731000,
+      "pct": -1.15
     },
     "flow1M": {
-      "usd": -344545960,
-      "pct": -8.29
+      "usd": -388720000,
+      "pct": -9.35
     },
     "note": "The UK trades apart from the continent: heavy in energy, miners and global banks, light in tech. It behaves more like a value-and-dividends block than a growth market, which is exactly why it earns its own tile next to Europe."
   },
@@ -383,15 +383,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Japan ETF",
-    "price": 97.86,
+    "price": 98.28,
     "aum": 22687311872,
     "thin": false,
     "returns": {
-      "1W": 2.07,
-      "1M": 3.4,
-      "YTD": 21.2,
-      "6M": 10.5,
-      "1Y": 24.3
+      "1W": 2.5,
+      "1M": 3.9,
+      "YTD": 21.7,
+      "6M": 10.9,
+      "1Y": 24.1
     },
     "history": {
       "1W": [
@@ -399,7 +399,7 @@ export const MARKET_TILES: MarketTile[] = [
         95.22,
         96.04,
         97.9,
-        97.86
+        98.28
       ],
       "1M": [
         94.61,
@@ -422,7 +422,7 @@ export const MARKET_TILES: MarketTile[] = [
         95.22,
         96.04,
         97.9,
-        97.86
+        98.28
       ],
       "YTD": [
         80.74,
@@ -450,7 +450,7 @@ export const MARKET_TILES: MarketTile[] = [
         96.9,
         98.17,
         95.43,
-        97.86
+        98.28
       ],
       "6M": [
         88.59,
@@ -478,41 +478,41 @@ export const MARKET_TILES: MarketTile[] = [
         98.21,
         95.18,
         95.87,
-        97.86
+        98.28
       ],
       "1Y": [
-        78.73,
-        81.32,
-        81.49,
-        80.46,
-        80.15,
-        81.55,
-        81.55,
+        79.18,
+        80.76,
+        80.79,
+        80.44,
+        81.78,
+        78.36,
+        82,
         82.22,
         83.21,
-        82.8,
-        84.34,
-        80.68,
-        83.26,
-        83.62,
-        84.22,
-        79.97,
-        80.97,
-        83.13,
-        85.29,
-        83.72,
+        82.96,
+        83.01,
+        79.49,
+        83.01,
+        83.7,
+        84,
+        80.58,
+        81.09,
+        83.07,
+        84.45,
+        84.78,
         85.84,
         86.68,
         93.1,
         91.38,
         92.44,
         88.59,
-        86.46,
-        85.08,
-        83.28,
-        84.44,
+        85.73,
+        84.15,
+        84.75,
+        86.48,
+        88.22,
         89.41,
-        89.07,
         87.76,
         86.81,
         91.68,
@@ -524,24 +524,24 @@ export const MARKET_TILES: MarketTile[] = [
         96.26,
         92.8,
         95.27,
-        94.55,
-        90.49,
+        92.72,
+        90.43,
         91.21,
         92.39,
         96.9,
         98.21,
         95.18,
         95.87,
-        97.86
+        98.28
       ]
     },
     "flow1W": {
-      "usd": 293580000,
-      "pct": 1.26
+      "usd": 294840000,
+      "pct": 1.27
     },
     "flow1M": {
-      "usd": 440370000,
-      "pct": 1.91
+      "usd": 383292000,
+      "pct": 1.65
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -552,15 +552,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI China ETF",
-    "price": 54.77,
+    "price": 54.91,
     "aum": 6326371328,
     "thin": false,
     "returns": {
-      "1W": 0.09,
-      "1M": -2.4,
-      "YTD": -8.8,
-      "6M": -4.1,
-      "1Y": -9.2
+      "1W": 0.35,
+      "1M": -2.1,
+      "YTD": -8.6,
+      "6M": -3.9,
+      "1Y": -10.5
     },
     "history": {
       "1W": [
@@ -568,7 +568,7 @@ export const MARKET_TILES: MarketTile[] = [
         54.41,
         54.54,
         54.37,
-        54.77
+        54.91
       ],
       "1M": [
         56.09,
@@ -591,7 +591,7 @@ export const MARKET_TILES: MarketTile[] = [
         54.41,
         54.54,
         54.37,
-        54.77
+        54.91
       ],
       "YTD": [
         60.07,
@@ -619,7 +619,7 @@ export const MARKET_TILES: MarketTile[] = [
         56.57,
         55.06,
         55.1,
-        54.77
+        54.91
       ],
       "6M": [
         57.13,
@@ -647,41 +647,41 @@ export const MARKET_TILES: MarketTile[] = [
         54.63,
         55.66,
         55.23,
-        54.77
+        54.91
       ],
       "1Y": [
-        60.3,
-        64.21,
-        64.75,
-        64.76,
-        66.99,
-        65.12,
-        63.4,
+        61.35,
+        63.95,
+        64.44,
+        64.32,
+        66.55,
+        61.39,
+        63.31,
         64.11,
         64.38,
-        63.36,
-        64.58,
-        61.91,
-        61.91,
-        61.98,
-        61.69,
-        59.99,
-        61.27,
-        62.67,
-        64.26,
-        61.65,
+        63.97,
+        64.46,
+        60.88,
+        62.2,
+        62.66,
+        61.52,
+        60.63,
+        60.37,
+        62.71,
+        63.52,
+        62.49,
         63.29,
         61.07,
         61.99,
         60.95,
         60.67,
         57.13,
-        58.7,
-        58.44,
-        55.64,
-        56.18,
-        57.3,
-        58.03,
+        58.31,
+        57.23,
+        56.65,
+        56,
+        57.21,
+        58.69,
         58.3,
         56.83,
         58.71,
@@ -693,15 +693,15 @@ export const MARKET_TILES: MarketTile[] = [
         52.77,
         50.48,
         52.02,
-        53.13,
-        52.95,
+        52.53,
+        54.08,
         53.33,
         55.8,
         56.57,
         54.63,
         55.66,
         55.23,
-        54.77
+        54.91
       ]
     },
     "flow1W": {
@@ -709,7 +709,7 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 131448000,
+      "usd": 131784000,
       "pct": 2.13
     },
     "note": "Broad China through offshore listings, the shares global money can actually buy: Hong Kong lists and US ADRs, led by the internet platforms. This is the tile that moves when foreign sentiment on China turns."
@@ -721,15 +721,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI China A ETF",
-    "price": 35.37,
+    "price": 35.48,
     "aum": 227652032,
     "thin": false,
     "returns": {
-      "1W": -1.78,
-      "1M": -0.4,
-      "YTD": 2.3,
-      "6M": 0.2,
-      "1Y": 9.7
+      "1W": -1.47,
+      "1M": -0.1,
+      "YTD": 2.6,
+      "6M": 0.5,
+      "1Y": 7.5
     },
     "history": {
       "1W": [
@@ -737,7 +737,7 @@ export const MARKET_TILES: MarketTile[] = [
         35.56,
         35.41,
         35.49,
-        35.37
+        35.48
       ],
       "1M": [
         35.52,
@@ -760,7 +760,7 @@ export const MARKET_TILES: MarketTile[] = [
         35.56,
         35.41,
         35.49,
-        35.37
+        35.48
       ],
       "YTD": [
         34.58,
@@ -788,7 +788,7 @@ export const MARKET_TILES: MarketTile[] = [
         36.48,
         36.64,
         35.55,
-        35.37
+        35.48
       ],
       "6M": [
         35.29,
@@ -816,41 +816,41 @@ export const MARKET_TILES: MarketTile[] = [
         36.09,
         35.81,
         35.78,
-        35.37
+        35.48
       ],
       "1Y": [
-        32.23,
-        33.94,
-        33.48,
-        33.88,
-        34.52,
-        34.44,
-        34.02,
+        33.02,
+        33.6,
+        33.45,
+        33.54,
+        34.39,
+        32.92,
+        33.61,
         34.06,
         34.9,
-        34.38,
-        34.43,
-        33.88,
-        33.59,
-        33.74,
-        34.09,
-        33.58,
-        34.71,
-        35.21,
-        36.23,
-        35.5,
+        34.59,
+        34.64,
+        33.46,
+        33.95,
+        34.21,
+        34.08,
+        33.89,
+        34.37,
+        35.64,
+        35.59,
+        35.81,
         35.64,
         35,
         35.72,
         35.8,
         36.36,
         35.29,
-        35.62,
-        35.29,
-        33.71,
-        34.18,
-        35.13,
-        36.14,
+        35.82,
+        34.74,
+        34.34,
+        34.26,
+        34.85,
+        36.03,
         36.69,
         36.44,
         37.85,
@@ -862,23 +862,23 @@ export const MARKET_TILES: MarketTile[] = [
         37.77,
         37.45,
         36.98,
-        36.78,
-        34.66,
+        35.66,
+        34.84,
         35.15,
         35.15,
         36.48,
         36.09,
         35.81,
         35.78,
-        35.37
+        35.48
       ]
     },
     "flow1W": {
-      "usd": -14148000,
+      "usd": -14192000,
       "pct": -6.35
     },
     "flow1M": {
-      "usd": 7074000,
+      "usd": 7096000,
       "pct": 3.51
     },
     "note": "Onshore Shanghai and Shenzhen A-shares, the market domestic Chinese money trades. Read it against the China tile: onshore and offshore China regularly disagree, and the gap between the two is its own signal about who is buying, locals or foreigners."
@@ -890,15 +890,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Hong Kong ETF",
-    "price": 23.13,
+    "price": 23.2,
     "aum": 1213570432,
     "thin": false,
     "returns": {
-      "1W": 0.96,
-      "1M": 0.9,
-      "YTD": 8.8,
-      "6M": -0.8,
-      "1Y": 10.1
+      "1W": 1.27,
+      "1M": 1.2,
+      "YTD": 9.2,
+      "6M": -0.5,
+      "1Y": 9.5
     },
     "history": {
       "1W": [
@@ -906,7 +906,7 @@ export const MARKET_TILES: MarketTile[] = [
         22.55,
         22.87,
         22.98,
-        23.13
+        23.2
       ],
       "1M": [
         22.92,
@@ -929,7 +929,7 @@ export const MARKET_TILES: MarketTile[] = [
         22.55,
         22.87,
         22.98,
-        23.13
+        23.2
       ],
       "YTD": [
         21.25,
@@ -957,7 +957,7 @@ export const MARKET_TILES: MarketTile[] = [
         22.71,
         22.49,
         22.94,
-        23.13
+        23.2
       ],
       "6M": [
         23.31,
@@ -985,41 +985,41 @@ export const MARKET_TILES: MarketTile[] = [
         22.39,
         23.35,
         22.94,
-        23.13
+        23.2
       ],
       "1Y": [
-        21,
-        22.04,
-        21.59,
-        21,
-        21.6,
+        21.18,
+        21.92,
+        21.47,
+        21.11,
         21.56,
-        20.99,
+        20.66,
+        21.19,
         21.22,
         21.44,
-        22.09,
-        23.14,
-        21.89,
-        22.16,
-        22.08,
-        21.91,
-        21.44,
-        21.91,
-        21.99,
-        22.53,
-        22.3,
+        22.2,
+        22.89,
+        21.64,
+        22.24,
+        22.05,
+        21.87,
+        21.61,
+        21.46,
+        22.24,
+        22.4,
+        22.6,
         23.27,
         23.37,
         23.67,
         23.56,
         23.86,
         23.31,
-        23.31,
-        22.99,
-        22.53,
-        23.09,
-        23.77,
-        23.61,
+        23.35,
+        22.65,
+        23.02,
+        23.25,
+        23.84,
+        23.39,
         23.5,
         23.33,
         24.39,
@@ -1031,23 +1031,23 @@ export const MARKET_TILES: MarketTile[] = [
         21.28,
         21.09,
         21.23,
-        21.5,
-        22.04,
+        21.3,
+        22.14,
         22.55,
         23.08,
         22.71,
         22.39,
         23.35,
         22.94,
-        23.13
+        23.2
       ]
     },
     "flow1W": {
-      "usd": -72859500,
-      "pct": -5.74
+      "usd": -41760000,
+      "pct": -3.36
     },
     "flow1M": {
-      "usd": -48573000,
+      "usd": -48720000,
       "pct": -3.9
     },
     "note": "Hong Kong is not a China duplicate: property, insurance and the exchange itself, priced in a USD-pegged currency. It is the rate-sensitive, capital-markets face of the region."
@@ -1059,15 +1059,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Taiwan ETF",
-    "price": 111.31,
+    "price": 112.18,
     "aum": 11758742528,
     "thin": false,
     "returns": {
-      "1W": 3.04,
-      "1M": 8.9,
-      "YTD": 75.2,
-      "6M": 55.4,
-      "1Y": 87.7
+      "1W": 3.84,
+      "1M": 9.8,
+      "YTD": 76.6,
+      "6M": 56.6,
+      "1Y": 86.3
     },
     "history": {
       "1W": [
@@ -1075,7 +1075,7 @@ export const MARKET_TILES: MarketTile[] = [
         109.74,
         109.43,
         110.13,
-        111.31
+        112.18
       ],
       "1M": [
         102.21,
@@ -1098,7 +1098,7 @@ export const MARKET_TILES: MarketTile[] = [
         109.74,
         109.43,
         110.13,
-        111.31
+        112.18
       ],
       "YTD": [
         63.53,
@@ -1126,7 +1126,7 @@ export const MARKET_TILES: MarketTile[] = [
         103.09,
         107.8,
         106.39,
-        111.31
+        112.18
       ],
       "6M": [
         71.62,
@@ -1154,41 +1154,41 @@ export const MARKET_TILES: MarketTile[] = [
         107.07,
         104.3,
         107.9,
-        111.31
+        112.18
       ],
       "1Y": [
-        59.3,
+        60.21,
+        62.83,
+        63.38,
         62.74,
-        63.77,
-        63.06,
-        64,
-        64.83,
-        65.17,
+        64.64,
+        61.62,
+        65.09,
         65.71,
         66.54,
-        66.03,
-        65.41,
-        62.5,
-        63.66,
+        64.94,
+        63.99,
+        61.68,
         64.51,
-        65.92,
-        60.87,
-        63.02,
-        65.3,
-        66.62,
-        66.54,
+        65.35,
+        64.1,
+        61.64,
+        63.33,
+        65.83,
+        66.1,
+        67.45,
         71.32,
         68.83,
         71.44,
         72.98,
         77.06,
         71.62,
-        70.44,
-        73,
-        70.74,
-        70.92,
-        76.36,
-        80.74,
+        71.91,
+        71.34,
+        72.39,
+        71.72,
+        76.41,
+        81.35,
         86.19,
         87.19,
         94.85,
@@ -1200,15 +1200,15 @@ export const MARKET_TILES: MarketTile[] = [
         109.99,
         102.81,
         107.27,
-        106.19,
-        97.33,
+        101.88,
+        95.94,
         98.01,
         96.55,
         103.09,
         107.07,
         104.3,
         107.9,
-        111.31
+        112.18
       ]
     },
     "flow1W": {
@@ -1216,8 +1216,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 0,
-      "pct": 0
+      "usd": 112180000,
+      "pct": 0.93
     },
     "note": "Taiwan is the semiconductor supply chain wearing a flag. TSMC dominates this fund outright, so the tile doubles as a read on global chip demand, with geopolitical risk permanently in the price."
   },
@@ -1228,15 +1228,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI South Korea ETF",
-    "price": 183.91,
+    "price": 188.87,
     "aum": 27722782720,
     "thin": false,
     "returns": {
-      "1W": 1.69,
-      "1M": 7.5,
-      "YTD": 89.2,
-      "6M": 36.9,
-      "1Y": 151.7
+      "1W": 4.43,
+      "1M": 10.4,
+      "YTD": 94.3,
+      "6M": 40.6,
+      "1Y": 156.5
     },
     "history": {
       "1W": [
@@ -1244,7 +1244,7 @@ export const MARKET_TILES: MarketTile[] = [
         175.8,
         178.86,
         180.56,
-        183.91
+        188.87
       ],
       "1M": [
         171.14,
@@ -1267,7 +1267,7 @@ export const MARKET_TILES: MarketTile[] = [
         175.8,
         178.86,
         180.56,
-        183.91
+        188.87
       ],
       "YTD": [
         97.22,
@@ -1295,7 +1295,7 @@ export const MARKET_TILES: MarketTile[] = [
         166.09,
         185.1,
         179.18,
-        183.91
+        188.87
       ],
       "6M": [
         134.37,
@@ -1323,41 +1323,41 @@ export const MARKET_TILES: MarketTile[] = [
         179.74,
         178.34,
         180.2,
-        183.91
+        188.87
       ],
       "1Y": [
-        73.07,
-        77.86,
-        80.75,
-        79.89,
-        83.53,
-        83.43,
-        87.88,
+        73.63,
+        78.66,
+        80.05,
+        78.87,
+        83.85,
+        80.72,
+        88.52,
         90.07,
         95.26,
-        96.62,
-        95.92,
-        90.56,
-        91.55,
-        91.87,
-        94.96,
-        90.07,
-        95.84,
-        104.83,
-        108.93,
-        110.97,
+        93.51,
+        94.07,
+        88.53,
+        90.87,
+        94.3,
+        92.67,
+        91.34,
+        98.72,
+        107.61,
+        107.54,
+        115.66,
         122.7,
         124.32,
         124.45,
         132.93,
         148.89,
         134.37,
-        130.3,
-        134.43,
-        128.75,
-        123.01,
-        140.07,
-        144.92,
+        132.85,
+        131.88,
+        127.74,
+        126.22,
+        139.29,
+        147.47,
         155.8,
         153.96,
         181.98,
@@ -1369,15 +1369,15 @@ export const MARKET_TILES: MarketTile[] = [
         219.2,
         197.28,
         189.85,
-        183.52,
-        162.54,
+        168.02,
+        162.86,
         162.96,
         157.1,
         166.09,
         179.74,
         178.34,
         180.2,
-        183.91
+        188.87
       ]
     },
     "flow1W": {
@@ -1385,8 +1385,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -358624500,
-      "pct": -1.26
+      "usd": -387183500,
+      "pct": -1.32
     },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
@@ -1397,15 +1397,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI India ETF",
-    "price": 49.92,
+    "price": 49.91,
     "aum": 6747315712,
     "thin": false,
     "returns": {
-      "1W": 0.44,
+      "1W": 0.42,
       "1M": -1.2,
-      "YTD": -7.6,
+      "YTD": -7.7,
       "6M": -0.7,
-      "1Y": -5.1
+      "1Y": -4.9
     },
     "history": {
       "1W": [
@@ -1413,7 +1413,7 @@ export const MARKET_TILES: MarketTile[] = [
         49.58,
         49.97,
         49.92,
-        49.92
+        49.91
       ],
       "1M": [
         50.53,
@@ -1436,7 +1436,7 @@ export const MARKET_TILES: MarketTile[] = [
         49.58,
         49.97,
         49.92,
-        49.92
+        49.91
       ],
       "YTD": [
         54.05,
@@ -1464,7 +1464,7 @@ export const MARKET_TILES: MarketTile[] = [
         50.37,
         49.58,
         49.75,
-        49.92
+        49.91
       ],
       "6M": [
         50.27,
@@ -1492,41 +1492,41 @@ export const MARKET_TILES: MarketTile[] = [
         49.78,
         49.64,
         49.56,
-        49.92
+        49.91
       ],
       "1Y": [
-        52.59,
-        53.24,
-        53.74,
-        52.49,
-        52.3,
-        52.81,
-        54.07,
+        52.48,
+        53.15,
+        53.94,
+        52.25,
+        52.45,
+        52.77,
+        54.45,
         54.76,
         54.27,
-        54.3,
-        54.56,
-        54.83,
-        54.67,
-        53.76,
-        53.57,
-        53.28,
-        53.84,
-        54.29,
-        53.4,
-        51.73,
+        53.62,
+        54.2,
+        54.72,
+        54.71,
+        53.97,
+        53.14,
+        54.15,
+        53.47,
+        54.08,
+        53.04,
+        51.55,
         51.69,
         53.15,
         53.74,
         53.32,
         52.74,
         50.27,
-        49.93,
-        48.52,
-        46.39,
-        46.84,
         49.27,
-        49.98,
+        47.72,
+        47.42,
+        46.71,
+        49.07,
+        50,
         49.98,
         49.03,
         50.03,
@@ -1538,23 +1538,23 @@ export const MARKET_TILES: MarketTile[] = [
         49.58,
         49.56,
         49.88,
-        49.3,
-        48.91,
+        48.79,
+        48.55,
         48.02,
         49.8,
         50.37,
         49.78,
         49.64,
         49.56,
-        49.92
+        49.91
       ]
     },
     "flow1W": {
-      "usd": 17472000,
-      "pct": 0.26
+      "usd": 0,
+      "pct": 0
     },
     "flow1M": {
-      "usd": 194688000,
+      "usd": 194649000,
       "pct": 2.96
     },
     "note": "The structural growth story of the decade: demographics, infrastructure build-out and a deep domestic investor base. India trades at a premium multiple, so flows here tell you how much growth investors are willing to pay for."
@@ -1566,15 +1566,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Singapore ETF",
-    "price": 34.54,
+    "price": 34.57,
     "aum": 1249406848,
     "thin": false,
     "returns": {
-      "1W": 1.08,
+      "1W": 1.17,
       "1M": 6,
-      "YTD": 25.6,
-      "6M": 24.4,
-      "1Y": 22.1
+      "YTD": 25.7,
+      "6M": 24.5,
+      "1Y": 21.2
     },
     "history": {
       "1W": [
@@ -1582,7 +1582,7 @@ export const MARKET_TILES: MarketTile[] = [
         33.72,
         34.2,
         34.29,
-        34.54
+        34.57
       ],
       "1M": [
         32.6,
@@ -1605,7 +1605,7 @@ export const MARKET_TILES: MarketTile[] = [
         33.72,
         34.2,
         34.29,
-        34.54
+        34.57
       ],
       "YTD": [
         27.51,
@@ -1633,7 +1633,7 @@ export const MARKET_TILES: MarketTile[] = [
         33.25,
         33.92,
         34.17,
-        34.54
+        34.57
       ],
       "6M": [
         27.77,
@@ -1661,41 +1661,41 @@ export const MARKET_TILES: MarketTile[] = [
         33.68,
         33.77,
         33.93,
-        34.54
+        34.57
       ],
       "1Y": [
-        28.29,
-        29.15,
-        28.79,
-        28.24,
-        28.92,
-        29.02,
-        27.98,
+        28.53,
+        29.01,
+        28.83,
+        28.35,
+        29.08,
+        28.33,
+        28.07,
         28.28,
         28.41,
-        28.16,
-        28.69,
-        28.22,
-        28.12,
-        28.02,
-        27.77,
-        26.87,
-        27.55,
-        28.43,
         28.4,
-        27.89,
+        28.29,
+        27.58,
+        28.39,
+        27.82,
+        27.74,
+        26.93,
+        27.7,
+        28.86,
+        28.27,
+        27.9,
         29,
         28.01,
         28.58,
         28.81,
         28.92,
         27.77,
-        27.69,
-        28.11,
-        27.48,
-        28.22,
-        29.05,
-        29.31,
+        27.78,
+        27.97,
+        27.82,
+        28.48,
+        28.88,
+        29.15,
         29.01,
         28.2,
         29.12,
@@ -1707,24 +1707,24 @@ export const MARKET_TILES: MarketTile[] = [
         29.79,
         29.66,
         30.28,
-        31.64,
-        31.48,
+        31.43,
+        31.36,
         31.65,
         32.28,
         33.25,
         33.68,
         33.77,
         33.93,
-        34.54
+        34.57
       ]
     },
     "flow1W": {
-      "usd": 60445000,
+      "usd": 60497500,
       "pct": 4.87
     },
     "flow1M": {
-      "usd": 164065000,
-      "pct": 14.42
+      "usd": 143465500,
+      "pct": 12.37
     },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
@@ -1735,15 +1735,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Indonesia ETF",
-    "price": 13.09,
+    "price": 13.06,
     "aum": 502444576,
     "thin": false,
     "returns": {
-      "1W": 2.83,
-      "1M": 2.9,
-      "YTD": -30,
-      "6M": -22.4,
-      "1Y": -26.3
+      "1W": 2.59,
+      "1M": 2.7,
+      "YTD": -30.2,
+      "6M": -22.6,
+      "1Y": -27.2
     },
     "history": {
       "1W": [
@@ -1751,7 +1751,7 @@ export const MARKET_TILES: MarketTile[] = [
         12.93,
         13,
         13.22,
-        13.09
+        13.06
       ],
       "1M": [
         12.72,
@@ -1774,7 +1774,7 @@ export const MARKET_TILES: MarketTile[] = [
         12.93,
         13,
         13.22,
-        13.09
+        13.06
       ],
       "YTD": [
         18.7,
@@ -1802,7 +1802,7 @@ export const MARKET_TILES: MarketTile[] = [
         12.91,
         12.6,
         12.5,
-        13.09
+        13.06
       ],
       "6M": [
         16.87,
@@ -1830,41 +1830,41 @@ export const MARKET_TILES: MarketTile[] = [
         12.6,
         12.77,
         12.66,
-        13.09
+        13.06
       ],
       "1Y": [
-        17.77,
-        17.64,
-        17.72,
-        17.41,
-        17.44,
-        17.65,
-        17.36,
+        17.93,
+        17.83,
+        17.79,
+        17.6,
+        17.43,
+        17.31,
+        17.3,
         18.3,
         18.27,
-        18.54,
         18.44,
-        18.48,
-        18.87,
-        18.79,
-        18.68,
-        18.63,
-        18.47,
-        19.04,
-        18.99,
-        19.13,
+        18.28,
+        18.33,
+        18.67,
+        18.82,
+        18.76,
+        18.58,
+        18.67,
+        19.08,
+        19.03,
+        18.94,
         19.18,
         17.59,
         17.75,
         17.87,
         18.22,
         16.87,
-        16.32,
-        15.57,
-        15.27,
-        15.79,
-        15.89,
-        16.27,
+        16.17,
+        15.39,
+        15.99,
+        15.78,
+        15.87,
+        16.22,
         16.13,
         15.02,
         15.12,
@@ -1876,23 +1876,23 @@ export const MARKET_TILES: MarketTile[] = [
         12.43,
         11.86,
         11.81,
-        11.85,
-        12.42,
+        11.98,
+        12.53,
         12.26,
         12.37,
         12.91,
         12.6,
         12.77,
         12.66,
-        13.09
+        13.06
       ]
     },
     "flow1W": {
-      "usd": 6545000,
+      "usd": 6530000,
       "pct": 1.29
     },
     "flow1M": {
-      "usd": 6545000,
+      "usd": 6530000,
       "pct": 1.29
     },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
@@ -1904,15 +1904,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Malaysia ETF",
-    "price": 28.19,
+    "price": 28.15,
     "aum": 324744896,
     "thin": false,
     "returns": {
-      "1W": -0.7,
-      "1M": -0.7,
-      "YTD": 3,
-      "6M": -2.2,
-      "1Y": 12.9
+      "1W": -0.85,
+      "1M": -0.9,
+      "YTD": 2.9,
+      "6M": -2.3,
+      "1Y": 12.5
     },
     "history": {
       "1W": [
@@ -1920,7 +1920,7 @@ export const MARKET_TILES: MarketTile[] = [
         27.72,
         28.09,
         28.29,
-        28.19
+        28.15
       ],
       "1M": [
         28.4,
@@ -1943,7 +1943,7 @@ export const MARKET_TILES: MarketTile[] = [
         27.72,
         28.09,
         28.29,
-        28.19
+        28.15
       ],
       "YTD": [
         27.36,
@@ -1971,7 +1971,7 @@ export const MARKET_TILES: MarketTile[] = [
         28.18,
         28.11,
         29,
-        28.19
+        28.15
       ],
       "6M": [
         28.82,
@@ -1999,41 +1999,41 @@ export const MARKET_TILES: MarketTile[] = [
         28,
         28.66,
         28.36,
-        28.19
+        28.15
       ],
       "1Y": [
-        24.97,
+        25.03,
+        25.47,
+        25.59,
+        25.73,
+        26.2,
         25.33,
-        25.6,
-        25.27,
-        26.27,
-        25.98,
-        25.58,
+        25.7,
         25.65,
         25.88,
-        26.2,
-        26.53,
-        26.33,
+        26.01,
+        26.5,
+        26.05,
+        26.43,
         26.64,
-        26.59,
-        26.87,
-        26.88,
-        27.64,
-        27.61,
-        27.97,
-        27.88,
+        26.98,
+        27.2,
+        27.53,
+        27.63,
+        28.05,
+        28.26,
         30.06,
         29.42,
         29.69,
         29.67,
         30.01,
         28.82,
-        28.58,
-        29.37,
-        28.93,
-        28.41,
-        28.86,
-        28.61,
+        28.78,
+        29.34,
+        28.99,
+        28.65,
+        28.56,
+        28.77,
         29.19,
         29.24,
         30.39,
@@ -2045,15 +2045,15 @@ export const MARKET_TILES: MarketTile[] = [
         27.52,
         26.91,
         27.24,
-        27.43,
-        28.18,
+        27.5,
+        27.91,
         27.63,
         28.08,
         28.18,
         28,
         28.66,
         28.36,
-        28.19
+        28.15
       ]
     },
     "flow1W": {
@@ -2061,7 +2061,7 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -10571250,
+      "usd": -10556250,
       "pct": -3.18
     },
     "note": "Malaysia is one of the quieter ASEAN markets: banks, utilities and a data-center construction wave. Low drama, moderate beta, occasionally rediscovered by regional flows."
@@ -2073,46 +2073,46 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Thailand ETF",
-    "price": 73.14,
+    "price": 73.39,
     "aum": 345795680,
     "thin": false,
     "returns": {
-      "1W": 1.18,
-      "1M": 0.3,
-      "YTD": 22.6,
-      "6M": 5.1,
-      "1Y": 25.3
+      "1W": 1.41,
+      "1M": 0,
+      "YTD": 23,
+      "6M": 9.1,
+      "1Y": 23.8
     },
     "history": {
       "1W": [
-        72.29,
         72.37,
         71.73,
         72.1,
-        73.14
+        73.14,
+        73.39
       ],
       "1M": [
-        72.95,
         73.39,
         72.72,
         72.88,
-        73.7,
+        73.63,
         72.91,
         73.22,
         73.07,
         72.82,
         73.88,
-        73.81,
+        73.45,
         73.56,
         74.76,
         73.47,
         73.23,
         73.75,
         73.73,
-        72.37,
+        72.29,
         71.73,
         72.1,
-        73.14
+        73.14,
+        73.39
       ],
       "YTD": [
         59.67,
@@ -2122,115 +2122,115 @@ export const MARKET_TILES: MarketTile[] = [
         68.43,
         72.4,
         69.59,
-        67.01,
+        65.9,
         65.2,
         69.38,
         71.71,
-        70.53,
-        69.15,
+        69.57,
+        70.71,
         71.76,
         71.04,
-        74,
-        72.83,
-        71.68,
+        73.46,
+        72.68,
+        72.31,
         70.81,
-        70.93,
-        72.87,
-        72.05,
-        72.88,
-        72.82,
-        73.23,
-        73.14
+        72.03,
+        73.02,
+        71.51,
+        73.63,
+        73.88,
+        73.75,
+        73.39
       ],
       "6M": [
-        69.59,
-        67.23,
-        67.95,
-        65.32,
-        69.38,
-        71.24,
-        70.84,
-        68.51,
-        70.71,
-        71.2,
-        73.2,
-        72.44,
-        73.46,
-        72.83,
-        73.25,
-        69.28,
-        72.31,
-        70.93,
-        72.34,
-        72.9,
-        71.51,
-        72.88,
-        73.07,
-        73.56,
-        73.73,
-        73.14
-      ],
-      "1Y": [
-        58.35,
-        61.17,
-        60.74,
-        59.72,
-        59.54,
-        59.92,
-        59.75,
-        59.61,
-        61.08,
-        59.86,
-        59.54,
-        58.54,
-        58.83,
-        59.77,
-        59.95,
-        59.33,
-        60.85,
-        61.27,
-        59.76,
-        62.71,
-        63.53,
-        63.01,
-        68.65,
-        71.03,
-        73.07,
-        69.59,
-        67.23,
-        67.95,
-        65.32,
-        69.38,
-        71.1,
+        67.29,
+        67.01,
+        65.47,
+        67.31,
+        68.9,
+        71.71,
         71.96,
-        69.57,
-        69.23,
-        70.44,
-        70.22,
-        71.04,
-        73.39,
-        74.09,
-        72.3,
-        71.68,
-        69.47,
-        71.62,
-        72.51,
-        72.87,
+        69.16,
+        70.91,
+        71.76,
+        71.09,
+        72.59,
+        73.71,
+        72.68,
+        72.59,
+        69.21,
+        71.19,
+        72.03,
+        72.93,
         72.41,
         72.14,
-        72.88,
-        73.07,
-        73.56,
-        73.73,
-        73.14
+        73.63,
+        72.82,
+        74.76,
+        72.29,
+        73.39
+      ],
+      "1Y": [
+        59.29,
+        61.06,
+        60.95,
+        59.51,
+        60.15,
+        58.21,
+        58.71,
+        59.86,
+        60.76,
+        60.55,
+        59.09,
+        58.45,
+        59.04,
+        60.16,
+        59.66,
+        59.62,
+        59.11,
+        60.84,
+        58.63,
+        63.91,
+        65.18,
+        63.32,
+        68.43,
+        71.26,
+        74.62,
+        67.29,
+        67.01,
+        65.47,
+        67.31,
+        68.9,
+        71.24,
+        70.84,
+        70.35,
+        69.15,
+        72.33,
+        72.17,
+        72.33,
+        74,
+        74.98,
+        74.26,
+        72.31,
+        69.11,
+        72.91,
+        72.33,
+        73.02,
+        72.83,
+        73.04,
+        73.63,
+        72.82,
+        74.76,
+        72.29,
+        73.39
       ]
     },
     "flow1W": {
-      "usd": -7314000,
+      "usd": -7339000,
       "pct": -2.11
     },
     "flow1M": {
-      "usd": -29256000,
+      "usd": -29356000,
       "pct": -7.92
     },
     "note": "Thailand leans on tourism, banks and energy. It has spent years out of favor, which makes any sustained inflow here a genuine change-of-mind signal rather than momentum chasing."
@@ -2242,15 +2242,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Asia",
     "kind": "country",
     "name": "iShares MSCI Philippines ETF",
-    "price": 24.34,
+    "price": 24.25,
     "aum": 149473952,
     "thin": false,
     "returns": {
-      "1W": 2.48,
-      "1M": -6.3,
-      "YTD": -2.3,
-      "6M": -7.8,
-      "1Y": -5.6
+      "1W": 2.11,
+      "1M": -6.6,
+      "YTD": -2.7,
+      "6M": -8.1,
+      "1Y": -6.9
     },
     "history": {
       "1W": [
@@ -2258,7 +2258,7 @@ export const MARKET_TILES: MarketTile[] = [
         24.14,
         24.22,
         24.4,
-        24.34
+        24.25
       ],
       "1M": [
         25.97,
@@ -2281,7 +2281,7 @@ export const MARKET_TILES: MarketTile[] = [
         24.14,
         24.22,
         24.4,
-        24.34
+        24.25
       ],
       "YTD": [
         24.92,
@@ -2309,7 +2309,7 @@ export const MARKET_TILES: MarketTile[] = [
         25.97,
         25.46,
         24.62,
-        24.34
+        24.25
       ],
       "6M": [
         26.39,
@@ -2337,41 +2337,41 @@ export const MARKET_TILES: MarketTile[] = [
         25.63,
         25.23,
         23.81,
-        24.34
+        24.25
       ],
       "1Y": [
-        25.78,
-        26,
-        26.46,
-        25.09,
-        25.22,
-        25.2,
-        25.42,
+        26.06,
+        25.8,
+        26.8,
+        25.12,
+        25.59,
+        24.87,
+        25.41,
         24.99,
         24.4,
-        24.19,
-        23.6,
-        24.23,
-        25.02,
-        24.2,
-        25.02,
-        25.01,
-        25.08,
-        25.46,
-        26.41,
-        26,
+        24.11,
+        23.69,
+        24.37,
+        25.21,
+        24.73,
+        24.9,
+        24.66,
+        25.09,
+        25.98,
+        26.24,
+        26.27,
         26.23,
         26.45,
         26.93,
         26.78,
         28.37,
         26.39,
-        25.54,
-        24.88,
-        24.44,
-        24.83,
-        25.71,
-        25.47,
+        25.38,
+        24.61,
+        25,
+        24.85,
+        25.67,
+        25.32,
         25.1,
         24.1,
         25.09,
@@ -2383,23 +2383,23 @@ export const MARKET_TILES: MarketTile[] = [
         25.5,
         24.41,
         25.02,
-        25.27,
-        25.6,
+        24.93,
+        25.68,
         25.22,
         25.56,
         25.97,
         25.63,
         25.23,
         23.81,
-        24.34
+        24.25
       ]
     },
     "flow1W": {
-      "usd": -19472000,
-      "pct": -11.94
+      "usd": -13337500,
+      "pct": -8.53
     },
     "flow1M": {
-      "usd": 4868000,
+      "usd": 4850000,
       "pct": 3.51
     },
     "note": "The Philippines is a small, domestically driven market: conglomerates, banks and property, powered by remittances and services. Thin fund, thin liquidity, treat single-day moves with suspicion."
@@ -2411,15 +2411,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Latin America",
     "kind": "country",
     "name": "iShares MSCI Brazil ETF",
-    "price": 37.68,
+    "price": 37.86,
     "aum": 8173754368,
     "thin": false,
     "returns": {
-      "1W": 4.58,
-      "1M": 4.4,
-      "YTD": 18.6,
-      "6M": 0.5,
-      "1Y": 29.2
+      "1W": 5.08,
+      "1M": 4.9,
+      "YTD": 19.2,
+      "6M": 1,
+      "1Y": 27.8
     },
     "history": {
       "1W": [
@@ -2427,7 +2427,7 @@ export const MARKET_TILES: MarketTile[] = [
         36.57,
         38.09,
         38.13,
-        37.68
+        37.86
       ],
       "1M": [
         36.09,
@@ -2450,7 +2450,7 @@ export const MARKET_TILES: MarketTile[] = [
         36.57,
         38.09,
         38.13,
-        37.68
+        37.86
       ],
       "YTD": [
         31.77,
@@ -2478,7 +2478,7 @@ export const MARKET_TILES: MarketTile[] = [
         35.34,
         33.97,
         35.72,
-        37.68
+        37.86
       ],
       "6M": [
         37.49,
@@ -2506,41 +2506,41 @@ export const MARKET_TILES: MarketTile[] = [
         33.93,
         35.06,
         35.55,
-        37.68
+        37.86
       ],
       "1Y": [
-        29.17,
-        30.05,
-        30.82,
-        30.58,
-        30.24,
-        29.67,
-        29.24,
+        29.63,
+        30.03,
+        30.93,
+        30.73,
+        30.33,
+        28.79,
+        29.71,
         30.47,
         31.05,
-        32.1,
-        33.22,
-        32.49,
-        33.47,
-        34.72,
-        33.16,
+        32.04,
+        32.98,
+        31.9,
+        33.61,
+        32.53,
+        33.32,
         31.17,
-        31.73,
-        32.79,
-        32.93,
-        33.62,
+        31.42,
+        33.11,
+        32.63,
+        35.02,
         37.89,
         38.04,
         38.32,
         38.03,
         39.59,
         37.49,
-        37.53,
-        36.71,
-        36.67,
-        38.39,
-        39.56,
-        41.46,
+        37.61,
+        36.26,
+        37.54,
+        38.37,
+        40.54,
+        41.47,
         40.59,
         38.65,
         39.9,
@@ -2552,23 +2552,23 @@ export const MARKET_TILES: MarketTile[] = [
         33.73,
         34.67,
         34.92,
-        35.93,
-        35.23,
+        35.39,
+        35.48,
         35.73,
         36.65,
         35.34,
         33.93,
         35.06,
         35.55,
-        37.68
+        37.86
       ]
     },
     "flow1W": {
-      "usd": 18840000,
+      "usd": 18930000,
       "pct": 0.22
     },
     "flow1M": {
-      "usd": -958956000,
+      "usd": -963537000,
       "pct": -10.05
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
@@ -2580,15 +2580,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Latin America",
     "kind": "country",
     "name": "iShares MSCI Mexico ETF",
-    "price": 76.755,
+    "price": 76.63,
     "aum": 1819569408,
     "thin": false,
     "returns": {
-      "1W": 0.05,
-      "1M": -0.4,
-      "YTD": 10.7,
-      "6M": -1.5,
-      "1Y": 21.7
+      "1W": -0.12,
+      "1M": -0.6,
+      "YTD": 10.5,
+      "6M": -1.6,
+      "1Y": 20.1
     },
     "history": {
       "1W": [
@@ -2596,7 +2596,7 @@ export const MARKET_TILES: MarketTile[] = [
         75.66,
         76.22,
         76.97,
-        76.75
+        76.63
       ],
       "1M": [
         77.06,
@@ -2619,7 +2619,7 @@ export const MARKET_TILES: MarketTile[] = [
         75.66,
         76.22,
         76.97,
-        76.75
+        76.63
       ],
       "YTD": [
         69.33,
@@ -2647,7 +2647,7 @@ export const MARKET_TILES: MarketTile[] = [
         77.52,
         74.91,
         77.55,
-        76.75
+        76.63
       ],
       "6M": [
         77.91,
@@ -2675,41 +2675,41 @@ export const MARKET_TILES: MarketTile[] = [
         75.01,
         77.38,
         76.48,
-        76.75
+        76.63
       ],
       "1Y": [
-        63.07,
-        65.71,
-        65.95,
-        66.18,
-        66.9,
-        65.42,
-        67.05,
+        63.83,
+        66.12,
+        66.1,
+        67.14,
+        66.81,
+        64.39,
+        66.13,
         66.02,
         66.73,
-        67.18,
-        68.16,
-        66.77,
-        67.88,
-        68.82,
-        71.06,
-        68.75,
-        71.15,
-        70.58,
-        72.06,
-        74.61,
+        66.97,
+        67.38,
+        66.02,
+        68.42,
+        68.68,
+        70.69,
+        68.85,
+        70.51,
+        70.04,
+        71.97,
+        75.36,
         77.86,
         78.76,
         80.48,
         80.15,
         80.45,
         77.91,
-        74.76,
-        73.38,
-        72.46,
-        75.23,
-        79.11,
+        74.69,
+        72.38,
+        75.16,
+        76.37,
         79.43,
+        79.01,
         78.33,
         75.4,
         79.52,
@@ -2721,24 +2721,24 @@ export const MARKET_TILES: MarketTile[] = [
         77.33,
         75.37,
         76.43,
-        74.86,
-        75.11,
+        74.15,
+        75.09,
         75.45,
         76.81,
         77.52,
         75.01,
         77.38,
         76.48,
-        76.75
+        76.63
       ]
     },
     "flow1W": {
-      "usd": -15351000,
-      "pct": -0.84
+      "usd": -53641000,
+      "pct": -2.94
     },
     "flow1M": {
-      "usd": -153510000,
-      "pct": -7.84
+      "usd": -176249000,
+      "pct": -9.06
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2749,14 +2749,14 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Latin America",
     "kind": "country",
     "name": "Global X MSCI Argentina ETF",
-    "price": 96.365,
+    "price": 96.41,
     "aum": 815331200,
     "thin": false,
     "returns": {
-      "1W": 1.92,
-      "1M": 2.7,
-      "YTD": 5.4,
-      "6M": 9.7,
+      "1W": 1.97,
+      "1M": 2.8,
+      "YTD": 5.5,
+      "6M": 9.8,
       "1Y": 20.8
     },
     "history": {
@@ -2765,7 +2765,7 @@ export const MARKET_TILES: MarketTile[] = [
         95.46,
         97.9,
         96.8,
-        96.36
+        96.41
       ],
       "1M": [
         93.8,
@@ -2788,7 +2788,7 @@ export const MARKET_TILES: MarketTile[] = [
         95.46,
         97.9,
         96.8,
-        96.36
+        96.41
       ],
       "YTD": [
         91.41,
@@ -2816,7 +2816,7 @@ export const MARKET_TILES: MarketTile[] = [
         92.96,
         91.33,
         94.46,
-        96.36
+        96.41
       ],
       "6M": [
         87.83,
@@ -2844,41 +2844,41 @@ export const MARKET_TILES: MarketTile[] = [
         90.97,
         92.81,
         93.8,
-        96.36
+        96.41
       ],
       "1Y": [
-        79.78,
-        73.34,
-        69.96,
-        74.12,
-        68.8,
-        73.72,
-        72,
+        79.81,
+        71.37,
+        69.62,
+        72.92,
+        68.51,
+        71.42,
+        71.38,
         73.88,
         91.31,
-        93.28,
-        92.47,
-        90.48,
-        90.49,
-        93.13,
-        91.11,
-        91.11,
-        92.87,
-        94.3,
-        94.44,
-        91.32,
+        90.41,
+        90.13,
+        86.91,
+        93.18,
+        91.25,
+        90.44,
+        91.31,
+        92.38,
+        93.23,
+        93.16,
+        94.65,
         102.94,
         96.86,
         95.77,
         91.3,
         92.56,
         87.83,
-        87.9,
-        87.51,
-        87.67,
-        93.32,
-        94.66,
-        93.89,
+        89.77,
+        86.67,
+        89.14,
+        93.21,
+        93.93,
+        94.17,
         93.37,
         90.47,
         93.97,
@@ -2890,24 +2890,24 @@ export const MARKET_TILES: MarketTile[] = [
         97.1,
         91.3,
         93.99,
-        95.07,
-        92.03,
+        94.48,
+        92.85,
         93.14,
         95.15,
         92.96,
         90.97,
         92.81,
         93.8,
-        96.36
+        96.41
       ]
     },
     "flow1W": {
-      "usd": -58636657,
-      "pct": -6.8
+      "usd": -50275212,
+      "pct": -5.83
     },
     "flow1M": {
-      "usd": -51183499,
-      "pct": -5.99
+      "usd": -52467093,
+      "pct": -6.07
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -2918,15 +2918,15 @@ export const MARKET_TILES: MarketTile[] = [
     "region": "Latin America",
     "kind": "country",
     "name": "iShares MSCI Chile ETF",
-    "price": 40.71,
+    "price": 40.84,
     "aum": 1043472000,
     "thin": false,
     "returns": {
-      "1W": 0.52,
-      "1M": 0.7,
-      "YTD": 0.8,
-      "6M": 1,
-      "1Y": 21.9
+      "1W": 0.84,
+      "1M": 1,
+      "YTD": 1.1,
+      "6M": 1.3,
+      "1Y": 20.7
     },
     "history": {
       "1W": [
@@ -2934,7 +2934,7 @@ export const MARKET_TILES: MarketTile[] = [
         40.39,
         41,
         41.05,
-        40.71
+        40.84
       ],
       "1M": [
         40.44,
@@ -2957,7 +2957,7 @@ export const MARKET_TILES: MarketTile[] = [
         40.39,
         41,
         41.05,
-        40.71
+        40.84
       ],
       "YTD": [
         40.4,
@@ -2985,7 +2985,7 @@ export const MARKET_TILES: MarketTile[] = [
         41.25,
         40.52,
         41.3,
-        40.71
+        40.84
       ],
       "6M": [
         40.31,
@@ -3013,41 +3013,41 @@ export const MARKET_TILES: MarketTile[] = [
         40.32,
         41.44,
         40.99,
-        40.71
+        40.84
       ],
       "1Y": [
-        33.4,
-        34.02,
-        33.6,
-        33.21,
-        32.4,
-        32.52,
-        33.4,
+        33.83,
+        33.22,
+        33.59,
+        33.17,
+        32.32,
+        31.5,
+        33.36,
         34.2,
         35.34,
-        35.3,
-        37.26,
-        37.11,
-        37.61,
-        38.51,
-        39.28,
-        38.69,
-        40.29,
-        41.6,
-        43.87,
-        43.89,
+        35.25,
+        36.71,
+        36.59,
+        37.86,
+        38.18,
+        39.78,
+        39.31,
+        40.15,
+        42.55,
+        44.34,
+        45.2,
         47.37,
         47.19,
         44.54,
         43.69,
         44.73,
         40.31,
-        40.68,
-        40.18,
-        38.5,
-        39.76,
-        41.52,
-        43.94,
+        40.64,
+        39.77,
+        39.04,
+        40.59,
+        42.25,
+        44.32,
         42.78,
         41.09,
         42.05,
@@ -3059,15 +3059,15 @@ export const MARKET_TILES: MarketTile[] = [
         40.66,
         39.53,
         39.66,
-        40.2,
-        38.88,
+        39.38,
+        38.8,
         38.61,
         39.33,
         41.25,
         40.32,
         41.44,
         40.99,
-        40.71
+        40.84
       ]
     },
     "flow1W": {
@@ -3075,7 +3075,7 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -2035500,
+      "usd": -2042000,
       "pct": -0.19
     },
     "note": "Chile is effectively a copper call with a banking system attached: the lithium story adds a second commodity leg. Small market, big sensitivity to Chinese demand."
@@ -3089,19 +3089,19 @@ export const LENS_FUNDS: LensFund[] = [
     "name": "iShares Core MSCI Total International Stock ETF",
     "aum": 60637171712,
     "flow1W": {
-      "usd": 0,
-      "pct": 0
+      "usd": -118452000,
+      "pct": -0.19
     },
     "flow1M": {
-      "usd": 147477300,
-      "pct": 0.24
+      "usd": 29613000,
+      "pct": 0.05
     },
     "returns": {
-      "1W": 0.92,
-      "1M": 1.8,
-      "YTD": 16.2,
-      "6M": 9,
-      "1Y": 23.2
+      "1W": 1.32,
+      "1M": 2.2,
+      "YTD": 16.6,
+      "6M": 9.4,
+      "1Y": 22.8
     },
     "history": {
       "1W": [
@@ -3109,7 +3109,7 @@ export const LENS_FUNDS: LensFund[] = [
         96.71,
         97.22,
         98.15,
-        98.32
+        98.71
       ],
       "1M": [
         96.55,
@@ -3132,7 +3132,7 @@ export const LENS_FUNDS: LensFund[] = [
         96.71,
         97.22,
         98.15,
-        98.32
+        98.71
       ],
       "YTD": [
         84.64,
@@ -3160,7 +3160,7 @@ export const LENS_FUNDS: LensFund[] = [
         97.34,
         98.14,
         98.03,
-        98.32
+        98.71
       ],
       "6M": [
         90.21,
@@ -3188,41 +3188,41 @@ export const LENS_FUNDS: LensFund[] = [
         98,
         97.95,
         97.71,
-        98.32
+        98.71
       ],
       "1Y": [
-        79.81,
-        82.07,
-        82.51,
-        81.52,
-        83.38,
-        83.1,
-        83.5,
+        80.36,
+        81.81,
+        82.28,
+        81.83,
+        83.95,
+        81.21,
+        83.45,
         83.98,
         84.12,
-        83.6,
-        85.27,
-        82.23,
+        83.23,
+        84.31,
+        81.1,
+        84.26,
+        84.57,
+        84.89,
         83.9,
-        84.48,
-        85.5,
-        83.28,
-        85.23,
-        86.78,
-        88.08,
-        87.15,
+        84.94,
+        87.06,
+        87.59,
+        88.13,
         91.02,
         90.11,
         92.47,
         92.67,
         94.47,
         90.21,
-        88.77,
-        88.13,
-        85.24,
-        86.64,
-        91.35,
-        92.93,
+        88.64,
+        86.55,
+        86.49,
+        87.61,
+        91.11,
+        92.89,
         92.81,
         91.21,
         96.22,
@@ -3234,15 +3234,15 @@ export const LENS_FUNDS: LensFund[] = [
         96.97,
         94.26,
         96.2,
-        95.28,
-        93.11,
+        93.57,
+        92.75,
         93.19,
         94.54,
         97.34,
         98,
         97.95,
         97.71,
-        98.32
+        98.71
       ]
     },
     "corrSPY6M": 0.86,
@@ -3367,11 +3367,11 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "returns": {
-      "1W": 0.64,
-      "1M": 0.8,
-      "YTD": 12.6,
-      "6M": 6.7,
-      "1Y": 18.3
+      "1W": 0.84,
+      "1M": 1,
+      "YTD": 12.8,
+      "6M": 6.9,
+      "1Y": 18
     },
     "history": {
       "1W": [
@@ -3379,7 +3379,7 @@ export const LENS_FUNDS: LensFund[] = [
         106.49,
         107.06,
         108.21,
-        108.14
+        108.35
       ],
       "1M": [
         107.32,
@@ -3402,7 +3402,7 @@ export const LENS_FUNDS: LensFund[] = [
         106.49,
         107.06,
         108.21,
-        108.14
+        108.35
       ],
       "YTD": [
         96.03,
@@ -3430,7 +3430,7 @@ export const LENS_FUNDS: LensFund[] = [
         108.55,
         108.45,
         108.27,
-        108.14
+        108.35
       ],
       "6M": [
         101.38,
@@ -3458,41 +3458,41 @@ export const LENS_FUNDS: LensFund[] = [
         108.64,
         108.24,
         107.72,
-        108.14
+        108.35
       ],
       "1Y": [
-        91.38,
-        93.36,
-        93.36,
-        91.92,
-        94.29,
-        93.97,
-        94.34,
+        91.79,
+        92.99,
+        93,
+        92.63,
+        95.08,
+        92.24,
+        94.51,
         94.89,
         94.7,
-        94.16,
-        96.56,
-        92.52,
-        94.87,
+        93.95,
+        95.53,
+        91.24,
+        95.19,
         95.81,
-        97.01,
-        94.82,
-        96.57,
-        98.15,
-        99.41,
-        98.02,
+        96.5,
+        95.46,
+        96.28,
+        98.3,
+        98.84,
+        99.03,
         102.09,
         101.45,
         104.24,
         104.34,
         105.66,
         101.38,
-        99.22,
-        98.37,
-        95.27,
-        97.13,
-        102.19,
-        103.31,
+        99.01,
+        96.69,
+        96.66,
+        98.61,
+        101.95,
+        103.01,
         101.97,
         99.93,
         104.81,
@@ -3504,15 +3504,15 @@ export const LENS_FUNDS: LensFund[] = [
         104.41,
         102.54,
         105.46,
-        104.33,
-        103.33,
+        103.24,
+        102.57,
         103.41,
         105.58,
         108.55,
         108.64,
         108.24,
         107.72,
-        108.14
+        108.35
       ]
     },
     "corrSPY6M": 0.81,
@@ -3597,15 +3597,15 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 490320000,
+      "usd": 494640000,
       "pct": 1.57
     },
     "returns": {
-      "1W": 1.61,
-      "1M": 3.2,
-      "YTD": 24.5,
-      "6M": 15.3,
-      "1Y": 36.6
+      "1W": 2.51,
+      "1M": 4.1,
+      "YTD": 25.6,
+      "6M": 16.3,
+      "1Y": 36.2
     },
     "history": {
       "1W": [
@@ -3613,7 +3613,7 @@ export const LENS_FUNDS: LensFund[] = [
         66.77,
         67.15,
         67.47,
-        68.1
+        68.7
       ],
       "1M": [
         66,
@@ -3636,7 +3636,7 @@ export const LENS_FUNDS: LensFund[] = [
         66.77,
         67.15,
         67.47,
-        68.1
+        68.7
       ],
       "YTD": [
         54.71,
@@ -3664,7 +3664,7 @@ export const LENS_FUNDS: LensFund[] = [
         65.64,
         67.32,
         67.17,
-        68.1
+        68.7
       ],
       "6M": [
         59.05,
@@ -3692,41 +3692,41 @@ export const LENS_FUNDS: LensFund[] = [
         66.61,
         67.12,
         67.14,
-        68.1
+        68.7
       ],
       "1Y": [
-        49.85,
-        52.29,
-        53.13,
-        52.81,
-        54.07,
-        53.93,
-        54.19,
+        50.45,
+        52.26,
+        53.01,
+        52.71,
+        54.23,
+        51.94,
+        54.18,
         54.74,
         55.43,
-        55.12,
-        55.58,
-        53.85,
+        54.71,
+        54.93,
+        53.11,
+        54.32,
+        54.74,
         54.24,
-        54.33,
-        54.88,
-        53.2,
-        54.8,
-        56.86,
-        57.94,
-        57.31,
+        53.72,
+        54.66,
+        57.28,
+        57.51,
+        58.26,
         60.34,
         59.6,
         60.6,
         61.19,
         63.31,
         59.05,
-        58.68,
-        58.75,
-        56.52,
-        56.79,
-        60.44,
-        62.2,
+        58.83,
+        57.56,
+        57.42,
+        57.23,
+        60.28,
+        62.45,
         63.38,
         62.69,
         67.49,
@@ -3738,15 +3738,15 @@ export const LENS_FUNDS: LensFund[] = [
         70.79,
         67.19,
         67.57,
-        66.9,
-        63.29,
+        64.5,
+        63.56,
         63.33,
         64.09,
         65.64,
         66.61,
         67.12,
         67.14,
-        68.1
+        68.7
       ]
     },
     "corrSPY6M": 0.8,
@@ -3823,15 +3823,15 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -100180000,
-      "pct": -0.39
+      "usd": 0,
+      "pct": 0
     },
     "returns": {
-      "1W": 1.97,
-      "1M": 4.9,
-      "YTD": 37.8,
-      "6M": 21.7,
-      "1Y": 56.9
+      "1W": 2.93,
+      "1M": 5.9,
+      "YTD": 39.1,
+      "6M": 22.8,
+      "1Y": 57
     },
     "history": {
       "1W": [
@@ -3839,7 +3839,7 @@ export const LENS_FUNDS: LensFund[] = [
         98.02,
         98.67,
         99.25,
-        100.18
+        101.12
       ],
       "1M": [
         95.47,
@@ -3862,7 +3862,7 @@ export const LENS_FUNDS: LensFund[] = [
         98.02,
         98.67,
         99.25,
-        100.18
+        101.12
       ],
       "YTD": [
         72.68,
@@ -3890,7 +3890,7 @@ export const LENS_FUNDS: LensFund[] = [
         94.72,
         98.3,
         98.24,
-        100.18
+        101.12
       ],
       "6M": [
         82.32,
@@ -3918,41 +3918,41 @@ export const LENS_FUNDS: LensFund[] = [
         97.29,
         97.8,
         98.15,
-        100.18
+        101.12
       ],
       "1Y": [
-        63.84,
-        66.33,
-        67.6,
-        67.08,
-        68.33,
-        68.93,
-        70.28,
+        64.4,
+        66.51,
+        67.45,
+        67,
+        68.85,
+        67.07,
+        70.32,
         71.08,
         72.2,
-        72.13,
-        72.39,
-        70.4,
-        71.14,
-        71.41,
-        72.54,
-        69.89,
-        72.35,
-        75.42,
-        76.55,
-        76.79,
+        71.15,
+        71.29,
+        69.55,
+        71.18,
+        71.89,
+        71.47,
+        70.58,
+        72.5,
+        76.22,
+        76.16,
+        78.03,
         81.51,
         81.28,
         82.72,
         84.16,
         88.26,
         82.32,
-        80.99,
-        81.29,
-        78.66,
-        78.66,
-        84.8,
-        87.68,
+        81.35,
+        79.79,
+        79.73,
+        79.53,
+        84.65,
+        87.84,
         89.7,
         89.08,
         97,
@@ -3964,15 +3964,15 @@ export const LENS_FUNDS: LensFund[] = [
         105.75,
         100.05,
         100.19,
-        98.31,
-        91.78,
+        94.26,
+        91.67,
         91.89,
         92.12,
         94.72,
         97.29,
         97.8,
         98.15,
-        100.18
+        101.12
       ]
     },
     "corrSPY6M": 0.79,
@@ -4057,15 +4057,15 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 294462000,
+      "usd": 294804000,
       "pct": 3.25
     },
     "returns": {
-      "1W": -0.01,
-      "1M": -0.4,
-      "YTD": 9.2,
-      "6M": 5.3,
-      "1Y": 16.6
+      "1W": 0.1,
+      "1M": -0.3,
+      "YTD": 9.3,
+      "6M": 5.4,
+      "1Y": 16.1
     },
     "history": {
       "1W": [
@@ -4073,7 +4073,7 @@ export const LENS_FUNDS: LensFund[] = [
         76.7,
         76.93,
         77.56,
-        77.49
+        77.58
       ],
       "1M": [
         77.79,
@@ -4096,7 +4096,7 @@ export const LENS_FUNDS: LensFund[] = [
         76.7,
         76.93,
         77.56,
-        77.49
+        77.58
       ],
       "YTD": [
         70.98,
@@ -4124,7 +4124,7 @@ export const LENS_FUNDS: LensFund[] = [
         78.34,
         78.05,
         78.5,
-        77.49
+        77.58
       ],
       "6M": [
         73.6,
@@ -4152,41 +4152,41 @@ export const LENS_FUNDS: LensFund[] = [
         78.24,
         78.41,
         77.86,
-        77.49
+        77.58
       ],
       "1Y": [
-        66.48,
-        67.66,
-        67.81,
-        66.67,
-        69.08,
-        68.38,
-        68.9,
+        66.83,
+        67.47,
+        67.57,
+        67.36,
+        69.48,
+        67.62,
+        68.95,
         69.22,
         68.79,
-        68.26,
-        70.2,
-        67.41,
-        69.08,
-        69.87,
-        70.88,
-        70.01,
-        71.26,
-        72.33,
-        73.13,
-        72.12,
+        67.95,
+        69.72,
+        66.5,
+        69.52,
+        69.85,
+        70.45,
+        70.33,
+        70.98,
+        72.47,
+        72.84,
+        72.86,
         75.38,
         74.55,
         75.56,
         75.88,
         76.75,
         73.6,
-        71.93,
-        71.31,
-        68.71,
-        70.27,
-        73.99,
-        75.11,
+        71.87,
+        69.84,
+        69.71,
+        71.34,
+        73.92,
+        74.86,
         74.37,
         72.6,
         76.07,
@@ -4198,15 +4198,15 @@ export const LENS_FUNDS: LensFund[] = [
         74.7,
         73.99,
         76.37,
-        75.13,
-        75.11,
+        74.54,
+        74.31,
         74.89,
         76.69,
         78.34,
         78.24,
         78.41,
         77.86,
-        77.49
+        77.58
       ]
     },
     "corrSPY6M": 0.75,
@@ -4279,15 +4279,15 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 147840000,
+      "usd": 147966000,
       "pct": 1.52
     },
     "returns": {
-      "1W": -0.09,
-      "1M": -1,
-      "YTD": 9.8,
-      "6M": 7.8,
-      "1Y": 18.4
+      "1W": 0,
+      "1M": -0.9,
+      "YTD": 9.9,
+      "6M": 7.9,
+      "1Y": 18.1
     },
     "history": {
       "1W": [
@@ -4295,7 +4295,7 @@ export const LENS_FUNDS: LensFund[] = [
         69.63,
         69.88,
         70.28,
-        70.4
+        70.46
       ],
       "1M": [
         71.1,
@@ -4318,7 +4318,7 @@ export const LENS_FUNDS: LensFund[] = [
         69.63,
         69.88,
         70.28,
-        70.4
+        70.46
       ],
       "YTD": [
         64.1,
@@ -4346,7 +4346,7 @@ export const LENS_FUNDS: LensFund[] = [
         71.57,
         71.88,
         71.4,
-        70.4
+        70.46
       ],
       "6M": [
         65.33,
@@ -4374,29 +4374,29 @@ export const LENS_FUNDS: LensFund[] = [
         71.99,
         71.49,
         70.84,
-        70.4
+        70.46
       ],
       "1Y": [
-        59.48,
-        60.63,
-        61.18,
-        60.54,
-        63,
-        61.92,
-        62.58,
+        59.65,
+        60.59,
+        61.05,
+        61.28,
+        63.11,
+        61.02,
+        62.56,
         62.68,
         62.42,
-        61.93,
-        63.76,
-        60.95,
-        62.42,
-        63.35,
-        64.42,
-        63.45,
-        64.33,
-        65.55,
-        66.34,
-        64.93,
+        61.55,
+        63.34,
+        60.08,
+        62.66,
+        63.34,
+        63.98,
+        63.79,
+        64.1,
+        65.64,
+        66.07,
+        65.66,
         68,
         67.07,
         68.2,
@@ -4404,11 +4404,11 @@ export const LENS_FUNDS: LensFund[] = [
         69.23,
         65.33,
         64.04,
-        63.53,
-        61.53,
-        62.64,
-        66.26,
-        67.42,
+        62.39,
+        62.28,
+        63.52,
+        66.35,
+        67.04,
         66.56,
         65.16,
         68.72,
@@ -4420,15 +4420,15 @@ export const LENS_FUNDS: LensFund[] = [
         69.31,
         67.74,
         69.88,
-        68.56,
-        67.97,
+        67.9,
+        67.48,
         67.93,
         69.57,
         71.57,
         71.99,
         71.49,
         70.84,
-        70.4
+        70.46
       ]
     },
     "corrSPY6M": 0.8,
@@ -4481,19 +4481,19 @@ export const LENS_FUNDS: LensFund[] = [
     "name": "iShares MSCI Emerging Markets Asia ETF",
     "aum": 877000192,
     "flow1W": {
-      "usd": 11798760,
+      "usd": 11948000,
       "pct": 1.33
     },
     "flow1M": {
-      "usd": 11798760,
+      "usd": 11948000,
       "pct": 1.33
     },
     "returns": {
-      "1W": 0.92,
-      "1M": 3.1,
-      "YTD": 25.5,
-      "6M": 17.8,
-      "1Y": 37.9
+      "1W": 2.2,
+      "1M": 4.4,
+      "YTD": 27.1,
+      "6M": 19.3,
+      "1Y": 38
     },
     "history": {
       "1W": [
@@ -4501,7 +4501,7 @@ export const LENS_FUNDS: LensFund[] = [
         116.61,
         116.92,
         117.34,
-        117.99
+        119.48
       ],
       "1M": [
         114.43,
@@ -4524,7 +4524,7 @@ export const LENS_FUNDS: LensFund[] = [
         116.61,
         116.92,
         117.34,
-        117.99
+        119.48
       ],
       "YTD": [
         94.02,
@@ -4552,7 +4552,7 @@ export const LENS_FUNDS: LensFund[] = [
         114.66,
         117.06,
         116.57,
-        117.99
+        119.48
       ],
       "6M": [
         100.16,
@@ -4580,41 +4580,41 @@ export const LENS_FUNDS: LensFund[] = [
         116.02,
         115.98,
         116.8,
-        117.99
+        119.48
       ],
       "1Y": [
-        85.58,
-        90.14,
-        91.81,
-        91.13,
-        93.37,
-        92.99,
-        93.68,
+        86.61,
+        90.17,
+        91.42,
+        90.45,
+        93.58,
+        89.16,
+        93.73,
         94.81,
         96.22,
-        95.15,
-        95.44,
-        92.27,
-        92.89,
-        92.64,
-        93.75,
-        90.91,
-        93.94,
-        97.81,
-        99.36,
-        97.92,
+        94.25,
+        94.33,
+        91.11,
+        93.09,
+        93.79,
+        92.46,
+        91.92,
+        93.95,
+        98.5,
+        98.48,
+        99.4,
         102.37,
         101.02,
         103.2,
         103.89,
         107.87,
         100.16,
-        99.68,
-        100.44,
-        95.92,
-        95.74,
-        102.06,
-        105.06,
+        100.2,
+        98.41,
+        97.29,
+        96.42,
+        101.31,
+        105.83,
         108.02,
         107.6,
         115.7,
@@ -4626,18 +4626,18 @@ export const LENS_FUNDS: LensFund[] = [
         120.59,
         114.27,
         116.29,
-        115.06,
-        109.71,
+        111.54,
+        110.23,
         110.22,
         111.03,
         114.66,
         116.02,
         115.98,
         116.8,
-        117.99
+        119.48
       ]
     },
-    "corrSPY6M": 0.82,
+    "corrSPY6M": 0.81,
     "countries": [
       {
         "c": "Taiwan",
@@ -4683,15 +4683,15 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 35960000,
-      "pct": 0.91
+      "usd": 0,
+      "pct": 0
     },
     "returns": {
-      "1W": 3.04,
-      "1M": 2.5,
-      "YTD": 18.1,
-      "6M": 2.2,
-      "1Y": 32.4
+      "1W": 3.35,
+      "1M": 2.8,
+      "YTD": 18.5,
+      "6M": 2.5,
+      "1Y": 31.8
     },
     "history": {
       "1W": [
@@ -4699,7 +4699,7 @@ export const LENS_FUNDS: LensFund[] = [
         35.06,
         36.22,
         36.35,
-        35.96
+        36.07
       ],
       "1M": [
         35.08,
@@ -4722,7 +4722,7 @@ export const LENS_FUNDS: LensFund[] = [
         35.06,
         36.22,
         36.35,
-        35.96
+        36.07
       ],
       "YTD": [
         30.45,
@@ -4750,7 +4750,7 @@ export const LENS_FUNDS: LensFund[] = [
         34.62,
         33.64,
         35.03,
-        35.96
+        36.07
       ],
       "6M": [
         35.18,
@@ -4778,29 +4778,29 @@ export const LENS_FUNDS: LensFund[] = [
         33.6,
         34.68,
         34.65,
-        35.96
+        36.07
       ],
       "1Y": [
-        27.17,
-        27.97,
-        28.39,
-        28.46,
-        28.31,
-        27.91,
-        28.12,
+        27.36,
+        27.94,
+        28.52,
+        28.64,
+        28.37,
+        27.22,
+        28.23,
         28.74,
         29.39,
-        29.89,
-        30.76,
-        30.15,
-        30.94,
-        31.99,
-        31.36,
-        30.17,
-        30.93,
-        31.47,
-        31.92,
-        32.9,
+        29.87,
+        30.46,
+        29.59,
+        31.15,
+        30.66,
+        31.43,
+        30.2,
+        30.62,
+        31.76,
+        31.88,
+        33.85,
         36.16,
         36.69,
         36.47,
@@ -4808,11 +4808,11 @@ export const LENS_FUNDS: LensFund[] = [
         37.32,
         35.18,
         34.93,
-        34.23,
-        33.96,
-        35.52,
-        36.79,
-        37.75,
+        33.69,
+        34.81,
+        35.68,
+        37.32,
+        37.94,
         37.25,
         35.66,
         36.96,
@@ -4824,15 +4824,15 @@ export const LENS_FUNDS: LensFund[] = [
         33.9,
         33.81,
         34.13,
-        34.51,
-        34.07,
+        34.11,
+        34.24,
         34.64,
         35.37,
         34.62,
         33.6,
         34.68,
         34.65,
-        35.96
+        36.07
       ]
     },
     "corrSPY6M": 0.62,
@@ -4869,7 +4869,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Sep 4, 2026, 9:39 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Sep 5, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
