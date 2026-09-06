@@ -1723,8 +1723,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 4.87
     },
     "flow1M": {
-      "usd": 143465500,
-      "pct": 12.37
+      "usd": 107167000,
+      "pct": 8.96
     },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
@@ -2230,8 +2230,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -2.11
     },
     "flow1M": {
-      "usd": -29356000,
-      "pct": -7.92
+      "usd": -14678000,
+      "pct": -4.12
     },
     "note": "Thailand leans on tourism, banks and energy. It has spent years out of favor, which makes any sustained inflow here a genuine change-of-mind signal rather than momentum chasing."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -2.94
     },
     "flow1M": {
-      "usd": -176249000,
-      "pct": -9.06
+      "usd": -130271000,
+      "pct": -6.85
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -50275212,
-      "pct": -5.83
+      "usd": -48975219,
+      "pct": -5.66
     },
     "flow1M": {
-      "usd": -52467093,
-      "pct": -6.07
+      "usd": -63330476,
+      "pct": -7.2
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4869,7 +4869,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Sep 5, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Sep 6, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
