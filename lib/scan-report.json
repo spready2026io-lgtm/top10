@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-09-08T13:37:50.688Z",
-  "scanTimestampNY": "September 8, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-09-09T13:38:09.324Z",
+  "scanTimestampNY": "September 9, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 39
+        "count": 42
       },
       "IGPT": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 42
+        "count": 43
       },
       "VOLT": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 4
+        "count": 5
       },
       "PBW": {
         "ok": true,
@@ -189,7 +189,7 @@
       },
       "IDEF": {
         "ok": true,
-        "count": 102
+        "count": 112
       },
       "BILT": {
         "ok": true,
@@ -263,8 +263,11 @@
     ]
   },
   "yfScan": {
-    "total": 120,
-    "succeeded": 120,
-    "failed": []
+    "total": 119,
+    "succeeded": 117,
+    "failed": [
+      "HWM",
+      "RKLB"
+    ]
   }
 }
