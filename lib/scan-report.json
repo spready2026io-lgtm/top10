@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-09-09T13:38:09.324Z",
-  "scanTimestampNY": "September 9, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-09-10T13:38:35.802Z",
+  "scanTimestampNY": "September 10, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -13,7 +13,7 @@
       },
       "BAI": {
         "ok": true,
-        "count": 42
+        "count": 40
       },
       "IGPT": {
         "ok": true,
@@ -25,11 +25,11 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 59
+        "count": 58
       },
       "CHAT": {
         "ok": true,
-        "count": 33
+        "count": 32
       },
       "AIFD": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 43
+        "count": 42
       },
       "VOLT": {
         "ok": true,
@@ -165,7 +165,7 @@
       },
       "PBD": {
         "ok": true,
-        "count": 5
+        "count": 6
       },
       "PBW": {
         "ok": true,
@@ -193,7 +193,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 50
+        "count": 49
       },
       "BUZZ": {
         "ok": true,
@@ -201,7 +201,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 19
+        "count": 20
       },
       "RKNG": {
         "ok": true,
@@ -264,10 +264,7 @@
   },
   "yfScan": {
     "total": 119,
-    "succeeded": 117,
-    "failed": [
-      "HWM",
-      "RKLB"
-    ]
+    "succeeded": 119,
+    "failed": []
   }
 }
