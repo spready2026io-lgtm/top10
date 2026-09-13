@@ -1723,8 +1723,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 4.64
     },
     "flow1M": {
-      "usd": 127756000,
-      "pct": 10.66
+      "usd": 105903000,
+      "pct": 8.68
     },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
@@ -2568,8 +2568,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -691239000,
-      "pct": -7.36
+      "usd": -580488000,
+      "pct": -6.26
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -0.87
     },
     "flow1M": {
-      "usd": -113070000,
-      "pct": -6.15
+      "usd": -90456000,
+      "pct": -4.98
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -3061004,
-      "pct": -0.38
+      "usd": 5660082,
+      "pct": 0.7
     },
     "flow1M": {
-      "usd": -62472595,
-      "pct": -7.24
+      "usd": -55883126,
+      "pct": -6.43
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4857,7 +4857,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Sep 12, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Sep 13, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
