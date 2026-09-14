@@ -298,8 +298,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Soft
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-09-14T20:42:20.611Z';
-export const SCAN_TIMESTAMP_NY = 'September 14, 2026 at 4:42 PM ET';
+export const SCAN_TIMESTAMP    = '2026-09-14T23:08:35.671Z';
+export const SCAN_TIMESTAMP_NY = 'September 14, 2026 at 7:08 PM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
@@ -1575,7 +1575,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 393.16, weeklyPrices: [422.13, 415.22, 409.15, 425.37, 393.16], weeklyChange: -6.86, dayChange: -7.57, sortRank: 0, periodReturns: { '1M': -12.9, 'YTD': 23.4, '6M': 10.6, '1Y': 4.7 },
       priceHistory: { '1D': [425.37, 393.75, 397.68, 399.16, 395.37, 391.28, 393.03, 395.51, 396.77, 395.62, 396.49, 394.42, 394, 394.23, 394.14, 392.7, 391.61, 392.67, 394.06, 394.89, 394.33, 393.93, 394.11, 393.16], '1W': [422.13, 415.22, 409.15, 425.37, 393.16], '1M': [451.51, 455.4, 431.33, 424.67, 415.29, 419.2, 408.67, 409.2, 419.44, 416.04, 402.78, 401.88, 390.71, 390.85, 397.12, 410.85, 422.13, 415.22, 409.15, 425.37, 393.16], 'YTD': [318.51, 329.1, 334.04, 359.44, 396.09, 362.05, 354.46, 355.4, 374.1, 361.1, 401.9, 424.5, 422.44, 406.94, 391.35, 421.21, 391.39, 404.59, 413.42, 412.86, 404.07, 444.77, 453.33, 408.67, 390.85, 393.16], '6M': [361.04, 359.74, 343.53, 368.85, 401.9, 409.7, 413.07, 410.86, 401.53, 371.88, 406.37, 421.21, 375.46, 409.64, 419.87, 398.52, 407.28, 399.99, 404.07, 415.2, 448.68, 451.51, 419.2, 402.78, 410.85, 393.16], '1Y': [375.54, 378.31, 367.15, 380.02, 375.37, 377.69, 376.29, 381.56, 373.77, 352.39, 331.71, 339.71, 343.39, 333.21, 320.39, 320.86, 332.97, 332.38, 337.96, 347.32, 365, 396.09, 377.32, 374.59, 354.79, 348.64, 360.54, 375, 365.56, 400.44, 392.73, 424.5, 433.01, 399.15, 408.1, 381.51, 401.94, 418.61, 393.64, 421.77, 402.68, 413.42, 402.85, 401.41, 398.64, 438.23, 448.68, 451.51, 419.2, 402.78, 410.85, 393.16] },
       velocityScore: { '1D': 2, '1W': 3, '1M': -1.3, '6M': null }, isNew: false,
-      marketCap: '$153B', pe: 40, revenueGrowth: 21, eps: 9.83, grossMargin: 36, dividendYield: 1.08,
+      marketCap: '$153B', pe: 40, revenueGrowth: 21, eps: 9.83, grossMargin: 36, dividendYield: 1.03,
       etfPresence: { POW: 4.8, VOLT: 6.1, PBD: false, PBW: false, IVEP: 4.41 },
       tonyNote: 'Eaton is the diversified power management company held in Industrials and Electrification ETFs. Revenue growth is steady, margins are strong, and the electrification thesis — grid upgrades, data center power, EV charging infrastructure — is well-served by Eaton\'s product breadth. The institutional weight reflects a quality-growth allocation, not a speculative bet.',
     },
@@ -1656,7 +1656,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 78.55, weeklyPrices: [81.76, 81.34, 80.25, 83.92, 78.55], weeklyChange: -3.93, dayChange: -6.4, sortRank: 0, periodReturns: { '1M': -6, 'YTD': 16.2, '6M': 17.3, '1Y': 31.8 },
       priceHistory: { '1D': [83.92, 79.89, 80.23, 79.92, 79.27, 78.92, 79.21, 79.48, 79.9, 79.47, 79.2, 78.99, 79.05, 79.1, 79, 79.17, 78.9, 79.06, 79.14, 79.23, 79.15, 79.16, 79.18, 78.55], '1W': [81.76, 81.34, 80.25, 83.92, 78.55], '1M': [83.56, 85.43, 79.79, 78.02, 76.56, 78.5, 77.78, 79.39, 80.67, 80.69, 78.87, 79.28, 81.59, 80.04, 82.07, 82.78, 81.76, 81.34, 80.25, 83.92, 78.55], 'YTD': [67.57, 72.56, 76.25, 72.46, 72.02, 73.91, 66.38, 66.96, 63.98, 64, 74.36, 75.09, 70.51, 62.32, 66.03, 73.81, 76.9, 81.39, 83.4, 78.52, 76.33, 85.67, 82.88, 77.78, 80.04, 78.55], '6M': [68.4, 65.33, 59.58, 64.19, 74.36, 75.96, 71.86, 68.35, 63.94, 59.6, 70.12, 73.81, 74.61, 80.56, 82.57, 82.29, 79.53, 75.6, 76.33, 80.35, 84.59, 83.56, 78.5, 78.87, 82.78, 78.55], '1Y': [59.62, 61.85, 60.51, 61.7, 61.96, 63.83, 66.91, 69.67, 69.54, 66.87, 65.8, 69.61, 70.03, 64.95, 67.57, 68.1, 70.69, 74.49, 77.3, 72.98, 65, 72.02, 75.6, 74.24, 68.12, 65.74, 63.9, 64.36, 63.85, 68.84, 74.48, 75.09, 73.64, 68.31, 64.6, 62.43, 73.84, 73.39, 76.23, 81.98, 81.86, 83.4, 78, 75.25, 74.64, 81.67, 84.59, 83.56, 78.5, 78.87, 82.78, 78.55] },
       velocityScore: { '1D': 2.3, '1W': 0, '1M': 43.6, '6M': null }, isNew: false,
-      marketCap: '$194B', pe: 39.3, revenueGrowth: 55, eps: 2, grossMargin: 39, dividendYield: 0.62,
+      marketCap: '$194B', pe: 39.3, revenueGrowth: 55, eps: 2, grossMargin: 39, dividendYield: 0.6,
       etfPresence: { POW: 1.75, VOLT: 5.02, PBD: false, PBW: false, IVEP: false },
       tonyNote: 'Amphenol is the connector and sensor company held across Industrials and Electrification ETFs. Revenue grew consistently, gross margin is strong for a hardware manufacturer, and the product breadth — from data center interconnects to EV charging connectors — positions it at every intersection of the electrification and AI infrastructure build. One of the highest-quality names in the Industrials theme.',
     },
@@ -1692,7 +1692,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 137.76, weeklyPrices: [146.37, 144.92, 142.81, 146.01, 137.76], weeklyChange: -5.88, dayChange: -5.65, sortRank: 0, periodReturns: { '1M': -10.3, 'YTD': 15, '6M': 5.8, '1Y': 27.8 },
       priceHistory: { '1D': [146.01, 137.58, 138.85, 139.21, 137.1, 136.3, 135.92, 136.11, 136.71, 136.91, 137.2, 136.78, 136.68, 136.7, 136.75, 136.74, 136.82, 137.36, 137.84, 138.04, 137.68, 137.83, 137.66, 137.76], '1W': [146.37, 144.92, 142.81, 146.01, 137.76], '1M': [153.64, 153.92, 149.68, 144.94, 143.16, 143.05, 142.99, 141.82, 144.33, 142.21, 139.59, 138.24, 139.25, 139.25, 142.23, 144.94, 146.37, 144.92, 142.81, 146.01, 137.76], 'YTD': [119.75, 111.39, 114.51, 122.98, 140.96, 142.83, 140, 130.16, 136.43, 132.97, 142.05, 141.73, 144.4, 143.8, 138.36, 146.96, 144.96, 142.81, 142.72, 142.76, 143.37, 153.62, 151.45, 142.99, 139.25, 137.76], '6M': [131.69, 133.27, 126.58, 133.15, 142.05, 139.72, 141.59, 144.82, 141.04, 135.42, 138.2, 146.96, 139.36, 143.62, 145.49, 140.76, 142.81, 140.46, 143.37, 146.66, 152.21, 153.64, 143.05, 139.59, 144.94, 137.76], '1Y': [107.81, 109.29, 108.16, 109.58, 106.38, 110.6, 112.94, 114.39, 122.25, 118.72, 113.55, 114.94, 114.98, 116.88, 119.96, 120.94, 113.95, 112.09, 115.49, 116.74, 129.49, 140.96, 142.7, 143.42, 137.18, 130.94, 133.76, 137.48, 134.72, 141.85, 137.55, 141.73, 146.03, 139.25, 145.03, 135.47, 136.15, 147.4, 144.01, 144.82, 138.4, 142.72, 143.93, 139.37, 143.39, 146.39, 152.21, 153.64, 143.05, 139.59, 144.94, 137.76] },
       velocityScore: { '1D': 0, '1W': 0.9, '1M': 0.9, '6M': null }, isNew: false,
-      marketCap: '$83B', pe: 38.8, revenueGrowth: 9, eps: 3.55, grossMargin: 37, dividendYield: 1.12,
+      marketCap: '$83B', pe: 38.8, revenueGrowth: 9, eps: 3.55, grossMargin: 37, dividendYield: 1.1,
       etfPresence: { POW: false, VOLT: 1.59, PBD: false, PBW: false, IVEP: 4.02 },
       tonyNote: 'JOHNSON CONTROLS INTERNATIONAL PLC appears in 2 of 5 Electrification ETFs (40% coverage) with average weight 2.8% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
