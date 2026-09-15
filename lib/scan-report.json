@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-09-14T13:38:15.684Z",
-  "scanTimestampNY": "September 14, 2026 at 9:38 AM ET",
+  "scanTimestamp": "2026-09-15T13:39:57.466Z",
+  "scanTimestampNY": "September 15, 2026 at 9:39 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 58
+        "count": 59
       },
       "CHAT": {
         "ok": true,
@@ -37,7 +37,7 @@
       },
       "SPRX": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "AOTG": {
         "ok": true,
@@ -57,7 +57,7 @@
       },
       "DRAM": {
         "ok": true,
-        "count": 5
+        "count": 6
       },
       "PTF": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 14
+        "count": 15
       },
       "IGV": {
         "ok": true,
@@ -89,15 +89,15 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "BCTK": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "FWD": {
         "ok": true,
-        "count": 20
+        "count": 19
       },
       "CBSE": {
         "ok": true,
@@ -109,7 +109,7 @@
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "CNEQ": {
         "ok": true,
@@ -117,7 +117,7 @@
       },
       "SGRT": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "SPMO": {
         "ok": true,
@@ -133,11 +133,11 @@
       },
       "SKYY": {
         "ok": true,
-        "count": 21
+        "count": 23
       },
       "CLOU": {
         "ok": true,
-        "count": 21
+        "count": 23
       },
       "CIBR": {
         "ok": true,
@@ -145,15 +145,15 @@
       },
       "HACK": {
         "ok": true,
-        "count": 22
+        "count": 20
       },
       "BUG": {
         "ok": true,
-        "count": 20
+        "count": 21
       },
       "IHAK": {
         "ok": true,
-        "count": 20
+        "count": 21
       },
       "POW": {
         "ok": true,
@@ -164,12 +164,12 @@
         "count": 26
       },
       "PBD": {
-        "ok": true,
-        "count": 6
+        "ok": false,
+        "count": 0
       },
       "PBW": {
-        "ok": true,
-        "count": 10
+        "ok": false,
+        "count": 0
       },
       "IVEP": {
         "ok": true,
@@ -180,8 +180,8 @@
         "count": 57
       },
       "PRN": {
-        "ok": true,
-        "count": 10
+        "ok": false,
+        "count": 0
       },
       "RSHO": {
         "ok": true,
@@ -197,20 +197,24 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 17
       },
       "RKNG": {
         "ok": true,
-        "count": 20
+        "count": 23
       }
     },
     "total": 51,
-    "ok": 51,
-    "failed": [],
+    "ok": 48,
+    "failed": [
+      "PBD",
+      "PBW",
+      "PRN"
+    ],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -263,8 +267,8 @@
     ]
   },
   "yfScan": {
-    "total": 121,
-    "succeeded": 121,
+    "total": 122,
+    "succeeded": 122,
     "failed": []
   }
 }
