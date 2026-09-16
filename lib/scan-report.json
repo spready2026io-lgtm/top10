@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-09-15T13:39:57.466Z",
-  "scanTimestampNY": "September 15, 2026 at 9:39 AM ET",
+  "scanTimestamp": "2026-09-16T13:38:13.922Z",
+  "scanTimestampNY": "September 16, 2026 at 9:38 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 39
+        "count": 19
       },
       "ARTY": {
         "ok": true,
@@ -25,7 +25,7 @@
       },
       "ALAI": {
         "ok": true,
-        "count": 59
+        "count": 61
       },
       "CHAT": {
         "ok": true,
@@ -37,11 +37,11 @@
       },
       "SPRX": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AOTG": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "SOXX": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 15
+        "count": 18
       },
       "IGV": {
         "ok": true,
@@ -89,11 +89,11 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 21
       },
       "BCTK": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "FWD": {
         "ok": true,
@@ -101,7 +101,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 18
+        "count": 21
       },
       "FCUS": {
         "ok": true,
@@ -121,11 +121,11 @@
       },
       "SPMO": {
         "ok": true,
-        "count": 24
+        "count": 21
       },
       "XMMO": {
         "ok": true,
-        "count": 24
+        "count": 22
       },
       "XSW": {
         "ok": true,
@@ -133,23 +133,23 @@
       },
       "SKYY": {
         "ok": true,
-        "count": 23
+        "count": 25
       },
       "CLOU": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "CIBR": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "HACK": {
         "ok": true,
-        "count": 20
+        "count": 22
       },
       "BUG": {
         "ok": true,
-        "count": 21
+        "count": 20
       },
       "IHAK": {
         "ok": true,
@@ -157,19 +157,19 @@
       },
       "POW": {
         "ok": true,
-        "count": 42
+        "count": 14
       },
       "VOLT": {
         "ok": true,
         "count": 26
       },
       "PBD": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 5
       },
       "PBW": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 10
       },
       "IVEP": {
         "ok": true,
@@ -180,8 +180,8 @@
         "count": 57
       },
       "PRN": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 10
       },
       "RSHO": {
         "ok": true,
@@ -201,7 +201,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 17
+        "count": 19
       },
       "RKNG": {
         "ok": true,
@@ -209,12 +209,8 @@
       }
     },
     "total": 51,
-    "ok": 48,
-    "failed": [
-      "PBD",
-      "PBW",
-      "PRN"
-    ],
+    "ok": 51,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -267,8 +263,10 @@
     ]
   },
   "yfScan": {
-    "total": 122,
-    "succeeded": 122,
-    "failed": []
+    "total": 120,
+    "succeeded": 119,
+    "failed": [
+      "ZETA"
+    ]
   }
 }
