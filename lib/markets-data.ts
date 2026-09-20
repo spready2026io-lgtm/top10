@@ -2061,8 +2061,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -3.29
     },
     "flow1M": {
-      "usd": -10237500,
-      "pct": -3.29
+      "usd": -4095000,
+      "pct": -1.34
     },
     "note": "Malaysia is one of the quieter ASEAN markets: banks, utilities and a data-center construction wave. Low drama, moderate beta, occasionally rediscovered by regional flows."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 25909608,
-      "pct": 3.34
+      "usd": 26583423,
+      "pct": 3.37
     },
     "flow1M": {
-      "usd": -74091980,
-      "pct": -8.46
+      "usd": -38483138,
+      "pct": -4.51
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4675,8 +4675,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0.45
     },
     "flow1M": {
-      "usd": 61320000,
-      "pct": 1.6
+      "usd": 122640000,
+      "pct": 3.26
     },
     "returns": {
       "1W": -1.43,
@@ -4861,7 +4861,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Sep 19, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Sep 20, 2026, 9:39 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).

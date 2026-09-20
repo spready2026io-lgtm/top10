@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-09-19T13:37:38.561Z",
-  "scanTimestampNY": "September 19, 2026 at 9:37 AM ET",
+  "scanTimestamp": "2026-09-20T13:37:53.180Z",
+  "scanTimestampNY": "September 20, 2026 at 9:37 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -37,7 +37,7 @@
       },
       "SPRX": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AOTG": {
         "ok": true,
@@ -65,7 +65,7 @@
       },
       "WCLD": {
         "ok": true,
-        "count": 15
+        "count": 18
       },
       "IGV": {
         "ok": true,
@@ -89,7 +89,7 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 20
       },
       "BCTK": {
         "ok": true,
@@ -97,19 +97,19 @@
       },
       "FWD": {
         "ok": true,
-        "count": 17
+        "count": 19
       },
       "CBSE": {
         "ok": true,
-        "count": 21
+        "count": 19
       },
       "FCUS": {
         "ok": true,
-        "count": 25
+        "count": 23
       },
       "WGMI": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "CNEQ": {
         "ok": true,
@@ -141,7 +141,7 @@
       },
       "CIBR": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "HACK": {
         "ok": true,
@@ -149,7 +149,7 @@
       },
       "BUG": {
         "ok": true,
-        "count": 20
+        "count": 19
       },
       "IHAK": {
         "ok": true,
@@ -197,15 +197,15 @@
       },
       "BUZZ": {
         "ok": true,
-        "count": 21
+        "count": 22
       },
       "MEME": {
         "ok": true,
-        "count": 19
+        "count": 17
       },
       "RKNG": {
         "ok": true,
-        "count": 22
+        "count": 23
       }
     },
     "total": 51,
@@ -263,8 +263,10 @@
     ]
   },
   "yfScan": {
-    "total": 120,
-    "succeeded": 120,
-    "failed": []
+    "total": 119,
+    "succeeded": 118,
+    "failed": [
+      "ZETA"
+    ]
   }
 }
