@@ -150,7 +150,7 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   IVEP: { name: "Dan IVES Wedbush AI Power & Infrastructure ETF", manager: "Wedbush Funds", aum: 17855568 },
   AIRR: { name: "First Trust RBA American Industrial RenaissanceTM ETF", manager: "First Trust", aum: 9450259456 },
   PRN: { name: "Invesco Dorsey Wright Industrials Momentum ETF", manager: "Invesco", aum: 369715136 },
-  IDEF: { name: "iShares Defense Industrials Active ETF", manager: "BlackRock", aum: 4416389120 },
+  IDEF: { name: "iShares Defense Industrials and Tech Active ETF", manager: "BlackRock", aum: 4416389120 },
   BILT: { name: "iShares Infrastructure Active ETF", manager: "BlackRock", aum: 113349296 },
   BUZZ: { name: "VanEck Social Sentiment ETF", manager: "VanEck", aum: 95891760 },
   MEME: { name: "Roundhill ETF Trust - Roundhill Meme Stock ETF", manager: "" },
@@ -298,8 +298,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Soft
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-09-21T20:43:20.912Z';
-export const SCAN_TIMESTAMP_NY = 'September 21, 2026 at 4:43 PM ET';
+export const SCAN_TIMESTAMP    = '2026-09-21T23:16:53.613Z';
+export const SCAN_TIMESTAMP_NY = 'September 21, 2026 at 7:16 PM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
@@ -1167,7 +1167,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 137.92, weeklyPrices: [129.86, 129.96, 128.60, 128.50, 137.92], weeklyChange: 6.21, dayChange: 7.33, sortRank: 0, periodReturns: { '1M': -7.6, 'YTD': -14.3, '6M': 18.1, '1Y': -12.2 },
       priceHistory: { '1D': [128.5, 126.88, 129.27, 129.64, 129.43, 129.69, 129.89, 130.03, 129.88, 130.12, 130.9, 130.64, 130.68, 130.64, 130.6, 135.13, 134.41, 135.24, 135.13, 135.81, 137.29, 136.38, 136.74, 137.92], '1W': [129.86, 129.96, 128.6, 128.5, 137.92], '1M': [149.25, 149.8, 153.88, 150.29, 154.33, 152.9, 147.37, 139.82, 141.87, 145.88, 145.09, 134.1, 126.79, 126.6, 128.79, 133.89, 129.86, 129.96, 128.6, 128.5, 137.92], 'YTD': [160.97, 167.93, 137.64, 119.29, 110.66, 116.93, 134.79, 126.58, 115.43, 117.06, 126.94, 124.23, 105.44, 102.39, 115.03, 110.78, 108.09, 114.21, 122.54, 123.03, 122.4, 155.18, 146.58, 147.37, 126.6, 137.92], '6M': [121.1, 111.77, 117.06, 117.64, 131.13, 122.05, 107.63, 99.84, 101.01, 106.6, 112.94, 108.2, 108.09, 111.62, 119.46, 122.54, 123.56, 113.75, 117.15, 151.57, 154.32, 149.25, 152.9, 145.09, 133.89, 137.92], '1Y': [157.12, 149, 164.5, 153.66, 164.71, 175.06, 173.86, 152.41, 146.04, 147.8, 149.28, 158.41, 159.85, 169.67, 163.74, 166.74, 167.44, 138.54, 138.92, 114.02, 118.71, 123.8, 125.94, 134.79, 126.17, 122.37, 118.42, 118.52, 112.38, 126.94, 124.23, 121.13, 111.74, 97.42, 104.86, 118.71, 116.04, 110.47, 108.85, 116.86, 120.14, 124.74, 124.48, 126.88, 117.01, 155.18, 154.32, 149.25, 152.9, 145.09, 133.89, 137.92] },
       velocityScore: { '1D': -1.4, '1W': -9.3, '1M': -10.5, '6M': null }, isNew: false,
-      marketCap: '$179B', pe: 93.2, revenueGrowth: 34, eps: 1.48, grossMargin: 48, dividendYield: null,
+      marketCap: '$177B', pe: 93.2, revenueGrowth: 34, eps: 1.48, grossMargin: 48, dividendYield: null,
       etfPresence: { PTF: false, WCLD: false, IGV: false, FDTX: 3.47, GTEK: false, ARKK: 2.86, MARS: false, FRWD: 2.13, BCTK: 3.1, FWD: false, CBSE: false, FCUS: false, WGMI: false, CNEQ: false, SGRT: false, SPMO: false, XMMO: false },
       tonyNote: 'Shopify Inc Registered Shs -A- Subord Vtg appears in 4 of 17 Broad Tech ETFs (24% coverage) with average weight 2.9% — selective across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
@@ -1629,7 +1629,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 243.46, weeklyPrices: [231.75, 234.60, 238.27, 241.97, 243.46], weeklyChange: 5.05, dayChange: 0.62, sortRank: 0, periodReturns: { '1M': -4.7, 'YTD': 43.5, '6M': 19.3, '1Y': 66.2 },
       priceHistory: { '1D': [241.97, 243, 244.8, 244.58, 244.09, 243.54, 243.6, 245.54, 245.79, 244.14, 245.26, 244.45, 244.1, 242.54, 242.34, 242.47, 244.23, 244.35, 244.26, 244.47, 244.13, 243.88, 244.26, 243.46], '1W': [231.75, 234.6, 238.27, 241.97, 243.46], '1M': [255.46, 247.98, 250.09, 255.11, 257.64, 248.69, 249.28, 243.42, 240.71, 239.89, 243.79, 247.76, 246.01, 243, 250.36, 230.39, 231.75, 234.6, 238.27, 241.97, 243.46], 'YTD': [169.63, 188, 200.29, 217.25, 231.48, 234.4, 202.58, 205.11, 204.11, 210.32, 241.49, 250.96, 286.89, 258.28, 276.96, 279.13, 299.84, 315.65, 272.58, 281.51, 253.41, 284.21, 263.87, 249.28, 243, 243.46], '6M': [214.98, 197.83, 210.32, 237.34, 257.41, 249.82, 297.17, 298.22, 249.71, 280.13, 280.09, 276.95, 299.84, 310.32, 266.94, 272.58, 270.56, 272.8, 271.97, 291.59, 290.08, 255.46, 248.69, 243.79, 230.39, 243.46], '1Y': [146.51, 140.37, 141.12, 145.02, 147.96, 155.89, 153.99, 161.53, 147.67, 140.95, 154.77, 172.21, 173.3, 174.02, 172.95, 181.03, 193.82, 201.8, 207.78, 211.58, 238.4, 230.06, 232.12, 202.58, 195.18, 214.95, 220.77, 203.04, 235, 241.49, 268.31, 275.84, 290.46, 268.73, 260.4, 274.52, 276.54, 296.55, 296.39, 310.64, 277.45, 263.26, 266.11, 270.26, 274.83, 284.21, 290.08, 255.46, 248.69, 243.79, 230.39, 243.46] },
       velocityScore: { '1D': 1, '1W': -1, '1M': -9.4, '6M': null }, isNew: false,
-      marketCap: '$4B', pe: 62.3, revenueGrowth: 25, eps: 3.91, grossMargin: 40, dividendYield: 0.12,
+      marketCap: '$3B', pe: 62.3, revenueGrowth: 25, eps: 3.91, grossMargin: 40, dividendYield: 0.12,
       etfPresence: { POW: 3.44, VOLT: 6.64, PBD: false, PBW: false, IVEP: false },
       tonyNote: 'Bel Fuse is a power solutions and connectivity components name held in Industrials ETFs. Revenue growth has been driven by data center power conversion demand. The small market cap and niche positioning make this a concentrated conviction bet within the ETF universe that holds it.',
     },
@@ -1822,7 +1822,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 99.53, weeklyPrices: [87.58, 93.15, 95.26, 97.18, 99.53], weeklyChange: 13.64, dayChange: 2.42, sortRank: 0, periodReturns: { '1M': 19.1, 'YTD': 67.4, '6M': 153.9, '1Y': 80.9 },
       priceHistory: { '1D': [97.18, 98.46, 98.61, 98.54, 98.89, 98.67, 98.85, 98.74, 98.8, 99.52, 99.66, 98.74, 98.73, 98.51, 98.05, 98.56, 98.62, 98.57, 98.41, 98.24, 96.85, 99.87, 99.95, 99.53], '1W': [87.58, 93.15, 95.26, 97.18, 99.53], '1M': [83.59, 84.58, 87.78, 88.08, 96.26, 94.11, 92.69, 91.15, 92.23, 93.04, 92.53, 92.45, 85.59, 84.85, 86.11, 85.03, 87.58, 93.15, 95.26, 97.18, 99.53], 'YTD': [59.47, 64.06, 62.4, 61.85, 54.13, 44.44, 44.5, 37.34, 40.98, 42.25, 46.93, 47.61, 56.4, 87.96, 95.32, 82.2, 88.86, 94.25, 96.07, 104.85, 84.91, 90.53, 84.59, 92.69, 84.85, 99.53], '6M': [41.48, 37.41, 42.25, 43.7, 46.92, 46.44, 55.44, 83.92, 87.15, 94.56, 82.25, 82.37, 88.86, 92.53, 91.82, 96.07, 98.54, 86.31, 85.72, 93.14, 96.26, 83.59, 94.11, 92.53, 85.03, 99.53], '1Y': [55.03, 55.91, 52.75, 50, 48.32, 50.43, 48.69, 64.81, 60.58, 55.96, 55.18, 58.23, 58.13, 64.65, 63.14, 68.25, 65.39, 60.52, 64.87, 60.7, 63.61, 58.89, 45.26, 44.5, 36.1, 39.94, 41.63, 41.78, 40.62, 46.93, 46.88, 51.27, 78.5, 89.98, 86.89, 95.29, 82.7, 86.15, 93.28, 94.37, 94.29, 96.67, 100.12, 85.92, 87.01, 90.53, 96.26, 83.59, 94.11, 92.53, 85.03, 99.53] },
       velocityScore: { '1D': 1.2, '1W': null, '1M': null, '6M': null }, isNew: false,
-      marketCap: '$6B', pe: null, revenueGrowth: 41, eps: -0.6, grossMargin: 39, dividendYield: null,
+      marketCap: '$5B', pe: null, revenueGrowth: 41, eps: -0.6, grossMargin: 39, dividendYield: null,
       etfPresence: { AIRR: 1.44, PRN: 2.91, RSHO: false, IDEF: false, BILT: false },
       tonyNote: 'Xometry, Inc. (Class A) appears in 2 of 5 Industrials ETFs (40% coverage) with average weight 2.2% — moderate conviction across the institutional products tracked. Analysis pending — check back for Tony\'s full thesis.',
     },
@@ -1943,7 +1943,7 @@ export const SAMPLE_DATA: Record<Theme, Equity[]> = {
       price: 232.8, weeklyPrices: [207.37, 209.37, 217.99, 223.54, 232.80], weeklyChange: 12.26, dayChange: 4.14, sortRank: 0, periodReturns: { '1M': 6.2, 'YTD': 178.1, '6M': 97.9, '1Y': 118.4 },
       priceHistory: { '1D': [223.54, 226.45, 224.03, 227.85, 227.81, 228.21, 233.15, 233.93, 234.46, 233.4, 232.29, 232.19, 234.17, 233.12, 233.25, 235.17, 235.87, 236.6, 236.99, 236.1, 235.1, 233.26, 233.77, 232.8], '1W': [207.37, 209.37, 217.99, 223.54, 232.8], '1M': [219.13, 210.91, 221.97, 213.93, 218.48, 209.18, 206.32, 199.54, 204.09, 210.63, 226.39, 243.88, 240.35, 228.11, 224.55, 212.19, 207.37, 209.37, 217.99, 223.54, 232.8], 'YTD': [83.71, 107.33, 96.85, 89.95, 89.73, 102.58, 95.65, 129.85, 105.97, 117.4, 165.34, 144.96, 195.09, 199.86, 226.34, 218, 280.91, 261.15, 219.65, 216.92, 188.43, 184.11, 223.9, 206.32, 228.11, 232.8], '6M': [114.15, 92.26, 117.4, 161.94, 156.55, 135.51, 175.92, 179.11, 197.73, 208.37, 251.68, 211.69, 280.91, 256.63, 215.62, 219.65, 177.71, 187.77, 190.41, 187.97, 277.68, 219.13, 209.18, 226.39, 212.19, 232.8], '1Y': [106.6, 110.22, 124.94, 135.46, 109, 125.43, 130.82, 111.28, 83.54, 83.26, 100.15, 100.33, 81.14, 93.23, 85.17, 96.21, 105.43, 98.87, 100.43, 82.39, 88.61, 107.61, 104.88, 95.65, 108.04, 121.52, 115.09, 101.95, 136.33, 165.34, 157.08, 138.23, 184.77, 221.15, 219.93, 231.09, 259.67, 222.24, 286.69, 240.3, 213.02, 210.51, 182.62, 187.88, 212.58, 184.11, 277.68, 219.13, 209.18, 226.39, 212.19, 232.8] },
       velocityScore: { '1D': 1.5, '1W': 0.6, '1M': -18.4, '6M': null }, isNew: false,
-      marketCap: '$63B', pe: null, revenueGrowth: 454, eps: -0.07, grossMargin: 74, dividendYield: null,
+      marketCap: '$59B', pe: null, revenueGrowth: 454, eps: -0.07, grossMargin: 74, dividendYield: null,
       etfPresence: { BUZZ: 2.55, MEME: 3.53, RKNG: 3.77 },
       tonyNote: 'Nebius is the highest-growth name in the AI theme — 684% revenue growth, 72% gross margin, held by 3 ETFs. At $59B market cap and a P/E of 89x, it is pricing in continued hypergrowth. The 529% 1-year return is extraordinary for a name this size; the 38% ETF coverage says a minority of AI ETF managers are taking the bet, and those who did have been well rewarded.',
     },
