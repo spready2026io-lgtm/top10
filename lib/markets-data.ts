@@ -1554,8 +1554,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -4.45
     },
     "flow1M": {
-      "usd": -375701000,
-      "pct": -5.88
+      "usd": -461849000,
+      "pct": -7.13
     },
     "note": "The structural growth story of the decade: demographics, infrastructure build-out and a deep domestic investor base. India trades at a premium multiple, so flows here tell you how much growth investors are willing to pay for."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -5.31
     },
     "flow1M": {
-      "usd": -154014000,
-      "pct": -8.94
+      "usd": -168682000,
+      "pct": -9.7
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 37011144,
-      "pct": 4.82
+      "usd": 33456955,
+      "pct": 4.28
     },
     "flow1M": {
-      "usd": 19689844,
-      "pct": 2.51
+      "usd": 21791347,
+      "pct": 2.75
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4675,8 +4675,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0.45
     },
     "flow1M": {
-      "usd": 60812500,
-      "pct": 1.59
+      "usd": 34750000,
+      "pct": 0.9
     },
     "returns": {
       "1W": -2.09,
@@ -4861,7 +4861,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Sep 26, 2026, 9:38 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Sep 27, 2026, 9:38 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
