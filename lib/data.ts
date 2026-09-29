@@ -298,8 +298,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Soft
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-09-29T21:09:12.226Z';
-export const SCAN_TIMESTAMP_NY = 'September 29, 2026 at 5:09 PM ET';
+export const SCAN_TIMESTAMP    = '2026-09-29T23:42:52.403Z';
+export const SCAN_TIMESTAMP_NY = 'September 29, 2026 at 7:42 PM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
