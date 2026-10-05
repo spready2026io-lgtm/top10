@@ -165,6 +165,10 @@ function buildEmail(d, unsubUrl, internalNote) {
 
 const DEFAULT_FROM = 'Tony at Stockscout <tony@stockscout.io>';
 
+// Secrets pasted into a dashboard often carry a stray space or newline, and a
+// newline inside an Authorization header fails the whole request. Trim on read.
+const env = name => (process.env[name] || '').trim() || undefined;
+
 // "Name <addr>" or a bare address -> { name?, email }
 function parseAddress(v) {
   const m = String(v).match(/^\s*"?([^"<]*?)"?\s*<([^>]+)>\s*$/);
@@ -172,10 +176,11 @@ function parseAddress(v) {
 }
 
 function makeSender() {
-  if (process.env.SENDGRID_API_KEY) {
+  const sendgridKey = env('SENDGRID_API_KEY');
+  if (sendgridKey) {
     // Same call as Bench's lib/mailer.ts: SendGrid v3, no SDK, success = 202.
-    const from = parseAddress(process.env.DAILY_FROM || DEFAULT_FROM);
-    const replyTo = process.env.DAILY_REPLY_TO ? parseAddress(process.env.DAILY_REPLY_TO) : null;
+    const from = parseAddress(env('DAILY_FROM') || DEFAULT_FROM);
+    const replyTo = env('DAILY_REPLY_TO') ? parseAddress(env('DAILY_REPLY_TO')) : null;
     return {
       name: `sendgrid as ${from.email}`, pause: 300,
       async send({ to, subject, html, text, headers }) {
@@ -191,7 +196,7 @@ function makeSender() {
         };
         const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
           method: 'POST',
-          headers: { Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`, 'Content-Type': 'application/json' },
+          headers: { Authorization: `Bearer ${sendgridKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
         if (res.status !== 202) throw new Error(`SendGrid HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -240,8 +245,8 @@ async function main() {
   const subject = subjectFor(d);
   console.log(`[daily-conviction] ${subject} (via ${sender.name})`);
 
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = env('KV_REST_API_URL') ?? env('UPSTASH_REDIS_REST_URL');
+  const token = env('KV_REST_API_TOKEN') ?? env('UPSTASH_REDIS_REST_TOKEN');
   const redis = url && token ? new Redis({ url, token }) : null;
 
   let note = null;
