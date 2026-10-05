@@ -1072,25 +1072,66 @@ function genSpyRet(r) {
   ].join('\n');
 }
 
-// Top N holdings per ETF (by weight). Feeds the ETF-row hover tooltip on the dashboard.
-function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
+// Top N raw holdings rows per ETF (by weight), in THEME_ETFS order. Shared by
+// ETF_TOP_HOLDINGS and TICKER_NAMES so the two blocks always cover the same tickers.
+function selectTopHoldings(holdingsMap, themeEtfs, topN = 5) {
   const allEtfs = [...new Set(Object.values(themeEtfs).flat())];
-  const lines = [];
+  const out = [];
   for (const etf of allEtfs) {
     const h = holdingsMap[etf];
     if (!h || h.length === 0) continue;
     const top = [...h]
       .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
-      .slice(0, topN)
-      .map(x => `{ t: '${safeTicker(x.ticker)}', w: ${Number(x.weight ?? 0).toFixed(1)} }`);
-    lines.push(`  ${etf}: [${top.join(', ')}],`);
+      .slice(0, topN);
+    out.push({ etf, top });
   }
+  return out;
+}
+
+// Top N holdings per ETF (by weight). Feeds the ETF-row hover tooltip on the dashboard.
+function genEtfTopHoldings(holdingsMap, themeEtfs, topN = 5) {
+  const lines = selectTopHoldings(holdingsMap, themeEtfs, topN).map(({ etf, top }) =>
+    `  ${etf}: [${top.map(x => `{ t: '${safeTicker(x.ticker)}', w: ${Number(x.weight ?? 0).toFixed(1)} }`).join(', ')}],`);
   return [
     '// @@GENERATED:ETF_TOP_HOLDINGS@@',
     'export const ETF_TOP_HOLDINGS: Record<string, EtfHolding[]> = {',
     ...lines,
     '};',
     '// @@END_GENERATED:ETF_TOP_HOLDINGS@@',
+  ].join('\n');
+}
+
+// Company name for every ticker in ETF_TOP_HOLDINGS. SAMPLE_DATA names only a
+// theme's Top 20, so a stock that reaches a fund's top book without making a
+// Top 20 had no name anywhere in data.ts and the Conviction Board showed its
+// ticker twice. The first published name wins: top-book rows first, then any
+// other fund's row for the same ticker (IDEF lists RTX by ticker alone, UFO
+// names it). COMPANY_NAMES, via resolveName, covers tickers no source named.
+// Tickers still unnamed are left out, so the board shows the bare ticker.
+// Returns null if nothing resolved so a partial fetch never wipes the block.
+function genTickerNames(holdingsMap, themeEtfs, topN = 5) {
+  const top = selectTopHoldings(holdingsMap, themeEtfs, topN).flatMap(e => e.top);
+  const wanted = new Set(top.map(x => safeTicker(x.ticker)).filter(t => t !== 'UNKNOWN'));
+  const names = {};
+  for (const x of [...top, ...Object.values(holdingsMap).flat()]) {
+    const t = String(x.ticker ?? '').trim().toUpperCase();
+    if (!wanted.has(t) || names[t]) continue;
+    const n = (x.name || '').trim();
+    if (n && n !== t) names[t] = resolveName(t, n);
+  }
+  for (const t of wanted) {
+    if (names[t]) continue;
+    const n = resolveName(t, '');
+    if (n !== t) names[t] = n;
+  }
+  const tickers = Object.keys(names).sort();
+  if (tickers.length === 0) return null;
+  return [
+    '// @@GENERATED:TICKER_NAMES@@',
+    'export const TICKER_NAMES: Record<string, string> = {',
+    ...tickers.map(t => `  ${t}: '${escapeStr(names[t])}',`),
+    '};',
+    '// @@END_GENERATED:TICKER_NAMES@@',
   ].join('\n');
 }
 
@@ -1309,7 +1350,7 @@ function genThemeUniverse(themeEtfs, etfDataMap) {
 
 // ── Patch data.ts in-place ───────────────────────────────────────────────────
 
-function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse) {
+function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse, newTickerNames) {
   let src = fs.readFileSync(DATA_PATH, 'utf8');
 
   src = src.replace(
@@ -1371,6 +1412,12 @@ function patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, ne
       /\/\/ @@GENERATED:ETF_TOP_HOLDINGS@@[\s\S]*?\/\/ @@END_GENERATED:ETF_TOP_HOLDINGS@@/,
       newEtfTopHoldings
     );
+  }
+  if (newTickerNames) {
+    // Function replacement: a "$" in a company name must not act as a replace pattern.
+    const re = /\/\/ @@GENERATED:TICKER_NAMES@@[\s\S]*?\/\/ @@END_GENERATED:TICKER_NAMES@@/;
+    if (re.test(src)) src = src.replace(re, () => newTickerNames);
+    else console.warn('[data.ts] TICKER_NAMES markers not found, block not written');
   }
   if (newBaseIndex) {
     src = src.replace(
@@ -1596,6 +1643,7 @@ async function main() {
   const newThemeBenchmarks = genThemeBenchmarks(etfReturnsMap);
   const newCrossTheme      = genCrossThemeTop10(themeEquities, financialsMap);
   const newEtfTopHoldings  = genEtfTopHoldings(holdingsMap, THEME_ETFS);
+  const newTickerNames     = genTickerNames(holdingsMap, THEME_ETFS);
   const newBaseIndex       = genBaseIndex(holdingsMap, spyData, qqqData);
   const newThemeReps       = genThemeReps(THEME_ETFS, etfDataMap);
   const newThemeUniverse   = genThemeUniverse(THEME_ETFS, etfDataMap);
@@ -1604,7 +1652,7 @@ async function main() {
   const newEtfInfo         = genEtfInfo(etfDataMap, THEME_ETFS);
 
   // Patch data.ts
-  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse);
+  patchDataTs(newEtfCount, newSampleData, newTimestamp, newEtfReturns, newTop10Ret, newSpyRet, newIndexChart, newThemeBenchmarks, newCrossTheme, newEtfTopHoldings, newBaseIndex, newThemeReps, newEtfDayChange, newHoldingsCount, newEtfInfo, newThemeUniverse, newTickerNames);
 
   const etfDataOk = Object.keys(etfDataMap).length;
   console.log('\n=== data.ts updated ===');
@@ -1639,7 +1687,7 @@ async function fetchLastPrice(ticker) {
 // Exported so a targeted repopulate script can reuse the Yahoo fetch + generator
 // without triggering a full pipeline run (which rewrites every block + history.json).
 module.exports = { yfInit, fetchEtfData, genThemeReps, genThemeUniverse, pearson, pathIncrements, THEME_ETFS, DATA_PATH,
-  isUSMarketDay, fetchLastPrice, resolveName };
+  isUSMarketDay, fetchLastPrice, resolveName, genTickerNames };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });

@@ -1,4 +1,4 @@
-import { ETF_TOP_HOLDINGS, SAMPLE_DATA, THEME_ETFS } from './data';
+import { ETF_TOP_HOLDINGS, SAMPLE_DATA, THEME_ETFS, TICKER_NAMES } from './data';
 import type { Theme } from './data';
 
 // A stock's consensus conviction: how many managers hold it in their top book,
@@ -22,9 +22,12 @@ export type ManagerRow = {
   concentration: number;   // sum of top-pick weights = how concentrated the book is
 };
 
-const nameMap: Record<string, string> = {};
+// Theme Top 20 names win, so a stock reads the same here as on its theme page.
+// TICKER_NAMES covers the top holdings that miss every Top 20; a ticker with
+// no published name anywhere falls back to the ticker itself.
+const nameMap: Record<string, string> = { ...TICKER_NAMES };
 for (const eqs of Object.values(SAMPLE_DATA)) {
-  for (const e of eqs) nameMap[e.ticker] = e.name;
+  for (const e of eqs) if (e.name && e.name !== e.ticker) nameMap[e.ticker] = e.name;
 }
 
 const etfTheme: Record<string, Theme> = {};
