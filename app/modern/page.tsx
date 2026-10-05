@@ -14,7 +14,7 @@ import {
 import { MARKET_TILES } from '@/lib/markets-data';
 
 // ── Live figures (derived at build time, never hardcoded/stale) ───────────────
-const ACTIVE_ETFS   = new Set(Object.values(THEME_ETFS).flat()).size;         // 51
+const ACTIVE_ETFS   = new Set(Object.values(THEME_ETFS).flat()).size;
 const NAMES_RANKED  = new Set(THEMES.flatMap((t) => SAMPLE_DATA[t].map((e) => e.ticker))).size; // 116
 const THEME_COUNT   = THEMES.length;                                          // 8
 const MARKET_COUNT  = MARKET_TILES.length;                                    // 18
@@ -216,8 +216,8 @@ export default function Landing() {
         <div style={{ background: 'linear-gradient(135deg,#0B0F17,#123024)', borderRadius: 20, padding: '44px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 28, position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(circle at 50% 50%, rgba(52,211,153,0.16), transparent 62%)' }} />
           <div style={{ position: 'relative', zIndex: 1, maxWidth: 560 }}>
-            <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff', marginBottom: 8 }}>Get Tony&apos;s weekly conviction note</div>
-            <p style={{ fontSize: 16, lineHeight: 1.5, color: '#9aa6b3', margin: 0 }}>The stocks gaining conviction across {ACTIVE_ETFS} funds, plus world-market flows. One email a week.</p>
+            <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff', marginBottom: 8 }}>Get The Daily Conviction from Tony</div>
+            <p style={{ fontSize: 16, lineHeight: 1.5, color: '#9aa6b3', margin: 0 }}>The day&apos;s 20 biggest buys and sells across {ACTIVE_ETFS} funds, in every theme. One short email each trading day.</p>
           </div>
           <NewsletterSignup source="landing" />
         </div>

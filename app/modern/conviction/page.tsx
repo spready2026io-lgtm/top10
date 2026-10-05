@@ -15,6 +15,9 @@ const THEME_COLOR: Record<string, string> = {
   'Cyber':          'text-red-400 bg-red-500/10 border-red-500/30',
   'Electrification':'text-amber-400 bg-amber-500/10 border-amber-500/30',
   'Industrials':    'text-orange-400 bg-orange-500/10 border-orange-500/30',
+  'Energy':         'text-lime-400 bg-lime-500/10 border-lime-500/30',
+  'Crypto':         'text-teal-400 bg-teal-500/10 border-teal-500/30',
+  'Space & Defense':'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
   'Meme':           'text-pink-400 bg-pink-500/10 border-pink-500/30',
 };
 
@@ -73,7 +76,7 @@ export default function ConvictionPage() {
         <div className="mb-8 p-6 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-2xl">
           <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--ss-green)] mb-3">The Conviction Board</div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--ss-ink)] leading-tight">
-            Where {totalManagers} active ETF managers put their highest conviction.
+            Where the managers of {totalManagers} thematic ETFs put their highest conviction.
           </h1>
           <p className="text-sm text-[var(--ss-text)] leading-relaxed mt-4 max-w-2xl">
             Every manager publishes the handful of names it weights most. When the same stock shows up across many top books, that is consensus you can see. This board ranks by <span className="text-[var(--ss-ink)]">how many managers hold it and how heavily</span>. Not performance. Not a formula. Just where conviction is concentrated.
@@ -184,11 +187,11 @@ export default function ConvictionPage() {
           </>
         )}
 
-        {/* Weekly conviction note — email capture */}
+        {/* The Daily Conviction: email capture */}
         <div className="mt-10 rounded-xl border border-[var(--ss-border)] bg-[var(--ss-card)] px-5 py-6">
-          <p className="text-[var(--ss-green)] text-xs font-semibold uppercase tracking-widest mb-1.5">Get the weekly conviction note</p>
+          <p className="text-[var(--ss-green)] text-xs font-semibold uppercase tracking-widest mb-1.5">Get The Daily Conviction</p>
           <p className="text-[var(--ss-text)] text-sm mb-4 max-w-lg">
-            The names gaining conviction across these {totalManagers} managers, plus where global money is flowing across world markets, in one email a week from Tony. See it first.
+            The day&apos;s 20 biggest buys and sells across these {totalManagers} managers, in one short email from Tony each trading day.
           </p>
           <EmailCapture variant="inline" source="conviction" light />
         </div>

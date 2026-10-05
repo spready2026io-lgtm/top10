@@ -39,7 +39,7 @@ export default function About() {
         <section>
           <h2 className="text-2xl font-bold text-white mb-3">What is Stockscout?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Stockscout is an ETF holdings analyser. It reads the holdings of {totalEtfs} actively managed ETFs
+            Stockscout is an ETF holdings analyser. It reads the holdings of {totalEtfs} thematic and sector ETFs
             across {themeCount} investment themes every day, ranks every stock by how much conviction those
             ETFs have in it, and surfaces the Top 10 names per theme.
           </p>
@@ -68,12 +68,12 @@ export default function About() {
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
             Stockscout tracks <span className="text-slate-200 font-semibold">{totalEtfs} ETFs</span>
             {` across ${themeCount} themes, giving you a view across ${totalEtfs} institutional products simultaneously. `}
-            The core universe is discretionary, actively managed funds. Broad index trackers are
-            excluded from the rankings: passive index construction reflects mechanical rules, not
-            manager conviction. Two themes, Software and Cyber, are a declared exception: they are
-            built from specialist sector baskets because no meaningful active pure-play funds exist
-            in those sectors. There, the score measures how consistently the sector&apos;s specialist
-            funds concentrate on a name.
+            The universe is thematic and sector funds: discretionary, actively managed books alongside
+            specialist thematic baskets, some of them index-built. Broad-market trackers (S&amp;P 500 and
+            Nasdaq-100 style) are excluded from the rankings, because a fund that holds the whole market
+            says nothing about a theme. Where a theme&apos;s funds are active, the score reads manager
+            conviction. Where they are index-built baskets, it reads how consistently the theme&apos;s
+            specialist funds concentrate on a name.
           </p>
 
           {/* ETF table */}
@@ -101,7 +101,7 @@ export default function About() {
         <section>
           <h2 className="text-xl font-bold text-white mb-4">And the rest of the world?</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            The conviction rankings are built from US-listed active funds. The rest of the world gets
+            The conviction rankings are built from US-listed thematic funds. The rest of the world gets
             its own board.
           </p>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
@@ -322,7 +322,7 @@ export default function About() {
           <h2 className="text-xl font-bold text-white mb-4">How to Use Stockscout</h2>
           <ol className="space-y-3">
             {[
-              { n: '1', title: 'Pick your theme.', body: 'Use the toggle in the header to switch between AI & ML, Semiconductors, Broad Tech, Electrification, Industrials, and Meme.' },
+              { n: '1', title: 'Pick your theme.', body: `Use the toggle in the header to switch between the ${themeCount} themes: ${THEMES.slice(0, -1).join(', ')}, and ${THEMES[THEMES.length - 1]}.` },
               { n: '2', title: 'Check the chart.', body: 'See how the Top10 selection is performing versus the S&P500. Use the time toggle to change the period.' },
               { n: '3', title: 'Scan the tiles.', body: 'Tiles are ranked by conviction. The highest-conviction name (highest ETF weighting and breadth) is top left.' },
               { n: '4', title: 'Check the scores.', body: 'Coverage Score tells you how many ETFs own it. Weight Score tells you how much they own. Velocity Score tells you if that conviction is growing. All three high means maximum and accelerating conviction.' },

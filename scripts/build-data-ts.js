@@ -42,14 +42,25 @@ const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(T
 
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
+// 2026-10-05: universe updated from Shuki's list. Thematic and sector funds
+// only; broad and factor trackers stay out, country funds stay on /markets.
+// A new theme needs 3+ funds (Energy, Crypto, Space & Defense qualified);
+// smaller groups fold into Broad Tech. WGMI and MARS moved out of Broad Tech
+// into the themes they had been parked for. IDEF sits in two themes.
 const THEME_ETFS = {
-  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
-  'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI', 'CNEQ', 'SGRT', 'SPMO', 'XMMO'],
-  'Software':       ['IGV', 'WCLD', 'XSW', 'SKYY', 'CLOU'],
-  'Cyber':          ['CIBR', 'HACK', 'BUG', 'IHAK'],
-  'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP'],
+  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG',
+                     'AIVC', 'TCAI', 'WTAI', 'LRNZ', 'EPAI', 'FAI', 'IQM', 'AGIQ', 'ANTW', 'AIHY', 'NCLD'],
+  'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM', 'SMH', 'SMHX', 'DISK'],
+  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CNEQ', 'SGRT', 'SPMO', 'XMMO',
+                     'QTEC', 'PSCT', 'XNTK', 'TEK', 'FTEC', 'IDGT', 'WLDR', 'AIUP', 'TCV', 'LOUP', 'MNVT', 'FFF',
+                     'GRNY', 'GARY', 'CLSE', 'IDNA', 'IPO', 'NXTE', 'LUMA', 'EUV'],
+  'Software':       ['IGV', 'WCLD', 'XSW', 'SKYY', 'CLOU', 'FCLD', 'XDAT'],
+  'Cyber':          ['CIBR', 'HACK', 'BUG', 'IHAK', 'WCBR'],
+  'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP', 'ELFY', 'AIPO'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
+  'Energy':         ['CRAK', 'PXE', 'IBAT'],
+  'Crypto':         ['WGMI', 'DECO', 'STCE', 'TEKX'],
+  'Space & Defense':['MARS', 'UFO', 'WAR', 'IDEF'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 
@@ -979,6 +990,9 @@ const BENCHMARK_ETF = {
   'Cyber':           'CIBR',
   'Electrification': 'PBD',
   'Industrials':     'AIRR',
+  'Energy':          'PXE',
+  'Crypto':          'WGMI',
+  'Space & Defense': 'UFO',
   'Meme':            'BUZZ',
 };
 
@@ -991,7 +1005,9 @@ function genThemeBenchmarks(etfReturnsMap) {
     const pad = ' '.repeat(Math.max(0, 16 - theme.length));
     lines.push(`  '${theme}':${pad}${ret},`);
   }
-  if (!allFound || lines.length < 8) return null; // keep existing if any benchmark ETF failed
+  // Keep the existing block if any benchmark ETF failed. The count is derived:
+  // a literal 8 here would have frozen this block once the 9th theme arrived.
+  if (!allFound || lines.length < Object.keys(BENCHMARK_ETF).length) return null;
   return [
     '// @@GENERATED:THEME_BENCHMARKS@@',
     'export const THEME_BENCHMARKS: Record<Theme, number> = {',
@@ -1600,9 +1616,30 @@ async function main() {
   console.log(`Themes: ${Object.entries(themeEquities).map(([t,e]) => `${t}(${e.length})`).join(', ')}`);
 }
 
+// Latest regular-market price for one US ticker (v8 chart meta), or null.
+// Used by build-moves.js to put a dollar figure on a share change. Non-USD
+// listings return null rather than a price in the wrong currency.
+async function fetchLastPrice(ticker) {
+  try {
+    await yfInit();
+    const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=5d&interval=1d&crumb=${encodeURIComponent(_yfCrumb)}`;
+    const res = await fetch(url, { headers: { 'User-Agent': YF_UA, 'Cookie': _yfCookie, 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const meta = (await res.json()).chart?.result?.[0]?.meta;
+    const p = meta?.regularMarketPrice;
+    if (!Number.isFinite(p) || p <= 0) return null;
+    if (meta.currency && meta.currency !== 'USD') return null;
+    return p;
+  } catch (e) {
+    console.warn(`[Yahoo] price ${ticker}: ${e.message}`);
+    return null;
+  }
+}
+
 // Exported so a targeted repopulate script can reuse the Yahoo fetch + generator
 // without triggering a full pipeline run (which rewrites every block + history.json).
-module.exports = { yfInit, fetchEtfData, genThemeReps, genThemeUniverse, pearson, pathIncrements, THEME_ETFS, DATA_PATH };
+module.exports = { yfInit, fetchEtfData, genThemeReps, genThemeUniverse, pearson, pathIncrements, THEME_ETFS, DATA_PATH,
+  isUSMarketDay, fetchLastPrice, resolveName };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });

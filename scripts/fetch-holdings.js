@@ -12,6 +12,12 @@
  *   ARK      (ARKK)                   — public daily CSV
  *   Alger    (ALAI)                   — public daily CSV (with fallback)
  *   SPDR     (XSD)                    — public daily Excel
+ *
+ * Each holding is { ticker, name, weight } plus `shares` when the source
+ * publishes a share count (most do). Shares feed scripts/build-moves.js, the
+ * day-over-day buy/sell engine behind The Daily Conviction email. The output
+ * also carries `meta[etf] = { src, total? }` so that engine can tell which
+ * source produced a list and whether the list is complete or a top-N slice.
  */
 
 const fs   = require('fs');
@@ -27,6 +33,26 @@ const SCAN_ERRORS_PATH = path.join(__dirname, '..', 'lib', 'scan-errors.json');
 const fetchFailures = [];
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Parse a share count like "1,089,007", "67683.00000000" or 7067090. Returns
+// undefined when the cell holds nothing usable, so the field is simply omitted.
+function parseShares(v) {
+  if (v === null || v === undefined) return undefined;
+  const n = typeof v === 'number' ? v : parseFloat(String(v).replace(/[",$\s]/g, ''));
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
+// Attach a parsed share count to a holding only when one exists.
+function withShares(h, raw) {
+  const sh = parseShares(raw);
+  if (sh !== undefined) h.shares = sh;
+  return h;
+}
+
+// Per-ETF flag for sources that serve only a top-N slice of the fund
+// (StockAnalysis serves the top 25). Lets the moves engine avoid reading
+// "fell out of the top 25" as "sold the whole position".
+const SOURCE_TRUNCATED = {};
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
 
@@ -108,6 +134,7 @@ async function fetchIShares({ ticker, id }) {
     const names   = dp.issueName?.formattedValue || [];
     const weights = dp.holdingPercent?.formattedValue || [];
     const asset   = dp.assetClass?.formattedValue || [];
+    const units   = dp.unitsHeld?.value || [];
 
     const holdings = [];
     for (let i = 0; i < tickers.length; i++) {
@@ -116,7 +143,7 @@ async function fetchIShares({ ticker, id }) {
       if (asset[i] && !asset[i].toLowerCase().includes('equity')) continue;
       const w = parseFloat(weights[i]);
       if (!w || w <= 0) continue;
-      holdings.push({ ticker: t, name: (names[i] || t).trim(), weight: w });
+      holdings.push(withShares({ ticker: t, name: (names[i] || t).trim(), weight: w }, units[i]));
     }
     console.log(`    → ${holdings.length} equity holdings`);
     return holdings;
@@ -182,10 +209,11 @@ async function fetchARK() {
     const tIdx  = hdrs.findIndex(h => h === 'ticker');
     const nIdx  = hdrs.findIndex(h => h === 'company');
     const wIdx  = hdrs.findIndex(h => h.includes('weight'));
+    const sIdx  = hdrs.findIndex(h => h === 'shares');
 
     const holdings = rows.slice(1)
       .filter(r => isEquityTicker(r[tIdx]))
-      .map(r => ({ ticker: r[tIdx].trim(), name: (r[nIdx] || r[tIdx]).trim(), weight: parseFloat(r[wIdx]) || 0 }))
+      .map(r => withShares({ ticker: r[tIdx].trim(), name: (r[nIdx] || r[tIdx]).trim(), weight: parseFloat(r[wIdx]) || 0 }, sIdx >= 0 ? r[sIdx] : undefined))
       .filter(r => r.weight > 0);
 
     console.log(`    → ${holdings.length} equity holdings`);
@@ -224,16 +252,17 @@ async function fetchAlgerETF({ ticker, urls }) {
       const tIdx  = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
       const nIdx  = hdrs.findIndex(h => !h.includes('product') && (h.includes('description') || h.includes('security') || h.includes('name') || h.includes('holding')));
       const wIdx  = hdrs.findIndex(h => h.includes('weight') || h.includes('% of') || h.includes('pct'));
+      const sIdx  = hdrs.findIndex(h => h === 'quantity' || h === 'shares');
 
       if (tIdx === -1) continue;
 
       const holdings = rows.slice(1)
         .filter(r => isEquityTicker(r[tIdx]))
-        .map(r => ({
+        .map(r => withShares({
           ticker: r[tIdx].trim(),
           name:   nIdx >= 0 ? (r[nIdx] || r[tIdx]).trim() : r[tIdx].trim(),
           weight: wIdx >= 0 ? parseFloat(r[wIdx]) || 0 : 0,
-        }))
+        }, sIdx >= 0 ? r[sIdx] : undefined))
         .filter(r => r.ticker);
 
       console.log(`    → ${holdings.length} equity holdings`);
@@ -266,14 +295,15 @@ async function fetchSPDR() {
     const tIdx  = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
     const nIdx  = hdrs.findIndex(h => h === 'name' || h.includes('security'));
     const wIdx  = hdrs.findIndex(h => h.includes('weight'));
+    const sIdx  = hdrs.findIndex(h => h === 'shares held' || h === 'shares');
 
     const holdings = rows.slice(hIdx + 1)
       .filter(r => isEquityTicker(String(r[tIdx] || '')))
-      .map(r => ({
+      .map(r => withShares({
         ticker: String(r[tIdx]).trim(),
         name:   nIdx >= 0 ? String(r[nIdx] || '').trim() : String(r[tIdx]).trim(),
         weight: parseFloat(String(r[wIdx] || 0)) || 0,
-      }))
+      }, sIdx >= 0 ? r[sIdx] : undefined))
       .filter(r => r.weight > 0);
 
     console.log(`    → ${holdings.length} equity holdings`);
@@ -312,14 +342,15 @@ async function fetchWedbush({ ticker, slug }) {
     const tIdx = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
     const nIdx = hdrs.findIndex(h => h === 'name');
     const wIdx = hdrs.findIndex(h => h === 'weight');
+    const sIdx = hdrs.findIndex(h => h === 'shares');
     if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
 
     const holdings = rows.slice(hIdx + 1)
-      .map(r => ({
+      .map(r => withShares({
         ticker: (r[tIdx] || '').trim(),
         name:   nIdx >= 0 ? (r[nIdx] || '').trim() : (r[tIdx] || '').trim(),
         weight: parseFloat(r[wIdx]) || 0,
-      }))
+      }, sIdx >= 0 ? r[sIdx] : undefined))
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
     console.log(`    → ${holdings.length} equity holdings`);
@@ -345,6 +376,7 @@ async function fetchTema(ticker = 'VOLT') {
     const nIdx = hdrs.findIndex(h => h === 'proper_name' || h === 'name' || h.includes('security'));
     const wIdx = hdrs.findIndex(h => h === 'percent_of_nav' || h.includes('weight') || h.includes('pct'));
     const cIdx = hdrs.findIndex(h => h === 'is_cash');
+    const sIdx = hdrs.findIndex(h => h === 'shares');
     if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
 
     const holdings = rows.slice(1)
@@ -353,11 +385,11 @@ async function fetchTema(ticker = 'VOLT') {
         const rawTick = (r[tIdx] || '').trim().split(/\s+/)[0]; // drop exchange suffix
         let weight = parseFloat(r[wIdx]) || 0;
         if (weight > 0 && weight < 1) weight = parseFloat((weight * 100).toFixed(4)); // 0-1 to %
-        return {
+        return withShares({
           ticker: rawTick,
           name:   nIdx >= 0 ? (r[nIdx] || rawTick).trim() : rawTick,
           weight,
-        };
+        }, sIdx >= 0 ? r[sIdx] : undefined);
       })
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
@@ -382,7 +414,15 @@ async function fetchFirstTrust({ ticker }) {
     const holdings = [];
     const rowRe = /<tr[\s\S]*?<\/tr>/gi;
     const cellRe = /<td[^>]*>([\s\S]*?)<\/td>/gi;
+    const headRe = /<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi;
     const strip  = s => s.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').trim();
+
+    // Header row: ["Security Name","Identifier","CUSIP","Classification","Shares / Quantity","Market Value","Weighting"]
+    let sharesIdx = -1;
+    for (const rowMatch of html.matchAll(rowRe)) {
+      const heads = [...rowMatch[0].matchAll(headRe)].map(m => strip(m[1]).toLowerCase());
+      if (heads.some(h => h.includes('weighting'))) { sharesIdx = heads.findIndex(h => h.startsWith('shares')); break; }
+    }
 
     for (const rowMatch of html.matchAll(rowRe)) {
       const cells = [...rowMatch[0].matchAll(cellRe)].map(m => strip(m[1]));
@@ -398,7 +438,7 @@ async function fetchFirstTrust({ ticker }) {
       const weight   = parseFloat(weightCell.replace('%', ''));
 
       if (weight > 0) {
-        holdings.push({ ticker: tickerCell, name: nameCell || tickerCell, weight });
+        holdings.push(withShares({ ticker: tickerCell, name: nameCell || tickerCell, weight }, sharesIdx >= 0 ? cells[sharesIdx] : undefined));
       }
     }
 
@@ -441,17 +481,17 @@ async function fetchProShares({ ticker }) {
       const t = (r[2] || '').replace(/"/g, '').trim();
       const n = (r[4] || '').replace(/"/g, '').trim();
       const mv = parseFloat(r[9]) || 0;
-      return { ticker: t, name: n, mv };
+      return { ticker: t, name: n, mv, sh: r[7] };
     }).filter(r => r.mv > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
     const totalMV = withMV.reduce((s, r) => s + r.mv, 0);
     if (totalMV === 0) throw new Error('Zero total market value');
 
-    const holdings = withMV.map(r => ({
+    const holdings = withMV.map(r => withShares({
       ticker: r.ticker,
       name: r.name,
       weight: parseFloat((r.mv / totalMV * 100).toFixed(4)),
-    }));
+    }, r.sh));
 
     console.log(`    → ${holdings.length} equity holdings`);
     return holdings.length > 0 ? holdings : null;
@@ -554,9 +594,35 @@ async function fetchWisdomTree() {
 // Not a complete dataset for large ETFs, but covers the positions that drive
 // scoring.  Used as a last-resort HTTP fallback for QQQ, WCLD, and GTEK.
 //
-// Parse pattern: the SvelteKit data is a flat array; JSON.stringify(nodes[2])
-// produces strings like  "$NVDA","8.75%"  adjacent in the JSON text.
-// Regex: /"(\$[A-Z]{1,5})","([\d.]+)%"/g
+// Parse: nodes[2].data is a devalue-flattened array. Decoded, its root holds
+// `holdings` (rows of { no, n: name, s: "$TICKER", as: "8.75%", sh: "44,321" },
+// verified 2026-10-05) and `count` (the fund's full holdings count). US listings
+// carry a "$" prefix; foreign ones look like "!tyo/6857" and are skipped.
+// If the decode ever fails, the original adjacency regex still yields ticker +
+// weight (no names, no shares):  /"(\$[A-Z]{1,5})","([\d.]+)%"/g
+
+// Minimal devalue decoder (the format SvelteKit uses for __data.json nodes).
+function unflattenDevalue(data) {
+  const cache = new Map();
+  function hydrate(i) {
+    if (i < 0) return i === -3 ? NaN : i === -4 ? Infinity : i === -5 ? -Infinity : i === -6 ? -0 : (i === -1 ? undefined : null);
+    if (cache.has(i)) return cache.get(i);
+    const v = data[i];
+    if (v === null || typeof v !== 'object') { cache.set(i, v); return v; }
+    if (Array.isArray(v)) {
+      if (typeof v[0] === 'string') { const out = v[0] === 'Date' || v[0] === 'BigInt' ? v[1] : null; cache.set(i, out); return out; }
+      const out = [];
+      cache.set(i, out);
+      for (const idx of v) out.push(hydrate(idx));
+      return out;
+    }
+    const out = {};
+    cache.set(i, out);
+    for (const [k, idx] of Object.entries(v)) out[k] = hydrate(idx);
+    return out;
+  }
+  return hydrate(0);
+}
 
 async function fetchStockAnalysis(ticker) {
   const url = `https://stockanalysis.com/etf/${ticker.toLowerCase()}/holdings/__data.json`;
@@ -566,19 +632,43 @@ async function fetchStockAnalysis(ticker) {
       'Accept': 'application/json, */*',
       'Referer': 'https://stockanalysis.com/',
     });
-    const blob = JSON.stringify((d.nodes && d.nodes[2]) || {});
+    const node = d.nodes && d.nodes[2];
+    const blob = JSON.stringify(node || {});
     if (!blob || blob === '{}') throw new Error('No data in nodes[2]');
 
-    // Adjacent string values in the SvelteKit flat array: "$NVDA","8.75%"
-    const matches = [...blob.matchAll(/"(\$[A-Z]{1,5})","([\d.]+)%"/g)];
-    if (matches.length === 0) throw new Error('No "$TICKER","weight%" patterns found');
+    let holdings = null;
+    let total = null;
+    let served = null;
+    try {
+      const root = unflattenDevalue(node.data);
+      if (Array.isArray(root?.holdings)) {
+        total = Number.isFinite(root.count) ? root.count : null;
+        served = root.holdings.length;
+        holdings = root.holdings
+          .filter(r => typeof r?.s === 'string' && /^\$[A-Z]{1,5}$/.test(r.s))
+          .map(r => withShares({
+            ticker: r.s.slice(1),
+            name:   typeof r.n === 'string' && r.n.trim() ? r.n.trim() : r.s.slice(1),
+            weight: parseFloat(String(r.as || '').replace('%', '')) || 0,
+          }, r.sh));
+      }
+    } catch (e) {
+      console.warn(`    decode failed (${e.message}), using the regex fallback`);
+    }
 
-    const holdings = matches
-      .map(m => ({ ticker: m[1].replace('$', ''), name: m[1].replace('$', ''), weight: parseFloat(m[2]) }))
-      .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+    if (!holdings) {
+      // Adjacent string values in the SvelteKit flat array: "$NVDA","8.75%"
+      const matches = [...blob.matchAll(/"(\$[A-Z]{1,5})","([\d.]+)%"/g)];
+      if (matches.length === 0) throw new Error('No "$TICKER","weight%" patterns found');
+      holdings = matches.map(m => ({ ticker: m[1].replace('$', ''), name: m[1].replace('$', ''), weight: parseFloat(m[2]) }));
+      const totalStr = blob.match(/"(\d+) individual holdings"/);
+      total = totalStr ? parseInt(totalStr[1], 10) : null;
+    }
 
-    const totalStr = blob.match(/"(\d+) individual holdings"/);
-    const note = totalStr ? ` (top ${holdings.length} of ${totalStr[1]})` : '';
+    holdings = holdings.filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+    // Unknown counts are treated as a slice: the safe reading for exits.
+    SOURCE_TRUNCATED[ticker] = !(total && served && total <= served);
+    const note = total ? ` (top ${holdings.length} of ${total})` : '';
     console.log(`    → ${holdings.length} equity holdings${note}`);
     return holdings.length > 0 ? holdings : null;
   } catch (e) {
@@ -611,7 +701,26 @@ const NEW_SA_ETFS = ['AIFD', 'SPRX', 'AOTG', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCU
   // Software theme (2026-07-24): XSW (SPDR), SKYY (First Trust), CLOU (Global X). IGV/WCLD already fetched above.
   'XSW', 'SKYY', 'CLOU',
   // Cyber theme (2026-07-24): CIBR (First Trust), HACK (Amplify), BUG (Global X), IHAK (iShares).
-  'CIBR', 'HACK', 'BUG', 'IHAK'];
+  'CIBR', 'HACK', 'BUG', 'IHAK',
+  // ── Shuki's list, 2026-10-05. Every one probed from GitHub Actions that day:
+  //    StockAnalysis serves each one's top 25 with names and share counts.
+  // AI & ML
+  'AIVC', 'TCAI', 'WTAI', 'LRNZ', 'EPAI', 'FAI', 'IQM', 'AGIQ', 'ANTW', 'AIHY', 'NCLD',
+  // Semiconductors (DISK comes from Tema's own CSV below, full list)
+  'SMH', 'SMHX',
+  // Software, Cyber
+  'FCLD', 'XDAT', 'WCBR',
+  // Electrification
+  'ELFY', 'AIPO',
+  // Broad Tech (sector funds, active broad books, and the fold-ins with no 3-fund theme)
+  'QTEC', 'PSCT', 'XNTK', 'TEK', 'FTEC', 'IDGT', 'WLDR', 'AIUP', 'TCV', 'LOUP', 'MNVT', 'FFF',
+  'GRNY', 'GARY', 'CLSE', 'IDNA', 'IPO', 'NXTE', 'LUMA', 'EUV',
+  // Energy (new theme)
+  'CRAK', 'PXE', 'IBAT',
+  // Crypto (new theme, with WGMI above)
+  'DECO', 'STCE', 'TEKX',
+  // Space & Defense (new theme, with MARS above and IDEF from iShares)
+  'UFO', 'WAR'];
 
 // ── Base index holdings for the portfolio builder core (SPY, QQQ) ─────────────
 // QQQ already comes from the Invesco block above; SPY has no clean issuer API,
@@ -633,6 +742,7 @@ async function fetchVistaShares({ ticker }) {
     const nIdx = hdrs.findIndex(h => h === 'securityname' || h === 'name' || h.includes('security'));
     const wIdx = hdrs.findIndex(h => h === 'weightings' || h === 'weight' || h.includes('weight'));
     const mmIdx = hdrs.findIndex(h => h === 'moneymarketflag');
+    const sIdx  = hdrs.findIndex(h => h === 'shares');
     if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
 
     const holdings = rows.slice(1)
@@ -640,11 +750,11 @@ async function fetchVistaShares({ ticker }) {
       .map(r => {
         const rawTick = (r[tIdx] || '').replace(/"/g, '').trim().split(/\s+/)[0]; // drop exchange suffix
         const rawW    = (r[wIdx] || '0').replace('%', '').trim();
-        return {
+        return withShares({
           ticker: rawTick,
           name:   nIdx >= 0 ? (r[nIdx] || rawTick).replace(/"/g, '').trim() : rawTick,
           weight: parseFloat(rawW) || 0,
-        };
+        }, sIdx >= 0 ? r[sIdx] : undefined);
       })
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
@@ -707,6 +817,8 @@ async function main() {
   if (volt) results['VOLT'] = volt;
   const rsho = await fetchTema('RSHO');
   if (rsho) results['RSHO'] = rsho;
+  const disk = await fetchTema('DISK');   // Tema Memory ETF, Semiconductors (2026-10-05)
+  if (disk) results['DISK'] = disk;
 
   console.log('\n[First Trust]');
   for (const etf of FIRSTTRUST_ETFS) {
@@ -817,7 +929,7 @@ async function main() {
     ...PROSHARES_ETFS.map(e => e.ticker),
     ...FIDELITY_ETFS.map(e => e.ticker),
     ...MEME_ETFS,
-    'RSHO',
+    'RSHO', 'DISK',
     ...NEW_SA_ETFS,
     ...BASE_INDEX_SA,
   ];
@@ -827,7 +939,16 @@ async function main() {
   console.log(`Fetched (${fetched.length}): ${fetched.join(', ')}`);
   if (failed.length) console.log(`Failed  (${failed.length}): ${failed.join(', ')}`);
 
-  const out = { lastUpdated: new Date().toISOString().split('T')[0], etfsFetched: fetched, holdings: results };
+  // Which kind of source produced each list. Issuer files are the full fund;
+  // StockAnalysis is a top-25 slice unless the fund holds no more than that.
+  const meta = {};
+  for (const etf of fetched) {
+    meta[etf] = etf in SOURCE_TRUNCATED
+      ? { src: 'stockanalysis', truncated: SOURCE_TRUNCATED[etf] }
+      : { src: 'issuer', truncated: false };
+  }
+
+  const out = { lastUpdated: new Date().toISOString().split('T')[0], etfsFetched: fetched, holdings: results, meta };
   fs.writeFileSync(OUT_PATH, JSON.stringify(out, null, 2));
   console.log(`\nWritten → ${OUT_PATH}`);
 
@@ -848,4 +969,10 @@ async function main() {
   console.log(`Written → ${SCAN_ERRORS_PATH} (${fetchFailures.length} fetch failures)`);
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+// Exported for scripts/build-moves.js, which borrows the StockAnalysis reader
+// for funds whose primary source publishes no share counts.
+module.exports = { fetchStockAnalysis, SOURCE_TRUNCATED };
+
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+}

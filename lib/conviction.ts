@@ -3,12 +3,12 @@ import type { Theme } from './data';
 
 // A stock's consensus conviction: how many managers hold it in their top book,
 // and how heavily. This is the same signal the main dashboard ranks on —
-// breadth first, weight as the tiebreaker — applied across all 40 managers.
+// breadth first, weight as the tiebreaker, applied across every tracked manager.
 export type ConvictionRow = {
   ticker: string;
   name: string;
   breadth: number;        // managers holding this in their disclosed top book
-  totalManagers: number;  // 40
+  totalManagers: number;  // every fund in ETF_TOP_HOLDINGS
   avgWeight: number;       // average weight across managers that hold it
   managers: string[];      // ETF tickers holding it
   theme: Theme | null;     // dominant theme (most managers' theme)

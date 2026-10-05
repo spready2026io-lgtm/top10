@@ -585,6 +585,7 @@ async function main() {
   }
   const existing = JSON.parse(fs.readFileSync(RAW_PATH, 'utf8'));
   const results  = { ...existing.holdings };
+  const before   = { ...existing.holdings };
 
   const { browser, ctx } = await launchBrowser();
   console.log('Browser launched.\n');
@@ -664,10 +665,18 @@ async function main() {
   console.log(`Fetched (${fetched.length}): ${fetched.join(', ') || 'none'}`);
   if (failed.length) console.log(`Failed  (${failed.length}): ${failed.join(', ')}`);
 
+  // Phase 1 wrote a source tag per list (see fetch-holdings.js). Keep it, and
+  // re-tag every list this phase replaced: browser scrapes carry no share counts.
+  const meta = { ...(existing.meta || {}) };
+  for (const t of Object.keys(results)) {
+    if (results[t] !== before[t]) meta[t] = { src: 'playwright', truncated: true };
+  }
+
   const out = {
     lastUpdated: new Date().toISOString().split('T')[0],
     etfsFetched: Object.keys(results),
     holdings:    results,
+    meta,
   };
   fs.writeFileSync(RAW_PATH, JSON.stringify(out, null, 2));
   console.log(`\nWritten → ${RAW_PATH}`);
