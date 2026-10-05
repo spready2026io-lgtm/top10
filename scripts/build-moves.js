@@ -130,12 +130,16 @@ function compareFund(etf, base, cur, themes) {
 function pricesFromDataTs() {
   const out = {};
   if (!fs.existsSync(DATA_PATH)) return out;
-  const src = fs.readFileSync(DATA_PATH, 'utf8');
-  for (const line of src.split('\n')) {
-    const m = line.match(/ticker: '([A-Z]{1,5})'.*?\bprice: ([\d.]+)/);
-    if (!m || /currency: '(?!USD)/.test(line)) continue;
-    const p = parseFloat(m[2]);
-    if (p > 0) out[m[1]] = p;
+  // Entries span several lines (ticker on one, price on the next), so read
+  // each entry as the text between one `ticker: '` and the next.
+  const chunks = fs.readFileSync(DATA_PATH, 'utf8').split("ticker: '").slice(1);
+  for (const chunk of chunks) {
+    const t = chunk.match(/^([A-Z]{1,5})'/);
+    const price = chunk.match(/\bprice: ([\d.]+)/);
+    const cur = chunk.match(/\bcurrency: '([A-Z]{3})'/);
+    if (!t || !price || (cur && cur[1] !== 'USD')) continue;
+    const p = parseFloat(price[1]);
+    if (p > 0) out[t[1]] = p;
   }
   return out;
 }
@@ -309,7 +313,7 @@ async function main() {
   }
 }
 
-module.exports = { compareFund, toRows, median };
+module.exports = { compareFund, toRows, median, pricesFromDataTs };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });

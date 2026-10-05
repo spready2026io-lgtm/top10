@@ -41,7 +41,7 @@ const PERF_COLS: Period[] = ['1M', 'YTD', '6M', '1Y'];
 function buildRows(): Row[] {
   const rows: Row[] = [];
   // One row per unique fund. IGV and WCLD sit in both Broad Tech and Software,
-  // so dedupe by ticker (first theme wins). The table lists 51 unique funds.
+  // so dedupe by ticker (first theme wins): one row per unique fund.
   const seen = new Set<string>();
   for (const theme of Object.keys(THEME_ETFS) as Theme[]) {
     for (const ticker of THEME_ETFS[theme]) {

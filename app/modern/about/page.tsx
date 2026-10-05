@@ -87,7 +87,7 @@ export default function About() {
         <section>
           <h2 className="text-xl font-bold text-[var(--ss-ink)] mb-4">And the rest of the world?</h2>
           <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
-            The conviction rankings are built from US-listed active funds. The rest of the world gets
+            The conviction rankings are built from US-listed thematic funds. The rest of the world gets
             its own board.
           </p>
           <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">

@@ -76,7 +76,7 @@ export default function ConvictionPage() {
         <div className="mb-8 p-6 bg-[var(--ss-card)] border border-[var(--ss-border)] rounded-2xl">
           <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--ss-green)] mb-3">The Conviction Board</div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--ss-ink)] leading-tight">
-            Where {totalManagers} active ETF managers put their highest conviction.
+            Where the managers of {totalManagers} thematic ETFs put their highest conviction.
           </h1>
           <p className="text-sm text-[var(--ss-text)] leading-relaxed mt-4 max-w-2xl">
             Every manager publishes the handful of names it weights most. When the same stock shows up across many top books, that is consensus you can see. This board ranks by <span className="text-[var(--ss-ink)]">how many managers hold it and how heavily</span>. Not performance. Not a formula. Just where conviction is concentrated.

@@ -68,26 +68,27 @@ function subjectFor(d) {
 
 // ── Email body ────────────────────────────────────────────────────────────────
 
+// Three columns so it holds up on a phone: the stock and who moved it, the
+// move in shares, the move in dollars and in share of the fund.
 function rowHtml(m) {
   const buy = m.netShares > 0;
   const tone = buy ? '#047857' : '#b91c1c';
-  const pos = m.positionChangePct === null ? '' : ` (${m.positionChangePct > 0 ? '+' : ''}${m.positionChangePct}% position)`;
+  const cell = 'padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;';
+  const small = 'font-size:12px;color:#64748b;line-height:1.45;';
   return `<tr>
-    <td style="padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;">
+    <td style="${cell}">
       <div style="font-weight:700;font-size:14px;color:#0f172a;">${esc(m.ticker)}</div>
-      <div style="font-size:12px;color:#64748b;">${esc(m.name)}</div>
+      <div style="${small}">${esc(m.name)}</div>
+      <div style="${small}"><span style="color:#0f172a;font-weight:600;">${esc(m.etf)}</span> &middot; ${esc(m.themes.join(' / '))}</div>
     </td>
-    <td style="padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;">
-      <div style="font-weight:600;font-size:13px;color:#0f172a;">${esc(m.etf)}</div>
-      <div style="font-size:12px;color:#64748b;">${esc(m.themes.join(' / '))}</div>
-    </td>
-    <td style="padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;">
+    <td style="${cell}">
       <div style="font-weight:600;font-size:13px;color:${tone};">${KIND[m.kind]}</div>
-      <div style="font-size:12px;color:#64748b;">${shares(m.netShares)} sh${esc(pos)}</div>
+      <div style="${small}white-space:nowrap;">${shares(m.netShares)} sh</div>
+      ${m.positionChangePct === null ? '' : `<div style="${small}white-space:nowrap;">${m.positionChangePct > 0 ? '+' : ''}${m.positionChangePct}% position</div>`}
     </td>
-    <td style="padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;text-align:right;white-space:nowrap;">
+    <td style="${cell}text-align:right;white-space:nowrap;">
       <div style="font-weight:700;font-size:14px;color:${tone};">${money(m.value)}</div>
-      <div style="font-size:12px;color:#64748b;">${pp(m.weightMoved)} of fund</div>
+      <div style="${small}">${pp(m.weightMoved)} of fund</div>
     </td>
   </tr>`;
 }

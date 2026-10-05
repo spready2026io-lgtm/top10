@@ -1364,7 +1364,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'ETF Holdings',
       color: 'text-sky-400',
       borderColor: 'border-sky-500/30',
-      desc: 'Every day we read the published holdings of 51 sector ETFs. These funds manage billions in real capital. Their holdings are public record.',
+      desc: `Every day we read the published holdings of ${ETF_COUNT} thematic ETFs. These funds manage billions in real capital. Their holdings are public record.`,
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['ARTY','BAI','SOXX','ARKK','AIRR'].map(t => (
@@ -1380,7 +1380,7 @@ function GuideStrip({ onClose }: { onClose: () => void }) {
       label: 'Pick a Theme',
       color: 'text-violet-400',
       borderColor: 'border-violet-500/30',
-      desc: 'Choose a sector. Each theme groups 3–17 specialist ETFs. Stockscout then ranks every stock those ETFs collectively hold.',
+      desc: `Choose a sector. Each theme groups ${THEME_SIZE_MIN} to ${THEME_SIZE_MAX} specialist ETFs. Stockscout then ranks every stock those ETFs collectively hold.`,
       visual: (
         <div className="flex flex-wrap gap-1 mt-2">
           {['AI & ML','Semis','Broad Tech'].map(t => (
@@ -1885,6 +1885,8 @@ const THEME_COUNT     = THEMES.length;
 // two themes, so summing double-counted them and the hero read 53 for a 51-fund
 // universe. Same fix as the one /universe already carries.
 const ETF_COUNT       = new Set(Object.values(THEME_ETFS).flat()).size;
+const THEME_SIZE_MIN  = Math.min(...THEMES.map(t => THEME_ETFS[t].length));
+const THEME_SIZE_MAX  = Math.max(...THEMES.map(t => THEME_ETFS[t].length));
 const SCORED_COUNT    = new Set(THEMES.flatMap(t => SAMPLE_DATA[t].map(e => e.ticker))).size;
 const MARKET_COUNT    = MARKET_TILES.length;
 // "1,100+" style: round the raw holdings count down to the nearest 100 so the
@@ -1922,7 +1924,7 @@ const HERO_SLIDES = [
     eyebrow: '',
     title: 'See what active ETF managers are really buying',
     titleCls: 'text-3xl sm:text-4xl',
-    lead: `We track every holding of ${ETF_COUNT} active ETFs, over ${HOLDINGS_FLOOR} shares across ${THEME_COUNT} themes, and rank them by manager conviction.`,
+    lead: `We track every holding of ${ETF_COUNT} thematic ETFs, over ${HOLDINGS_FLOOR} shares across ${THEME_COUNT} themes, and rank them by manager conviction.`,
     body: `When 8 of 10 active ETF managers overweight the same stock, that tells you something. We score ${SCORED_COUNT} names on how many ETFs hold them and at what weight, then rank that conviction fresh every day. And we track where money flows across ${MARKET_COUNT} world markets, from Europe to Latin America.`,
     glow: 'from-emerald-500/10',
     eyebrowCls: 'text-emerald-400',
@@ -2202,7 +2204,7 @@ function SlideVisual({ kind }: { kind: string }) {
         {/* Universe scale — derived from live data. Desktop only; hidden on the
             compact mobile slide per feedback. */}
         <div className="hidden sm:grid grid-cols-3 gap-2 text-center">
-          {[[`${ETF_COUNT}`, 'active ETFs'], [`${HOLDINGS_FLOOR}+`, 'shares'], [`${SCORED_COUNT}`, 'ranked']].map(([num, label]) => (
+          {[[`${ETF_COUNT}`, 'thematic ETFs'], [`${HOLDINGS_FLOOR}+`, 'shares'], [`${SCORED_COUNT}`, 'ranked']].map(([num, label]) => (
             <div key={label} className="rounded-lg border border-slate-800 bg-slate-900/50 py-2">
               <div className="text-base font-bold text-white">{num}</div>
               <div className="text-[9px] uppercase tracking-wide text-slate-500">{label}</div>

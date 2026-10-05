@@ -153,7 +153,7 @@ export default function Markets() {
             tile for my note on that market.
           </p>
           <p className="text-slate-500 text-xs leading-relaxed">
-            This board is separate from our conviction rankings. Conviction scores come from actively managed
+            This board is separate from our conviction rankings. Conviction scores come from thematic
             funds; these tiles use index country funds as measuring instruments for market-level money movement.
             Net flow = change in shares outstanding times price (fund creations and redemptions). Share-count
             tracking began {FLOW_SINCE}; flow figures appear as history accrues.
