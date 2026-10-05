@@ -44,7 +44,7 @@ async function verify(req: NextRequest): Promise<{ email: string; ok: boolean }>
   return { email, ok: timingSafeEqual(Buffer.from(stored), Buffer.from(t)) };
 }
 
-const INVALID = () => page('This link has expired', '<p style="font-size:14px;color:#94a3b8;line-height:1.6;">We could not match this unsubscribe link. If you still get emails you did not ask for, reply to one and we will remove you by hand.</p>', 400);
+const INVALID = () => page('This link has expired', '<p style="font-size:14px;color:#94a3b8;line-height:1.6;">We could not match this unsubscribe link. If you still get emails you did not ask for, tell us on the <a href="/contact" style="color:#34d399;">contact page</a> and we will remove you by hand.</p>', 400);
 
 export async function GET(req: NextRequest) {
   try {

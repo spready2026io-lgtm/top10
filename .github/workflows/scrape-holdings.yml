@@ -132,6 +132,7 @@ jobs:
       # The Daily Conviction to the stockscout.io signup list. Sends only on a
       # trading day with a fresh edition, once per day (a Redis claim guards
       # re-runs). Without the KV secrets it sends an internal preview only.
+      # From tony@stockscout.io through SendGrid (as Bench does); GMX if no key.
       - name: Send The Daily Conviction
         continue-on-error: true
         env:
@@ -139,6 +140,6 @@ jobs:
           GMX_PASSWORD:      ${{ secrets.GMX_PASSWORD }}
           KV_REST_API_URL:   ${{ secrets.KV_REST_API_URL }}
           KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
-          RESEND_API_KEY:    ${{ secrets.RESEND_API_KEY }}
-          DAILY_FROM:        ${{ secrets.DAILY_FROM }}
+          SENDGRID_API_KEY:  ${{ secrets.SENDGRID_API_KEY }}
+          DAILY_REPLY_TO:    ${{ secrets.DAILY_REPLY_TO }}
         run: node scripts/send-daily-conviction.js
