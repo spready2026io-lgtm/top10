@@ -173,7 +173,8 @@ const TOP10_RET: Record<Theme, Record<Period, number>> = {
 // @@END_GENERATED:TOP10_RET@@
 
 const THEME_SEED: Record<Theme, number> = {
-  'AI & ML': 7, 'Semiconductors': 19, 'Broad Tech': 31, 'Software': 83, 'Cyber': 89, 'Electrification': 43, 'Industrials': 57, 'Meme': 71,
+  'AI & ML': 7, 'Semiconductors': 19, 'Broad Tech': 31, 'Software': 83, 'Cyber': 89, 'Electrification': 43, 'Industrials': 57,
+  'Energy': 97, 'Crypto': 101, 'Space & Defense': 103, 'Meme': 71,
 };
 
 // @@GENERATED:INDEX_CHART_DATA@@
@@ -247,7 +248,7 @@ export const INDEX_CHART_DATA: Record<Theme, IndexChartByPeriod> = {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type Theme = 'AI & ML' | 'Semiconductors' | 'Broad Tech' | 'Software' | 'Cyber' | 'Electrification' | 'Industrials' | 'Meme';
+export type Theme = 'AI & ML' | 'Semiconductors' | 'Broad Tech' | 'Software' | 'Cyber' | 'Electrification' | 'Industrials' | 'Energy' | 'Crypto' | 'Space & Defense' | 'Meme';
 
 export type Equity = {
   ticker: string;
@@ -294,7 +295,7 @@ export type CrossThemeEntry = {
 
 // ── Theme configuration ───────────────────────────────────────────────────────
 
-export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials', 'Meme'];
+export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials', 'Energy', 'Crypto', 'Space & Defense', 'Meme'];
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
@@ -322,14 +323,21 @@ export const THEME_ETF_COUNT: Record<Theme, number> = {
 export const HOLDINGS_COUNT = 1444;
 // @@END_GENERATED:HOLDINGS_COUNT@@
 
+// Must match THEME_ETFS in scripts/build-data-ts.js exactly (etfPresence keys).
 export const THEME_ETFS: Record<Theme, string[]> = {
-  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG'],
-  'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM'],
-  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'MARS', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'WGMI', 'CNEQ', 'SGRT', 'SPMO', 'XMMO'],
-  'Software':       ['IGV', 'WCLD', 'XSW', 'SKYY', 'CLOU'],
-  'Cyber':          ['CIBR', 'HACK', 'BUG', 'IHAK'],
-  'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP'],
+  'AI & ML':        ['AIS', 'ARTY', 'BAI', 'IGPT', 'IVES', 'ALAI', 'CHAT', 'AIFD', 'SPRX', 'AOTG',
+                     'AIVC', 'TCAI', 'WTAI', 'LRNZ', 'EPAI', 'FAI', 'IQM', 'AGIQ', 'ANTW', 'AIHY', 'NCLD'],
+  'Semiconductors': ['SOXX', 'PSI', 'XSD', 'DRAM', 'SMH', 'SMHX', 'DISK'],
+  'Broad Tech':     ['PTF', 'WCLD', 'IGV', 'FDTX', 'GTEK', 'ARKK', 'FRWD', 'BCTK', 'FWD', 'CBSE', 'FCUS', 'CNEQ', 'SGRT', 'SPMO', 'XMMO',
+                     'QTEC', 'PSCT', 'XNTK', 'TEK', 'FTEC', 'IDGT', 'WLDR', 'AIUP', 'TCV', 'LOUP', 'MNVT', 'FFF',
+                     'GRNY', 'GARY', 'CLSE', 'IDNA', 'IPO', 'NXTE', 'LUMA', 'EUV'],
+  'Software':       ['IGV', 'WCLD', 'XSW', 'SKYY', 'CLOU', 'FCLD', 'XDAT'],
+  'Cyber':          ['CIBR', 'HACK', 'BUG', 'IHAK', 'WCBR'],
+  'Electrification':['POW', 'VOLT', 'PBD', 'PBW', 'IVEP', 'ELFY', 'AIPO'],
   'Industrials':    ['AIRR', 'PRN', 'RSHO', 'IDEF', 'BILT'],
+  'Energy':         ['CRAK', 'PXE', 'IBAT'],
+  'Crypto':         ['WGMI', 'DECO', 'STCE', 'TEKX'],
+  'Space & Defense':['MARS', 'UFO', 'WAR', 'IDEF'],
   'Meme':           ['BUZZ', 'MEME', 'RKNG'],
 };
 
@@ -342,6 +350,9 @@ export const THEME_BENCHMARK_ETF: Record<Theme, string> = {
   'Cyber':          'CIBR',
   'Electrification':'PBD',
   'Industrials':    'AIRR',
+  'Energy':         'PXE',
+  'Crypto':         'WGMI',
+  'Space & Defense':'UFO',
   'Meme':           'BUZZ',
 };
 

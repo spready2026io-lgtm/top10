@@ -2808,7 +2808,7 @@ export default function Home() {
       </>
       )}
 
-      {/* Weekly conviction note — email capture */}
+      {/* The Daily Conviction: email capture */}
       <EmailCapture variant="band" source="home" />
 
       {/* Footer */}

@@ -96,7 +96,7 @@ export default function AskTonyPage() {
             I&apos;m not human. That&apos;s my advantage.
           </p>
           <p className="text-slate-500 text-xs max-w-sm mb-6">
-            I cover {NAMES_COUNT} equities and {ETF_COUNT} active-managed ETFs across {THEME_COUNT} themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
+            I cover {NAMES_COUNT} equities and {ETF_COUNT} thematic ETFs across {THEME_COUNT} themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
           </p>
 
           {/* Input — prominent, above suggested questions */}

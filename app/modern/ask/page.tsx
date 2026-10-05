@@ -4,6 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '@/app/components/brand/ThemeToggle';
 import { trackEvent } from '@/lib/gtag';
+import { SAMPLE_DATA, THEME_ETFS, THEMES } from '@/lib/data';
+
+// Derived, like the classic /ask page, so the line never goes stale.
+const ETF_COUNT   = new Set(Object.values(THEME_ETFS).flat()).size;
+const NAMES_COUNT = new Set(THEMES.flatMap((t) => SAMPLE_DATA[t].map((e) => e.ticker))).size;
 
 const SUGGESTED = [
   'Which stocks have the strongest ETF consensus right now?',
@@ -90,7 +95,7 @@ export default function AskTonyPage() {
             I&apos;m not human. That&apos;s my advantage.
           </p>
           <p className="text-[var(--ss-muted)] text-xs max-w-sm mb-6">
-            I cover 116 equities and 51 ETFs across 8 themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
+            I cover {NAMES_COUNT} equities and {ETF_COUNT} ETFs across {THEMES.length} themes. Every answer is grounded in the latest data snapshot. No guesses. No predictions. No career risk to manage.
           </p>
 
           {/* Input — prominent, above suggested questions */}

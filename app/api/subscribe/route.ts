@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
+import { randomBytes } from 'crypto';
 
 /**
- * Email capture for the weekly conviction note.
+ * Email capture for The Daily Conviction (scripts/send-daily-conviction.js).
  *
  * Stores subscribers in Upstash Redis (the same Storage integration that backs
- * the Ask Tony log — see lib/tony-log.ts). Two keys:
+ * the Ask Tony log, see lib/tony-log.ts). Two keys:
  *   subscribers:emails         a SET of addresses, so a repeat signup is a no-op
- *   subscriber:<email>         a HASH with source + first-seen timestamp
+ *   subscriber:<email>         a HASH with source, first-seen timestamp, and the
+ *                              `unsub` token that app/api/unsubscribe checks
  *
  * If Redis is not configured the route fails closed with a clear error rather
  * than pretending to have captured an address it dropped on the floor.
@@ -43,11 +45,15 @@ export async function POST(req: NextRequest) {
     // the caller gets success — an existing subscriber re-submitting is not an error.
     const added = await redis.sadd(SET_KEY, email);
     if (added === 1) {
+      // The letter prefix keeps Upstash from deserializing an all-digit token
+      // into a number. A returning subscriber gets a fresh token.
       await redis.hset(`subscriber:${email}`, {
         email,
         source,
         ts: new Date().toISOString(),
+        unsub: 'u' + randomBytes(16).toString('hex'),
       });
+      await redis.hdel(`subscriber:${email}`, 'unsubscribedAt');
     }
 
     return NextResponse.json({ ok: true, alreadySubscribed: added === 0 });

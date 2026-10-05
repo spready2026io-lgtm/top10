@@ -16,7 +16,7 @@ import {
 
 // Spelled out, derived. The old copy said "six themes" and went stale the day
 // Software and Cyber were added.
-const NUMBER_WORD = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const NUMBER_WORD = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
 const THEME_COUNT_WORD = NUMBER_WORD[THEMES.length] ?? String(THEMES.length);
 import { MARKET_TILES, LENS_FUNDS } from '@/lib/markets-data';
 
@@ -152,9 +152,9 @@ export default function Universe() {
         <section className="mb-7 max-w-3xl">
           <h2 className="text-2xl font-bold text-white mb-3">Our ETF Universe</h2>
           <p className="text-slate-300 text-sm leading-relaxed mb-3">
-            Every actively managed ETF we track, in one table. {allRows.length} funds across {THEME_COUNT_WORD} themes,
-            each one a discretionary book of conviction bets, not a passive index. These are the funds whose
-            daily holdings feed every ranking on Stockscout.
+            Every ETF we track, in one table. {allRows.length} funds across {THEME_COUNT_WORD} themes:
+            discretionary books of conviction bets alongside specialist thematic baskets, never a broad-market
+            tracker. These are the funds whose daily holdings feed every ranking on Stockscout.
           </p>
           <p className="text-slate-400 text-sm leading-relaxed">
             <span className="text-emerald-400 font-semibold">Tony&apos;s read:</span> use the manager column to

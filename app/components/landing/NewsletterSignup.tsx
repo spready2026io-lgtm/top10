@@ -30,7 +30,7 @@ export default function NewsletterSignup({ source = 'landing' }: { source?: stri
       const data = await res.json();
       if (res.ok) {
         setStatus('done');
-        setMsg(data.alreadySubscribed ? 'You are already on the list.' : 'You are on the list. See it first.');
+        setMsg(data.alreadySubscribed ? 'You are already on the list.' : 'You are on the list. It lands each trading day.');
         trackEvent('subscribe', { source });
       } else {
         setStatus('error');
@@ -85,7 +85,7 @@ export default function NewsletterSignup({ source = 'landing' }: { source?: stri
             whiteSpace: 'nowrap',
           }}
         >
-          {status === 'sending' ? 'Sending…' : done ? 'Subscribed ✓' : 'Get the note'}
+          {status === 'sending' ? 'Sending…' : done ? 'Subscribed ✓' : 'Get it daily'}
         </button>
       </form>
       {msg && (

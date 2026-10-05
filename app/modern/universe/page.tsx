@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SiteNav from '@/app/components/brand/SiteNav';
 import SiteFooter from '@/app/components/brand/SiteFooter';
 import {
+  THEMES,
   THEME_ETFS,
   ETF_INFO,
   ETF_TOP_HOLDINGS,
@@ -14,6 +15,10 @@ import {
   type Period,
 } from '@/lib/data';
 import { MARKET_TILES, LENS_FUNDS } from '@/lib/markets-data';
+
+// Spelled out and derived, so the copy follows the live theme count.
+const NUMBER_WORD = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
+const THEME_COUNT_WORD = NUMBER_WORD[THEMES.length] ?? String(THEMES.length);
 
 // One row per tracked ETF, assembled from the generated data blocks.
 type Row = {
@@ -36,7 +41,7 @@ const PERF_COLS: Period[] = ['1M', 'YTD', '6M', '1Y'];
 function buildRows(): Row[] {
   const rows: Row[] = [];
   // One row per unique fund. IGV and WCLD sit in both Broad Tech and Software,
-  // so dedupe by ticker (first theme wins) — the table lists 51 unique funds.
+  // so dedupe by ticker (first theme wins): one row per unique fund.
   const seen = new Set<string>();
   for (const theme of Object.keys(THEME_ETFS) as Theme[]) {
     for (const ticker of THEME_ETFS[theme]) {
@@ -131,9 +136,9 @@ export default function Universe() {
         <section className="mb-7 max-w-3xl">
           <h2 className="text-2xl font-bold text-[var(--ss-ink)] mb-3">Our ETF Universe</h2>
           <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
-            Every ETF we track, in one table. {allRows.length} funds across eight themes. Most are
-            discretionary books of conviction bets; the Software and Cyber themes use specialist sector
-            baskets. These are the funds whose daily holdings feed every ranking on Stockscout.
+            Every ETF we track, in one table. {allRows.length} funds across {THEME_COUNT_WORD} themes:
+            discretionary books of conviction bets alongside specialist thematic baskets, never a broad-market
+            tracker. These are the funds whose daily holdings feed every ranking on Stockscout.
           </p>
           <p className="text-[var(--ss-text)] text-sm leading-relaxed">
             <span className="text-[var(--ss-green)] font-semibold">Tony&apos;s read:</span> use the manager column to
@@ -190,7 +195,7 @@ export default function Universe() {
         <section className="mt-12">
           <h3 className="text-lg font-bold text-[var(--ss-ink)] mb-1">The measuring instruments</h3>
           <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-2 max-w-3xl">
-            Everything above is the tracked universe: {allRows.length} funds across eight themes.
+            Everything above is the tracked universe: {allRows.length} funds across {THEME_COUNT_WORD} themes.
             The funds below are a different tool, on purpose. A broad index fund cannot have conviction, so these are
             never scored. They are instruments. Each one measures a market on
             the <Link href="/modern/markets" className="text-[var(--ss-green)] hover:text-[var(--ss-green)] font-semibold">World Markets</Link> board,

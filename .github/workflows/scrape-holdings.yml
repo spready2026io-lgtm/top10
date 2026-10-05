@@ -74,6 +74,13 @@ jobs:
         continue-on-error: true
         run: node scripts/fetch-markets.js
 
+      # The Daily Conviction: today's share moves vs the last trading-day
+      # snapshot (lib/daily-moves.json + lib/holdings-baseline.json). Isolated
+      # like the markets step: a failure here never blocks the data commit.
+      - name: Build Daily Conviction moves
+        continue-on-error: true
+        run: node scripts/build-moves.js
+
       - name: Verify prices not all zero
         run: |
           ZERO_COUNT=$(grep -c 'price: 0\.00' lib/data.ts || true)
@@ -96,6 +103,8 @@ jobs:
           [ -f lib/history.json ]   && cp lib/history.json        /tmp/history.json    || true
           [ -f lib/markets-data.ts ]     && cp lib/markets-data.ts     /tmp/markets-data.ts     || true
           [ -f lib/markets-history.json ] && cp lib/markets-history.json /tmp/markets-history.json || true
+          [ -f lib/daily-moves.json ]       && cp lib/daily-moves.json       /tmp/daily-moves.json       || true
+          [ -f lib/holdings-baseline.json ] && cp lib/holdings-baseline.json /tmp/holdings-baseline.json || true
           # Reset to the absolute latest origin/master to avoid rebase conflicts
           git fetch origin master
           git reset --hard origin/master
@@ -106,7 +115,11 @@ jobs:
           [ -f /tmp/history.json ]   && cp /tmp/history.json       lib/history.json    || true
           [ -f /tmp/markets-data.ts ]     && cp /tmp/markets-data.ts     lib/markets-data.ts     || true
           [ -f /tmp/markets-history.json ] && cp /tmp/markets-history.json lib/markets-history.json || true
+          [ -f /tmp/daily-moves.json ]       && cp /tmp/daily-moves.json       lib/daily-moves.json       || true
+          [ -f /tmp/holdings-baseline.json ] && cp /tmp/holdings-baseline.json lib/holdings-baseline.json || true
           git add lib/holdings-raw.json lib/data.ts lib/scan-report.json lib/history.json lib/markets-data.ts lib/markets-history.json
+          [ -f lib/daily-moves.json ]       && git add lib/daily-moves.json       || true
+          [ -f lib/holdings-baseline.json ] && git add lib/holdings-baseline.json || true
           git diff --staged --quiet || git commit -m "data: ETF holdings update $(date -u +%Y-%m-%d)"
           git push
 
@@ -115,3 +128,17 @@ jobs:
           GMX_USER:     ${{ secrets.GMX_USER }}
           GMX_PASSWORD: ${{ secrets.GMX_PASSWORD }}
         run: node scripts/send-report.js
+
+      # The Daily Conviction to the stockscout.io signup list. Sends only on a
+      # trading day with a fresh edition, once per day (a Redis claim guards
+      # re-runs). Without the KV secrets it sends an internal preview only.
+      - name: Send The Daily Conviction
+        continue-on-error: true
+        env:
+          GMX_USER:          ${{ secrets.GMX_USER }}
+          GMX_PASSWORD:      ${{ secrets.GMX_PASSWORD }}
+          KV_REST_API_URL:   ${{ secrets.KV_REST_API_URL }}
+          KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
+          RESEND_API_KEY:    ${{ secrets.RESEND_API_KEY }}
+          DAILY_FROM:        ${{ secrets.DAILY_FROM }}
+        run: node scripts/send-daily-conviction.js

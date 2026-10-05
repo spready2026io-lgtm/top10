@@ -1,0 +1,49 @@
+name: Branch dry run (temporary)
+
+# Runs the real pipeline with the 2026-10-05 universe on the feature branch and
+# commits the regenerated data back to THIS branch only, so the 11-theme
+# data.ts can be type-checked and reviewed before merge. Removed before merge.
+on:
+  push:
+    branches: ['claude/beautiful-cray-33bgwc']
+    paths: ['.github/dry-run-trigger']
+
+permissions:
+  contents: write
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+
+      - name: Fetch holdings + build data.ts
+        run: node scripts/run-all.js
+
+      - name: Universe report
+        run: node scripts/dry-run-report.js
+
+      - name: Moves engine smoke test (seed as Friday, compare as Monday)
+        run: |
+          MOVES_DATE=2026-10-02 node scripts/build-moves.js
+          MOVES_DATE=2026-10-05 node scripts/build-moves.js
+          node -e "const d=require('./lib/daily-moves.json'); console.log(JSON.stringify({status:d.status,tracked:d.fundsTracked,withShares:d.fundsWithShares,compared:d.fundsCompared,moves:d.movesConsidered}))"
+
+      - name: Sample edition from iShares history
+        continue-on-error: true
+        run: node scripts/sample-edition.js
+
+      - name: Commit regenerated data to this branch
+        run: |
+          git config user.name "top10-bot"
+          git config user.email "bot@spready.io"
+          git add lib/holdings-raw.json lib/data.ts lib/scan-report.json
+          [ -f tmp/sample-daily-conviction.html ] && git add tmp/sample-daily-conviction.html || true
+          git diff --staged --quiet || git commit -m "data: branch dry run with the 2026-10-05 universe"
+          git push

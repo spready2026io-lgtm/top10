@@ -11,7 +11,7 @@ const FUND_COUNT = computeManagers().length;
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
 /**
- * Weekly conviction-note signup. Three looks:
+ * The Daily Conviction signup (sent by scripts/send-daily-conviction.js). Three looks:
  *   variant="bar"    slim full-width strip for high placement (above the board)
  *   variant="band"   full banded CTA (used low on the home page)
  *   variant="inline" bare form for embedding inside another section
@@ -49,7 +49,7 @@ export default function EmailCapture({
 
       if (res.ok) {
         setStatus('done');
-        setMsg(data.alreadySubscribed ? 'You are already on the list.' : 'You are on the list. See it first.');
+        setMsg(data.alreadySubscribed ? 'You are already on the list.' : 'You are on the list. It lands each trading day.');
         trackEvent('subscribe', { source });
       } else {
         setStatus('error');
@@ -89,7 +89,7 @@ export default function EmailCapture({
             : 'bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 disabled:text-emerald-600 text-black'
         }`}
       >
-        {status === 'sending' ? 'Sending…' : done ? 'Subscribed ✓' : 'Get the note'}
+        {status === 'sending' ? 'Sending…' : done ? 'Subscribed ✓' : 'Get it daily'}
       </button>
     </form>
   );
@@ -104,8 +104,8 @@ export default function EmailCapture({
       <section className="border-b border-slate-800 bg-emerald-500/[0.06]">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2.5">
           <p className="text-sm leading-snug min-w-0">
-            <span className="text-emerald-400 font-semibold">Get Tony&apos;s weekly conviction note.</span>{' '}
-            <span className="text-slate-400">The stocks gaining conviction across {FUND_COUNT} funds, plus world-market flows.</span>
+            <span className="text-emerald-400 font-semibold">Get The Daily Conviction from Tony.</span>{' '}
+            <span className="text-slate-400">The day&apos;s 20 biggest buys and sells across {FUND_COUNT} funds, every trading day.</span>
           </p>
           <div className="sm:ml-auto w-full sm:w-auto sm:min-w-[21rem]">
             {form}
@@ -130,12 +130,12 @@ export default function EmailCapture({
   return (
     <section className="border-t border-slate-800 bg-slate-900/40 px-4 py-10">
       <div className="max-w-2xl mx-auto text-center">
-        <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-2">The weekly conviction note</p>
+        <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-2">The Daily Conviction</p>
         <h2 className="text-white font-bold text-xl sm:text-2xl mb-2">
-          See which stocks the top managers are backing.
+          See what the funds bought and sold today.
         </h2>
         <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
-          One email a week from Tony. The names gaining conviction across {FUND_COUNT} actively managed funds, plus where global money is flowing across world markets. Before the crowd notices. No spam, unsubscribe anytime.
+          One short email each trading day from Tony: the 20 biggest buys and sells across {FUND_COUNT} funds in every theme, with each fund&apos;s own inflows stripped out, so you see the decisions, not the noise. No spam, unsubscribe anytime.
         </p>
         <div className="max-w-md mx-auto">
           {form}

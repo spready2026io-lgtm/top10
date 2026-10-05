@@ -40,7 +40,11 @@ export const PERF_PERIODS: Period[] = ['1W', '1M', 'YTD', '6M'];
 
 // Themes the user can tilt toward. Meme is excluded — speculative/retail
 // sentiment, kept off the conviction board, so it stays out of the builder too.
-const BUILDER_THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials'];
+const BUILDER_THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Software', 'Cyber', 'Electrification', 'Industrials', 'Energy', 'Crypto', 'Space & Defense'];
+
+// Themes added 2026-10-05 start at 0 so the default portfolio stays exactly
+// what it was; users dial them in.
+const ZERO_DEFAULT_THEMES = new Set<Theme>(['Energy', 'Crypto', 'Space & Defense']);
 
 const THEME_META: Record<Theme, { etf: string; color: string }> = {
   'AI & ML':         { etf: 'ARTY', color: '#a78bfa' },
@@ -50,6 +54,9 @@ const THEME_META: Record<Theme, { etf: string; color: string }> = {
   'Cyber':           { etf: 'CIBR', color: '#f87171' },
   'Electrification': { etf: 'POW',  color: '#fbbf24' },
   'Industrials':     { etf: 'AIRR', color: '#fb923c' },
+  'Energy':          { etf: 'PXE',  color: '#a3e635' },
+  'Crypto':          { etf: 'WGMI', color: '#2dd4bf' },
+  'Space & Defense': { etf: 'UFO',  color: '#818cf8' },
   'Meme':            { etf: 'BUZZ', color: '#f472b6' },
 };
 
@@ -334,7 +341,7 @@ export function buildSleeves(
       convScore: Math.round((d.raw / maxRaw) * 100),
       convRaw: d.raw,
       picks: d.picks,
-      defaultVal: d.theme === 'AI & ML' ? 20 : d.theme === 'Semiconductors' || d.theme === 'Broad Tech' ? 14 : 6,
+      defaultVal: ZERO_DEFAULT_THEMES.has(d.theme) ? 0 : d.theme === 'AI & ML' ? 20 : d.theme === 'Semiconductors' || d.theme === 'Broad Tech' ? 14 : 6,
       repTickers,
     };
   });
