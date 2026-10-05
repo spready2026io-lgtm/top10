@@ -73,37 +73,52 @@ function subjectFor(d) {
 
 // ── Email body ────────────────────────────────────────────────────────────────
 
-// Three columns so it holds up on a phone: the stock and who moved it, the
-// move in shares, the move in dollars and in share of the fund.
-function rowHtml(m) {
+// Two columns so it holds up on a phone: who moved which stock (with the kind
+// of move as a tag), and the size of the move in dollars, shares and fund weight.
+function rowHtml(m, i) {
   const buy = m.netShares > 0;
-  const tone = buy ? '#047857' : '#b91c1c';
-  const cell = 'padding:10px 12px;border-top:1px solid #e5e7eb;vertical-align:top;';
-  const small = 'font-size:12px;color:#64748b;line-height:1.45;';
+  const tone = buy ? '#047857' : '#be123c';
+  const tint = buy ? '#ecfdf5' : '#fff1f2';
+  const cell = `padding:12px 14px;${i ? 'border-top:1px solid #edf2f7;' : ''}vertical-align:top;font-family:${FONT};`;
+  const small = 'font-size:12px;color:#64748b;line-height:1.5;';
+  const pos = m.positionChangePct === null ? '' : ` ${m.positionChangePct > 0 ? '+' : ''}${m.positionChangePct}%`;
+  const tag = `<span style="display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:${tint};color:${tone};font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:2px;white-space:nowrap;">${KIND[m.kind]}${pos}</span>`;
   return `<tr>
     <td style="${cell}">
-      <div style="font-weight:700;font-size:14px;color:#0f172a;">${esc(m.ticker)}</div>
+      <div style="font-weight:700;font-size:15px;color:#0f172a;">${esc(m.ticker)}${tag}</div>
       <div style="${small}">${esc(m.name)}</div>
       <div style="${small}"><span style="color:#0f172a;font-weight:600;">${esc(m.etf)}</span> &middot; ${esc(m.themes.join(' / '))}</div>
     </td>
-    <td style="${cell}">
-      <div style="font-weight:600;font-size:13px;color:${tone};">${KIND[m.kind]}</div>
-      <div style="${small}white-space:nowrap;">${shares(m.netShares)} sh</div>
-      ${m.positionChangePct === null ? '' : `<div style="${small}white-space:nowrap;">${m.positionChangePct > 0 ? '+' : ''}${m.positionChangePct}% position</div>`}
-    </td>
-    <td style="${cell}text-align:right;white-space:nowrap;">
-      <div style="font-weight:700;font-size:14px;color:${tone};">${money(m.value)}</div>
+    <td align="right" style="${cell}text-align:right;white-space:nowrap;">
+      <div style="font-weight:700;font-size:15px;color:${tone};">${money(m.value)}</div>
+      <div style="${small}">${shares(m.netShares)} sh</div>
       <div style="${small}">${pp(m.weightMoved)} of fund</div>
     </td>
   </tr>`;
 }
 
-function sectionHtml(title, list) {
+const FONT = "Geist,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+// Rendered from the site's own lockup (app/components/Logo.tsx) in Geist, 3x.
+// Email clients do not show SVG, so the header uses this PNG.
+const LOGO_URL = `${SITE_URL}/email/stockscout-logo.png`;
+
+function sectionHtml(title, list, dot) {
   if (!list.length) return '';
-  return `<h2 style="margin:28px 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#64748b;">${title} (${list.length})</h2>
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;">
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:26px 0 8px;"><tr>
+    <td style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#334155;">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:4px;background:${dot};margin-right:7px;vertical-align:middle;"></span>${title}
+      <span style="color:#94a3b8;font-weight:600;">&nbsp;${list.length}</span>
+    </td></tr></table>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
     ${list.map(rowHtml).join('')}
   </table>`;
+}
+
+function statCell(value, label, color, align) {
+  return `<td width="33%" align="${align}" valign="top" style="padding-top:16px;vertical-align:top;font-family:${FONT};">
+    <div style="font-size:22px;line-height:1;font-weight:700;color:${color};">${value}</div>
+    <div style="margin-top:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#94a3b8;">${label}</div>
+  </td>`;
 }
 
 function consensusLine(d) {
@@ -122,30 +137,70 @@ function buildEmail(d, unsubUrl, internalNote) {
   const preheader = `${buys.length} buys and ${sells.length} sells, the biggest moves across ${d.fundsCompared} funds.`;
 
   const html = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Daily Conviction</title></head>
-<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#0f172a;">
-<div style="display:none;max-height:0;overflow:hidden;">${esc(preheader)}</div>
-<div style="max-width:680px;margin:0 auto;padding:24px 16px;">
-  ${internalNote ? `<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#92400e;">${esc(internalNote)}</div>` : ''}
-  <div style="font-size:12px;font-weight:800;letter-spacing:.12em;color:#059669;">STOCKSCOUT</div>
-  <h1 style="margin:4px 0 2px;font-size:26px;line-height:1.2;color:#0f172a;">The Daily Conviction</h1>
-  <div style="font-size:13px;color:#64748b;">${esc(longDate(d.date))}</div>
-  <p style="margin:18px 0 0;font-size:15px;line-height:1.55;color:#1e293b;">${esc(intro)}</p>
-  ${cons ? `<p style="margin:10px 0 0;font-size:14px;line-height:1.55;color:#1e293b;">${esc(cons)}</p>` : ''}
-  ${sectionHtml('Buys', buys)}
-  ${sectionHtml('Sells', sells)}
-  <p style="margin:24px 0 0;font-size:12px;line-height:1.6;color:#64748b;">
-    How to read this: share counts come from each fund's published daily holdings, compared with the previous trading day.
-    Each fund's own inflows and outflows are stripped out first, so what is left is the fund choosing to add or cut.
-    "Of fund" is how much of the portfolio the move represents. Dollar values are estimates at the latest price.
-    Where a source shows only a fund's top 25 holdings, a stock leaving that list is not counted as a sale.
-    Data, not advice.
-  </p>
-  <p style="margin:16px 0 0;font-size:13px;"><a href="${SITE_URL}" style="color:#059669;font-weight:600;text-decoration:none;">See the full theme rankings on stockscout.io</a></p>
-  <p style="margin:20px 0 0;font-size:11px;line-height:1.6;color:#94a3b8;">
-    You get this because you signed up at stockscout.io. ${unsubUrl ? `<a href="${esc(unsubUrl)}" style="color:#64748b;">Unsubscribe</a>.` : ''}
-  </p>
-</div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only">
+<title>The Daily Conviction</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  @media (max-width: 480px) {
+    .ss-pad { padding-left: 18px !important; padding-right: 18px !important; }
+    .ss-hide-sm { display: none !important; }
+    .ss-h1 { font-size: 25px !important; }
+  }
+</style></head>
+<body style="margin:0;padding:0;background:#eef2f6;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(preheader)}</div>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#eef2f6" style="background:#eef2f6;">
+<tr><td align="center" style="padding:24px 12px 32px;">
+<table role="presentation" width="640" cellspacing="0" cellpadding="0" style="width:100%;max-width:640px;">
+
+  ${internalNote ? `<tr><td style="padding-bottom:12px;"><div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;font-family:${FONT};font-size:12px;line-height:1.5;color:#92400e;">${esc(internalNote)}</div></td></tr>` : ''}
+
+  <!-- Header: the site's brand bar -->
+  <tr><td class="ss-pad" bgcolor="#0F172A" style="background:#0F172A;border-radius:16px 16px 0 0;padding:24px 28px 22px;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr>
+      <td align="left" valign="middle"><a href="${SITE_URL}" style="text-decoration:none;"><img src="${LOGO_URL}" width="186" height="32" alt="stockscout" style="display:block;border:0;outline:none;font-family:${FONT};font-size:22px;font-weight:700;color:#34D399;"></a></td>
+      <td class="ss-hide-sm" align="right" valign="middle" style="font-family:${FONT};font-size:11px;font-weight:600;letter-spacing:.22em;color:#6EE7B7;">SEE IT FIRST.</td>
+    </tr></table>
+    <div style="height:22px;line-height:22px;font-size:0;">&nbsp;</div>
+    <div style="font-family:${FONT};font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#34D399;">From Tony, every trading day</div>
+    <h1 class="ss-h1" style="margin:6px 0 4px;font-family:${FONT};font-size:30px;line-height:1.15;font-weight:700;letter-spacing:-0.5px;color:#ffffff;">The Daily Conviction</h1>
+    <div style="font-family:${FONT};font-size:13px;color:#94a3b8;">${esc(longDate(d.date))}</div>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:20px;border-top:1px solid #1e293b;"><tr>
+      ${statCell(buys.length, 'Buys', '#34D399', 'left')}
+      ${statCell(sells.length, 'Sells', '#FB7185', 'center')}
+      ${statCell(d.fundsCompared, 'Funds measured', '#ffffff', 'right')}
+    </tr></table>
+  </td></tr>
+  <tr><td bgcolor="#34D399" style="background:#34D399;height:3px;line-height:3px;font-size:0;">&nbsp;</td></tr>
+
+  <!-- Body -->
+  <tr><td class="ss-pad" bgcolor="#ffffff" style="background:#ffffff;border-radius:0 0 16px 16px;padding:26px 28px 28px;font-family:${FONT};color:#0f172a;">
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#1e293b;">${esc(intro)}</p>
+    ${cons ? `<p style="margin:12px 0 0;padding:10px 14px;background:#ecfdf5;border-radius:10px;font-size:14px;line-height:1.55;color:#065f46;">${esc(cons)}</p>` : ''}
+    ${sectionHtml('Top buys', buys, '#10B981')}
+    ${sectionHtml('Top sells', sells, '#F43F5E')}
+    <table role="presentation" cellspacing="0" cellpadding="0" style="margin:26px 0 0;"><tr>
+      <td bgcolor="#10B981" style="background:#10B981;border-radius:999px;">
+        <a href="${SITE_URL}" style="display:inline-block;padding:12px 24px;font-family:${FONT};font-size:14px;font-weight:700;color:#022c22;text-decoration:none;">See today&#39;s theme rankings</a>
+      </td></tr></table>
+    <p style="margin:24px 0 0;padding-top:18px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.65;color:#64748b;">
+      <strong style="color:#334155;">How to read this.</strong> Share counts come from each fund's published daily holdings, compared with the previous trading day.
+      Each fund's own inflows and outflows are stripped out first, so what is left is the fund choosing to add or cut.
+      "Of fund" is how much of the portfolio the move represents. Dollar values are estimates at the latest price.
+      Where a source shows only a fund's top 25 holdings, a stock leaving that list is not counted as a sale.
+      Data, not advice.
+    </p>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td align="center" style="padding:20px 16px 0;font-family:${FONT};font-size:11px;line-height:1.7;color:#94a3b8;">
+    <a href="${SITE_URL}" style="color:#64748b;text-decoration:none;font-weight:600;">stockscout.io</a> &middot; See it first.<br>
+    You get this because you signed up at stockscout.io.${unsubUrl ? ` <a href="${esc(unsubUrl)}" style="color:#64748b;">Unsubscribe</a>.` : ''}
+  </td></tr>
+
+</table>
+</td></tr></table>
 </body></html>`;
 
   const line = m => `  ${m.ticker} (${m.name}) | ${m.etf}, ${m.themes.join(' / ')} | ${KIND[m.kind]} ${shares(m.netShares)} sh | ${money(m.value)} | ${pp(m.weightMoved)} of fund`;
