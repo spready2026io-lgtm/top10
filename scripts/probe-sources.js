@@ -178,13 +178,34 @@ async function probeProviders() {
   } catch (e) { console.log(`First Trust: FAILED ${e.message}`); }
 }
 
+async function probeRaw(ticker) {
+  const url = `https://stockanalysis.com/etf/${ticker.toLowerCase()}/holdings/__data.json`;
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': UA, 'Accept': 'application/json, */*', 'Referer': 'https://stockanalysis.com/' } });
+    const text = await res.text();
+    console.log(`${ticker}: HTTP ${res.status}, ${text.length} bytes`);
+    let d; try { d = JSON.parse(text); } catch { console.log(`    not JSON: ${text.slice(0, 200)}`); return; }
+    const nodes = d.nodes || [];
+    console.log(`    nodes: ${nodes.map((n, i) => `${i}:${n && n.type}`).join(' ')}`);
+    const node = nodes[2];
+    if (!node || !node.data) { console.log(`    node2: ${JSON.stringify(node).slice(0, 300)}`); return; }
+    const root = unflatten(node.data);
+    const h = root && root.holdings;
+    console.log(`    holdings type: ${Array.isArray(h) ? 'array ' + h.length : typeof h}; count=${root && root.count}; date=${root && root.date}`);
+    if (Array.isArray(h)) for (const x of h.slice(0, 6)) console.log(`    raw ${JSON.stringify(x)}`);
+    else console.log(`    root: ${JSON.stringify(root).slice(0, 400)}`);
+  } catch (e) { console.log(`${ticker}: FAILED ${e.message}`); }
+}
+
 (async () => {
-  console.log('=== StockAnalysis candidates ===');
-  let first = true;
-  for (const t of CANDIDATES) {
-    await probeStockAnalysis(t, first || t === 'AIFD');
-    first = false;
+  console.log('=== Re-probe of the nine that failed ===');
+  for (const t of ['EMEQ', 'GARY', 'MATE', 'IPOS', 'CLSE', 'AIHY', 'DRUP', 'NCLD', 'FOTO']) {
+    await probeRaw(t);
     await sleep(900);
   }
-  await probeProviders();
+  try {
+    const t = await (await get('https://wedbushfunds.com/latest-sod-holdings-ives')).text();
+    console.log('Wedbush IVES first lines:');
+    for (const l of t.split(/\r?\n/).slice(0, 12)) console.log(`    ${l.slice(0, 250)}`);
+  } catch (e) { console.log(`Wedbush: FAILED ${e.message}`); }
 })();
