@@ -11,8 +11,13 @@
  *   KV_REST_API_URL + KV_REST_API_TOKEN   the Upstash Redis behind the signup form
  *                                         (same values Vercel holds). Without them
  *                                         the edition goes to the internal address only.
- *   RESEND_API_KEY + DAILY_FROM           preferred sender, or
- *   GMX_USER + GMX_PASSWORD               the SMTP account the scan report uses.
+ *   SENDGRID_API_KEY                      preferred sender: SendGrid, the same path Bench
+ *                                         uses for bench@stockscout.io. stockscout.io is
+ *                                         domain-authenticated there, so the default From,
+ *                                         "Tony at Stockscout <tony@stockscout.io>", is
+ *                                         DKIM/SPF-aligned with no extra setup.
+ *   DAILY_FROM, DAILY_REPLY_TO (optional) override the From, set a Reply-To.
+ *   GMX_USER + GMX_PASSWORD               fallback sender (the scan report's SMTP account).
  *   REPORT_TO (optional)                  internal copy; defaults to GMX_USER.
  *
  * The repo is public and so are its Action logs: this script prints counts,
@@ -158,18 +163,38 @@ function buildEmail(d, unsubUrl, internalNote) {
 
 // ── Transport ─────────────────────────────────────────────────────────────────
 
+const DEFAULT_FROM = 'Tony at Stockscout <tony@stockscout.io>';
+
+// "Name <addr>" or a bare address -> { name?, email }
+function parseAddress(v) {
+  const m = String(v).match(/^\s*"?([^"<]*?)"?\s*<([^>]+)>\s*$/);
+  return m ? { name: m[1].trim() || undefined, email: m[2].trim() } : { email: String(v).trim() };
+}
+
 function makeSender() {
-  if (process.env.RESEND_API_KEY && process.env.DAILY_FROM) {
-    const from = process.env.DAILY_FROM;
+  if (process.env.SENDGRID_API_KEY) {
+    // Same call as Bench's lib/mailer.ts: SendGrid v3, no SDK, success = 202.
+    const from = parseAddress(process.env.DAILY_FROM || DEFAULT_FROM);
+    const replyTo = process.env.DAILY_REPLY_TO ? parseAddress(process.env.DAILY_REPLY_TO) : null;
     return {
-      name: 'resend', pause: 600,
+      name: `sendgrid as ${from.email}`, pause: 300,
       async send({ to, subject, html, text, headers }) {
-        const res = await fetch('https://api.resend.com/emails', {
+        const body = {
+          personalizations: [{ to: [{ email: to }] }],
+          from,
+          ...(replyTo ? { reply_to: replyTo } : {}),
+          subject,
+          content: [{ type: 'text/plain', value: text }, { type: 'text/html', value: html }],
+          ...(headers && Object.keys(headers).length ? { headers } : {}),
+          // Keep every link pointing at stockscout.io, the unsubscribe link included.
+          tracking_settings: { click_tracking: { enable: false, enable_text: false }, open_tracking: { enable: false } },
+        };
+        const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
           method: 'POST',
-          headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ from, to: [to], subject, html, text, headers }),
+          headers: { Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
         });
-        if (!res.ok) throw new Error(`Resend HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+        if (res.status !== 202) throw new Error(`SendGrid HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
       },
     };
   }
@@ -210,7 +235,7 @@ async function main() {
   }
 
   const sender = makeSender();
-  if (!sender) { console.error('[daily-conviction] No sender configured (RESEND_API_KEY + DAILY_FROM, or GMX_USER + GMX_PASSWORD).'); return; }
+  if (!sender) { console.error('[daily-conviction] No sender configured (SENDGRID_API_KEY, or GMX_USER + GMX_PASSWORD).'); return; }
   const internalTo = process.env.REPORT_TO || process.env.GMX_USER;
   const subject = subjectFor(d);
   console.log(`[daily-conviction] ${subject} (via ${sender.name})`);
@@ -272,7 +297,7 @@ async function main() {
   if (failed && failed === total) process.exit(1);
 }
 
-module.exports = { buildEmail, subjectFor };
+module.exports = { buildEmail, subjectFor, makeSender, parseAddress };
 
 if (require.main === module) {
   main().catch(e => { console.error(`[daily-conviction] ${scrub(e.message, [])}`); process.exit(1); });
