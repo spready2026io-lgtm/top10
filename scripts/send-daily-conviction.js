@@ -203,6 +203,12 @@ function makeSender() {
       },
     };
   }
+  return makeGmxSender();
+}
+
+// The scan report's SMTP account. Sender of last resort, and the path the
+// internal copy takes when SendGrid refuses, so a refusal is never silent.
+function makeGmxSender() {
   if (process.env.GMX_USER && process.env.GMX_PASSWORD) {
     const nodemailer = require('nodemailer');
     const transporter = nodemailer.createTransport({
@@ -251,6 +257,7 @@ async function main() {
 
   let note = null;
   let sent = 0, failed = 0, total = 0;
+  let firstError = null;
   const addresses = [];
 
   if (!redis) {
@@ -281,28 +288,43 @@ async function main() {
         sent++;
       } catch (e) {
         failed++;
+        firstError ??= scrub(e.message, addresses);
         console.error(`[daily-conviction] send ${sent + failed}/${total} failed: ${scrub(e.message, addresses)}`);
       }
       await sleep(sender.pause);
     }
-    note = `Internal copy. Sent to ${sent} of ${total} subscribers${failed ? `, ${failed} failed (see the workflow log)` : ''}.`;
+    note = `Internal copy. Sent to ${sent} of ${total} subscribers${failed ? `, ${failed} failed. First error: ${firstError}` : ''}.`;
   }
 
   console.log(`[daily-conviction] Subscribers: ${sent} sent, ${failed} failed, ${total} on the list.`);
 
   if (internalTo) {
+    const { html, text } = buildEmail(d, null, note);
+    const mail = { to: internalTo, subject: `[Internal] ${subject}`, html, text, headers: {} };
     try {
-      const { html, text } = buildEmail(d, null, note);
-      await sender.send({ to: internalTo, subject: `[Internal] ${subject}`, html, text, headers: {} });
+      await sender.send(mail);
       console.log('[daily-conviction] Internal copy sent.');
     } catch (e) {
-      console.error(`[daily-conviction] Internal copy failed: ${scrub(e.message, [internalTo])}`);
+      const reason = scrub(e.message, [internalTo]);
+      console.error(`[daily-conviction] Internal copy failed: ${reason}`);
+      // If SendGrid refused, the internal copy goes through GMX instead, with
+      // the refusal stated at the top, so Gadi hears about it the same day.
+      const gmx = sender.name.startsWith('sendgrid') ? makeGmxSender() : null;
+      if (gmx) {
+        try {
+          const warned = buildEmail(d, null, `SENDGRID REFUSED THIS SEND: ${reason}. This internal copy came through GMX instead. ${note || ''}`);
+          await gmx.send({ ...mail, subject: `[Internal, SendGrid failed] ${subject}`, html: warned.html, text: warned.text });
+          console.log('[daily-conviction] Internal copy sent through GMX after the SendGrid refusal.');
+        } catch (e2) {
+          console.error(`[daily-conviction] GMX fallback failed too: ${scrub(e2.message, [internalTo])}`);
+        }
+      }
     }
   }
   if (failed && failed === total) process.exit(1);
 }
 
-module.exports = { buildEmail, subjectFor, makeSender, parseAddress };
+module.exports = { buildEmail, subjectFor, makeSender, makeGmxSender, parseAddress };
 
 if (require.main === module) {
   main().catch(e => { console.error(`[daily-conviction] ${scrub(e.message, [])}`); process.exit(1); });
