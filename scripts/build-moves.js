@@ -23,6 +23,8 @@
  *     leaving that slice is not proof of a purchase or a sale.
  *   - A big share jump with a flat portfolio weight is a split or another
  *     corporate action, not a trade, and is skipped.
+ *   - The share count must really have moved in the move's direction, so a
+ *     position the fund left untouched is never reported as a trade.
  * Ranked by estimated dollar value (net shares x latest price). Prices come
  * from lib/data.ts where the pipeline already has them, else from Yahoo.
  */
@@ -93,6 +95,9 @@ function compareFund(etf, base, cur, themes) {
       netShares = c.s - expected;
       const pct = netShares / expected;
       if (Math.abs(pct) < MIN_POSITION_CHANGE) continue;
+      // The fund must actually have traded this way. A position left flat
+      // while flows lifted the rest is not a sale (XSD and QRVO, 2026-10-06).
+      if (Math.sign(c.s - b.s) !== Math.sign(netShares)) continue;
       // Split guard: shares jumped by half or more while the weight barely moved.
       const sRatio = c.s / expected;
       const wRatio = b.w > 0 ? c.w / b.w : 1;
