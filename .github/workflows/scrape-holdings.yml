@@ -125,8 +125,11 @@ jobs:
 
       - name: Send daily report email
         env:
-          GMX_USER:     ${{ secrets.GMX_USER }}
-          GMX_PASSWORD: ${{ secrets.GMX_PASSWORD }}
+          GMX_USER:          ${{ secrets.GMX_USER }}
+          GMX_PASSWORD:      ${{ secrets.GMX_PASSWORD }}
+          # For the signup store line (scripts/signup-health.js): read-only.
+          KV_REST_API_URL:   ${{ secrets.KV_REST_API_URL }}
+          KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
         run: node scripts/send-report.js
 
       # The Daily Conviction to the stockscout.io signup list. Sends only on a
