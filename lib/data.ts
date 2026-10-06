@@ -169,8 +169,8 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   EPAI: { name: "Harbor AI Inflection Strategy ETF", manager: "Harbor Capital Advisors Inc", aum: 5532237 },
   FAI: { name: "First Trust Bloomberg Artificial Intelligence ETF", manager: "First Trust", aum: 206639968 },
   IQM: { name: "Franklin Intelligent Machines ETF", manager: "Franklin Templeton, Inc", aum: 88391840 },
-  AGIQ: { name: "Sofi Agentic AI ETF", manager: "" },
-  ANTW: { name: "Anthropic AI Lab Ecosystem ETF", manager: "" },
+  AGIQ: { name: "Sofi Agentic AI ETF", manager: "SoFi", aum: 11999668 },
+  ANTW: { name: "Anthropic AI Lab Ecosystem ETF", manager: "Harbor", aum: 21739800 },
   AIHY: { name: "Defiance AI Hyperscale Leaders ETF", manager: "Defiance ETFs LLC", aum: 12624976 },
   NCLD: { name: "Roundhill Neocloud ETF", manager: "" },
   SOXX: { name: "iShares Semiconductor ETF", manager: "iShares", aum: 48434552832 },
@@ -179,7 +179,7 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   DRAM: { name: "Roundhill Memory ETF", manager: "Roundhill Investments", aum: 26015375360 },
   SMH: { name: "VanEck Semiconductor ETF", manager: "VanEck", aum: 74879844352 },
   SMHX: { name: "VanEck Fabless Semiconductor ETF", manager: "VanEck", aum: 302908608 },
-  DISK: { name: "Tema Memory ETF", manager: "" },
+  DISK: { name: "Tema Memory ETF", manager: "Tema ETFs", aum: 88461760 },
   PTF: { name: "Invesco Dorsey Wright Technology Momentum ETF", manager: "Invesco", aum: 616181120 },
   WCLD: { name: "WisdomTree Cloud Computing Fund", manager: "WisdomTree", aum: 282130432 },
   IGV: { name: "iShares Expanded Tech-Software Sector ETF", manager: "iShares", aum: 13912004608 },
@@ -192,7 +192,7 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   CBSE: { name: "Clough Select Equity ETF", manager: "Clough Capital Partners L.P.", aum: 48799536 },
   FCUS: { name: "Pinnacle Focused Opportunities ETF", manager: "Pinnacle", aum: 89708264 },
   CNEQ: { name: "Alger Concentrated Equity ETF", manager: "Alger", aum: 3178787328 },
-  SGRT: { name: "SMART Earnings Growth 30 ETF", manager: "" },
+  SGRT: { name: "SMART Earnings Growth 30 ETF", manager: "SmartWay ETFs", aum: 62285956 },
   SPMO: { name: "Invesco S&P 500 Momentum ETF", manager: "Invesco", aum: 23015297024 },
   XMMO: { name: "Invesco S&P MidCap Momentum ETF", manager: "Invesco", aum: 6995473920 },
   QTEC: { name: "First Trust NASDAQ-100-Technology Sector Index Fund", manager: "First Trust", aum: 4055256832 },
@@ -203,7 +203,7 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   IDGT: { name: "iShares U.S. Digital Infrastructure and Real Estate ETF", manager: "iShares", aum: 511357408 },
   WLDR: { name: "Simplify Affinity World Leaders Equity ETF", manager: "Affinity Investment Advisors, LLC", aum: 149971168 },
   AIUP: { name: "FINQ FIRST U.S. Large Cap AI-Managed Equity ETF", manager: "Tidal Investments LLC", aum: 4820425 },
-  TCV: { name: "Towle Value ETF", manager: "" },
+  TCV: { name: "Towle Value ETF", manager: "Towle", aum: 192907456 },
   LOUP: { name: "Innovator Deepwater Frontier Tech ETF", manager: "Innovator ETFs", aum: 217059200 },
   MNVT: { name: "Moonvest ETF", manager: "Moonvest ETF", aum: 72599968 },
   FFF: { name: "Founders 100 ETF", manager: "Founder ETFs, LLC", aum: 6344330 },
@@ -225,7 +225,7 @@ export const ETF_INFO: Record<string, { name: string; manager: string; aum?: num
   BUG: { name: "Global X Cybersecurity ETF", manager: "Global X Funds", aum: 2089282944 },
   IHAK: { name: "iShares Cybersecurity and Tech ETF", manager: "iShares", aum: 1157649024 },
   WCBR: { name: "WisdomTree Cybersecurity Fund", manager: "WisdomTree", aum: 186847072 },
-  POW: { name: "VistaShares Electrification Supercycle ETF", manager: "" },
+  POW: { name: "VistaShares Electrification Supercycle ETF", manager: "VistaShares Advisors LLC", aum: 62476448 },
   VOLT: { name: "Tema Electrification ETF", manager: "Tema ETFs", aum: 727117760 },
   PBD: { name: "Invesco Global Clean Energy ETF", manager: "Invesco", aum: 115129488 },
   PBW: { name: "Invesco WilderHill Clean Energy ETF", manager: "Invesco", aum: 335956096 },
@@ -420,8 +420,8 @@ export const THEMES: Theme[] = ['AI & ML', 'Semiconductors', 'Broad Tech', 'Soft
 
 // Last scan timestamp — patched by build-data-ts.js after each run
 // @@GENERATED:SCAN_TIMESTAMP@@
-export const SCAN_TIMESTAMP    = '2026-10-06T21:23:44.101Z';
-export const SCAN_TIMESTAMP_NY = 'October 6, 2026 at 5:23 PM ET';
+export const SCAN_TIMESTAMP    = '2026-10-06T23:49:43.827Z';
+export const SCAN_TIMESTAMP_NY = 'October 6, 2026 at 7:49 PM ET';
 // @@END_GENERATED:SCAN_TIMESTAMP@@
 
 // Number of ETFs per theme — denominator for Coverage Score display (x/n badge)
