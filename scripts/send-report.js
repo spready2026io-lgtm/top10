@@ -8,6 +8,7 @@
  */
 
 const nodemailer = require('nodemailer');
+const { checkSignupStore, subjectTag, lines: storeLines } = require('./signup-health');
 const fs         = require('fs');
 const path       = require('path');
 
@@ -86,6 +87,7 @@ const html = `<!DOCTYPE html>
   <div style="background:#1e293b;border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;line-height:1.7;">
     <div>${etfStatusLine}</div>
     <div>${yfStatusLine}</div>
+    <!--SIGNUP_BANNER-->
     <div style="margin-top:6px;color:#64748b;">Total holdings scanned: <strong style="color:#f1f5f9;">${totalHoldings.toLocaleString()}</strong></div>
   </div>
 
@@ -117,6 +119,8 @@ const html = `<!DOCTYPE html>
     </div>
   </div>
 
+  <!--SIGNUP_SECTION-->
+
   <!-- Footer -->
   <div style="border-top:1px solid #1e293b;padding-top:14px;font-size:11px;color:#475569;display:flex;justify-content:space-between;">
     <span>top10.spready.io</span>
@@ -134,7 +138,28 @@ const etfTot = etfScan.total;
 const yfOk   = yfScan.succeeded;
 const yfTot  = yfScan.total;
 
-const subject = `Top10 Scan — ETF ${etfOk}/${etfTot} · YF ${yfOk}/${yfTot} — ${scanTimestampNY}`;
+// The signup store tag sits in the subject so a dead store shows in the inbox
+// list without opening the mail. Subject separators follow house rule A1 (no dashes).
+function signupHtml(h) {
+  if (!h) {
+    return {
+      banner: '<div><span style="color:#fbbf24;">Signup store: check could not run (see the workflow log).</span></div>',
+      section: '',
+    };
+  }
+  const l = storeLines(h);
+  const tone = ok => ok ? '#34d399' : '#f87171';
+  const row = (label, text, ok) => `<div><span style="color:#64748b;display:inline-block;width:150px;">${label}</span><span style="color:${tone(ok)};">${text}</span></div>`;
+  return {
+    banner: `<div><span style="color:${tone(h.ok)};">Signup store: ${h.ok ? `OK, ${h.count} subscriber${h.count === 1 ? '' : 's'}` : 'NEEDS ATTENTION, see below'}.</span></div>`,
+    section: `<h2 style="font-size:14px;font-weight:700;color:#94a3b8;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px;">Signup Store</h2>
+  <div style="background:#1e293b;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;line-height:1.9;">
+    ${row('stockscout.io', l.site, h.siteOk)}
+    ${row('Daily Conviction', l.workflow, h.workflowOk)}
+    ${row('Same store', l.match, h.match !== false)}
+  </div>`,
+  };
+}
 
 const transporter = nodemailer.createTransport({
   host:   'mail.gmx.com',
@@ -144,11 +169,20 @@ const transporter = nodemailer.createTransport({
 });
 
 (async () => {
+  let health = null;
+  try {
+    health = await checkSignupStore();
+    console.log(`[send-report] Signup store: site ${health.siteOk ? 'ok' : 'FAILED'}, workflow ${health.workflowOk ? `ok (${health.count})` : 'FAILED'}, same store ${health.match}`);
+  } catch (e) {
+    console.error('[send-report] Signup store check could not run:', e.message);
+  }
+  const store = signupHtml(health);
+  const subject = `Top10 Scan: ETF ${etfOk}/${etfTot} · YF ${yfOk}/${yfTot} · ${health ? subjectTag(health) : 'SIGNUP CHECK FAILED'} · ${scanTimestampNY}`;
   await transporter.sendMail({
     from:    `"Top10 Bot" <${GMX_USER}>`,
     to:      TO_EMAIL,
     subject,
-    html,
+    html: html.replace('<!--SIGNUP_BANNER-->', store.banner).replace('<!--SIGNUP_SECTION-->', store.section),
   });
   console.log(`[send-report] Email sent: ${subject}`);
 })().catch(e => {
