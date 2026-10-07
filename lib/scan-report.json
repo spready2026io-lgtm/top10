@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-10-06T13:40:06.434Z",
-  "scanTimestampNY": "October 6, 2026 at 9:40 AM ET",
+  "scanTimestamp": "2026-10-07T13:40:08.759Z",
+  "scanTimestampNY": "October 7, 2026 at 9:40 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -97,11 +97,11 @@
       },
       "XSD": {
         "ok": true,
-        "count": 47
+        "count": 46
       },
       "DRAM": {
         "ok": true,
-        "count": 6
+        "count": 5
       },
       "SMH": {
         "ok": true,
@@ -157,7 +157,7 @@
       },
       "FCUS": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "CNEQ": {
         "ok": true,
@@ -205,7 +205,7 @@
       },
       "AIUP": {
         "ok": true,
-        "count": 15
+        "count": 16
       },
       "TCV": {
         "ok": true,
@@ -304,8 +304,8 @@
         "count": 25
       },
       "PBD": {
-        "ok": true,
-        "count": 4
+        "ok": false,
+        "count": 0
       },
       "PBW": {
         "ok": true,
@@ -321,7 +321,7 @@
       },
       "AIPO": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AIRR": {
         "ok": true,
@@ -357,7 +357,7 @@
       },
       "WGMI": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "DECO": {
         "ok": true,
@@ -397,8 +397,10 @@
       }
     },
     "total": 98,
-    "ok": 98,
-    "failed": [],
+    "ok": 97,
+    "failed": [
+      "PBD"
+    ],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -451,8 +453,10 @@
     ]
   },
   "yfScan": {
-    "total": 158,
-    "succeeded": 158,
-    "failed": []
+    "total": 157,
+    "succeeded": 156,
+    "failed": [
+      "NPK"
+    ]
   }
 }
