@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-10-07T13:40:08.759Z",
-  "scanTimestampNY": "October 7, 2026 at 9:40 AM ET",
+  "scanTimestamp": "2026-10-08T13:39:48.543Z",
+  "scanTimestampNY": "October 8, 2026 at 9:39 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -49,7 +49,7 @@
       },
       "TCAI": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "WTAI": {
         "ok": true,
@@ -141,7 +141,7 @@
       },
       "FRWD": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "BCTK": {
         "ok": true,
@@ -153,7 +153,7 @@
       },
       "CBSE": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "FCUS": {
         "ok": true,
@@ -201,11 +201,11 @@
       },
       "WLDR": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "AIUP": {
         "ok": true,
-        "count": 16
+        "count": 15
       },
       "TCV": {
         "ok": true,
@@ -213,7 +213,7 @@
       },
       "LOUP": {
         "ok": true,
-        "count": 20
+        "count": 21
       },
       "MNVT": {
         "ok": true,
@@ -304,8 +304,8 @@
         "count": 25
       },
       "PBD": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 2
       },
       "PBW": {
         "ok": true,
@@ -321,7 +321,7 @@
       },
       "AIPO": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "AIRR": {
         "ok": true,
@@ -341,7 +341,7 @@
       },
       "BILT": {
         "ok": true,
-        "count": 49
+        "count": 48
       },
       "CRAK": {
         "ok": true,
@@ -397,10 +397,8 @@
       }
     },
     "total": 98,
-    "ok": 97,
-    "failed": [
-      "PBD"
-    ],
+    "ok": 98,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -453,10 +451,8 @@
     ]
   },
   "yfScan": {
-    "total": 157,
-    "succeeded": 156,
-    "failed": [
-      "NPK"
-    ]
+    "total": 158,
+    "succeeded": 158,
+    "failed": []
   }
 }
