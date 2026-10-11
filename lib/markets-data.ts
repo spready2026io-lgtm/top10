@@ -536,8 +536,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -117432000,
-      "pct": -0.49
+      "usd": 73395000,
+      "pct": 0.31
     },
     "flow1M": {
       "usd": 278901000,
@@ -1381,8 +1381,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -150654000,
-      "pct": -0.59
+      "usd": -35448000,
+      "pct": -0.14
     },
     "flow1M": {
       "usd": -1825572000,
@@ -1550,8 +1550,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -32221000,
-      "pct": -0.56
+      "usd": 0,
+      "pct": 0
     },
     "flow1M": {
       "usd": -543154000,
@@ -1719,12 +1719,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 105860000,
-      "pct": 7.76
+      "usd": 30020000,
+      "pct": 2.09
     },
     "flow1M": {
-      "usd": 278080000,
-      "pct": 23.34
+      "usd": 229100000,
+      "pct": 18.47
     },
     "note": "Singapore is the safe harbor of Asia: banks and REITs in a AAA-run city state. It rarely leads a rally, but money parks here when the region gets rough."
   },
@@ -1888,12 +1888,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -15457000,
-      "pct": -3.66
+      "usd": -10106500,
+      "pct": -2.43
     },
     "flow1M": {
-      "usd": -60639000,
-      "pct": -12.98
+      "usd": -56477500,
+      "pct": -12.2
     },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
   },
@@ -2564,8 +2564,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 2431709000,
-      "pct": 23.89
+      "usd": 2366399000,
+      "pct": 23.1
     },
     "flow1M": {
       "usd": 2697303000,
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -114660757,
-      "pct": -13.71
+      "usd": -133163244,
+      "pct": -15.6
     },
     "flow1M": {
-      "usd": -29353920,
-      "pct": -3.91
+      "usd": -30738113,
+      "pct": -4.09
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3819,8 +3819,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 1.2
     },
     "flow1M": {
-      "usd": 544610000,
-      "pct": 2.15
+      "usd": 465394000,
+      "pct": 1.84
     },
     "returns": {
       "1W": -3.63,
@@ -4477,8 +4477,8 @@ export const LENS_FUNDS: LensFund[] = [
     "name": "iShares MSCI Emerging Markets Asia ETF",
     "aum": 893554624,
     "flow1W": {
-      "usd": -23034000,
-      "pct": -2.6
+      "usd": 0,
+      "pct": 0
     },
     "flow1M": {
       "usd": -23034000,
@@ -4861,7 +4861,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Oct 10, 2026, 9:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Oct 11, 2026, 9:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
