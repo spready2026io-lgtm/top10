@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16",
+  "lastUpdated": "2026-10-17",
   "etfsFetched": [
     "ARTY",
     "BAI",
@@ -27,6 +27,7 @@
     "IGPT",
     "PSI",
     "PTF",
+    "PBD",
     "PBW",
     "PRN"
   ],
@@ -2591,546 +2592,546 @@
     ],
     "ALAI": [
       {
-        "ticker": "ALAB",
-        "name": "ASTERA LABS INC USD 0.0001",
-        "weight": 0.79,
-        "shares": 46364
-      },
-      {
-        "ticker": "WRBY",
-        "name": "WARBY PARKER INC USD 0.0001",
-        "weight": 0.3,
-        "shares": 213153
-      },
-      {
-        "ticker": "STX",
-        "name": "SEAGATE TECHNOLOGY HOLD USD 0.00001",
-        "weight": 2.93,
-        "shares": 75022
-      },
-      {
-        "ticker": "ABNB",
-        "name": "AIRBNB INC USD 0.0001",
-        "weight": 0.41,
-        "shares": 41390
-      },
-      {
-        "ticker": "NOK",
-        "name": "NOKIA CORP NPV ADR",
-        "weight": 0.14,
-        "shares": 251875
-      },
-      {
-        "ticker": "FPS",
-        "name": "FORGENT PWR SOLUTIONS I USD 0.00001",
-        "weight": 0.32,
-        "shares": 172960
-      },
-      {
-        "ticker": "IREN",
-        "name": "IREN LTD NPV",
-        "weight": 0.1,
-        "shares": 58036
-      },
-      {
-        "ticker": "GFL",
-        "name": "GFL ENVIRONMENTAL INC NPV",
-        "weight": 1.14,
-        "shares": 464551
-      },
-      {
-        "ticker": "APP",
-        "name": "APPLOVIN CORP USD 0.00003",
-        "weight": 0.65,
-        "shares": 41246
-      },
-      {
-        "ticker": "AKAM",
-        "name": "AKAMAI TECHNOLOGIES INC USD 0.01",
-        "weight": 0.54,
-        "shares": 102896
-      },
-      {
-        "ticker": "TSM",
-        "name": "TAIWAN SEMICONDUCTOR M TWD 10.0 ADR",
-        "weight": 5.61,
-        "shares": 235050
-      },
-      {
-        "ticker": "FRVO",
-        "name": "FERVO ENERGY CO USD 0.0001",
-        "weight": 0.12,
-        "shares": 203831
-      },
-      {
-        "ticker": "NBIS",
-        "name": "NEBIUS GROUP N.V.",
-        "weight": 3.55,
-        "shares": 333656
-      },
-      {
-        "ticker": "SPGI",
-        "name": "S+P GLOBAL INC USD 1.0",
-        "weight": 0.32,
-        "shares": 13466
-      },
-      {
-        "ticker": "UNH",
-        "name": "UNITEDHEALTH GROUP INC USD 0.01",
-        "weight": 0.58,
-        "shares": 25346
-      },
-      {
-        "ticker": "GOOG",
-        "name": "ALPHABET INC CLASS C",
-        "weight": 4.93,
-        "shares": 252838
-      },
-      {
-        "ticker": "ARM",
-        "name": "ARM HLDGS PLC USD 0.001 ADR",
-        "weight": 0.18,
-        "shares": 13008
-      },
-      {
-        "ticker": "AAOI",
-        "name": "APPLIED OPTOELECTRONICS I USD 0.001",
-        "weight": 0.44,
-        "shares": 92207
-      },
-      {
-        "ticker": "PLTR",
-        "name": "PALANTIR TECHNOLOGIES INC USD 0.001",
-        "weight": 0.58,
-        "shares": 51119
-      },
-      {
-        "ticker": "SE",
-        "name": "SEA LTD USD 0.0005 ADR",
-        "weight": 0.95,
-        "shares": 172392
-      },
-      {
-        "ticker": "AMZN",
-        "name": "AMAZON COM INC USD 0.01",
-        "weight": 4.92,
-        "shares": 341442
-      },
-      {
-        "ticker": "BABA",
-        "name": "ALIBABA GROUP HLDG USD 0.000025 ADR",
-        "weight": 0.31,
-        "shares": 49807
-      },
-      {
-        "ticker": "GFS",
-        "name": "GLOBALFOUNDRIES INC USD 0.02",
-        "weight": 0.7,
-        "shares": 253641
-      },
-      {
-        "ticker": "TWLO",
-        "name": "TWILIO INC USD 0.001",
-        "weight": 1.34,
-        "shares": 86886
-      },
-      {
-        "ticker": "SPCX",
-        "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
-        "weight": 1.97,
-        "shares": 234184
-      },
-      {
-        "ticker": "TSLA",
-        "name": "TESLA INC USD 0.001",
-        "weight": 1.94,
-        "shares": 94716
-      },
-      {
-        "ticker": "ANET",
-        "name": "ARISTA NETWORKS INC USD 0.0001",
-        "weight": 0.34,
-        "shares": 32155
-      },
-      {
-        "ticker": "LITE",
-        "name": "LUMENTUM HLDGS INC USD 0.001",
-        "weight": 1.86,
-        "shares": 37852
-      },
-      {
-        "ticker": "HOOD",
-        "name": "ROBINHOOD MKTS INC USD 0.0001",
-        "weight": 1.21,
-        "shares": 206334
-      },
-      {
-        "ticker": "NVDA",
-        "name": "NVIDIA CORP USD 0.001",
-        "weight": 12.65,
-        "shares": 1030160
-      },
-      {
-        "ticker": "CBRS",
-        "name": "CEREBRAS SYS INC USD 0.00001",
-        "weight": 0.21,
-        "shares": 26187
-      },
-      {
-        "ticker": "SNOW",
-        "name": "SNOWFLAKE INC USD 1.0",
-        "weight": 1.89,
-        "shares": 99775
-      },
-      {
-        "ticker": "GEV",
-        "name": "GE VERNOVA INC USD 0.01",
-        "weight": 1.28,
-        "shares": 24403
-      },
-      {
-        "ticker": "ASML",
-        "name": "ASML HOLDING NV EUR 0.09 ADR",
-        "weight": 0.48,
-        "shares": 5124
-      },
-      {
-        "ticker": "MELI",
-        "name": "MERCADOLIBRE INC USD 0.001",
-        "weight": 0.47,
-        "shares": 4497
-      },
-      {
-        "ticker": "RDDT",
-        "name": "REDDIT INC USD 0.0001",
-        "weight": 0.27,
-        "shares": 29458
-      },
-      {
-        "ticker": "MU",
-        "name": "MICRON TECHNOLOGY INC USD 0.1",
-        "weight": 2.15,
-        "shares": 40894
-      },
-      {
-        "ticker": "META",
-        "name": "META PLATFORMS INC USD 0.000006",
-        "weight": 4.5,
-        "shares": 108194
-      },
-      {
-        "ticker": "ILMN",
-        "name": "ILLUMINA INC USD 0.01",
-        "weight": 1.19,
-        "shares": 78712
-      },
-      {
-        "ticker": "MWH",
-        "name": "SOLV ENERGY INC USD 0.0001",
-        "weight": 0.92,
-        "shares": 683240
-      },
-      {
-        "ticker": "NTRA",
-        "name": "NATERA INC USD 0.0001",
-        "weight": 0.98,
-        "shares": 42719
-      },
-      {
-        "ticker": "SHOP",
-        "name": "SHOPIFY INC NPV",
-        "weight": 0.71,
-        "shares": 70669
-      },
-      {
-        "ticker": "TMO",
-        "name": "THERMO FISHER SCIENTIFIC IN USD 1.0",
-        "weight": 0.81,
-        "shares": 20488
-      },
-      {
-        "ticker": "TLN",
-        "name": "TALEN ENERGY CORP NEW USD 0.001",
-        "weight": 1.97,
-        "shares": 98620
-      },
-      {
-        "ticker": "ETN",
-        "name": "EATON CORP PLC USD 0.01",
-        "weight": 0.58,
-        "shares": 25650
-      },
-      {
-        "ticker": "VEEV",
-        "name": "VEEVA SYS INC USD 0.00001",
-        "weight": 0.53,
-        "shares": 29909
-      },
-      {
-        "ticker": "WDC",
-        "name": "WESTERN DIGITAL CORP USD 0.01",
-        "weight": 1.61,
-        "shares": 79944
-      },
-      {
-        "ticker": "AAPL",
-        "name": "APPLE INC USD 0.00001",
-        "weight": 1.7,
-        "shares": 88076
-      },
-      {
-        "ticker": "NET",
-        "name": "CLOUDFLARE INC USD 0.001",
-        "weight": 0.57,
-        "shares": 31714
-      },
-      {
-        "ticker": "FCX",
-        "name": "FREEPORT-MCMORAN INC USD 0.1",
-        "weight": 0.43,
-        "shares": 109250
-      },
-      {
-        "ticker": "MDB",
-        "name": "MONGODB INC USD 0.001",
-        "weight": 0.59,
-        "shares": 28620
-      },
-      {
-        "ticker": "DELL",
-        "name": "DELL TECHNOLOGIES INC USD 0.01",
-        "weight": 0.35,
-        "shares": 12917
-      },
-      {
-        "ticker": "SN",
-        "name": "SHARKNINJA INC USD 0.0001",
-        "weight": 0.39,
-        "shares": 36058
-      },
-      {
         "ticker": "AVGO",
         "name": "BROADCOM INC NPV",
-        "weight": 3.84,
-        "shares": 197170
+        "weight": 3.79,
+        "shares": 197294
       },
       {
         "ticker": "NXT",
         "name": "NEXTPOWER INC USD 0.0001",
-        "weight": 0.54,
-        "shares": 114000
+        "weight": 0.53,
+        "shares": 114070
+      },
+      {
+        "ticker": "META",
+        "name": "META PLATFORMS INC USD 0.000006",
+        "weight": 4.12,
+        "shares": 99405
+      },
+      {
+        "ticker": "AAOI",
+        "name": "APPLIED OPTOELECTRONICS I USD 0.001",
+        "weight": 0.41,
+        "shares": 92265
+      },
+      {
+        "ticker": "ILMN",
+        "name": "ILLUMINA INC USD 0.01",
+        "weight": 1.21,
+        "shares": 78760
       },
       {
         "ticker": "APH",
         "name": "AMPHENOL CORP NEW USD 0.001",
         "weight": 0.28,
-        "shares": 60473
+        "shares": 60511
       },
       {
-        "ticker": "PANW",
-        "name": "PALO ALTO NETWORKS INC USD 0.0001",
-        "weight": 0.09,
-        "shares": 4170
+        "ticker": "ARM",
+        "name": "ARM HLDGS PLC USD 0.001 ADR",
+        "weight": 0.17,
+        "shares": 13016
       },
       {
-        "ticker": "MSFT",
-        "name": "MICROSOFT COM USD0.00000625",
-        "weight": 9.31,
-        "shares": 305397
+        "ticker": "IREN",
+        "name": "IREN LTD NPV",
+        "weight": 0.06,
+        "shares": 38458
       },
       {
-        "ticker": "TTWO",
-        "name": "TAKE-TWO INTERACTIVE SOFTW USD 0.01",
-        "weight": 0.56,
-        "shares": 47700
+        "ticker": "HOOD",
+        "name": "ROBINHOOD MKTS INC USD 0.0001",
+        "weight": 1.19,
+        "shares": 206462
       },
       {
-        "ticker": "CLSK",
-        "name": "CLEANSPARK INC USD 0.001",
-        "weight": 0.37,
-        "shares": 706994
+        "ticker": "MWH",
+        "name": "SOLV ENERGY INC USD 0.0001",
+        "weight": 0.96,
+        "shares": 683670
       },
       {
-        "ticker": "U",
-        "name": "UNITY SOFTWARE INC USD 0.000005",
-        "weight": 0.58,
-        "shares": 237212
-      },
-      {
-        "ticker": "FIGR",
-        "name": "FIGURE TECHNOLOGY SOLUTI USD 0.0001",
-        "weight": 1.04,
-        "shares": 662740
-      },
-      {
-        "ticker": "AMD",
-        "name": "ADVANCED MICRO DEVICES INC USD 0.01",
-        "weight": 1.81,
-        "shares": 56942
-      },
-      {
-        "ticker": "PWR",
-        "name": "QUANTA SVCS INC USD 0.00001",
-        "weight": 0.52,
-        "shares": 14422
-      }
-    ],
-    "CNEQ": [
-      {
-        "ticker": "ILMN",
-        "name": "ILLUMINA INC USD 0.01",
-        "weight": 0.74,
-        "shares": 160671
-      },
-      {
-        "ticker": "AVGO",
-        "name": "BROADCOM INC NPV",
-        "weight": 4.94,
-        "shares": 837550
-      },
-      {
-        "ticker": "AMZN",
-        "name": "AMAZON COM INC USD 0.01",
-        "weight": 4.4,
-        "shares": 1009026
-      },
-      {
-        "ticker": "META",
-        "name": "META PLATFORMS INC USD 0.000006",
-        "weight": 3.95,
-        "shares": 313360
-      },
-      {
-        "ticker": "FIGR",
-        "name": "FIGURE TECHNOLOGY SOLUTI USD 0.0001",
-        "weight": 1.31,
-        "shares": 2755237
-      },
-      {
-        "ticker": "QXO",
-        "name": "QXO INC USD 0.00001",
-        "weight": 1.99,
-        "shares": 10417576
-      },
-      {
-        "ticker": "ALAB",
-        "name": "ASTERA LABS INC USD 0.0001",
-        "weight": 1.23,
-        "shares": 238791
-      },
-      {
-        "ticker": "AAPL",
-        "name": "APPLE INC USD 0.00001",
-        "weight": 5.42,
-        "shares": 926154
-      },
-      {
-        "ticker": "MSFT",
-        "name": "MICROSOFT COM USD0.00000625",
-        "weight": 8.78,
-        "shares": 950391
-      },
-      {
-        "ticker": "LLY",
-        "name": "LILLY ELI + CO NPV",
-        "weight": 1.79,
-        "shares": 83621
-      },
-      {
-        "ticker": "GEV",
-        "name": "GE VERNOVA INC USD 0.01",
-        "weight": 2.51,
-        "shares": 158040
-      },
-      {
-        "ticker": "MU",
-        "name": "MICRON TECHNOLOGY INC USD 0.1",
-        "weight": 3.09,
-        "shares": 193944
-      },
-      {
-        "ticker": "NBIS",
-        "name": "NEBIUS GROUP N.V.",
-        "weight": 3.83,
-        "shares": 1188293
-      },
-      {
-        "ticker": "SPCX",
-        "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
-        "weight": 2,
-        "shares": 784409
+        "ticker": "RDDT",
+        "name": "REDDIT INC USD 0.0001",
+        "weight": 0.27,
+        "shares": 29476
       },
       {
         "ticker": "WDC",
         "name": "WESTERN DIGITAL CORP USD 0.01",
-        "weight": 3.49,
-        "shares": 571527
+        "weight": 1.55,
+        "shares": 79994
+      },
+      {
+        "ticker": "NBIS",
+        "name": "NEBIUS GROUP N.V.",
+        "weight": 3.23,
+        "shares": 333866
+      },
+      {
+        "ticker": "SPGI",
+        "name": "S+P GLOBAL INC USD 1.0",
+        "weight": 0.34,
+        "shares": 13474
+      },
+      {
+        "ticker": "MU",
+        "name": "MICRON TECHNOLOGY INC USD 0.1",
+        "weight": 2.1,
+        "shares": 40918
+      },
+      {
+        "ticker": "AAPL",
+        "name": "APPLE INC USD 0.00001",
+        "weight": 1.77,
+        "shares": 88130
+      },
+      {
+        "ticker": "TMO",
+        "name": "THERMO FISHER SCIENTIFIC IN USD 1.0",
+        "weight": 0.83,
+        "shares": 20500
+      },
+      {
+        "ticker": "TSLA",
+        "name": "TESLA INC USD 0.001",
+        "weight": 2.01,
+        "shares": 97215
+      },
+      {
+        "ticker": "NTRA",
+        "name": "NATERA INC USD 0.0001",
+        "weight": 0.98,
+        "shares": 42745
+      },
+      {
+        "ticker": "UNH",
+        "name": "UNITEDHEALTH GROUP INC USD 0.01",
+        "weight": 0.59,
+        "shares": 25360
+      },
+      {
+        "ticker": "AMD",
+        "name": "ADVANCED MICRO DEVICES INC USD 0.01",
+        "weight": 1.76,
+        "shares": 56976
+      },
+      {
+        "ticker": "AKAM",
+        "name": "AKAMAI TECHNOLOGIES INC USD 0.01",
+        "weight": 0.53,
+        "shares": 102960
+      },
+      {
+        "ticker": "TSM",
+        "name": "TAIWAN SEMICONDUCTOR M TWD 10.0 ADR",
+        "weight": 5.67,
+        "shares": 235198
+      },
+      {
+        "ticker": "NVDA",
+        "name": "NVIDIA CORP USD 0.001",
+        "weight": 12.89,
+        "shares": 1030808
+      },
+      {
+        "ticker": "LITE",
+        "name": "LUMENTUM HLDGS INC USD 0.001",
+        "weight": 1.82,
+        "shares": 37874
+      },
+      {
+        "ticker": "VEEV",
+        "name": "VEEVA SYS INC USD 0.00001",
+        "weight": 0.42,
+        "shares": 23053
+      },
+      {
+        "ticker": "MELI",
+        "name": "MERCADOLIBRE INC USD 0.001",
+        "weight": 0.48,
+        "shares": 4499
+      },
+      {
+        "ticker": "TLN",
+        "name": "TALEN ENERGY CORP NEW USD 0.001",
+        "weight": 2.25,
+        "shares": 108475
+      },
+      {
+        "ticker": "CBRS",
+        "name": "CEREBRAS SYS INC USD 0.00001",
+        "weight": 0.19,
+        "shares": 26203
+      },
+      {
+        "ticker": "ASML",
+        "name": "ASML HOLDING NV EUR 0.09 ADR",
+        "weight": 0.49,
+        "shares": 5126
+      },
+      {
+        "ticker": "MDB",
+        "name": "MONGODB INC USD 0.001",
+        "weight": 0.41,
+        "shares": 21033
+      },
+      {
+        "ticker": "SPCX",
+        "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
+        "weight": 2.06,
+        "shares": 241321
+      },
+      {
+        "ticker": "GFS",
+        "name": "GLOBALFOUNDRIES INC USD 0.02",
+        "weight": 0.69,
+        "shares": 253799
+      },
+      {
+        "ticker": "MSFT",
+        "name": "MICROSOFT COM USD0.00000625",
+        "weight": 9.49,
+        "shares": 307229
+      },
+      {
+        "ticker": "SN",
+        "name": "SHARKNINJA INC USD 0.0001",
+        "weight": 0.39,
+        "shares": 36080
+      },
+      {
+        "ticker": "WRBY",
+        "name": "WARBY PARKER INC USD 0.0001",
+        "weight": 0.29,
+        "shares": 213287
+      },
+      {
+        "ticker": "CLSK",
+        "name": "CLEANSPARK INC USD 0.001",
+        "weight": 0.35,
+        "shares": 707438
+      },
+      {
+        "ticker": "FPS",
+        "name": "FORGENT PWR SOLUTIONS I USD 0.00001",
+        "weight": 0.32,
+        "shares": 173068
+      },
+      {
+        "ticker": "U",
+        "name": "UNITY SOFTWARE INC USD 0.000005",
+        "weight": 0.56,
+        "shares": 237360
+      },
+      {
+        "ticker": "GEV",
+        "name": "GE VERNOVA INC USD 0.01",
+        "weight": 1.31,
+        "shares": 24417
+      },
+      {
+        "ticker": "FIGR",
+        "name": "FIGURE TECHNOLOGY SOLUTI USD 0.0001",
+        "weight": 1.05,
+        "shares": 663156
+      },
+      {
+        "ticker": "SNOW",
+        "name": "SNOWFLAKE INC USD 1.0",
+        "weight": 1.84,
+        "shares": 102523
+      },
+      {
+        "ticker": "NET",
+        "name": "CLOUDFLARE INC USD 0.001",
+        "weight": 0.5,
+        "shares": 29110
+      },
+      {
+        "ticker": "APP",
+        "name": "APPLOVIN CORP USD 0.00003",
+        "weight": 0.64,
+        "shares": 41270
+      },
+      {
+        "ticker": "TTWO",
+        "name": "TAKE-TWO INTERACTIVE SOFTW USD 0.01",
+        "weight": 0.57,
+        "shares": 47730
       },
       {
         "ticker": "GFL",
         "name": "GFL ENVIRONMENTAL INC NPV",
-        "weight": 1.32,
-        "shares": 1768300
+        "weight": 1.19,
+        "shares": 464843
       },
       {
-        "ticker": "BIIB",
-        "name": "BIOGEN INC",
-        "weight": 0.77,
-        "shares": 190211
+        "ticker": "ANET",
+        "name": "ARISTA NETWORKS INC USD 0.0001",
+        "weight": 0.33,
+        "shares": 32175
+      },
+      {
+        "ticker": "GOOG",
+        "name": "ALPHABET INC CLASS C",
+        "weight": 4.98,
+        "shares": 252996
+      },
+      {
+        "ticker": "PWR",
+        "name": "QUANTA SVCS INC USD 0.00001",
+        "weight": 0.53,
+        "shares": 14430
+      },
+      {
+        "ticker": "ABNB",
+        "name": "AIRBNB INC USD 0.0001",
+        "weight": 0.42,
+        "shares": 41416
+      },
+      {
+        "ticker": "STX",
+        "name": "SEAGATE TECHNOLOGY HOLD USD 0.00001",
+        "weight": 2.8,
+        "shares": 75068
+      },
+      {
+        "ticker": "NOK",
+        "name": "NOKIA CORP NPV ADR",
+        "weight": 0.13,
+        "shares": 252033
       },
       {
         "ticker": "SE",
         "name": "SEA LTD USD 0.0005 ADR",
-        "weight": 2.46,
-        "shares": 1474483
+        "weight": 0.94,
+        "shares": 172500
+      },
+      {
+        "ticker": "BABA",
+        "name": "ALIBABA GROUP HLDG USD 0.000025 ADR",
+        "weight": 0.32,
+        "shares": 49837
+      },
+      {
+        "ticker": "TWLO",
+        "name": "TWILIO INC USD 0.001",
+        "weight": 1.24,
+        "shares": 86940
+      },
+      {
+        "ticker": "FRVO",
+        "name": "FERVO ENERGY CO USD 0.0001",
+        "weight": 0.12,
+        "shares": 203959
+      },
+      {
+        "ticker": "AMZN",
+        "name": "AMAZON COM INC USD 0.01",
+        "weight": 4.99,
+        "shares": 341656
+      },
+      {
+        "ticker": "PANW",
+        "name": "PALO ALTO NETWORKS INC USD 0.0001",
+        "weight": 0.08,
+        "shares": 4172
+      },
+      {
+        "ticker": "ETN",
+        "name": "EATON CORP PLC USD 0.01",
+        "weight": 0.59,
+        "shares": 25666
+      },
+      {
+        "ticker": "ALAB",
+        "name": "ASTERA LABS INC USD 0.0001",
+        "weight": 0.77,
+        "shares": 46392
+      },
+      {
+        "ticker": "SHOP",
+        "name": "SHOPIFY INC NPV",
+        "weight": 0.7,
+        "shares": 70713
+      },
+      {
+        "ticker": "PLTR",
+        "name": "PALANTIR TECHNOLOGIES INC USD 0.001",
+        "weight": 0.56,
+        "shares": 51151
+      },
+      {
+        "ticker": "FCX",
+        "name": "FREEPORT-MCMORAN INC USD 0.1",
+        "weight": 0.44,
+        "shares": 109318
+      },
+      {
+        "ticker": "DELL",
+        "name": "DELL TECHNOLOGIES INC USD 0.01",
+        "weight": 0.34,
+        "shares": 12925
+      }
+    ],
+    "CNEQ": [
+      {
+        "ticker": "NBIS",
+        "name": "NEBIUS GROUP N.V.",
+        "weight": 3.45,
+        "shares": 1204293
+      },
+      {
+        "ticker": "APP",
+        "name": "APPLOVIN CORP USD 0.00003",
+        "weight": 1.07,
+        "shares": 232589
       },
       {
         "ticker": "NTRA",
         "name": "NATERA INC USD 0.0001",
         "weight": 2.24,
-        "shares": 323567
+        "shares": 327887
+      },
+      {
+        "ticker": "GEV",
+        "name": "GE VERNOVA INC USD 0.01",
+        "weight": 2.56,
+        "shares": 160120
+      },
+      {
+        "ticker": "ILMN",
+        "name": "ILLUMINA INC USD 0.01",
+        "weight": 0.74,
+        "shares": 162751
+      },
+      {
+        "ticker": "FIGR",
+        "name": "FIGURE TECHNOLOGY SOLUTI USD 0.0001",
+        "weight": 1.31,
+        "shares": 2792357
+      },
+      {
+        "ticker": "MSFT",
+        "name": "MICROSOFT COM USD0.00000625",
+        "weight": 8.83,
+        "shares": 963191
       },
       {
         "ticker": "TSLA",
         "name": "TESLA INC USD 0.001",
-        "weight": 2.89,
-        "shares": 465545
-      },
-      {
-        "ticker": "TSM",
-        "name": "TAIWAN SEMICONDUCTOR M TWD 10.0 ADR",
-        "weight": 5.76,
-        "shares": 797216
-      },
-      {
-        "ticker": "APP",
-        "name": "APPLOVIN CORP USD 0.00003",
-        "weight": 1.1,
-        "shares": 229549
+        "weight": 3,
+        "shares": 487417
       },
       {
         "ticker": "NVDA",
         "name": "NVIDIA CORP USD 0.001",
-        "weight": 14.65,
-        "shares": 3940291
+        "weight": 14.82,
+        "shares": 3993411
+      },
+      {
+        "ticker": "META",
+        "name": "META PLATFORMS INC USD 0.000006",
+        "weight": 3.9,
+        "shares": 317520
+      },
+      {
+        "ticker": "GFL",
+        "name": "GFL ENVIRONMENTAL INC NPV",
+        "weight": 1.36,
+        "shares": 1792140
+      },
+      {
+        "ticker": "AMZN",
+        "name": "AMAZON COM INC USD 0.01",
+        "weight": 4.43,
+        "shares": 1022626
+      },
+      {
+        "ticker": "SE",
+        "name": "SEA LTD USD 0.0005 ADR",
+        "weight": 2.43,
+        "shares": 1494323
+      },
+      {
+        "ticker": "SPCX",
+        "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
+        "weight": 2.01,
+        "shares": 794969
+      },
+      {
+        "ticker": "BIIB",
+        "name": "BIOGEN INC",
+        "weight": 0.78,
+        "shares": 192771
       },
       {
         "ticker": "TLN",
         "name": "TALEN ENERGY CORP NEW USD 0.001",
-        "weight": 3.41,
-        "shares": 563808
+        "weight": 3.61,
+        "shares": 587849
+      },
+      {
+        "ticker": "ALAB",
+        "name": "ASTERA LABS INC USD 0.0001",
+        "weight": 1.2,
+        "shares": 241991
+      },
+      {
+        "ticker": "TSM",
+        "name": "TAIWAN SEMICONDUCTOR M TWD 10.0 ADR",
+        "weight": 5.78,
+        "shares": 807936
       },
       {
         "ticker": "AMD",
         "name": "ADVANCED MICRO DEVICES INC USD 0.01",
-        "weight": 1.86,
-        "shares": 192876
+        "weight": 1.79,
+        "shares": 195436
+      },
+      {
+        "ticker": "MU",
+        "name": "MICRON TECHNOLOGY INC USD 0.1",
+        "weight": 2.99,
+        "shares": 196504
+      },
+      {
+        "ticker": "QXO",
+        "name": "QXO INC USD 0.00001",
+        "weight": 1.99,
+        "shares": 10558056
+      },
+      {
+        "ticker": "WDC",
+        "name": "WESTERN DIGITAL CORP USD 0.01",
+        "weight": 3.33,
+        "shares": 579207
+      },
+      {
+        "ticker": "AVGO",
+        "name": "BROADCOM INC NPV",
+        "weight": 4.84,
+        "shares": 848750
+      },
+      {
+        "ticker": "AAPL",
+        "name": "APPLE INC USD 0.00001",
+        "weight": 5.59,
+        "shares": 938634
       },
       {
         "ticker": "GOOG",
         "name": "ALPHABET INC CLASS C",
-        "weight": 6.4,
-        "shares": 1084370
+        "weight": 6.42,
+        "shares": 1098930
+      },
+      {
+        "ticker": "LLY",
+        "name": "LILLY ELI + CO NPV",
+        "weight": 1.85,
+        "shares": 84741
       }
     ],
     "XSD": [
@@ -3415,127 +3416,127 @@
       {
         "ticker": "APH",
         "name": "AMPHENOL CORP",
-        "weight": 6.62,
+        "weight": 6.52,
         "shares": 645893
-      },
-      {
-        "ticker": "BELFB",
-        "name": "BEL FUSE INC",
-        "weight": 6.18,
-        "shares": 224172
       },
       {
         "ticker": "ETN",
         "name": "EATON CORP PLC",
-        "weight": 6.09,
+        "weight": 5.99,
         "shares": 120327
+      },
+      {
+        "ticker": "BELFB",
+        "name": "BEL FUSE INC",
+        "weight": 5.92,
+        "shares": 224172
       },
       {
         "ticker": "PWR",
         "name": "QUANTA SERVICES INC",
-        "weight": 5.66,
+        "weight": 5.63,
         "shares": 70102
       },
       {
         "ticker": "ET",
         "name": "ENERGY TRANSFER LP",
-        "weight": 5.31,
+        "weight": 5.46,
         "shares": 2121012
-      },
-      {
-        "ticker": "NEE",
-        "name": "NEXTERA ENERGY INC",
-        "weight": 5.26,
-        "shares": 529200
       },
       {
         "ticker": "AEP",
         "name": "AMERICAN ELECTRIC POWER CO INC",
-        "weight": 5.21,
+        "weight": 5.38,
         "shares": 333086
+      },
+      {
+        "ticker": "NEE",
+        "name": "NEXTERA ENERGY INC",
+        "weight": 5.37,
+        "shares": 529200
       },
       {
         "ticker": "POWL",
         "name": "POWELL INDUSTRIES INC",
-        "weight": 5.18,
+        "weight": 5.06,
         "shares": 241114
       },
       {
         "ticker": "OGE",
         "name": "OGE ENERGY CORP",
-        "weight": 4.74,
+        "weight": 4.84,
         "shares": 801250
       },
       {
         "ticker": "IDA",
         "name": "IDACORP INC",
-        "weight": 4.69,
+        "weight": 4.79,
         "shares": 272178
       },
       {
         "ticker": "HUBB",
         "name": "HUBBELL INC",
-        "weight": 4.67,
+        "weight": 4.68,
         "shares": 79893
       },
       {
         "ticker": "GEV",
         "name": "GE VERNOVA INC",
-        "weight": 4.35,
+        "weight": 4.37,
         "shares": 37290
       },
       {
         "ticker": "NVT",
         "name": "NVENT ELECTRIC PLC",
-        "weight": 4.19,
+        "weight": 4.13,
         "shares": 228744
-      },
-      {
-        "ticker": "BE",
-        "name": "BLOOM ENERGY CORP",
-        "weight": 3.88,
-        "shares": 130399
       },
       {
         "ticker": "ETR",
         "name": "ENTERGY CORP",
-        "weight": 3.86,
+        "weight": 3.95,
         "shares": 295241
+      },
+      {
+        "ticker": "BE",
+        "name": "BLOOM ENERGY CORP",
+        "weight": 3.67,
+        "shares": 130399
       },
       {
         "ticker": "AEIS",
         "name": "ADVANCED ENERGY INDUSTRIES INC",
-        "weight": 3.65,
+        "weight": 3.48,
         "shares": 115121
       },
       {
         "ticker": "NI",
         "name": "NISOURCE INC",
-        "weight": 3.25,
+        "weight": 3.4,
         "shares": 626012
       },
       {
         "ticker": "ABBN",
         "name": "ABB LTD",
-        "weight": 2.97,
+        "weight": 2.99,
         "shares": 255956
       },
       {
         "ticker": "WMB",
         "name": "WILLIAMS COS INC/THE",
-        "weight": 2.33,
+        "weight": 2.42,
         "shares": 267337
       },
       {
         "ticker": "XEL",
         "name": "XCEL ENERGY INC",
-        "weight": 2.11,
+        "weight": 2.17,
         "shares": 223338
       },
       {
         "ticker": "CAT",
         "name": "CATERPILLAR INC",
-        "weight": 2.01,
+        "weight": 2.02,
         "shares": 21698
       },
       {
@@ -3553,13 +3554,13 @@
       {
         "ticker": "SU",
         "name": "SCHNEIDER ELECTRIC SE",
-        "weight": 1.3,
+        "weight": 1.29,
         "shares": 35759
       },
       {
         "ticker": "VRT",
         "name": "VERTIV HOLDINGS CO",
-        "weight": 0.86,
+        "weight": 0.84,
         "shares": 31890
       }
     ],
@@ -3719,575 +3720,563 @@
       {
         "ticker": "SNDK",
         "name": "SANDISK CORP",
-        "weight": 19.91,
+        "weight": 18.8,
         "shares": 7840
       },
       {
         "ticker": "MU",
         "name": "MICRON TECHNOLOGY INC",
-        "weight": 8.94,
+        "weight": 8.56,
         "shares": 5275
       },
       {
         "ticker": "AEHR",
         "name": "AEHR TEST SYSTEMS",
-        "weight": 4.29,
+        "weight": 3.81,
         "shares": 34043
       },
       {
         "ticker": "STX",
         "name": "SEAGATE TECHNOLOGY HOLDINGS PLC",
-        "weight": 4.03,
+        "weight": 3.78,
         "shares": 3206
       },
       {
         "ticker": "WDC",
         "name": "WESTERN DIGITAL CORP",
-        "weight": 3.72,
+        "weight": 3.51,
         "shares": 5726
       },
       {
         "ticker": "SKHY",
         "name": "SK HYNIX INC",
-        "weight": 0.73,
+        "weight": 0.69,
         "shares": 2739
       }
     ],
     "AIRR": [
       {
-        "ticker": "IESC",
-        "name": "IES Holdings, Inc.",
-        "weight": 3.3,
-        "shares": 1091531
-      },
-      {
-        "ticker": "NXT",
-        "name": "Nextpower Inc. (Class A)",
-        "weight": 3.1,
-        "shares": 3233378
-      },
-      {
-        "ticker": "KTOS",
-        "name": "Kratos Defense & Security Solutions, Inc.",
-        "weight": 3.07,
-        "shares": 6551204
-      },
-      {
-        "ticker": "FPS",
-        "name": "Forgent Power Solutions, Inc. (Class A)",
-        "weight": 3.06,
-        "shares": 8217707
-      },
-      {
-        "ticker": "RBC",
-        "name": "RBC Bearings Incorporated",
-        "weight": 2.97,
-        "shares": 519431
-      },
-      {
-        "ticker": "SAIA",
-        "name": "Saia, Inc.",
-        "weight": 2.93,
-        "shares": 745253
-      },
-      {
-        "ticker": "BWXT",
-        "name": "BWX Technologies, Inc.",
-        "weight": 2.91,
-        "shares": 1846414
-      },
-      {
-        "ticker": "SPXC",
-        "name": "SPX Technologies",
-        "weight": 2.9,
-        "shares": 1508382
-      },
-      {
-        "ticker": "CLH",
-        "name": "Clean Harbors, Inc.",
-        "weight": 2.86,
-        "shares": 778694
-      },
-      {
-        "ticker": "OC",
-        "name": "Owens Corning",
-        "weight": 2.83,
-        "shares": 2160869
-      },
-      {
-        "ticker": "POWL",
-        "name": "Powell Industries, Inc.",
-        "weight": 2.79,
-        "shares": 1417461
-      },
-      {
-        "ticker": "HII",
-        "name": "Huntington Ingalls Industries, Inc.",
-        "weight": 2.75,
-        "shares": 894132
-      },
-      {
         "ticker": "CHRW",
         "name": "C.H. Robinson Worldwide, Inc.",
-        "weight": 2.73,
-        "shares": 1652817
-      },
-      {
-        "ticker": "CNM",
-        "name": "Core & Main, Inc. (Class A)",
-        "weight": 2.63,
-        "shares": 5466028
-      },
-      {
-        "ticker": "STRL",
-        "name": "Sterling Infrastructure, Inc.",
-        "weight": 2.59,
-        "shares": 504175
-      },
-      {
-        "ticker": "WMS",
-        "name": "Advanced Drainage Systems, Inc.",
-        "weight": 2.54,
-        "shares": 1720760
-      },
-      {
-        "ticker": "PRIM",
-        "name": "Primoris Services Corporation",
-        "weight": 2.52,
-        "shares": 2968366
-      },
-      {
-        "ticker": "KRMN",
-        "name": "Karman Holdings Inc.",
-        "weight": 2.49,
-        "shares": 6388599
+        "weight": 3.71,
+        "shares": 2270746
       },
       {
         "ticker": "DY",
         "name": "Dycom Industries, Inc.",
-        "weight": 2.44,
-        "shares": 823098
+        "weight": 3.44,
+        "shares": 1158636
+      },
+      {
+        "ticker": "BWXT",
+        "name": "BWX Technologies, Inc.",
+        "weight": 3.39,
+        "shares": 2116763
+      },
+      {
+        "ticker": "KTOS",
+        "name": "Kratos Defense & Security Solutions, Inc.",
+        "weight": 3.38,
+        "shares": 7153748
+      },
+      {
+        "ticker": "RBC",
+        "name": "RBC Bearings Incorporated",
+        "weight": 3.28,
+        "shares": 562528
+      },
+      {
+        "ticker": "FPS",
+        "name": "Forgent Power Solutions, Inc. (Class A)",
+        "weight": 3.26,
+        "shares": 8807714
+      },
+      {
+        "ticker": "KRMN",
+        "name": "Karman Holdings Inc.",
+        "weight": 3.21,
+        "shares": 7910159
+      },
+      {
+        "ticker": "STRL",
+        "name": "Sterling Infrastructure, Inc.",
+        "weight": 3.2,
+        "shares": 644220
+      },
+      {
+        "ticker": "NXT",
+        "name": "Nextpower Inc. (Class A)",
+        "weight": 3.13,
+        "shares": 3340925
+      },
+      {
+        "ticker": "OC",
+        "name": "Owens Corning",
+        "weight": 3.09,
+        "shares": 2340742
+      },
+      {
+        "ticker": "HII",
+        "name": "Huntington Ingalls Industries, Inc.",
+        "weight": 3.02,
+        "shares": 948852
       },
       {
         "ticker": "AGX",
         "name": "Argan, Inc.",
-        "weight": 2.35,
-        "shares": 557128
+        "weight": 3,
+        "shares": 741494
       },
       {
-        "ticker": "GVA",
-        "name": "Granite Construction Incorporated",
-        "weight": 2.32,
-        "shares": 1850949
+        "ticker": "CNM",
+        "name": "Core & Main, Inc. (Class A)",
+        "weight": 2.81,
+        "shares": 5713155
       },
       {
-        "ticker": "R",
-        "name": "Ryder System, Inc.",
-        "weight": 1.92,
-        "shares": 696509
-      },
-      {
-        "ticker": "ONB",
-        "name": "Old National Bancorp",
-        "weight": 1.91,
-        "shares": 6652876
-      },
-      {
-        "ticker": "MLI",
-        "name": "Mueller Industries, Inc.",
-        "weight": 1.89,
-        "shares": 2707038
-      },
-      {
-        "ticker": "AIT",
-        "name": "Applied Industrial Technologies, Inc.",
-        "weight": 1.88,
-        "shares": 489133
-      },
-      {
-        "ticker": "MSM",
-        "name": "MSC Industrial Direct Co., Inc. (Class A)",
-        "weight": 1.77,
-        "shares": 1179555
-      },
-      {
-        "ticker": "AAON",
-        "name": "AAON, Inc.",
-        "weight": 1.66,
-        "shares": 1869348
-      },
-      {
-        "ticker": "LSTR",
-        "name": "Landstar System, Inc.",
-        "weight": 1.62,
-        "shares": 817917
-      },
-      {
-        "ticker": "LGN",
-        "name": "Legence Corp. (Class A)",
-        "weight": 1.57,
-        "shares": 3009235
-      },
-      {
-        "ticker": "XMTR",
-        "name": "Xometry, Inc. (Class A)",
-        "weight": 1.56,
-        "shares": 1364942
-      },
-      {
-        "ticker": "OSK",
-        "name": "Oshkosh Corporation",
-        "weight": 1.53,
-        "shares": 1033538
-      },
-      {
-        "ticker": "ECG",
-        "name": "Everus Construction Group, Inc.",
-        "weight": 1.5,
-        "shares": 1166087
-      },
-      {
-        "ticker": "FNB",
-        "name": "F.N.B. Corporation",
-        "weight": 1.5,
-        "shares": 7597319
+        "ticker": "CLH",
+        "name": "Clean Harbors, Inc.",
+        "weight": 2.65,
+        "shares": 707072
       },
       {
         "ticker": "HRI",
         "name": "Herc Holdings, Inc.",
-        "weight": 1.49,
-        "shares": 1044694
+        "weight": 2.56,
+        "shares": 1798377
       },
       {
-        "ticker": "KEX",
-        "name": "Kirby Corporation",
-        "weight": 1.48,
-        "shares": 936201
+        "ticker": "SAIA",
+        "name": "Saia, Inc.",
+        "weight": 2.52,
+        "shares": 643995
       },
       {
-        "ticker": "MRCY",
-        "name": "Mercury Systems, Inc.",
-        "weight": 1.4,
-        "shares": 1596745
+        "ticker": "ONB",
+        "name": "Old National Bancorp",
+        "weight": 2.44,
+        "shares": 8328581
       },
       {
-        "ticker": "WTFC",
-        "name": "Wintrust Financial Corporation",
-        "weight": 1.38,
-        "shares": 836330
+        "ticker": "MLI",
+        "name": "Mueller Industries, Inc.",
+        "weight": 2.39,
+        "shares": 3405136
       },
       {
-        "ticker": "FSS",
-        "name": "Federal Signal Corporation",
-        "weight": 1.29,
-        "shares": 986154
+        "ticker": "WMS",
+        "name": "Advanced Drainage Systems, Inc.",
+        "weight": 2.3,
+        "shares": 1534674
       },
       {
-        "ticker": "ROAD",
-        "name": "Construction Partners, Inc. (Class A)",
-        "weight": 1.23,
-        "shares": 1285857
+        "ticker": "SPXC",
+        "name": "SPX Technologies",
+        "weight": 2.19,
+        "shares": 1126226
+      },
+      {
+        "ticker": "AIT",
+        "name": "Applied Industrial Technologies, Inc.",
+        "weight": 2.01,
+        "shares": 520861
+      },
+      {
+        "ticker": "OSK",
+        "name": "Oshkosh Corporation",
+        "weight": 1.93,
+        "shares": 1295289
+      },
+      {
+        "ticker": "PRIM",
+        "name": "Primoris Services Corporation",
+        "weight": 1.9,
+        "shares": 2218232
+      },
+      {
+        "ticker": "POWL",
+        "name": "Powell Industries, Inc.",
+        "weight": 1.89,
+        "shares": 977342
+      },
+      {
+        "ticker": "MSM",
+        "name": "MSC Industrial Direct Co., Inc. (Class A)",
+        "weight": 1.86,
+        "shares": 1218487
+      },
+      {
+        "ticker": "AAON",
+        "name": "AAON, Inc.",
+        "weight": 1.82,
+        "shares": 2113569
+      },
+      {
+        "ticker": "FNB",
+        "name": "F.N.B. Corporation",
+        "weight": 1.75,
+        "shares": 8671376
+      },
+      {
+        "ticker": "IESC",
+        "name": "IES Holdings, Inc.",
+        "weight": 1.64,
+        "shares": 556230
+      },
+      {
+        "ticker": "XMTR",
+        "name": "Xometry, Inc. (Class A)",
+        "weight": 1.47,
+        "shares": 1386536
       },
       {
         "ticker": "ASB",
         "name": "Associated Banc-Corp",
-        "weight": 1.2,
-        "shares": 3627068
+        "weight": 1.44,
+        "shares": 4252305
       },
       {
-        "ticker": "MWH",
-        "name": "SOLV Energy, Inc. (Class A)",
-        "weight": 1.11,
-        "shares": 4013561
+        "ticker": "WTFC",
+        "name": "Wintrust Financial Corporation",
+        "weight": 1.41,
+        "shares": 838195
       },
       {
-        "ticker": "DNOW",
-        "name": "DNOW Inc.",
-        "weight": 0.98,
-        "shares": 5659925
+        "ticker": "GVA",
+        "name": "Granite Construction Incorporated",
+        "weight": 1.4,
+        "shares": 1088869
       },
       {
-        "ticker": "ZWS",
-        "name": "Zurn Elkay Water Solutions Corp.",
-        "weight": 0.96,
-        "shares": 1786287
+        "ticker": "R",
+        "name": "Ryder System, Inc.",
+        "weight": 1.31,
+        "shares": 470551
       },
       {
-        "ticker": "FULT",
-        "name": "Fulton Financial Corporation",
-        "weight": 0.91,
-        "shares": 3549249
+        "ticker": "KEX",
+        "name": "Kirby Corporation",
+        "weight": 1.3,
+        "shares": 817177
+      },
+      {
+        "ticker": "LSTR",
+        "name": "Landstar System, Inc.",
+        "weight": 1.28,
+        "shares": 637519
+      },
+      {
+        "ticker": "MRCY",
+        "name": "Mercury Systems, Inc.",
+        "weight": 1.23,
+        "shares": 1411099
+      },
+      {
+        "ticker": "ROAD",
+        "name": "Construction Partners, Inc. (Class A)",
+        "weight": 1.14,
+        "shares": 1182494
+      },
+      {
+        "ticker": "FSS",
+        "name": "Federal Signal Corporation",
+        "weight": 1.05,
+        "shares": 801156
+      },
+      {
+        "ticker": "ECG",
+        "name": "Everus Construction Group, Inc.",
+        "weight": 0.93,
+        "shares": 728657
+      },
+      {
+        "ticker": "LGN",
+        "name": "Legence Corp. (Class A)",
+        "weight": 0.93,
+        "shares": 1822299
       },
       {
         "ticker": "DCO",
         "name": "Ducommun Incorporated",
-        "weight": 0.88,
-        "shares": 446335
+        "weight": 0.91,
+        "shares": 453092
       },
       {
-        "ticker": "TPC",
-        "name": "Tutor Perini Corporation",
-        "weight": 0.85,
-        "shares": 941204
+        "ticker": "FULT",
+        "name": "Fulton Financial Corporation",
+        "weight": 0.89,
+        "shares": 3407904
+      },
+      {
+        "ticker": "ZWS",
+        "name": "Zurn Elkay Water Solutions Corp.",
+        "weight": 0.89,
+        "shares": 1622455
       },
       {
         "ticker": "CSW",
         "name": "CSW Industrials, Inc.",
-        "weight": 0.74,
-        "shares": 220969
+        "weight": 0.83,
+        "shares": 245338
+      },
+      {
+        "ticker": "DNOW",
+        "name": "DNOW Inc.",
+        "weight": 0.79,
+        "shares": 4294282
       },
       {
         "ticker": "DRS",
         "name": "Leonardo DRS, Inc.",
-        "weight": 0.7,
-        "shares": 1721430
+        "weight": 0.78,
+        "shares": 1877221
       },
       {
-        "ticker": "SHLS",
-        "name": "Shoals Technologies Group, Inc. (Class A)",
-        "weight": 0.68,
-        "shares": 7591454
+        "ticker": "TPC",
+        "name": "Tutor Perini Corporation",
+        "weight": 0.74,
+        "shares": 813875
       },
       {
-        "ticker": "SNDR",
-        "name": "Schneider National, Inc. (Class B)",
-        "weight": 0.65,
-        "shares": 1780979
-      },
-      {
-        "ticker": "WERN",
-        "name": "Werner Enterprises, Inc.",
-        "weight": 0.62,
-        "shares": 1610190
-      },
-      {
-        "ticker": "AVEX",
-        "name": "AEVEX Corp. (Class A)",
-        "weight": 0.6,
-        "shares": 3448819
-      },
-      {
-        "ticker": "FFBC",
-        "name": "First Financial Bancorp.",
-        "weight": 0.6,
-        "shares": 1673530
+        "ticker": "BLBD",
+        "name": "Blue Bird Corporation",
+        "weight": 0.73,
+        "shares": 1092059
       },
       {
         "ticker": "MWA",
         "name": "Mueller Water Products, Inc.",
+        "weight": 0.72,
+        "shares": 2834927
+      },
+      {
+        "ticker": "MWH",
+        "name": "SOLV Energy, Inc. (Class A)",
+        "weight": 0.71,
+        "shares": 2531019
+      },
+      {
+        "ticker": "WERN",
+        "name": "Werner Enterprises, Inc.",
+        "weight": 0.68,
+        "shares": 1776484
+      },
+      {
+        "ticker": "FFBC",
+        "name": "First Financial Bancorp.",
+        "weight": 0.67,
+        "shares": 1819209
+      },
+      {
+        "ticker": "AADX",
+        "name": "Applied Aerospace & Defense, Inc.",
+        "weight": 0.65,
+        "shares": 4898506
+      },
+      {
+        "ticker": "SHLS",
+        "name": "Shoals Technologies Group, Inc. (Class A)",
         "weight": 0.58,
-        "shares": 2319228
+        "shares": 6918245
       },
       {
-        "ticker": "GHM",
-        "name": "Graham Corporation",
-        "weight": 0.45,
-        "shares": 545033
-      },
-      {
-        "ticker": "ARRY",
-        "name": "Array Technologies, Inc.",
-        "weight": 0.37,
-        "shares": 9121801
-      },
-      {
-        "ticker": "CDNL",
-        "name": "Cardinal Infrastructure Group Inc. (Class A)",
-        "weight": 0.24,
-        "shares": 1323758
+        "ticker": "DXPE",
+        "name": "DXP Enterprises, Inc.",
+        "weight": 0.51,
+        "shares": 249738
       }
     ],
     "AIS": [
       {
         "ticker": "MU",
         "name": "Micron Technology Inc",
-        "weight": 7.39,
+        "weight": 7.17,
         "shares": 86485
       },
       {
         "ticker": "AMD",
         "name": "Advanced Micro Devices Inc",
-        "weight": 6.21,
+        "weight": 6.01,
         "shares": 120380
       },
       {
         "ticker": "MRVL",
         "name": "MARVELL TECHNOLOGY INC",
-        "weight": 4.44,
+        "weight": 4.32,
         "shares": 200717
       },
       {
         "ticker": "SMTC",
         "name": "Semtech Corp",
-        "weight": 4.09,
+        "weight": 3.99,
         "shares": 308872
       },
       {
         "ticker": "TSM",
         "name": "Taiwan Semiconductor Manufacturing Co Ltd",
-        "weight": 3.94,
+        "weight": 3.96,
         "shares": 101795
       },
       {
         "ticker": "INTC",
         "name": "Intel Corp",
-        "weight": 3.29,
+        "weight": 3.19,
         "shares": 376082
       },
       {
         "ticker": "VRT",
         "name": "Vertiv Holdings Co",
-        "weight": 3.1,
+        "weight": 3.07,
         "shares": 157539
       },
       {
         "ticker": "GEV",
         "name": "GE Vernova Inc",
-        "weight": 2.86,
+        "weight": 2.93,
         "shares": 33688
       },
       {
         "ticker": "SIMO",
         "name": "Silicon Motion Technology Corp",
-        "weight": 2.57,
+        "weight": 2.56,
         "shares": 128395
       },
       {
         "ticker": "NVDA",
         "name": "NVIDIA Corp",
-        "weight": 2.22,
+        "weight": 2.25,
         "shares": 111492
-      },
-      {
-        "ticker": "STX",
-        "name": "Seagate Technology Holdings PLC",
-        "weight": 2.2,
-        "shares": 34784
-      },
-      {
-        "ticker": "VICR",
-        "name": "Vicor Corp",
-        "weight": 2.2,
-        "shares": 108976
       },
       {
         "ticker": "TSEM",
         "name": "Tower Semiconductor Ltd",
-        "weight": 2.09,
+        "weight": 2.25,
         "shares": 113324
       },
       {
         "ticker": "ASML",
         "name": "ASML Holding NV",
-        "weight": 2.08,
+        "weight": 2.12,
         "shares": 13675
+      },
+      {
+        "ticker": "STX",
+        "name": "Seagate Technology Holdings PLC",
+        "weight": 2.1,
+        "shares": 34784
       },
       {
         "ticker": "GLW",
         "name": "Corning Inc",
-        "weight": 2.06,
+        "weight": 2.02,
         "shares": 161879
       },
       {
         "ticker": "ANET",
         "name": "Arista Networks Inc",
-        "weight": 2.04,
+        "weight": 2,
         "shares": 119575
+      },
+      {
+        "ticker": "VICR",
+        "name": "Vicor Corp",
+        "weight": 1.97,
+        "shares": 108976
       },
       {
         "ticker": "ALAB",
         "name": "Astera Labs Inc",
-        "weight": 1.97,
+        "weight": 1.92,
         "shares": 71024
       },
       {
         "ticker": "NOKIA",
         "name": "Nokia Oyj",
-        "weight": 1.81,
+        "weight": 1.87,
         "shares": 2094162
       },
       {
         "ticker": "LR",
         "name": "Legrand SA",
-        "weight": 1.77,
+        "weight": 1.84,
         "shares": 129102
       },
       {
         "ticker": "ARM",
         "name": "ARM Holdings PLC",
-        "weight": 1.7,
+        "weight": 1.63,
         "shares": 75775
       },
       {
         "ticker": "SNDK",
         "name": "Sandisk Corp",
-        "weight": 1.66,
+        "weight": 1.6,
         "shares": 13007
       },
       {
         "ticker": "NVTS",
         "name": "Navitas Semiconductor Corp",
-        "weight": 1.43,
+        "weight": 1.33,
         "shares": 1685890
-      },
-      {
-        "ticker": "PENG",
-        "name": "Penguin Solutions Inc",
-        "weight": 1.23,
-        "shares": 216638
       },
       {
         "ticker": "AIXA",
         "name": "AIXTRON SE",
-        "weight": 1.08,
+        "weight": 1.18,
         "shares": 338143
+      },
+      {
+        "ticker": "PENG",
+        "name": "Penguin Solutions Inc",
+        "weight": 1.17,
+        "shares": 216638
       },
       {
         "ticker": "WDC",
         "name": "Western Digital Corp",
-        "weight": 1.01,
+        "weight": 0.97,
         "shares": 30861
       },
       {
         "ticker": "CRDO",
         "name": "Credo Technology Group Holding Ltd",
-        "weight": 0.94,
+        "weight": 0.92,
         "shares": 57640
       },
       {
         "ticker": "COHR",
         "name": "Coherent Corp",
-        "weight": 0.8,
+        "weight": 0.76,
         "shares": 34787
       },
       {
         "ticker": "HPE",
         "name": "Hewlett Packard Enterprise Co",
-        "weight": 0.77,
+        "weight": 0.75,
         "shares": 144060
       },
       {
         "ticker": "AEIS",
         "name": "Advanced Energy Industries Inc",
-        "weight": 0.75,
+        "weight": 0.73,
         "shares": 32550
       },
       {
         "ticker": "AVGO",
         "name": "Broadcom Inc",
-        "weight": 0.74,
+        "weight": 0.73,
         "shares": 23569
       },
       {
         "ticker": "CSCO",
         "name": "Cisco Systems Inc",
-        "weight": 0.71,
+        "weight": 0.72,
         "shares": 70935
       },
       {
         "ticker": "NTNX",
         "name": "Nutanix Inc",
-        "weight": 0.71,
+        "weight": 0.7,
         "shares": 111267
       },
       {
@@ -4299,7 +4288,7 @@
       {
         "ticker": "SMCI",
         "name": "Super Micro Computer Inc",
-        "weight": 0.64,
+        "weight": 0.6,
         "shares": 200065
       },
       {
@@ -4311,19 +4300,19 @@
       {
         "ticker": "MTRS",
         "name": "Munters Group AB",
-        "weight": 0.4,
+        "weight": 0.42,
         "shares": 337174
       },
       {
         "ticker": "LITE",
         "name": "Lumentum Holdings Inc",
-        "weight": 0.28,
+        "weight": 0.27,
         "shares": 3479
       },
       {
         "ticker": "CBRS",
         "name": "Cerebras Systems Inc",
-        "weight": 0.2,
+        "weight": 0.18,
         "shares": 15279
       },
       {
@@ -4331,127 +4320,133 @@
         "name": "Vistance Networks Inc",
         "weight": 0.14,
         "shares": 257677
+      },
+      {
+        "ticker": "TWD",
+        "name": "NEW TAIWAN DOLLAR",
+        "weight": 0.06,
+        "shares": 21367579.57
       }
     ],
     "POW": [
       {
         "ticker": "PWR",
         "name": "Quanta Services Inc",
-        "weight": 5.64,
+        "weight": 5.6,
         "shares": 5072
       },
       {
         "ticker": "ETN",
         "name": "Eaton Corp PLC",
-        "weight": 4.91,
+        "weight": 4.82,
         "shares": 7051
       },
       {
         "ticker": "NVT",
         "name": "nVent Electric PLC",
-        "weight": 4.12,
+        "weight": 4.05,
         "shares": 16325
       },
       {
         "ticker": "PRY",
         "name": "Prysmian SpA",
-        "weight": 3.98,
+        "weight": 4.03,
         "shares": 18728
-      },
-      {
-        "ticker": "POWL",
-        "name": "Powell Industries Inc",
-        "weight": 3.56,
-        "shares": 12058
       },
       {
         "ticker": "GEV",
         "name": "GE Vernova Inc",
-        "weight": 3.55,
+        "weight": 3.56,
         "shares": 2213
       },
       {
-        "ticker": "BELFB",
-        "name": "Bel Fuse Inc",
-        "weight": 3.32,
-        "shares": 8753
+        "ticker": "POWL",
+        "name": "Powell Industries Inc",
+        "weight": 3.48,
+        "shares": 12058
       },
       {
         "ticker": "HUBB",
         "name": "Hubbell Inc",
-        "weight": 3.25,
+        "weight": 3.26,
         "shares": 4046
+      },
+      {
+        "ticker": "BELFB",
+        "name": "Bel Fuse Inc",
+        "weight": 3.18,
+        "shares": 8753
       },
       {
         "ticker": "AEP",
         "name": "American Electric Power Co Inc",
-        "weight": 3.03,
+        "weight": 3.13,
         "shares": 14089
-      },
-      {
-        "ticker": "BE",
-        "name": "Bloom Energy Corp",
-        "weight": 3.02,
-        "shares": 7385
       },
       {
         "ticker": "ENR",
         "name": "Siemens Energy AG",
-        "weight": 2.88,
+        "weight": 2.98,
         "shares": 11236
+      },
+      {
+        "ticker": "BE",
+        "name": "Bloom Energy Corp",
+        "weight": 2.86,
+        "shares": 7385
       },
       {
         "ticker": "FPS",
         "name": "Forgent Power Solutions Inc",
-        "weight": 2.48,
+        "weight": 2.46,
         "shares": 44330
       },
       {
         "ticker": "XEL",
         "name": "Xcel Energy Inc",
-        "weight": 2.39,
+        "weight": 2.45,
         "shares": 18365
       },
       {
         "ticker": "NEE",
         "name": "NextEra Energy Inc",
-        "weight": 2.28,
+        "weight": 2.33,
         "shares": 16726
       },
       {
         "ticker": "ABBNY",
         "name": "ABB Ltd",
-        "weight": 2.06,
+        "weight": 2.04,
         "shares": 12817
-      },
-      {
-        "ticker": "VICR",
-        "name": "Vicor Corp",
-        "weight": 1.95,
-        "shares": 5123
-      },
-      {
-        "ticker": "AEIS",
-        "name": "Advanced Energy Industries Inc",
-        "weight": 1.87,
-        "shares": 4288
       },
       {
         "ticker": "TLN",
         "name": "Talen Energy Corp",
-        "weight": 1.86,
+        "weight": 1.89,
         "shares": 3045
       },
       {
         "ticker": "APH",
         "name": "Amphenol Corp",
-        "weight": 1.84,
+        "weight": 1.81,
         "shares": 13026
+      },
+      {
+        "ticker": "AEIS",
+        "name": "Advanced Energy Industries Inc",
+        "weight": 1.78,
+        "shares": 4288
+      },
+      {
+        "ticker": "VICR",
+        "name": "Vicor Corp",
+        "weight": 1.72,
+        "shares": 5123
       },
       {
         "ticker": "VST",
         "name": "Vistra Corp",
-        "weight": 1.7,
+        "weight": 1.69,
         "shares": 6376
       },
       {
@@ -4463,61 +4458,61 @@
       {
         "ticker": "ENEL",
         "name": "Enel SpA",
-        "weight": 1.47,
+        "weight": 1.51,
         "shares": 83293
       },
       {
         "ticker": "EXC",
         "name": "Exelon Corp",
-        "weight": 1.4,
+        "weight": 1.45,
         "shares": 19108
       },
       {
         "ticker": "ES",
         "name": "Eversource Energy",
-        "weight": 1.29,
+        "weight": 1.32,
         "shares": 11256
       },
       {
         "ticker": "SU",
         "name": "Schneider Electric SE",
-        "weight": 1.25,
+        "weight": 1.24,
         "shares": 2498
       },
       {
         "ticker": "MTZ",
         "name": "MasTec Inc",
-        "weight": 1.15,
+        "weight": 1.16,
         "shares": 3470
       },
       {
         "ticker": "LFUS",
         "name": "Littelfuse Inc",
-        "weight": 1.13,
+        "weight": 1.11,
         "shares": 1668
       },
       {
         "ticker": "NXT",
         "name": "Nextpower Inc",
-        "weight": 1.12,
+        "weight": 1.09,
         "shares": 7760
       },
       {
         "ticker": "IBE",
         "name": "Iberdrola SA",
-        "weight": 0.99,
+        "weight": 1.01,
         "shares": 23634
       },
       {
         "ticker": "ENGI",
         "name": "Engie SA",
-        "weight": 0.87,
+        "weight": 0.89,
         "shares": 19267
       },
       {
         "ticker": "ENS",
         "name": "EnerSys",
-        "weight": 0.87,
+        "weight": 0.86,
         "shares": 2924
       },
       {
@@ -4529,19 +4524,19 @@
       {
         "ticker": "TE",
         "name": "T1 Energy Inc",
-        "weight": 0.74,
+        "weight": 0.67,
         "shares": 145529
       },
       {
         "ticker": "CNY",
         "name": "CHINESE YUAN",
-        "weight": 0.53,
+        "weight": 0.54,
         "shares": 2047180.1
       },
       {
         "ticker": "NRG",
         "name": "NRG Energy Inc",
-        "weight": 0.46,
+        "weight": 0.47,
         "shares": 2604
       },
       {
@@ -4559,7 +4554,7 @@
       {
         "ticker": "PCG",
         "name": "PG&E Corp",
-        "weight": 0.37,
+        "weight": 0.38,
         "shares": 16444
       },
       {
@@ -4571,7 +4566,7 @@
       {
         "ticker": "FLNC",
         "name": "Fluence Energy Inc",
-        "weight": 0.3,
+        "weight": 0.27,
         "shares": 26652
       },
       {
@@ -4589,130 +4584,130 @@
     ],
     "QQQA": [
       {
-        "ticker": "CRWD",
-        "name": "CROWDSTRIKE HOLDINGS INC - A",
-        "weight": 6.8169,
-        "shares": 13903
+        "ticker": "CSX",
+        "name": "CSX CORP",
+        "weight": 5.5385,
+        "shares": 54445
       },
       {
-        "ticker": "FTNT",
-        "name": "FORTINET INC",
-        "weight": 6.0251,
-        "shares": 16521
+        "ticker": "SHOP",
+        "name": "SHOPIFY INC - CLASS A",
+        "weight": 5.3498,
+        "shares": 15102
       },
       {
-        "ticker": "PANW",
-        "name": "PALO ALTO NETWORKS INC",
-        "weight": 5.9215,
-        "shares": 7977
+        "ticker": "META",
+        "name": "META PLATFORMS INC-CLASS A",
+        "weight": 5.3213,
+        "shares": 3590
       },
       {
-        "ticker": "ROST",
-        "name": "ROSS STORES INC",
-        "weight": 5.5017,
-        "shares": 11686
-      },
-      {
-        "ticker": "DDOG",
-        "name": "DATADOG INC - CLASS A",
-        "weight": 5.3912,
-        "shares": 10100
-      },
-      {
-        "ticker": "AMD",
-        "name": "ADVANCED MICRO DEVICES",
-        "weight": 5.2605,
-        "shares": 4667
+        "ticker": "MRNA",
+        "name": "MODERNA INC",
+        "weight": 5.2241,
+        "shares": 11467
       },
       {
         "ticker": "DASH",
         "name": "DOORDASH INC - A",
-        "weight": 5.2543,
-        "shares": 13576
-      },
-      {
-        "ticker": "CSX",
-        "name": "CSX CORP",
-        "weight": 5.1432,
-        "shares": 52689
-      },
-      {
-        "ticker": "GOOGL",
-        "name": "ALPHABET INC-CL A",
-        "weight": 5.1025,
-        "shares": 7288
-      },
-      {
-        "ticker": "MNST",
-        "name": "MONSTER BEVERAGE CORP",
-        "weight": 4.8592,
-        "shares": 53458
+        "weight": 5.176,
+        "shares": 13095
       },
       {
         "ticker": "ASML",
         "name": "ASML HOLDING NV-NY REG SHS",
-        "weight": 4.8015,
+        "weight": 4.9567,
         "shares": 1445
       },
       {
         "ticker": "CSCO",
         "name": "CISCO SYSTEMS INC",
-        "weight": 4.7283,
-        "shares": 21470
-      },
-      {
-        "ticker": "INTC",
-        "name": "INTEL CORP",
-        "weight": 4.5324,
-        "shares": 23705
-      },
-      {
-        "ticker": "TTWO",
-        "name": "TAKE-TWO INTERACTIVE SOFTWRE",
-        "weight": 4.4915,
-        "shares": 10700
+        "weight": 4.8774,
+        "shares": 21734
       },
       {
         "ticker": "CDNS",
         "name": "CADENCE DESIGN SYS INC",
-        "weight": 4.4059,
-        "shares": 6775
+        "weight": 4.8687,
+        "shares": 7292
+      },
+      {
+        "ticker": "PLTR",
+        "name": "PALANTIR TECHNOLOGIES INC-A",
+        "weight": 4.7979,
+        "shares": 12342
+      },
+      {
+        "ticker": "MSTR",
+        "name": "STRATEGY INC",
+        "weight": 4.7799,
+        "shares": 16717
+      },
+      {
+        "ticker": "AMD",
+        "name": "ADVANCED MICRO DEVICES",
+        "weight": 4.6749,
+        "shares": 4231
+      },
+      {
+        "ticker": "FTNT",
+        "name": "FORTINET INC",
+        "weight": 4.6695,
+        "shares": 13212
+      },
+      {
+        "ticker": "INTC",
+        "name": "INTEL CORP",
+        "weight": 4.6144,
+        "shares": 24576
+      },
+      {
+        "ticker": "DDOG",
+        "name": "DATADOG INC - CLASS A",
+        "weight": 4.5307,
+        "shares": 8774
+      },
+      {
+        "ticker": "ALAB",
+        "name": "ASTERA LABS INC",
+        "weight": 4.5035,
+        "shares": 7540
+      },
+      {
+        "ticker": "MRVL",
+        "name": "MARVELL TECHNOLOGY INC",
+        "weight": 4.4624,
+        "shares": 9373
       },
       {
         "ticker": "LRCX",
         "name": "LAM RESEARCH CORP",
-        "weight": 4.133,
-        "shares": 7430
+        "weight": 4.451,
+        "shares": 8070
       },
       {
-        "ticker": "STX",
-        "name": "SEAGATE TECHNOLOGY HOLDINGS",
-        "weight": 3.9693,
-        "shares": 2866
+        "ticker": "CRWD",
+        "name": "CROWDSTRIKE HOLDINGS INC - A",
+        "weight": 4.4453,
+        "shares": 9355
       },
       {
-        "ticker": "AXON",
-        "name": "AXON ENTERPRISE INC",
-        "weight": 3.8507,
-        "shares": 4604
+        "ticker": "PANW",
+        "name": "PALO ALTO NETWORKS INC",
+        "weight": 4.391,
+        "shares": 6144
       },
       {
         "ticker": "AMAT",
         "name": "APPLIED MATERIALS INC",
-        "weight": 3.7311,
-        "shares": 4328
+        "weight": 4.3406,
+        "shares": 5075
       },
       {
-        "ticker": "WDC",
-        "name": "WESTERN DIGITAL CORP",
-        "weight": 3.1986,
-        "shares": 4476
-      },
-      {
-        "ticker": "APP",
-        "name": "APPLOVIN CORP-CLASS A",
-        "weight": 2.8814,
-        "shares": 5146
+        "ticker": "LITE",
+        "name": "LUMENTUM HOLDINGS INC",
+        "weight": 4.0264,
+        "shares": 2338
       }
     ],
     "FDTX": [
@@ -4891,104 +4886,98 @@
       {
         "ticker": "NVDA",
         "name": "NVIDIA Corporation",
-        "weight": 6.21,
+        "weight": 6.05,
         "shares": 280921
       },
       {
         "ticker": "GOOGL",
         "name": "Alphabet Inc.",
-        "weight": 3.84,
+        "weight": 3.8,
         "shares": 112205
       },
       {
         "ticker": "AMZN",
         "name": "Amazon.com, Inc.",
-        "weight": 3.36,
-        "shares": 134318
+        "weight": 3.38,
+        "shares": 136751
       },
       {
         "ticker": "GOOG",
         "name": "Alphabet Inc.",
-        "weight": 3.32,
+        "weight": 3.28,
         "shares": 98189
       },
       {
         "ticker": "MU",
         "name": "Micron Technology, Inc.",
-        "weight": 3.24,
+        "weight": 3.13,
         "shares": 35168
-      },
-      {
-        "ticker": "AVGO",
-        "name": "Broadcom Inc.",
-        "weight": 2.78,
-        "shares": 80405
       },
       {
         "ticker": "AAPL",
         "name": "Apple Inc.",
-        "weight": 2.75,
+        "weight": 2.78,
         "shares": 83157
+      },
+      {
+        "ticker": "AVGO",
+        "name": "Broadcom Inc.",
+        "weight": 2.71,
+        "shares": 80405
       },
       {
         "ticker": "AMD",
         "name": "Advanced Micro Devices, Inc.",
-        "weight": 2.55,
+        "weight": 2.42,
         "shares": 43604
       },
       {
         "ticker": "META",
         "name": "Meta Platforms, Inc.",
-        "weight": 2.39,
+        "weight": 2.33,
         "shares": 32440
       },
       {
         "ticker": "FTNT",
         "name": "Fortinet, Inc.",
-        "weight": 2.39,
+        "weight": 2.32,
         "shares": 129581
       },
       {
         "ticker": "LRCX",
         "name": "Lam Research Corporation",
-        "weight": 2.02,
+        "weight": 1.94,
         "shares": 69355
-      },
-      {
-        "ticker": "DELL",
-        "name": "Dell Technologies Inc.",
-        "weight": 1.92,
-        "shares": 34649
       },
       {
         "ticker": "SNDK",
         "name": "Sandisk Corporation",
-        "weight": 1.89,
-        "shares": 13194
+        "weight": 1.81,
+        "shares": 13290
       },
       {
         "ticker": "MSFT",
         "name": "Microsoft Corporation",
-        "weight": 1.76,
+        "weight": 1.74,
         "shares": 33446
+      },
+      {
+        "ticker": "DELL",
+        "name": "Dell Technologies Inc.",
+        "weight": 1.71,
+        "shares": 34649
       },
       {
         "ticker": "HPE",
         "name": "Hewlett Packard Enterprise Company",
-        "weight": 1.69,
+        "weight": 1.56,
         "shares": 253772
       },
       {
         "ticker": "SNOW",
         "name": "Snowflake Inc.",
-        "weight": 1.47,
+        "weight": 1.38,
         "shares": 42347
-      },
-      {
-        "ticker": "ANET",
-        "name": "Arista Networks, Inc.",
-        "weight": 1.34,
-        "shares": 67476
       },
       {
         "ticker": "VRSN",
@@ -4997,97 +4986,103 @@
         "shares": 45077
       },
       {
-        "ticker": "SPCX",
-        "name": "Space Exploration Technologies Corp.",
-        "weight": 1.2,
-        "shares": 79050
+        "ticker": "ANET",
+        "name": "Arista Networks, Inc.",
+        "weight": 1.28,
+        "shares": 67476
       },
       {
         "ticker": "TGT",
         "name": "Target Corporation",
-        "weight": 1.16,
+        "weight": 1.19,
         "shares": 78764
       },
       {
         "ticker": "GM",
         "name": "General Motors Company",
-        "weight": 1.16,
-        "shares": 142334
+        "weight": 1.18,
+        "shares": 145475
       },
       {
-        "ticker": "BAC",
-        "name": "Bank of America Corporation",
-        "weight": 0.94,
-        "shares": 179104
+        "ticker": "SPCX",
+        "name": "Space Exploration Technologies Corp.",
+        "weight": 1.17,
+        "shares": 79050
       },
       {
-        "ticker": "SMTC",
-        "name": "Semtech Corporation",
+        "ticker": "PSX",
+        "name": "Phillips 66",
+        "weight": 0.98,
+        "shares": 33980
+      },
+      {
+        "ticker": "XOM",
+        "name": "ExxonMobil Holdings Corporation",
+        "weight": 0.96,
+        "shares": 55559
+      },
+      {
+        "ticker": "MPC",
+        "name": "Marathon Petroleum Corporation",
         "weight": 0.93,
-        "shares": 55866
-      },
-      {
-        "ticker": "CRWD",
-        "name": "CrowdStrike Holdings, Inc.",
-        "weight": 0.93,
-        "shares": 36607
+        "shares": 19692
       }
     ],
     "CHAT": [
       {
         "ticker": "ALAB",
         "name": "Astera Labs Inc",
-        "weight": 3
+        "weight": 2.94
       },
       {
         "ticker": "AMD",
         "name": "Advanced Micro Devices Inc",
-        "weight": 3.76
+        "weight": 3.66
       },
       {
         "ticker": "AMZN",
         "name": "Amazon.com Inc",
-        "weight": 3.7
+        "weight": 3.77
       },
       {
         "ticker": "ANET",
         "name": "Arista Networks Inc",
-        "weight": 1.9
+        "weight": 1.88
       },
       {
         "ticker": "ARM",
         "name": "ARM Holdings PLC",
-        "weight": 3.31
+        "weight": 3.2
       },
       {
         "ticker": "ASML",
         "name": "ASML Holding NV",
-        "weight": 3.04
+        "weight": 3.12
       },
       {
         "ticker": "AVGO",
         "name": "Broadcom Inc",
-        "weight": 2.7
+        "weight": 2.67
       },
       {
         "ticker": "BABA",
         "name": "Alibaba Group Holding Ltd",
-        "weight": 2.17
+        "weight": 2.21
       },
       {
         "ticker": "BESI",
         "name": "BE Semiconductor Industries NV",
-        "weight": 1.85
+        "weight": 1.83
       },
       {
         "ticker": "CBRS",
         "name": "Cerebras Systems Inc",
-        "weight": 1.4
+        "weight": 1.3
       },
       {
         "ticker": "CLS",
         "name": "Celestica Inc",
-        "weight": 1.35
+        "weight": 1.34
       },
       {
         "ticker": "CNY",
@@ -5097,37 +5092,37 @@
       {
         "ticker": "COHR",
         "name": "Coherent Corp",
-        "weight": 2.26
+        "weight": 2.17
       },
       {
         "ticker": "CRWD",
         "name": "Crowdstrike Holdings Inc",
-        "weight": 3.18
+        "weight": 3.06
       },
       {
         "ticker": "CRWV",
         "name": "CoreWeave Inc",
-        "weight": 1.59
+        "weight": 1.45
       },
       {
         "ticker": "DDOG",
         "name": "Datadog Inc",
-        "weight": 1.38
+        "weight": 1.32
       },
       {
         "ticker": "DELL",
         "name": "Dell Technologies Inc",
-        "weight": 1.62
+        "weight": 1.6
       },
       {
         "ticker": "GOOGL",
         "name": "Alphabet Inc",
-        "weight": 5.34
+        "weight": 5.4
       },
       {
         "ticker": "INTC",
         "name": "Intel Corp",
-        "weight": 2.11
+        "weight": 2.06
       },
       {
         "ticker": "KRW",
@@ -5137,62 +5132,62 @@
       {
         "ticker": "LITE",
         "name": "Lumentum Holdings Inc",
-        "weight": 3.38
+        "weight": 3.32
       },
       {
         "ticker": "META",
         "name": "Meta Platforms Inc",
-        "weight": 3.88
+        "weight": 3.87
       },
       {
         "ticker": "MRVL",
         "name": "MARVELL TECHNOLOGY INC",
-        "weight": 1.31
+        "weight": 1.28
       },
       {
         "ticker": "MSFT",
         "name": "Microsoft Corp",
-        "weight": 5.03
+        "weight": 5.11
       },
       {
         "ticker": "MU",
         "name": "Micron Technology Inc",
-        "weight": 3.33
+        "weight": 3.26
       },
       {
         "ticker": "NBIS",
         "name": "Nebius Group NV",
-        "weight": 2.54
+        "weight": 2.32
       },
       {
         "ticker": "NET",
         "name": "Cloudflare Inc",
-        "weight": 3.09
+        "weight": 3
       },
       {
         "ticker": "NVDA",
         "name": "NVIDIA Corp",
-        "weight": 7.17
+        "weight": 7.33
       },
       {
         "ticker": "SMCI",
         "name": "Super Micro Computer Inc",
-        "weight": 1.38
+        "weight": 1.29
       },
       {
         "ticker": "SNOW",
         "name": "Snowflake Inc",
-        "weight": 2.21
+        "weight": 2.1
       },
       {
         "ticker": "SU",
         "name": "Schneider Electric SE",
-        "weight": 1.42
+        "weight": 1.45
       },
       {
         "ticker": "TEAM",
         "name": "Atlassian Corp",
-        "weight": 1.43
+        "weight": 1.42
       },
       {
         "ticker": "VRT",
@@ -5204,49 +5199,49 @@
       {
         "ticker": "MU",
         "name": "Micron Technology Inc",
-        "weight": 3.63
+        "weight": 3.43
       },
       {
         "ticker": "SKHY",
         "name": "SK hynix Inc",
-        "weight": 0.65
+        "weight": 0.62
       },
       {
         "ticker": "SNDK",
         "name": "Sandisk Corp",
-        "weight": 4.78
+        "weight": 4.5
       },
       {
         "ticker": "STX",
         "name": "Seagate Technology Holdings PLC",
-        "weight": 4.5
+        "weight": 4.2
       },
       {
         "ticker": "WDC",
         "name": "Western Digital Corp",
-        "weight": 3.59
+        "weight": 3.38
       }
     ],
     "MARS": [
       {
         "ticker": "ASTS",
         "name": "AST SpaceMobile Inc",
-        "weight": 5.92
+        "weight": 5.52
       },
       {
         "ticker": "AVIO",
         "name": "Avio SpA",
-        "weight": 2.16
+        "weight": 2.24
       },
       {
         "ticker": "BKSY",
         "name": "BlackSky Technology Inc",
-        "weight": 1.29
+        "weight": 1.24
       },
       {
         "ticker": "ETL",
         "name": "Eutelsat Communications SACA",
-        "weight": 2.23
+        "weight": 2.67
       },
       {
         "ticker": "EUR",
@@ -5256,189 +5251,194 @@
       {
         "ticker": "FLY",
         "name": "Firefly Aerospace Inc",
-        "weight": 2.69
+        "weight": 2.57
       },
       {
         "ticker": "GILT",
         "name": "Gilat Satellite Networks Ltd",
-        "weight": 1.2
+        "weight": 1.19
       },
       {
         "ticker": "GSAT",
         "name": "Globalstar Inc",
-        "weight": 5.66
+        "weight": 5.73
       },
       {
         "ticker": "IRDM",
         "name": "Iridium Communications Inc",
-        "weight": 3.62
+        "weight": 3.59
       },
       {
         "ticker": "LUNR",
         "name": "Intuitive Machines Inc",
-        "weight": 2.42
+        "weight": 2.3
       },
       {
         "ticker": "MDA",
         "name": "MDA Space Ltd",
-        "weight": 3.53
+        "weight": 3.54
       },
       {
         "ticker": "OHB",
         "name": "OHB SE",
-        "weight": 3.37
+        "weight": 3.9
       },
       {
         "ticker": "PL",
         "name": "Planet Labs PBC",
-        "weight": 3.59
+        "weight": 3.41
       },
       {
         "ticker": "RDW",
         "name": "Redwire Corp",
-        "weight": 2.16
+        "weight": 2.07
       },
       {
         "ticker": "RKLB",
         "name": "Rocket Lab Corp",
-        "weight": 8.9
+        "weight": 8.35
       },
       {
         "ticker": "SATL",
         "name": "Satellogic Inc",
-        "weight": 1.11
+        "weight": 1.06
       },
       {
         "ticker": "SESG",
         "name": "SES SA",
-        "weight": 2.03
+        "weight": 2.22
       },
       {
         "ticker": "SPCX",
         "name": "Space Exploration Technologies Corp",
-        "weight": 26.82
+        "weight": 26.87
       },
       {
         "ticker": "SPIR",
         "name": "Spire Global Inc",
-        "weight": 0.9
+        "weight": 0.88
       },
       {
         "ticker": "SSIT",
         "name": "Seraphim Space Investment Trust PLC",
-        "weight": 1.49
+        "weight": 1.51
       },
       {
         "ticker": "TSAT",
         "name": "Telesat Corp",
-        "weight": 2.48
+        "weight": 2.45
       },
       {
         "ticker": "VOYG",
         "name": "Voyager Technologies Inc",
-        "weight": 1.79
+        "weight": 1.73
       },
       {
         "ticker": "VSAT",
         "name": "Viasat Inc",
-        "weight": 4.57
+        "weight": 4.46
       },
       {
         "ticker": "YSS",
         "name": "York Space Systems Inc",
-        "weight": 1.24
+        "weight": 1.16
       }
     ],
     "MEME": [
       {
         "ticker": "AAOI",
         "name": "Applied Optoelectronics Inc",
-        "weight": 6.06
+        "weight": 6.55
       },
       {
         "ticker": "ALAB",
         "name": "Astera Labs Inc",
-        "weight": 4.31
+        "weight": 3.76
       },
       {
         "ticker": "APLD",
         "name": "Applied Digital Corp",
-        "weight": 6.13
+        "weight": 6.43
       },
       {
         "ticker": "ASTS",
         "name": "AST SpaceMobile Inc",
-        "weight": 6.14
+        "weight": 6.19
       },
       {
         "ticker": "AXTI",
         "name": "AXT Inc",
-        "weight": 5.35
+        "weight": 4.82
       },
       {
         "ticker": "BE",
         "name": "Bloom Energy Corp",
-        "weight": 5.52
+        "weight": 5.61
+      },
+      {
+        "ticker": "BMNR",
+        "name": "BitMine Immersion Technologies Inc",
+        "weight": 4.81
       },
       {
         "ticker": "CBRS",
         "name": "Cerebras Systems Inc",
-        "weight": 3.68
+        "weight": 3.5
+      },
+      {
+        "ticker": "CIEN",
+        "name": "Ciena Corp",
+        "weight": 4.97
+      },
+      {
+        "ticker": "CIFR",
+        "name": "Cipher Digital Inc",
+        "weight": 6.74
       },
       {
         "ticker": "CRDO",
         "name": "Credo Technology Group Holding Ltd",
-        "weight": 4.06
+        "weight": 3.75
       },
       {
         "ticker": "CRWV",
         "name": "CoreWeave Inc",
-        "weight": 5.37
+        "weight": 6.18
+      },
+      {
+        "ticker": "IONQ",
+        "name": "IonQ Inc",
+        "weight": 3.5
       },
       {
         "ticker": "IREN",
         "name": "IREN Ltd",
-        "weight": 6.06
+        "weight": 6.45
       },
       {
         "ticker": "LITE",
         "name": "Lumentum Holdings Inc",
-        "weight": 4.9
+        "weight": 4.97
       },
       {
         "ticker": "MRNA",
         "name": "Moderna Inc",
-        "weight": 8.18
+        "weight": 6.98
       },
       {
         "ticker": "NBIS",
         "name": "Nebius Group NV",
-        "weight": 5.72
-      },
-      {
-        "ticker": "PENG",
-        "name": "Penguin Solutions Inc",
-        "weight": 4.13
-      },
-      {
-        "ticker": "RKLB",
-        "name": "Rocket Lab Corp",
-        "weight": 5
+        "weight": 5.25
       },
       {
         "ticker": "SMCI",
         "name": "Super Micro Computer Inc",
-        "weight": 5.52
+        "weight": 5.48
       },
       {
-        "ticker": "TEM",
-        "name": "Tempus AI Inc",
-        "weight": 6.9
-      },
-      {
-        "ticker": "TWST",
-        "name": "Twist Bioscience Corp",
-        "weight": 6.89
+        "ticker": "SMTC",
+        "name": "Semtech Corp",
+        "weight": 3.71
       }
     ],
     "IGPT": [
@@ -5585,6 +5585,23 @@
         "ticker": "FTNT",
         "name": "Fortinet Inc",
         "weight": 3.27
+      }
+    ],
+    "PBD": [
+      {
+        "ticker": "SES",
+        "name": "SES AI Corp",
+        "weight": 1.54
+      },
+      {
+        "ticker": "VER",
+        "name": "Verbund AG",
+        "weight": 1.16
+      },
+      {
+        "ticker": "NIBEB",
+        "name": "Nibe Industrier AB",
+        "weight": 1.16
       }
     ],
     "PBW": [
@@ -5794,6 +5811,10 @@
       "truncated": true
     },
     "PTF": {
+      "src": "playwright",
+      "truncated": true
+    },
+    "PBD": {
       "src": "playwright",
       "truncated": true
     },

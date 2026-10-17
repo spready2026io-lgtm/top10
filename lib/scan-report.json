@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-10-16T13:48:51.706Z",
-  "scanTimestampNY": "October 16, 2026 at 9:48 AM ET",
+  "scanTimestamp": "2026-10-17T13:48:58.669Z",
+  "scanTimestampNY": "October 17, 2026 at 9:48 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 39
+        "count": 40
       },
       "ARTY": {
         "ok": true,
@@ -307,8 +307,8 @@
         "count": 25
       },
       "PBD": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 3
       },
       "PBW": {
         "ok": true,
@@ -328,7 +328,7 @@
       },
       "AIRR": {
         "ok": true,
-        "count": 57
+        "count": 55
       },
       "PRN": {
         "ok": true,
@@ -392,7 +392,7 @@
       },
       "MEME": {
         "ok": true,
-        "count": 18
+        "count": 19
       },
       "RKNG": {
         "ok": false,
@@ -400,7 +400,7 @@
       }
     },
     "total": 98,
-    "ok": 27,
+    "ok": 28,
     "failed": [
       "IVES",
       "AIFD",
@@ -458,7 +458,6 @@
       "BUG",
       "IHAK",
       "WCBR",
-      "PBD",
       "IVEP",
       "ELFY",
       "AIPO",
@@ -534,8 +533,8 @@
     ]
   },
   "yfScan": {
-    "total": 122,
-    "succeeded": 120,
+    "total": 123,
+    "succeeded": 121,
     "failed": [
       "AVIO",
       "OHB"
