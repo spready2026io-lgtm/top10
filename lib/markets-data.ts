@@ -540,8 +540,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 1.05
     },
     "flow1M": {
-      "usd": 640440000,
-      "pct": 2.82
+      "usd": 597744000,
+      "pct": 2.63
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -1385,8 +1385,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 1.05
     },
     "flow1M": {
-      "usd": -722112000,
-      "pct": -3.23
+      "usd": -338490000,
+      "pct": -1.54
     },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
@@ -1554,8 +1554,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -0.65
     },
     "flow1M": {
-      "usd": -588601000,
-      "pct": -9.12
+      "usd": -436089000,
+      "pct": -6.92
     },
     "note": "The structural growth story of the decade: demographics, infrastructure build-out and a deep domestic investor base. India trades at a premium multiple, so flows here tell you how much growth investors are willing to pay for."
   },
@@ -1892,8 +1892,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 2.63
     },
     "flow1M": {
-      "usd": -25347000,
-      "pct": -6.77
+      "usd": -21371000,
+      "pct": -5.77
     },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
   },
@@ -2061,8 +2061,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -7.81
     },
     "flow1M": {
-      "usd": -63624000,
-      "pct": -21.33
+      "usd": -57659250,
+      "pct": -19.73
     },
     "note": "Malaysia is one of the quieter ASEAN markets: banks, utilities and a data-center construction wave. Low drama, moderate beta, occasionally rediscovered by regional flows."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 813560,
-      "pct": 0.11
+      "usd": 1460360,
+      "pct": 0.2
     },
     "flow1M": {
-      "usd": -34851080,
-      "pct": -4.63
+      "usd": -50561368,
+      "pct": -6.59
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4865,7 +4865,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Oct 17, 2026, 9:50 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Oct 18, 2026, 9:50 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
