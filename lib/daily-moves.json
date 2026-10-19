@@ -1,405 +1,425 @@
 {
-  "date": "2026-10-16",
+  "date": "2026-10-19",
   "status": "ok",
-  "generatedAt": "2026-10-16T13:51:24.347Z",
-  "baselineFrom": "2026-10-15",
+  "generatedAt": "2026-10-19T13:51:14.809Z",
+  "baselineFrom": "2026-10-16",
   "fundsTracked": 98,
   "fundsWithShares": 17,
   "fundsCompared": 17,
-  "movesConsidered": 29,
+  "movesConsidered": 121,
   "top": [
     {
       "rank": 1,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "RXRX",
-      "name": "RECURSION PHARMACEUTICALS-A",
-      "kind": "added",
-      "netShares": 3209929,
-      "sharesBefore": 21483273,
-      "sharesAfter": 29059432,
-      "positionChangePct": 12.4,
-      "weightMoved": 0.17,
-      "weightAfter": 1.58,
-      "price": 3.82,
-      "value": 12261929
-    },
-    {
-      "rank": 2,
-      "etf": "CNEQ",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "ILMN",
-      "name": "ILLUMINA INC USD 0.01",
-      "kind": "added",
-      "netShares": 38411,
-      "sharesBefore": 116066,
-      "sharesAfter": 160671,
-      "positionChangePct": 31.4,
-      "weightMoved": 0.18,
-      "weightAfter": 0.74,
-      "price": 264.33,
-      "value": 10153180
-    },
-    {
-      "rank": 3,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "CRWV",
-      "name": "COREWEAVE INC-CL A",
-      "kind": "added",
-      "netShares": 149040,
-      "sharesBefore": 2443179,
-      "sharesAfter": 3088767,
-      "positionChangePct": 5.1,
-      "weightMoved": 0.14,
-      "weightAfter": 2.81,
-      "price": 64.84,
-      "value": 9663754
-    },
-    {
-      "rank": 4,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "QNT",
-      "name": "QUANTINUUM INC CLASS A",
-      "kind": "exited",
-      "netShares": -222424,
-      "sharesBefore": 221357,
-      "sharesAfter": 0,
-      "positionChangePct": null,
-      "weightMoved": -0.05,
-      "weightAfter": 0,
-      "price": 35.81,
-      "value": -7965003
-    },
-    {
-      "rank": 5,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "TMO",
-      "name": "THERMO FISHER SCIENTIFIC IN USD 1.0",
-      "kind": "added",
-      "netShares": 6994,
-      "sharesBefore": 13481,
-      "sharesAfter": 20488,
-      "positionChangePct": 51.8,
-      "weightMoved": 0.28,
-      "weightAfter": 0.81,
-      "price": 693.23,
-      "value": 4848416
-    },
-    {
-      "rank": 6,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "VEEV",
-      "name": "VEEVA SYS INC USD 0.00001",
-      "kind": "trimmed",
-      "netShares": -12792,
-      "sharesBefore": 42661,
-      "sharesAfter": 29909,
-      "positionChangePct": -30,
-      "weightMoved": -0.23,
-      "weightAfter": 0.53,
-      "price": 315.44,
-      "value": -4035108
-    },
-    {
-      "rank": 7,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "META",
-      "name": "META PLATFORMS INC USD 0.000006",
-      "kind": "trimmed",
-      "netShares": -4245,
-      "sharesBefore": 112334,
-      "sharesAfter": 108194,
-      "positionChangePct": -3.8,
-      "weightMoved": -0.18,
-      "weightAfter": 4.5,
-      "price": 731.27,
-      "value": -3104241
-    },
-    {
-      "rank": 8,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "AMD",
-      "name": "ADVANCED MICRO DEVICES INC USD 0.01",
-      "kind": "trimmed",
-      "netShares": -5339,
-      "sharesBefore": 62223,
-      "sharesAfter": 56942,
-      "positionChangePct": -8.6,
-      "weightMoved": -0.17,
-      "weightAfter": 1.81,
-      "price": 550,
-      "value": -2936450
-    },
-    {
-      "rank": 9,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "MU",
-      "name": "MICRON TECHNOLOGY INC USD 0.1",
-      "kind": "trimmed",
-      "netShares": -2329,
-      "sharesBefore": 43183,
-      "sharesAfter": 40894,
-      "positionChangePct": -5.4,
-      "weightMoved": -0.12,
-      "weightAfter": 2.15,
-      "price": 905.99,
-      "value": -2110051
-    },
-    {
-      "rank": 10,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "APP",
-      "name": "APPLOVIN CORP USD 0.00003",
-      "kind": "added",
-      "netShares": 7069,
-      "sharesBefore": 34145,
-      "sharesAfter": 41246,
-      "positionChangePct": 20.7,
-      "weightMoved": 0.11,
-      "weightAfter": 0.65,
-      "price": 276.79,
-      "value": 1956629
-    },
-    {
-      "rank": 11,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "HOOD",
-      "name": "ROBINHOOD MKTS INC USD 0.0001",
-      "kind": "trimmed",
-      "netShares": -18419,
-      "sharesBefore": 224543,
-      "sharesAfter": 206334,
-      "positionChangePct": -8.2,
-      "weightMoved": -0.11,
-      "weightAfter": 1.21,
-      "price": 103.31,
-      "value": -1902867
-    },
-    {
-      "rank": 12,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "ILMN",
-      "name": "ILLUMINA INC USD 0.01",
-      "kind": "added",
-      "netShares": 6524,
-      "sharesBefore": 72121,
-      "sharesAfter": 78712,
-      "positionChangePct": 9,
-      "weightMoved": 0.1,
-      "weightAfter": 1.19,
-      "price": 264.33,
-      "value": 1724489
-    },
-    {
-      "rank": 13,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "AKAM",
-      "name": "AKAMAI TECHNOLOGIES INC USD 0.01",
-      "kind": "added",
-      "netShares": 17969,
-      "sharesBefore": 84848,
-      "sharesAfter": 102896,
-      "positionChangePct": 21.2,
-      "weightMoved": 0.09,
-      "weightAfter": 0.54,
-      "price": 88.31,
-      "value": 1586842
-    },
-    {
-      "rank": 14,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "SPGI",
-      "name": "S+P GLOBAL INC USD 1.0",
-      "kind": "trimmed",
-      "netShares": -3412,
-      "sharesBefore": 16862,
-      "sharesAfter": 13466,
-      "positionChangePct": -20.2,
-      "weightMoved": -0.08,
-      "weightAfter": 0.32,
-      "price": 432.11,
-      "value": -1474342
-    },
-    {
-      "rank": 15,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "BABA",
-      "name": "ALIBABA GROUP HLDG USD 0.000025 ADR",
-      "kind": "trimmed",
-      "netShares": -10601,
-      "sharesBefore": 60352,
-      "sharesAfter": 49807,
-      "positionChangePct": -17.5,
-      "weightMoved": -0.07,
-      "weightAfter": 0.31,
-      "price": 110.78,
-      "value": -1174326
-    },
-    {
-      "rank": 16,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "NET",
-      "name": "CLOUDFLARE INC USD 0.001",
-      "kind": "trimmed",
-      "netShares": -3345,
-      "sharesBefore": 35026,
-      "sharesAfter": 31714,
-      "positionChangePct": -9.5,
-      "weightMoved": -0.06,
-      "weightAfter": 0.57,
-      "price": 297.02,
-      "value": -993532
-    },
-    {
-      "rank": 17,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "ABNB",
-      "name": "AIRBNB INC USD 0.0001",
-      "kind": "added",
-      "netShares": 5329,
-      "sharesBefore": 36027,
-      "sharesAfter": 41390,
-      "positionChangePct": 14.8,
-      "weightMoved": 0.05,
-      "weightAfter": 0.41,
-      "price": 176.25,
-      "value": 939236
-    },
-    {
-      "rank": 18,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "GEV",
-      "name": "GE VERNOVA INC USD 0.01",
-      "kind": "added",
-      "netShares": 959,
-      "sharesBefore": 23422,
-      "sharesAfter": 24403,
-      "positionChangePct": 4.1,
-      "weightMoved": 0.05,
-      "weightAfter": 1.28,
-      "price": 947.63,
-      "value": 908777
-    },
-    {
-      "rank": 19,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "TWLO",
-      "name": "TWILIO INC USD 0.001",
-      "kind": "added",
-      "netShares": 3437,
-      "sharesBefore": 83371,
-      "sharesAfter": 86886,
-      "positionChangePct": 4.1,
-      "weightMoved": 0.05,
-      "weightAfter": 1.34,
-      "price": 260.58,
-      "value": 895613
-    },
-    {
-      "rank": 20,
-      "etf": "BILT",
+      "etf": "AIRR",
       "themes": [
         "Industrials"
       ],
-      "ticker": "ETR",
-      "name": "ENTERGY CORP",
+      "ticker": "IESC",
+      "name": "IES Holdings, Inc.",
+      "kind": "trimmed",
+      "netShares": -571467,
+      "sharesBefore": 1091531,
+      "sharesAfter": 556230,
+      "positionChangePct": -50.7,
+      "weightMoved": -1.68,
+      "weightAfter": 1.64,
+      "price": 257.68,
+      "value": -147255617
+    },
+    {
+      "rank": 2,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "GVA",
+      "name": "Granite Construction Incorporated",
+      "kind": "trimmed",
+      "netShares": -823409,
+      "sharesBefore": 1850949,
+      "sharesAfter": 1088869,
+      "positionChangePct": -43.1,
+      "weightMoved": -1.06,
+      "weightAfter": 1.4,
+      "price": 109.68,
+      "value": -90309029
+    },
+    {
+      "rank": 3,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "HRI",
+      "name": "Herc Holdings, Inc.",
       "kind": "added",
-      "netShares": 5936,
-      "sharesBefore": 34406,
-      "sharesAfter": 40342,
-      "positionChangePct": 17.3,
-      "weightMoved": 0.54,
-      "weightAfter": 3.67,
-      "price": 104.94,
-      "value": 622924
+      "netShares": 719069,
+      "sharesBefore": 1044694,
+      "sharesAfter": 1798377,
+      "positionChangePct": 66.6,
+      "weightMoved": 1.02,
+      "weightAfter": 2.56,
+      "price": 124.74,
+      "value": 89696667
+    },
+    {
+      "rank": 4,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "POWL",
+      "name": "Powell Industries, Inc.",
+      "kind": "trimmed",
+      "netShares": -487085,
+      "sharesBefore": 1417461,
+      "sharesAfter": 977342,
+      "positionChangePct": -33.3,
+      "weightMoved": -0.94,
+      "weightAfter": 1.89,
+      "price": 168.17,
+      "value": -81913084
+    },
+    {
+      "rank": 5,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "DY",
+      "name": "Dycom Industries, Inc.",
+      "kind": "added",
+      "netShares": 308266,
+      "sharesBefore": 823098,
+      "sharesAfter": 1158636,
+      "positionChangePct": 36.3,
+      "weightMoved": 0.92,
+      "weightAfter": 3.44,
+      "price": 255.48,
+      "value": 78755798
+    },
+    {
+      "rank": 6,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "CHRW",
+      "name": "C.H. Robinson Worldwide, Inc.",
+      "kind": "added",
+      "netShares": 563165,
+      "sharesBefore": 1652817,
+      "sharesAfter": 2270746,
+      "positionChangePct": 33,
+      "weightMoved": 0.92,
+      "weightAfter": 3.71,
+      "price": 139.54,
+      "value": 78584044
+    },
+    {
+      "rank": 7,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "SPXC",
+      "name": "SPX Technologies",
+      "kind": "trimmed",
+      "netShares": -432134,
+      "sharesBefore": 1508382,
+      "sharesAfter": 1126226,
+      "positionChangePct": -27.7,
+      "weightMoved": -0.84,
+      "weightAfter": 2.19,
+      "price": 166.95,
+      "value": -72144771
+    },
+    {
+      "rank": 8,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "PRIM",
+      "name": "Primoris Services Corporation",
+      "kind": "trimmed",
+      "netShares": -848487,
+      "sharesBefore": 2968366,
+      "sharesAfter": 2218232,
+      "positionChangePct": -27.7,
+      "weightMoved": -0.73,
+      "weightAfter": 1.9,
+      "price": 74.69,
+      "value": -63373494
+    },
+    {
+      "rank": 9,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "BLBD",
+      "name": "Blue Bird Corporation",
+      "kind": "new",
+      "netShares": 1092059,
+      "sharesBefore": 0,
+      "sharesAfter": 1092059,
+      "positionChangePct": null,
+      "weightMoved": 0.73,
+      "weightAfter": 0.73,
+      "price": 57.24,
+      "value": 62514917
+    },
+    {
+      "rank": 10,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "R",
+      "name": "Ryder System, Inc.",
+      "kind": "trimmed",
+      "netShares": -249036,
+      "sharesBefore": 696509,
+      "sharesAfter": 470551,
+      "positionChangePct": -34.6,
+      "weightMoved": -0.69,
+      "weightAfter": 1.31,
+      "price": 239.49,
+      "value": -59640386
+    },
+    {
+      "rank": 11,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "AGX",
+      "name": "Argan, Inc.",
+      "kind": "added",
+      "netShares": 165906,
+      "sharesBefore": 557128,
+      "sharesAfter": 741494,
+      "positionChangePct": 28.8,
+      "weightMoved": 0.67,
+      "weightAfter": 3,
+      "price": 356,
+      "value": 59062536
+    },
+    {
+      "rank": 12,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "SNDR",
+      "name": "Schneider National, Inc. (Class B)",
+      "kind": "exited",
+      "netShares": -1839989,
+      "sharesBefore": 1780979,
+      "sharesAfter": 0,
+      "positionChangePct": null,
+      "weightMoved": -0.65,
+      "weightAfter": 0,
+      "price": 31.59,
+      "value": -58134452
+    },
+    {
+      "rank": 13,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES CLASS A",
+      "kind": "trimmed",
+      "netShares": -304918,
+      "sharesBefore": 815879,
+      "sharesAfter": 559306,
+      "positionChangePct": -35.3,
+      "weightMoved": -1.54,
+      "weightAfter": 2.83,
+      "price": 189.95,
+      "value": -57919174
+    },
+    {
+      "rank": 14,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "LGN",
+      "name": "Legence Corp. (Class A)",
+      "kind": "trimmed",
+      "netShares": -1286643,
+      "sharesBefore": 3009235,
+      "sharesAfter": 1822299,
+      "positionChangePct": -41.4,
+      "weightMoved": -0.66,
+      "weightAfter": 0.93,
+      "price": 44.27,
+      "value": -56959686
+    },
+    {
+      "rank": 15,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "AADX",
+      "name": "Applied Aerospace & Defense, Inc.",
+      "kind": "new",
+      "netShares": 4898506,
+      "sharesBefore": 0,
+      "sharesAfter": 4898506,
+      "positionChangePct": null,
+      "weightMoved": 0.65,
+      "weightAfter": 0.65,
+      "price": 11.04,
+      "value": 54099100
+    },
+    {
+      "rank": 16,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "STRL",
+      "name": "Sterling Infrastructure, Inc.",
+      "kind": "added",
+      "netShares": 123340,
+      "sharesBefore": 504175,
+      "sharesAfter": 644220,
+      "positionChangePct": 23.7,
+      "weightMoved": 0.61,
+      "weightAfter": 3.2,
+      "price": 437.35,
+      "value": 53942749
+    },
+    {
+      "rank": 17,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "ECG",
+      "name": "Everus Construction Group, Inc.",
+      "kind": "trimmed",
+      "netShares": -476067,
+      "sharesBefore": 1166087,
+      "sharesAfter": 728657,
+      "positionChangePct": -39.5,
+      "weightMoved": -0.61,
+      "weightAfter": 0.93,
+      "price": 111,
+      "value": -52843437
+    },
+    {
+      "rank": 18,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "AVEX",
+      "name": "AEVEX Corp. (Class A)",
+      "kind": "exited",
+      "netShares": -3563091,
+      "sharesBefore": 3448819,
+      "sharesAfter": 0,
+      "positionChangePct": null,
+      "weightMoved": -0.6,
+      "weightAfter": 0,
+      "price": 14.81,
+      "value": -52769378
+    },
+    {
+      "rank": 19,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "RTX",
+      "name": "RTX",
+      "kind": "added",
+      "netShares": 252975,
+      "sharesBefore": 1021788,
+      "sharesAfter": 1335310,
+      "positionChangePct": 23.4,
+      "weightMoved": 1.33,
+      "weightAfter": 7.04,
+      "price": 191.43,
+      "value": 48427004
+    },
+    {
+      "rank": 20,
+      "etf": "AIRR",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "DXPE",
+      "name": "DXP Enterprises, Inc.",
+      "kind": "new",
+      "netShares": 249738,
+      "sharesBefore": 0,
+      "sharesAfter": 249738,
+      "positionChangePct": null,
+      "weightMoved": 0.51,
+      "weightAfter": 0.51,
+      "price": 181.2,
+      "value": 45252526
     }
   ],
   "consensus": {
     "buys": [
       {
-        "ticker": "ILMN",
-        "name": "ILLUMINA INC USD 0.01",
+        "ticker": "KRMN",
+        "name": "Karman Holdings Inc.",
+        "funds": [
+          "AIRR",
+          "IDEF"
+        ],
+        "value": 47959556
+      },
+      {
+        "ticker": "TLN",
+        "name": "TALEN ENERGY CORP NEW USD 0.001",
         "funds": [
           "CNEQ",
           "ALAI"
         ],
-        "value": 11877669
+        "value": 9384207
+      },
+      {
+        "ticker": "TSLA",
+        "name": "TESLA INC USD 0.001",
+        "funds": [
+          "CNEQ",
+          "ALAI"
+        ],
+        "value": 6490239
       }
     ],
     "sells": []
   },
   "flows": {
     "AIS": 0,
-    "ARTY": -0.97,
-    "BAI": 0.48,
-    "ALAI": 0.09,
-    "SOXX": -3.58,
-    "XSD": 0.44,
+    "ARTY": 0,
+    "BAI": -0.1,
+    "ALAI": 0.06,
+    "SOXX": 1.69,
+    "XSD": -7.42,
     "DISK": 0,
-    "IGV": 0.51,
-    "ARKK": 20.32,
-    "CNEQ": 5.34,
-    "CLSE": 1.84,
+    "IGV": -5.14,
+    "ARKK": -17,
+    "CNEQ": 1.35,
+    "CLSE": 0,
     "POW": 0,
-    "VOLT": 12.13,
-    "AIRR": -0.35,
+    "VOLT": 0,
+    "AIRR": 3.31,
     "RSHO": 0,
-    "IDEF": 0.13,
+    "IDEF": 5.93,
     "BILT": 0
   }
 }
