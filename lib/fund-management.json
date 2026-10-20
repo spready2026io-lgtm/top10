@@ -1,0 +1,693 @@
+{
+  "updated": "2026-10-20",
+  "by": "Tony",
+  "rule": "Legal status from the fund's own SEC filings, never its marketing name (T4). active = the adviser chooses the holdings and weights; index = the fund tracks or replicates a published index. Model-driven funds that do not track an index count as active.",
+  "funds": {
+    "AGIQ": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-05-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742912/000200032426001913/"
+    },
+    "AIFD": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-01-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1831313/000141036826000567/"
+    },
+    "AIHY": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-07-13",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/2043390/000199937126014767/aihy-497k_071326.htm"
+    },
+    "AIPO": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2025-11-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000089418925013533/"
+    },
+    "AIRR": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1552740/000094040025012317/"
+    },
+    "AIS": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1722388/000200032426000418/"
+    },
+    "AIUP": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-02-04",
+      "evidence": "The Fund ... is actively managed",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742912/000199937126002558/aiup-497k_020426.htm"
+    },
+    "AIVC": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1633061/000089418925016878/"
+    },
+    "ALAI": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1807486/000094040026010049/"
+    },
+    "ANTW": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-09-11",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1860434/000119312526388806/d931475d497k.htm"
+    },
+    "AOTG": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-08-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1592900/000119312526348523/"
+    },
+    "ARKK": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-10-06",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1579982/000094040026039198/"
+    },
+    "ARTY": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009545/"
+    },
+    "BAI": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-09-03",
+      "evidence": "the Fund is not an index-based ETF",
+      "url": "https://www.sec.gov/Archives/edgar/data/1761055/000119312526381351/d90192d497k.htm"
+    },
+    "BCTK": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/2081199/000141036826025045/"
+    },
+    "BILT": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-09-03",
+      "evidence": "the Fund is not an index-based ETF",
+      "url": "https://www.sec.gov/Archives/edgar/data/1761055/000119312526380525/d58529d497k.htm"
+    },
+    "BUG": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-03-12",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1432353/000204825126001908/"
+    },
+    "BUZZ": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1137360/000141036825033784/"
+    },
+    "CBSE": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-01-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1936157/000193615726000008/"
+    },
+    "CHAT": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-09-02",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000200032426004350/"
+    },
+    "CIBR": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1364608/000094040025012316/"
+    },
+    "CLOU": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-03-12",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1432353/000204825126001908/"
+    },
+    "CLSE": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1141819/000089418926003674/"
+    },
+    "CNEQ": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1807486/000094040026010049/"
+    },
+    "CRAK": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1137360/000141036826024760/"
+    },
+    "DECO": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-05-26",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1516212/000141036826050625/"
+    },
+    "DISK": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-07-01",
+      "evidence": "The Fund is actively managed and does not seek to track an index",
+      "url": "https://www.sec.gov/Archives/edgar/data/1944285/000199937126013979/disk-497k_062926.htm"
+    },
+    "DRAM": {
+      "management": "active",
+      "source": "Prospectus of a fund that holds it (497K, Themes ETF Trust)",
+      "filed": "2026-07-22",
+      "evidence": "DRAM is an actively managed ETF ... investing primarily in the equity securities of Memory Companies",
+      "url": "https://www.sec.gov/Archives/edgar/data/1976322/000182912626007722/themesetftrust_497k.htm"
+    },
+    "ELFY": {
+      "management": "index",
+      "source": "Prospectus (485BPOS)",
+      "filed": "2026-03-30",
+      "evidence": "seeks investment results that correspond ... to the performance of the Ladenburg Thalmann Electrification Infrastructure Index",
+      "url": "https://www.sec.gov/Archives/edgar/data/1414040/000139834426005876/fp0097939-1_485bposixbrl.htm"
+    },
+    "EPAI": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-02-27",
+      "evidence": "No index named; holdings chosen where the Subadvisor believes AI may drive performance",
+      "url": "https://www.sec.gov/Archives/edgar/data/1860434/000119312526081978/d89341d497k.htm"
+    },
+    "EUV": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-05-14",
+      "evidence": "Corgi Strategies, LLC (the Adviser) actively manage the Fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/2078265/000207826526000145/Corgi_497K_EUV.htm"
+    },
+    "FAI": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1364608/000094040025012316/"
+    },
+    "FCLD": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-11",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/945908/000003540226005676/"
+    },
+    "FCUS": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-10",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000089418926003505/"
+    },
+    "FDTX": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-08-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/945908/000003540226004841/"
+    },
+    "FFF": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-11",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/2077057/000089418926007721/"
+    },
+    "FRWD": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-06-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1969995/000207169126013296/"
+    },
+    "FTEC": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/945908/000141036826103133/"
+    },
+    "FWD": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1496608/000141036826010918/"
+    },
+    "GARY": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-01-13",
+      "evidence": "The Fund is an actively managed exchange-traded Fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/890540/000139834426000620/fp0096873-1_497k.htm"
+    },
+    "GRNY": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-02-27",
+      "evidence": "The Fund, an actively-managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1722388/000199937126004540/grny-497k_022726.htm"
+    },
+    "GTEK": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2025-11-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1479026/000094040025005876/"
+    },
+    "HACK": {
+      "management": "index",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-01-28",
+      "evidence": "The Fund generally expects to use a replication strategy",
+      "url": "https://www.sec.gov/Archives/edgar/data/1633061/000121390026008346/ea0273008-17_497k.htm"
+    },
+    "IBAT": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009550/"
+    },
+    "IDEF": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-08-28",
+      "evidence": "the Fund is not an index-based ETF",
+      "url": "https://www.sec.gov/Archives/edgar/data/1761055/000119312526374518/d88325d497k.htm"
+    },
+    "IDGT": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009545/"
+    },
+    "IDNA": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009550/"
+    },
+    "IGPT": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "IGV": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009545/"
+    },
+    "IHAK": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009550/"
+    },
+    "IPO": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-10",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1026634/000141036825034175/"
+    },
+    "IQM": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-06-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1655589/000094040026023418/"
+    },
+    "IVEP": {
+      "management": "index",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-09-02",
+      "evidence": "seeks to track the total return performance ... of the Solactive Wedbush AI Power & Infrastructure Index",
+      "url": "https://www.sec.gov/Archives/edgar/data/2055464/000121390026096729/ea0303237-05_497k.htm"
+    },
+    "IVES": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/2055464/000094040026026233/"
+    },
+    "LOUP": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-02-27",
+      "evidence": "The Fund is an actively managed ETF",
+      "url": "https://www.sec.gov/Archives/edgar/data/1415726/000121390026021656/ea0276317-02_497k.htm"
+    },
+    "LRNZ": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1936157/000193615726000077/"
+    },
+    "LUMA": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-07-09",
+      "evidence": "The Fund is actively managed",
+      "url": "https://www.sec.gov/Archives/edgar/data/1547576/000182912626007469/kraneshares_497k.htm"
+    },
+    "MARS": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-03-02",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1976517/000139834426004170/fp0097837-1_497k.htm"
+    },
+    "MEME": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1976517/000089418926007830/"
+    },
+    "MNVT": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-03-13",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1592900/000159290026001181/moonvestetf.htm"
+    },
+    "NCLD": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-08-05",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1976517/000139834426013536/fp0100272-2_497k.htm"
+    },
+    "NXTE": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-06-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1587982/000119312526268843/"
+    },
+    "PBD": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-01-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1378872/000137887226000052/"
+    },
+    "PBW": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "POW": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1722388/000200032426000418/"
+    },
+    "PRN": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "PSCT": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-11-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1378872/000137887225000490/"
+    },
+    "PSI": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "PTF": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "PXE": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "QTEC": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-03-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1329377/000094040026009992/"
+    },
+    "RKNG": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-01-20",
+      "evidence": "The Fund is an actively managed exchange-traded fund",
+      "url": "https://www.sec.gov/Archives/edgar/data/1540305/000089418926000889/defianceretailkingsetfsumm.htm"
+    },
+    "RSHO": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-05-14",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1944285/000119312526223851/"
+    },
+    "SGRT": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-03-11",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742912/000199937126005610/"
+    },
+    "SKYY": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1364608/000094040025012316/"
+    },
+    "SMH": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1137360/000141036825033784/"
+    },
+    "SMHX": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-12-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1137360/000141036825033784/"
+    },
+    "SOXX": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-10-09",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1100663/000100472626009545/"
+    },
+    "SPMO": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2025-11-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1378872/000137887225000490/"
+    },
+    "SPRX": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-09-09",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1683471/000119312526386395/"
+    },
+    "STCE": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-06-11",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1454889/000141036826057847/"
+    },
+    "TCAI": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-02-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/2034406/000089418926003678/"
+    },
+    "TCV": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-08-13",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1592900/000119312526348523/"
+    },
+    "TEK": {
+      "management": "active",
+      "source": "Summary prospectus (497K)",
+      "filed": "2026-09-03",
+      "evidence": "the Fund is not an index-based ETF",
+      "url": "https://www.sec.gov/Archives/edgar/data/1761055/000119312526381263/d64591d497k.htm"
+    },
+    "TEKX": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-05-26",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1516212/000141036826050625/"
+    },
+    "UFO": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-01-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1727398/000089418926000415/"
+    },
+    "VOLT": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-05-14",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1944285/000119312526223851/"
+    },
+    "WAR": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2025-03-17",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1540305/000114554925018373/"
+    },
+    "WCBR": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1350487/000094040026036402/"
+    },
+    "WCLD": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1350487/000094040026036402/"
+    },
+    "WGMI": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2025-12-15",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1877493/000089418925016904/"
+    },
+    "WLDR": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-01-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1552947/000091047226000300/"
+    },
+    "WTAI": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-14",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1350487/000094040026036402/"
+    },
+    "XDAT": {
+      "management": "active",
+      "source": "N-CEN",
+      "filed": "2026-06-12",
+      "evidence": "Not reported as an Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1655589/000094040026023418/"
+    },
+    "XMMO": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-07-13",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000120946626000955/"
+    },
+    "XNTK": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-11",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1064642/000141036826091247/"
+    },
+    "XSD": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-11",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1064642/000141036826091247/"
+    },
+    "XSW": {
+      "management": "index",
+      "source": "N-CEN",
+      "filed": "2026-09-11",
+      "evidence": "Fund type reported as Index Fund (Form N-CEN, Item C.3)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1064642/000141036826091247/"
+    }
+  }
+}
