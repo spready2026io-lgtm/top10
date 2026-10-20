@@ -3,6 +3,7 @@ import SiteNav from '@/app/components/brand/SiteNav';
 import SiteFooter from '@/app/components/brand/SiteFooter';
 import { THEMES, THEME_ETFS, SCAN_TIMESTAMP_NY } from '@/lib/data';
 import { MARKET_TILES } from '@/lib/markets-data';
+import FUND_MANAGEMENT from '@/lib/fund-management.json';
 
 export const metadata = { title: 'About | Stockscout' };
 
@@ -13,6 +14,9 @@ export default function About() {
   const totalEtfs   = new Set(Object.values(THEME_ETFS).flat()).size;
   const themeCount  = THEMES.length;
   const aiN         = THEME_ETFS['AI & ML'].length;   // example denominator in the Coverage section
+  // Active or index per fund, from each fund's SEC filings (lib/fund-management.json).
+  const funds: Record<string, { management: string }> = FUND_MANAGEMENT.funds;
+  const activeEtfs  = [...new Set(Object.values(THEME_ETFS).flat())].filter(e => funds[e]?.management === 'active').length;
 
   return (
     <main className="min-h-screen" style={{ background: 'var(--ss-page)', color: 'var(--ss-ink)' }}>
@@ -29,10 +33,15 @@ export default function About() {
             across {themeCount} investment themes every day, ranks every stock by how much conviction those
             ETFs have in it, and surfaces the Top 10 names per theme.
           </p>
-          <p className="text-[var(--ss-text)] text-sm leading-relaxed">
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed mb-3">
             The idea is simple. When multiple serious ETFs all own the same stock and give it a
             large weighting, that is a signal worth paying attention to. Stockscout makes that signal
             visible at a glance.
+          </p>
+          <p className="text-[var(--ss-text)] text-sm leading-relaxed">
+            {`${activeEtfs} of the ${totalEtfs} funds are actively managed, as stated in each fund's own SEC filings. `}
+            In the rankings an active fund counts twice as much as an index-built one, because its weights are a
+            manager&apos;s decision rather than an index&apos;s formula. The x/n on each tile still counts every fund once.
           </p>
         </section>
 
@@ -172,6 +181,23 @@ export default function About() {
                 A stock can have 100% coverage but a low Weight Score (held by everyone, but
                 only as a small position). A high Weight Score with lower coverage (held by fewer
                 funds but in size) is often the more interesting signal.
+              </p>
+              <p className="text-[var(--ss-text)] text-xs leading-relaxed mt-3 pt-3 border-t border-[var(--ss-border)]">
+                <span className="text-[var(--ss-ink)] font-semibold">The research behind it.</span>{' '}
+                A study of active US mutual fund and hedge fund managers found that each manager&apos;s
+                highest-conviction positions, their &ldquo;best ideas&rdquo;, beat the market and the rest of
+                the same portfolio by about 2.8% to 4.5% a year, depending on the benchmark. Most of the other
+                holdings showed no significant outperformance.{' '}
+                <a
+                  href="https://personal.lse.ac.uk/polk/research/BestIdeas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--ss-green)] hover:text-[var(--ss-green-text)] font-semibold"
+                >
+                  Best Ideas
+                </a>
+                , Antón, Cohen and Polk, working paper, IESE, Harvard Business School and the London School of
+                Economics, 2021.
               </p>
             </div>
 
