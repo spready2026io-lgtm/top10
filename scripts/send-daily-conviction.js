@@ -3,9 +3,15 @@
 
 /**
  * send-daily-conviction.js
- * Sends The Daily Conviction: the day's 20 biggest share moves across every
- * tracked fund (lib/daily-moves.json, built by build-moves.js) to everyone on
- * the stockscout.io signup list.
+ * Sends The Daily Conviction: the day's biggest share moves across every
+ * tracked fund, up to 20 and each worth $1M or more (lib/daily-moves.json,
+ * built by build-moves.js), to everyone on the stockscout.io signup list.
+ *
+ * An edition is held back from subscribers when too few funds were measured
+ * (status 'partial') or fewer than MIN_MOVES moves made the list. A held
+ * edition still goes to the internal address, with the reason at the top, so
+ * a missed day is never silent. The internal copy also names what the
+ * engine's safety gates left out; subscribers never see that.
  *
  * Runs in the scrape workflow after the data commit. Needs:
  *   KV_REST_API_URL + KV_REST_API_TOKEN   the Upstash Redis behind the signup form
@@ -33,6 +39,7 @@ const MOVES_PATH = path.join(__dirname, '..', 'lib', 'daily-moves.json');
 const SITE_URL   = (process.env.SITE_URL || 'https://stockscout.io').replace(/\/$/, '');
 const SET_KEY    = 'subscribers:emails';   // kept in sync with app/api/subscribe/route.ts
 const MIN_MOVES  = 3;
+const COVERAGE_FLOOR = 0.8;   // as in build-moves.js; used only when an edition file does not state its floor
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -62,13 +69,60 @@ function shortDate(iso) {
 function verb(m) {
   return m.kind === 'new' ? 'opened' : m.kind === 'exited' ? 'exited' : m.kind === 'added' ? 'added' : 'cut';
 }
+const GERUND = { new: 'opening', exited: 'exiting', added: 'adding', trimmed: 'cutting' };
+
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+// The dollar floor for a listed move, as copy: "$1M".
+function floorLabel(d) {
+  const v = d.minMoveValue || 1e6;
+  return v >= 1e6 ? `$${+(v / 1e6).toFixed(1)}M` : money(v);
+}
+
+// Every move past the floor is on the list: a quiet day, so the copy must not
+// promise "the 20 biggest".
+const listsEveryMove = d => d.top.length >= d.movesConsidered;
 
 function subjectFor(d) {
+  const head = `The Daily Conviction, ${shortDate(d.date)}`;
   const lead = d.top[0];
-  const what = lead.kind === 'exited' || lead.kind === 'new'
-    ? `${lead.etf} ${verb(lead)} ${lead.ticker}`
-    : `${lead.etf} ${verb(lead)} ${money(lead.value)} of ${lead.ticker}`;
-  return `The Daily Conviction, ${shortDate(d.date)}: ${what}`;
+  if (!lead) return `${head}: no moves of ${floorLabel(d)} or more`;
+  const size = lead.kind === 'exited' || lead.kind === 'new' ? '' : `${money(lead.value)} of `;
+  if (listsEveryMove(d)) {
+    return `${head}: ${plural(d.top.length, 'move')} over ${floorLabel(d)}, led by ${lead.etf} ${GERUND[lead.kind]} ${size}${lead.ticker}`;
+  }
+  return `${head}: ${lead.etf} ${verb(lead)} ${size}${lead.ticker}`;
+}
+
+// Why today's edition must not reach subscribers, or null when it may.
+function holdReason(d) {
+  const floor = d.coverageFloor ?? Math.ceil(COVERAGE_FLOOR * d.fundsTracked);
+  if (d.status === 'partial' || d.fundsCompared < floor) {
+    const why = [];
+    if (d.fundsWithShares < d.fundsTracked) why.push(`${d.fundsTracked - d.fundsWithShares} had no share counts`);
+    if (d.fundsExcluded?.length) why.push(`${d.fundsExcluded.length} sat out on an implausible flow`);
+    return `Only ${d.fundsCompared} of the ${d.fundsTracked} tracked funds were measured today, below the floor of ${floor}${why.length ? ` (${why.join(', ')})` : ''}.`;
+  }
+  if (d.status !== 'ok') return `The edition's status is "${d.status}".`;
+  if (d.top.length < MIN_MOVES) {
+    return `Only ${plural(d.top.length, 'move')} of ${floorLabel(d)} or more today, fewer than the ${MIN_MOVES} an edition needs.`;
+  }
+  return null;
+}
+
+// What the safety gates left out today. For the internal copy only: a
+// subscriber never reads about our own data faults (non-negotiable 14).
+function gateNote(d) {
+  const parts = [];
+  if (d.fundsExcluded?.length) {
+    parts.push(`Sat out, estimated flow beyond +/-${d.maxDailyFlowPct ?? 10}%: ${d.fundsExcluded.map(f => `${f.etf} ${f.flow > 0 ? '+' : ''}${f.flow}% (${plural(f.moves, 'move')})`).join(', ')}.`);
+  }
+  if (d.notListed?.length) {
+    const shown = d.notListed.slice(0, 8).map(x => `${x.etf} ${x.ticker} (${x.reason})`);
+    parts.push(`Not a priced US-listed equity: ${shown.join(', ')}${d.notListed.length > 8 ? `, and ${d.notListed.length - 8} more` : ''}.`);
+  }
+  if (d.movesBelowFloor) parts.push(`${plural(d.movesBelowFloor, 'move')} under ${floorLabel(d)} not listed.`);
+  return parts.join(' ');
 }
 
 // ── Email body ────────────────────────────────────────────────────────────────
@@ -132,9 +186,19 @@ function consensusLine(d) {
 function buildEmail(d, unsubUrl, internalNote) {
   const buys  = d.top.filter(m => m.netShares > 0).sort((a, b) => Math.abs(b.value ?? 0) - Math.abs(a.value ?? 0));
   const sells = d.top.filter(m => m.netShares < 0).sort((a, b) => Math.abs(b.value ?? 0) - Math.abs(a.value ?? 0));
-  const intro = `Fund managers made ${d.movesConsidered} meaningful moves across the ${d.fundsCompared} funds I could measure today. These are the ${d.top.length} biggest, by dollar size.`;
+  const floor = floorLabel(d);
+  const n = d.movesConsidered;
+  const across = `across the ${d.fundsCompared} funds I could measure today`;
+  const intro = n === 0
+    ? `No fund made a move of ${floor} or more ${across}.`
+    : listsEveryMove(d)
+      ? `Fund managers made ${plural(n, 'move')} of ${floor} or more ${across}. ${n === 1 ? 'Here it is.' : `Here are all ${n}, by dollar size.`}`
+      : `Fund managers made ${n} moves of ${floor} or more ${across}. These are the ${d.top.length} biggest, by dollar size.`;
   const cons  = consensusLine(d);
-  const preheader = `${buys.length} buys and ${sells.length} sells, the biggest moves across ${d.fundsCompared} funds.`;
+  const tally = `${plural(buys.length, 'buy')} and ${plural(sells.length, 'sell')}`;
+  const preheader = listsEveryMove(d)
+    ? `${tally}, every move of ${floor} or more across ${d.fundsCompared} funds.`
+    : `${tally}, the biggest moves across ${d.fundsCompared} funds.`;
 
   const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -188,6 +252,7 @@ function buildEmail(d, unsubUrl, internalNote) {
       <strong style="color:#334155;">How to read this.</strong> Share counts come from each fund's published daily holdings, compared with the previous trading day.
       Each fund's own inflows and outflows are stripped out first, so what is left is the fund choosing to add or cut.
       "Of fund" is how much of the portfolio the move represents. Dollar values are estimates at the latest price.
+      Only US-listed stocks and moves worth ${floor} or more make the list, so a quiet day brings a shorter one.
       Where a source shows only a fund's top 25 holdings, a stock leaving that list is not counted as a sale.
       Data, not advice.
     </p>
@@ -205,10 +270,11 @@ function buildEmail(d, unsubUrl, internalNote) {
 
   const line = m => `  ${m.ticker} (${m.name}) | ${m.etf}, ${m.themes.join(' / ')} | ${KIND[m.kind]} ${shares(m.netShares)} sh | ${money(m.value)} | ${pp(m.weightMoved)} of fund`;
   const text = [
+    ...(internalNote ? [internalNote, ''] : []),
     'THE DAILY CONVICTION', longDate(d.date), '', intro, cons, '',
     buys.length ? `BUYS (${buys.length})` : '', ...buys.map(line), '',
     sells.length ? `SELLS (${sells.length})` : '', ...sells.map(line), '',
-    'Share counts from each fund\'s published daily holdings vs the previous trading day, with the fund\'s own inflows and outflows stripped out. Dollar values are estimates. Data, not advice.',
+    `Share counts from each fund's published daily holdings vs the previous trading day, with the fund's own inflows and outflows stripped out. Dollar values are estimates. Only US-listed stocks and moves worth ${floor} or more are listed. Data, not advice.`,
     SITE_URL,
     unsubUrl ? `Unsubscribe: ${unsubUrl}` : '',
   ].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
@@ -287,40 +353,31 @@ function scrub(msg, addresses) {
   return out.replace(/[^\s<>()"']+@[^\s<>()"']+/g, '<address>');
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── Delivery ──────────────────────────────────────────────────────────────────
 
-async function main() {
-  const today = process.env.MOVES_DATE || new Date().toISOString().slice(0, 10);
-  if (!fs.existsSync(MOVES_PATH)) { console.log('[daily-conviction] No daily-moves.json yet. Nothing to send.'); return; }
-  const d = JSON.parse(fs.readFileSync(MOVES_PATH, 'utf8'));
-
-  if (d.date !== today) { console.log(`[daily-conviction] Edition is dated ${d.date}, not ${today}. Nothing to send.`); return; }
-  if (d.status !== 'ok' || d.top.length < MIN_MOVES) {
-    console.log(`[daily-conviction] No edition today (status ${d.status}, ${d.top.length} moves).`);
-    return;
-  }
-
-  const sender = makeSender();
-  if (!sender) { console.error('[daily-conviction] No sender configured (SENDGRID_API_KEY, or GMX_USER + GMX_PASSWORD).'); return; }
-  const internalTo = process.env.REPORT_TO || process.env.GMX_USER;
+// Sends one edition: to every subscriber unless the edition is held, then the
+// internal copy, which on a held day is the only send and says why.
+// redis is the signup store (null = preview, internal copy only).
+async function deliver(d, { sender, redis, internalTo, fallback = makeGmxSender }) {
   const subject = subjectFor(d);
+  const held = holdReason(d);
+  const gates = gateNote(d);
   console.log(`[daily-conviction] ${subject} (via ${sender.name})`);
-
-  const url = env('KV_REST_API_URL') ?? env('UPSTASH_REDIS_REST_URL');
-  const token = env('KV_REST_API_TOKEN') ?? env('UPSTASH_REDIS_REST_TOKEN');
-  const redis = url && token ? new Redis({ url, token }) : null;
 
   let note = null;
   let sent = 0, failed = 0, total = 0;
   let firstError = null;
   const addresses = [];
 
-  if (!redis) {
+  if (held) {
+    console.log(`[daily-conviction] Held back from subscribers: ${held}`);
+    note = `NOT SENT TO SUBSCRIBERS. ${held}`;
+  } else if (!redis) {
     note = 'Preview only: the subscriber list is not connected to this workflow yet (KV_REST_API_URL and KV_REST_API_TOKEN secrets missing), so no subscriber received this.';
   } else {
     // One edition per day, even if the workflow is re-run.
     const claimed = await redis.set(`daily-conviction:sent:${d.date}`, new Date().toISOString(), { nx: true, ex: 60 * 60 * 24 * 14 });
-    if (claimed !== 'OK') { console.log(`[daily-conviction] Edition ${d.date} was already sent. Skipping.`); return; }
+    if (claimed !== 'OK') { console.log(`[daily-conviction] Edition ${d.date} was already sent. Skipping.`); return { held, sent, failed, total }; }
 
     const emails = await redis.smembers(SET_KEY);
     total = emails.length;
@@ -350,12 +407,14 @@ async function main() {
     }
     note = `Internal copy. Sent to ${sent} of ${total} subscribers${failed ? `, ${failed} failed. First error: ${firstError}` : ''}.`;
   }
+  if (gates) note = `${note} ${gates}`;
 
   console.log(`[daily-conviction] Subscribers: ${sent} sent, ${failed} failed, ${total} on the list.`);
 
   if (internalTo) {
+    const tag = held ? 'Internal, held' : 'Internal';
     const { html, text } = buildEmail(d, null, note);
-    const mail = { to: internalTo, subject: `[Internal] ${subject}`, html, text, headers: {} };
+    const mail = { to: internalTo, subject: `[${tag}] ${subject}`, html, text, headers: {} };
     try {
       await sender.send(mail);
       console.log('[daily-conviction] Internal copy sent.');
@@ -364,22 +423,46 @@ async function main() {
       console.error(`[daily-conviction] Internal copy failed: ${reason}`);
       // If SendGrid refused, the internal copy goes through GMX instead, with
       // the refusal stated at the top, so Gadi hears about it the same day.
-      const gmx = sender.name.startsWith('sendgrid') ? makeGmxSender() : null;
+      const gmx = sender.name.startsWith('sendgrid') ? fallback() : null;
       if (gmx) {
         try {
           const warned = buildEmail(d, null, `SENDGRID REFUSED THIS SEND: ${reason}. This internal copy came through GMX instead. ${note || ''}`);
-          await gmx.send({ ...mail, subject: `[Internal, SendGrid failed] ${subject}`, html: warned.html, text: warned.text });
+          await gmx.send({ ...mail, subject: `[${tag}, SendGrid failed] ${subject}`, html: warned.html, text: warned.text });
           console.log('[daily-conviction] Internal copy sent through GMX after the SendGrid refusal.');
         } catch (e2) {
           console.error(`[daily-conviction] GMX fallback failed too: ${scrub(e2.message, [internalTo])}`);
         }
       }
     }
+  } else if (held) {
+    console.error('[daily-conviction] No internal address (REPORT_TO or GMX_USER), so nobody hears that today\'s edition was held.');
   }
+  return { held, sent, failed, total };
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+async function main() {
+  const today = process.env.MOVES_DATE || new Date().toISOString().slice(0, 10);
+  if (!fs.existsSync(MOVES_PATH)) { console.log('[daily-conviction] No daily-moves.json yet. Nothing to send.'); return; }
+  const d = JSON.parse(fs.readFileSync(MOVES_PATH, 'utf8'));
+
+  if (d.date !== today) { console.log(`[daily-conviction] Edition is dated ${d.date}, not ${today}. Nothing to send.`); return; }
+  if (d.status === 'seeded') { console.log('[daily-conviction] First run: the baseline was seeded today, nothing to compare yet.'); return; }
+
+  const sender = makeSender();
+  if (!sender) { console.error('[daily-conviction] No sender configured (SENDGRID_API_KEY, or GMX_USER + GMX_PASSWORD).'); return; }
+  const internalTo = process.env.REPORT_TO || process.env.GMX_USER;
+
+  const url = env('KV_REST_API_URL') ?? env('UPSTASH_REDIS_REST_URL');
+  const token = env('KV_REST_API_TOKEN') ?? env('UPSTASH_REDIS_REST_TOKEN');
+  const redis = url && token ? new Redis({ url, token }) : null;
+
+  const { failed, total } = await deliver(d, { sender, redis, internalTo });
   if (failed && failed === total) process.exit(1);
 }
 
-module.exports = { buildEmail, subjectFor, makeSender, makeGmxSender, parseAddress };
+module.exports = { buildEmail, subjectFor, holdReason, gateNote, deliver, makeSender, makeGmxSender, parseAddress };
 
 if (require.main === module) {
   main().catch(e => { console.error(`[daily-conviction] ${scrub(e.message, [])}`); process.exit(1); });

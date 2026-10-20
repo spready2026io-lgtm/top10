@@ -27,11 +27,28 @@
  *     position the fund left untouched is never reported as a trade.
  * Ranked by estimated dollar value (net shares x latest price). Prices come
  * from lib/data.ts where the pipeline already has them, else from Yahoo.
+ *
+ * Safety gates, added 2026-10-20 after the 6 to 19 October editions carried
+ * residuals of a broken flow estimate, a currency line and two days measured
+ * on 17 of 98 funds:
+ *   - A fund whose estimated flow is beyond MAX_DAILY_FLOW sits the day out,
+ *     named in the log and in the edition file. Every move in a fund is a
+ *     residual of its flow estimate, so a wrong estimate makes every row wrong
+ *     (ARKK at -38.21% on 2026-10-09, an $8B fund).
+ *   - Only a priced, US-listed equity can be a move: the ticker must resolve
+ *     on Yahoo to an EQUITY on a US exchange, priced in USD, under the name the
+ *     fund gives it. Currency and cash lines (AIS's TWD), foreign lines with no
+ *     US listing (EOAN, RENE) and foreign lines that share a US ticker (BILT's
+ *     PPC, Public Power Corporation, priced as Pilgrim's Pride) never qualify.
+ *   - A listed move is worth MIN_MOVE_VALUE or more. A quiet day lists fewer
+ *     than TOP_N rather than padding the list with small trades.
+ *   - status is 'partial' when fewer than COVERAGE_FLOOR of the tracked funds
+ *     were measured. The sender then holds the edition back from subscribers.
  */
 
 const fs   = require('fs');
 const path = require('path');
-const { THEME_ETFS, isUSMarketDay, fetchLastPrice } = require('./build-data-ts');
+const { THEME_ETFS, isUSMarketDay } = require('./build-data-ts');
 const { fetchStockAnalysis, SOURCE_TRUNCATED } = require('./fetch-holdings');
 
 const LIB           = path.join(__dirname, '..', 'lib');
@@ -44,7 +61,14 @@ const TOP_N                 = 20;
 const MIN_POSITION_CHANGE   = 0.02;  // 2% of the position, beyond fund flows
 const MIN_FUND_WEIGHT_MOVED = 0.05;  // percentage points of the fund
 const MIN_COMMON            = 5;     // positions held on both days, to estimate flow
-const MIN_FUNDS_FOR_EDITION = 10;    // fewer comparable funds than this = not an edition
+const MAX_DAILY_FLOW        = 0.10;  // estimated flow beyond +/-10% in a day: the fund sits the day out
+const MIN_MOVE_VALUE        = 1e6;   // a listed move is worth $1M or more
+const COVERAGE_FLOOR        = 0.8;   // share of tracked funds measured, or subscribers get nothing
+
+// Yahoo exchange codes for US listings: the three Nasdaq tiers, NYSE, NYSE
+// American, NYSE Arca and Cboe BZX. OTC (PNK) is not a listing.
+const US_EXCHANGES = new Set(['NMS', 'NGM', 'NCM', 'NYQ', 'ASE', 'PCX', 'BTS']);
+const US_SYMBOL    = /^[A-Z]{1,5}([./-][A-Z]{1,2})?$/;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -131,13 +155,20 @@ function compareFund(etf, base, cur, themes) {
   return { flow, moves };
 }
 
+// A fund whose flow estimate is beyond the daily bound sits the day out.
+function splitByFlow(results) {
+  const kept = [], excluded = [];
+  for (const r of results) (Math.abs(r.flow) > MAX_DAILY_FLOW ? excluded : kept).push(r);
+  return { kept, excluded };
+}
+
 // USD prices the pipeline already fetched, read from the generated data.ts.
-function pricesFromDataTs() {
+function pricesFromDataTs(file = DATA_PATH) {
   const out = {};
-  if (!fs.existsSync(DATA_PATH)) return out;
+  if (!fs.existsSync(file)) return out;
   // Entries span several lines (ticker on one, price on the next), so read
   // each entry as the text between one `ticker: '` and the next.
-  const chunks = fs.readFileSync(DATA_PATH, 'utf8').split("ticker: '").slice(1);
+  const chunks = fs.readFileSync(file, 'utf8').split("ticker: '").slice(1);
   for (const chunk of chunks) {
     const t = chunk.match(/^([A-Z]{1,5})'/);
     const price = chunk.match(/\bprice: ([\d.]+)/);
@@ -149,19 +180,167 @@ function pricesFromDataTs() {
   return out;
 }
 
-async function fillPrices(tickers, prices) {
-  const missing = tickers.filter(t => !(prices[t] > 0));
+// ── Listing check: is a move a priced, US-listed equity? ─────────────────────
+
+// Same Yahoo session as build-data-ts.js (cookie, then crumb). Best effort: the
+// chart endpoint usually answers without one, so a failed handshake is logged
+// and the lookups go ahead.
+const YF_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+let yfSession = null;
+async function yahooSession() {
+  if (yfSession) return yfSession;
+  try {
+    const r1 = await fetch('https://fc.yahoo.com', { headers: { 'User-Agent': YF_UA } });
+    const cookie = (r1.headers.get('set-cookie') || '').match(/A3=[^;]+/)?.[0] || '';
+    const r2 = await fetch('https://query2.finance.yahoo.com/v1/test/getcrumb', { headers: { 'User-Agent': YF_UA, Cookie: cookie } });
+    const crumb = r2.ok ? (await r2.text()).trim() : '';
+    yfSession = { cookie, crumb };
+  } catch (e) {
+    console.warn(`[Yahoo] no session, looking up without one: ${e.message}`);
+    yfSession = { cookie: '', crumb: '' };
+  }
+  return yfSession;
+}
+
+// What Yahoo lists under a ticker: { type, exchange, currency, price, name },
+// or { missing: true } when there is no such symbol. Throws on any other
+// failure, so "not listed" and "could not check" stay apart.
+async function fetchListing(ticker) {
+  const { cookie, crumb } = await yahooSession();
+  const symbol = encodeURIComponent(ticker.replace(/[./]/g, '-'));
+  const url = `https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d${crumb ? `&crumb=${encodeURIComponent(crumb)}` : ''}`;
+  const res = await fetch(url, { headers: { 'User-Agent': YF_UA, Cookie: cookie, Accept: 'application/json' } });
+  if (res.status === 404) return { missing: true };
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const meta = (await res.json()).chart?.result?.[0]?.meta;
+  if (!meta) return { missing: true };
+  return {
+    type: meta.instrumentType, exchange: meta.exchangeName, currency: meta.currency,
+    price: meta.regularMarketPrice, name: meta.longName || meta.shortName || '',
+  };
+}
+
+// Words that say what kind of company or share it is, not which company.
+const NAME_NOISE = new Set(('INC INCORPORATED CORP CORPORATION CO COMPANY LTD LIMITED PLC SA NV AG SE AB ASA ' +
+  'OYJ SPA LLC LP HOLDINGS HOLDING GROUP THE AND OF CLASS CL A B C ORD SHS SHARES COMMON STOCK ADR ADS SPON ' +
+  'SPONSORED REIT NEW USD').split(' '));
+
+function nameTokens(s) {
+  return String(s || '').toUpperCase().replace(/['’.]/g, '')
+    .split(/[^A-Z0-9]+/).filter(t => t && !NAME_NOISE.has(t) && !/^\d+$/.test(t));
+}
+
+// Do the fund's name for a holding and the US listing's name share a word?
+// A shortened word counts ("AMER ELEC PWR" is American Electric Power).
+function namesMatch(fundName, listingName) {
+  const a = nameTokens(fundName), b = nameTokens(listingName);
+  if (!a.length || !b.length) return true;   // nothing to compare against
+  return a.some(x => b.some(y => x === y || (Math.min(x.length, y.length) >= 3 && (x.startsWith(y) || y.startsWith(x)))));
+}
+
+// Is this move a priced, US-listed equity? { price } if so, else { reason }.
+// knownPrice is the pipeline's own USD price for the ticker (lib/data.ts),
+// preferred over Yahoo's so a stock carries one price across the site.
+function listingVerdict(m, listing, knownPrice) {
+  if (!US_SYMBOL.test(m.ticker)) return { reason: 'not a US ticker' };
+  if (!listing || listing.error) {
+    // Yahoo could not be asked. A price the pipeline already holds stands;
+    // anything else cannot be checked, so it is not listed.
+    return knownPrice > 0 ? { price: knownPrice } : { reason: `listing check failed${listing?.error ? ` (${listing.error})` : ''}` };
+  }
+  if (listing.missing) return { reason: 'no US listing' };
+  if (listing.type !== 'EQUITY') return { reason: `not an equity (${listing.type || 'unknown'})` };
+  if (!US_EXCHANGES.has(listing.exchange)) return { reason: `not on a US exchange (${listing.exchange || 'unknown'})` };
+  if (listing.currency !== 'USD') return { reason: `priced in ${listing.currency || 'no currency'}` };
+  // A fund that gives no name for a holding gives its ticker instead: nothing to compare.
+  if (m.name && m.name !== m.ticker && !namesMatch(m.name, listing.name)) return { reason: `the US listing is ${listing.name}` };
+  const price = knownPrice > 0 ? knownPrice : listing.price;
+  return price > 0 ? { price } : { reason: 'no price' };
+}
+
+// Looks each distinct ticker up once, then checks every move against it under
+// its own fund's name for the stock: two funds can use one ticker for two
+// companies. Returns the priced moves and the ones that are not listed, with why.
+async function qualifyMoves(moves, prices, lookup = fetchListing) {
+  const tickers = [...new Set(moves.map(m => m.ticker))].filter(t => US_SYMBOL.test(t));
+  const listings = {};
   let i = 0;
   async function worker() {
-    while (i < missing.length) {
-      const t = missing[i++];
-      const p = await fetchLastPrice(t);
-      if (p) prices[t] = p;
+    while (i < tickers.length) {
+      const t = tickers[i++];
+      try {
+        listings[t] = await lookup(t);
+      } catch (e) {
+        await sleep(1000);
+        try { listings[t] = await lookup(t); }
+        catch (e2) {
+          console.warn(`[Yahoo] listing ${t}: ${e2.message}`);
+          listings[t] = { error: e2.message };
+        }
+      }
       await sleep(150);
     }
   }
   await Promise.all([worker(), worker(), worker(), worker()]);
-  return missing.filter(t => !(prices[t] > 0));
+
+  const priced = [], notListed = [];
+  for (const m of moves) {
+    const v = listingVerdict(m, listings[m.ticker], prices[m.ticker]);
+    if (v.price) {
+      priced.push({ ...m, price: +v.price.toFixed(2), value: Math.round(m.netShares * v.price) });
+    } else {
+      notListed.push({ etf: m.etf, ticker: m.ticker, name: m.name, reason: v.reason });
+    }
+  }
+  return { priced, notListed };
+}
+
+// ── The edition ───────────────────────────────────────────────────────────────
+
+// The same stock moved the same way by two or more funds today.
+function consensus(moves, sign) {
+  const by = {};
+  for (const m of moves) {
+    if (Math.sign(m.netShares) !== sign) continue;
+    const c = by[m.ticker] ??= { ticker: m.ticker, name: m.name, funds: [], value: 0 };
+    c.funds.push(m.etf);
+    c.value += m.value;
+  }
+  return Object.values(by)
+    .filter(c => c.funds.length >= 2)
+    .sort((a, b) => b.funds.length - a.funds.length || Math.abs(b.value) - Math.abs(a.value))
+    .slice(0, 3);
+}
+
+// Pure: the edition file, from the day's fund comparisons (results: one
+// { etf, flow, moves } per fund compared with a baseline), the funds that sat
+// out on their flow, and the moves that passed the listing check.
+function assembleEdition({ date, seeded, fundsTracked, fundsWithShares, results, excluded, priced, notListed, baselineFrom, generatedAt }) {
+  const listed = priced
+    .filter(m => Math.abs(m.value) >= MIN_MOVE_VALUE)
+    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value) || Math.abs(b.weightMoved) - Math.abs(a.weightMoved));
+  const measured = results.length - excluded.length;
+  const coverageFloor = Math.ceil(COVERAGE_FLOOR * fundsTracked);
+  const status = seeded ? 'seeded' : measured < coverageFloor ? 'partial' : 'ok';
+  return {
+    date,
+    status,
+    generatedAt: generatedAt || new Date().toISOString(),
+    baselineFrom,
+    fundsTracked,
+    fundsWithShares,
+    fundsCompared: measured,          // compared with a baseline, flow within the bound
+    coverageFloor,
+    maxDailyFlowPct: MAX_DAILY_FLOW * 100,
+    fundsExcluded: excluded.map(r => ({ etf: r.etf, flow: +(r.flow * 100).toFixed(2), moves: r.moves.length })),
+    minMoveValue: MIN_MOVE_VALUE,
+    movesConsidered: listed.length,   // priced, US-listed, at or above the dollar floor
+    movesBelowFloor: priced.length - listed.length,
+    notListed,
+    top: listed.slice(0, TOP_N).map((m, i) => ({ rank: i + 1, ...m })),
+    consensus: { buys: consensus(listed, 1), sells: consensus(listed, -1) },
+    flows: Object.fromEntries(results.map(r => [r.etf, +(r.flow * 100).toFixed(2)])),
+  };
 }
 
 function writeJSON(p, obj) {
@@ -233,9 +412,7 @@ async function main() {
   }
 
   const noShares = universe.filter(e => !snapshots[e]);
-  let compared = 0;
-  const flows = {};
-  const allMoves = [];
+  const results = [];
   const baselineDates = [];
   for (const etf of Object.keys(snapshots)) {
     const base = baseline.etfs[etf];
@@ -243,59 +420,36 @@ async function main() {
     if (!base || base.src !== cur.src || base.asOf >= today) continue;
     const r = compareFund(etf, base, cur, themesOf[etf]);
     if (!r) continue;
-    compared++;
-    flows[etf] = +(r.flow * 100).toFixed(2);
+    results.push({ etf, ...r });
     baselineDates.push(base.asOf);
-    allMoves.push(...r.moves);
   }
-  console.log(`\nFunds with share counts: ${Object.keys(snapshots).length}/${universe.length}. Compared with a baseline: ${compared}. Moves past the filters: ${allMoves.length}.`);
+  const { kept, excluded } = splitByFlow(results);
+  const moves = kept.flatMap(r => r.moves);
+  console.log(`\nFunds with share counts: ${Object.keys(snapshots).length}/${universe.length}. Compared with a baseline: ${results.length}. Moves past the filters: ${moves.length}.`);
   if (noShares.length) console.log(`No share counts today: ${noShares.join(', ')}`);
-
-  // Dollar values. Rank on what we can price; an unpriced move is kept but sorts last.
-  const prices = pricesFromDataTs();
-  const unpriced = await fillPrices([...new Set(allMoves.map(m => m.ticker))], prices);
-  if (unpriced.length) console.log(`No USD price for: ${unpriced.join(', ')}`);
-  for (const m of allMoves) {
-    const p = prices[m.ticker];
-    m.price = p ? +p.toFixed(2) : null;
-    m.value = p ? Math.round(m.netShares * p) : null;
-  }
-  allMoves.sort((a, b) => Math.abs(b.value ?? 0) - Math.abs(a.value ?? 0) || Math.abs(b.weightMoved) - Math.abs(a.weightMoved));
-
-  const top = allMoves.slice(0, TOP_N).map((m, i) => ({ rank: i + 1, ...m }));
-
-  // Consensus: the same stock moved the same way by two or more funds today.
-  function consensus(sign) {
-    const by = {};
-    for (const m of allMoves) {
-      if (Math.sign(m.netShares) !== sign) continue;
-      const c = by[m.ticker] ??= { ticker: m.ticker, name: m.name, funds: [], value: 0 };
-      c.funds.push(m.etf);
-      c.value += m.value ?? 0;
-    }
-    return Object.values(by)
-      .filter(c => c.funds.length >= 2)
-      .sort((a, b) => b.funds.length - a.funds.length || Math.abs(b.value) - Math.abs(a.value))
-      .slice(0, 3);
+  if (excluded.length) {
+    console.log(`Left out today, estimated flow beyond +/-${MAX_DAILY_FLOW * 100}%: ${excluded.map(r => `${r.etf} ${(r.flow * 100).toFixed(2)}% (${r.moves.length} moves)`).join(', ')}`);
   }
 
-  const status = baseline.updated === null || compared === 0
-    ? 'seeded'
-    : compared < MIN_FUNDS_FOR_EDITION ? 'thin' : 'ok';
+  // Dollar values, for priced US-listed equities only.
+  const { priced, notListed } = await qualifyMoves(moves, pricesFromDataTs());
+  if (notListed.length) {
+    console.log(`Not a priced US-listed equity, not listed: ${notListed.map(x => `${x.etf} ${x.ticker} (${x.name}: ${x.reason})`).join('; ')}`);
+  }
 
-  writeJSON(MOVES_PATH, {
+  const edition = assembleEdition({
     date: today,
-    status,
-    generatedAt: new Date().toISOString(),
-    baselineFrom: baselineDates.length ? baselineDates.sort()[0] : null,
+    seeded: baseline.updated === null || results.length === 0,
     fundsTracked: universe.length,
     fundsWithShares: Object.keys(snapshots).length,
-    fundsCompared: compared,
-    movesConsidered: allMoves.length,
-    top,
-    consensus: { buys: consensus(1), sells: consensus(-1) },
-    flows,
+    results, excluded, priced, notListed,
+    baselineFrom: baselineDates.length ? baselineDates.sort()[0] : null,
   });
+  const { top, status } = edition;
+  writeJSON(MOVES_PATH, edition);
+  console.log(`Moves of $${MIN_MOVE_VALUE / 1e6}M or more: ${edition.movesConsidered} (${edition.movesBelowFloor} smaller ones not listed).`);
+  console.log(`Funds measured: ${edition.fundsCompared}, coverage floor ${edition.coverageFloor} of ${universe.length}.`);
+  if (status === 'partial') console.log('PARTIAL: below the coverage floor, so subscribers will not get this edition.');
   console.log(`Written → ${MOVES_PATH} (status: ${status}, ${top.length} moves)`);
 
   // Advance the baseline for every fund seen today; a fund that failed today
@@ -313,12 +467,16 @@ async function main() {
   console.log(`Written → ${BASELINE_PATH} (${Object.keys(baseline.etfs).length} funds)`);
 
   for (const m of top) {
-    const v = m.value === null ? 'n/a' : `$${(Math.abs(m.value) / 1e6).toFixed(1)}M`;
+    const v = `$${(Math.abs(m.value) / 1e6).toFixed(1)}M`;
     console.log(`  ${String(m.rank).padStart(2)}. ${m.etf.padEnd(5)} ${m.kind.padEnd(7)} ${m.ticker.padEnd(5)} ${String(m.netShares).padStart(12)} sh  ${v.padStart(9)}  ${m.weightMoved >= 0 ? '+' : ''}${m.weightMoved}pp`);
   }
 }
 
-module.exports = { compareFund, toRows, median, pricesFromDataTs };
+module.exports = {
+  compareFund, toRows, median, pricesFromDataTs,
+  splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition, consensus,
+  TOP_N, MAX_DAILY_FLOW, MIN_MOVE_VALUE, COVERAGE_FLOOR,
+};
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
