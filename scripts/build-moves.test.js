@@ -6,7 +6,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const {
-  compareFund, splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition,
+  compareFund, previousTradingDay, compareAll, splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition,
   MAX_DAILY_FLOW, MIN_MOVE_VALUE, TOP_N,
 } = require('./build-moves');
 
@@ -37,6 +37,27 @@ test('the flow estimate a fund is judged on is the one compareFund makes', () =>
   const r = compareFund('ARKK', { rows: rows(1000), truncated: false }, { rows: rows(618), truncated: false }, ['AI']);
   assert.ok(Math.abs(r.flow + 0.382) < 1e-9);
   assert.strictEqual(splitByFlow([{ etf: 'ARKK', ...r }]).excluded.length, 1);
+});
+
+// ── Stale baselines ──────────────────────────────────────────────────────────
+
+test('the previous trading day skips weekends and market holidays', () => {
+  assert.strictEqual(previousTradingDay('2026-10-19'), '2026-10-16');   // Monday -> Friday
+  assert.strictEqual(previousTradingDay('2026-11-27'), '2026-11-25');   // the day after Thanksgiving
+});
+
+test('a fund whose baseline predates the last trading day is not measured (after the fetch fix)', () => {
+  // On origin/master at 2026-10-20, 81 funds' baselines were from 10-15 and 17 from 10-19.
+  const rows = Object.fromEntries(['A', 'B', 'C', 'D', 'E'].map(t => [t, { s: 1000, w: 10, n: t }]));
+  const snap = { src: 'issuer', truncated: false, rows };
+  const baseline = { etfs: {
+    OLD: { ...snap, asOf: '2026-10-15' },
+    NEW: { ...snap, asOf: '2026-10-19' },
+  } };
+  const today = { OLD: { ...snap, asOf: '2026-10-20' }, NEW: { ...snap, asOf: '2026-10-20' } };
+  const { results, stale } = compareAll(today, baseline, '2026-10-20', {});
+  assert.deepStrictEqual(results.map(r => r.etf), ['NEW']);
+  assert.deepStrictEqual(stale, ['OLD (2026-10-15)']);
 });
 
 // ── Gate 2: only priced, US-listed equities ──────────────────────────────────

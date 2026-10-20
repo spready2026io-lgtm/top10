@@ -42,6 +42,9 @@
  *     PPC, Public Power Corporation, priced as Pilgrim's Pride) never qualify.
  *   - A listed move is worth MIN_MOVE_VALUE or more. A quiet day lists fewer
  *     than TOP_N rather than padding the list with small trades.
+ *   - A fund whose baseline predates the last trading day (it failed a scrape
+ *     in between) is not measured that day, so several days of trades are
+ *     never shown as one. Its baseline still advances.
  *   - status is 'partial' when fewer than COVERAGE_FLOOR of the tracked funds
  *     were measured. The sender then holds the edition back from subscribers.
  */
@@ -153,6 +156,35 @@ function compareFund(etf, base, cur, themes) {
     });
   }
   return { flow, moves };
+}
+
+// The US trading day before `date`, by the pipeline's own market calendar.
+function previousTradingDay(date) {
+  const d = new Date(date + 'T12:00:00Z');
+  do { d.setUTCDate(d.getUTCDate() - 1); } while (!isUSMarketDay(d.toISOString().slice(0, 10)));
+  return d.toISOString().slice(0, 10);
+}
+
+// Compares every fund that has a usable baseline: same source, from an
+// earlier day. Returns one { etf, flow, moves } per fund compared, and the
+// funds whose baseline is stale.
+function compareAll(snapshots, baseline, today, themesOf) {
+  const prevDay = previousTradingDay(today);
+  const results = [], stale = [], baselineDates = [];
+  for (const etf of Object.keys(snapshots)) {
+    const base = baseline.etfs[etf];
+    const cur = snapshots[etf];
+    if (!base || base.src !== cur.src || base.asOf >= today) continue;
+    // A baseline from before the last trading day (the fund failed a scrape
+    // since) would show several days of trades as one. Not measured today;
+    // its baseline still advances in main(), so tomorrow it is one day again.
+    if (base.asOf < prevDay) { stale.push(`${etf} (${base.asOf})`); continue; }
+    const r = compareFund(etf, base, cur, themesOf[etf] || []);
+    if (!r) continue;
+    results.push({ etf, ...r });
+    baselineDates.push(base.asOf);
+  }
+  return { results, stale, baselineDates };
 }
 
 // A fund whose flow estimate is beyond the daily bound sits the day out.
@@ -315,7 +347,7 @@ function consensus(moves, sign) {
 // Pure: the edition file, from the day's fund comparisons (results: one
 // { etf, flow, moves } per fund compared with a baseline), the funds that sat
 // out on their flow, and the moves that passed the listing check.
-function assembleEdition({ date, seeded, fundsTracked, fundsWithShares, results, excluded, priced, notListed, baselineFrom, generatedAt }) {
+function assembleEdition({ date, seeded, fundsTracked, fundsWithShares, fundsStale = 0, results, excluded, priced, notListed, baselineFrom, generatedAt }) {
   const listed = priced
     .filter(m => Math.abs(m.value) >= MIN_MOVE_VALUE)
     .sort((a, b) => Math.abs(b.value) - Math.abs(a.value) || Math.abs(b.weightMoved) - Math.abs(a.weightMoved));
@@ -330,6 +362,7 @@ function assembleEdition({ date, seeded, fundsTracked, fundsWithShares, results,
     fundsTracked,
     fundsWithShares,
     fundsCompared: measured,          // compared with a baseline, flow within the bound
+    fundsStale,                       // baseline older than the last trading day, not measured
     coverageFloor,
     maxDailyFlowPct: MAX_DAILY_FLOW * 100,
     fundsExcluded: excluded.map(r => ({ etf: r.etf, flow: +(r.flow * 100).toFixed(2), moves: r.moves.length })),
@@ -412,21 +445,13 @@ async function main() {
   }
 
   const noShares = universe.filter(e => !snapshots[e]);
-  const results = [];
-  const baselineDates = [];
-  for (const etf of Object.keys(snapshots)) {
-    const base = baseline.etfs[etf];
-    const cur = snapshots[etf];
-    if (!base || base.src !== cur.src || base.asOf >= today) continue;
-    const r = compareFund(etf, base, cur, themesOf[etf]);
-    if (!r) continue;
-    results.push({ etf, ...r });
-    baselineDates.push(base.asOf);
-  }
+  const prevDay = previousTradingDay(today);
+  const { results, stale, baselineDates } = compareAll(snapshots, baseline, today, themesOf);
   const { kept, excluded } = splitByFlow(results);
   const moves = kept.flatMap(r => r.moves);
   console.log(`\nFunds with share counts: ${Object.keys(snapshots).length}/${universe.length}. Compared with a baseline: ${results.length}. Moves past the filters: ${moves.length}.`);
   if (noShares.length) console.log(`No share counts today: ${noShares.join(', ')}`);
+  if (stale.length) console.log(`Baseline older than ${prevDay}, not measured today: ${stale.join(', ')}`);
   if (excluded.length) {
     console.log(`Left out today, estimated flow beyond +/-${MAX_DAILY_FLOW * 100}%: ${excluded.map(r => `${r.etf} ${(r.flow * 100).toFixed(2)}% (${r.moves.length} moves)`).join(', ')}`);
   }
@@ -439,9 +464,10 @@ async function main() {
 
   const edition = assembleEdition({
     date: today,
-    seeded: baseline.updated === null || results.length === 0,
+    seeded: baseline.updated === null || (results.length === 0 && stale.length === 0),
     fundsTracked: universe.length,
     fundsWithShares: Object.keys(snapshots).length,
+    fundsStale: stale.length,
     results, excluded, priced, notListed,
     baselineFrom: baselineDates.length ? baselineDates.sort()[0] : null,
   });
@@ -474,7 +500,7 @@ async function main() {
 
 module.exports = {
   compareFund, toRows, median, pricesFromDataTs,
-  splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition, consensus,
+  previousTradingDay, compareAll, splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition, consensus,
   TOP_N, MAX_DAILY_FLOW, MIN_MOVE_VALUE, COVERAGE_FLOOR,
 };
 

@@ -34,6 +34,11 @@ test('a partial edition is held, with the reason', () => {
   assert.strictEqual(holdReason(d), 'Only 15 of the 98 tracked funds were measured today, below the floor of 79 (81 had no share counts, 2 sat out on an implausible flow).');
 });
 
+test('the first edition after a scrape outage is held: stale baselines are not measured', () => {
+  const d = edition({ status: 'partial', fundsWithShares: 98, fundsStale: 81, fundsCompared: 17 });
+  assert.strictEqual(holdReason(d), 'Only 17 of the 98 tracked funds were measured today, below the floor of 79 (81 had a baseline older than the last trading day).');
+});
+
 test('an edition file without a floor is still held on low coverage', () => {
   assert.match(holdReason(edition({ coverageFloor: undefined, fundsCompared: 17 })), /below the floor of 79/);
 });

@@ -100,6 +100,7 @@ function holdReason(d) {
   if (d.status === 'partial' || d.fundsCompared < floor) {
     const why = [];
     if (d.fundsWithShares < d.fundsTracked) why.push(`${d.fundsTracked - d.fundsWithShares} had no share counts`);
+    if (d.fundsStale) why.push(`${d.fundsStale} had a baseline older than the last trading day`);
     if (d.fundsExcluded?.length) why.push(`${d.fundsExcluded.length} sat out on an implausible flow`);
     return `Only ${d.fundsCompared} of the ${d.fundsTracked} tracked funds were measured today, below the floor of ${floor}${why.length ? ` (${why.join(', ')})` : ''}.`;
   }
