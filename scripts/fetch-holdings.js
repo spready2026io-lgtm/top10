@@ -54,6 +54,13 @@ function withShares(h, raw) {
 // "fell out of the top 25" as "sold the whole position".
 const SOURCE_TRUNCATED = {};
 
+// Share of this script's fund list that must come back for its output to be
+// written. A normal CI day misses 7 to 9 of 101 (QQQ and the six Invesco
+// funds fetch-holdings-playwright.js picks up, plus Wedbush's two since
+// 2026-10-15), so 0.8 (81) leaves room for a bad day at one issuer and none
+// for losing StockAnalysis, which serves 70 of the 101.
+const MIN_FETCHED_SHARE = 0.8;
+
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
 
 // Fetch with retry. Datacenter IPs (GitHub Actions) occasionally get a one-off
@@ -594,12 +601,109 @@ async function fetchWisdomTree() {
 // Not a complete dataset for large ETFs, but covers the positions that drive
 // scoring.  Used as a last-resort HTTP fallback for QQQ, WCLD, and GTEK.
 //
-// Parse: nodes[2].data is a devalue-flattened array. Decoded, its root holds
-// `holdings` (rows of { no, n: name, s: "$TICKER", as: "8.75%", sh: "44,321" },
-// verified 2026-10-05) and `count` (the fund's full holdings count). US listings
-// carry a "$" prefix; foreign ones look like "!tyo/6857" and are skipped.
-// If the decode ever fails, the original adjacency regex still yields ticker +
-// weight (no names, no shares):  /"(\$[A-Z]{1,5})","([\d.]+)%"/g
+// The page node's data is a devalue-flattened array. Decoded, its root holds
+// `count` (the fund's full holdings count) and the served rows in one of two
+// shapes. StockAnalysis moved funds from the first to the second in stages
+// from 2026-10-16, so both are read:
+//   old  `holdings`: rows of { no, n: name, s: "$TICKER", as: "8.75%", sh: "44,321" }
+//        (verified 2026-10-05)
+//   new  `holdingsTable`: { query: { columns: [ids] }, data: [rows keyed by id] },
+//        with each id labelled in `dataPoints[id].name`: "Symbol", "Name",
+//        "% Weight", "Shares Held" (verified 2026-10-20 on SMH, SPY, CIBR, DRAM)
+// US listings carry a "$" prefix; foreign ones ("!tyo/6857", "@KRX-005930",
+// "=KRW") are skipped. There is no regex fallback any more: pairing a "$TICKER"
+// with the next "x%" in the payload read a weight by position, and on the new
+// shape it found nothing at all.
+
+// The label StockAnalysis gives each column we read. A column is taken from the
+// label, never from where it sits in the row or in query.columns, and only when
+// its format matches what the label promises.
+const SA_COLUMNS = {
+  ticker: { label: 'Symbol',      format: f => f === 'symbol' },
+  name:   { label: 'Name',        format: () => true },
+  weight: { label: '% Weight',    format: f => typeof f === 'string' && f.startsWith('percentage') },
+  shares: { label: 'Shares Held', format: f => f === 'integer' },
+};
+
+const SA_MAX_WEIGHT_SUM = 300;
+
+// { ticker, name, weight, shares } -> column id, or null when no served column
+// carries that label, more than one does, or its format is not the promised one.
+function resolveSAColumns(table, dataPoints) {
+  const served = Array.isArray(table?.query?.columns) ? table.query.columns : [];
+  const ids = {};
+  for (const [field, { label, format }] of Object.entries(SA_COLUMNS)) {
+    const hits = served.filter(id => dataPoints?.[id]?.name === label);
+    ids[field] = hits.length === 1 && format(dataPoints[hits[0]].format) ? hits[0] : null;
+  }
+  return ids;
+}
+
+// A weight cell is a number of percent (20.46) on the new shape and a string
+// ("8.75%") on the old one.
+function parseWeight(v) {
+  const n = typeof v === 'number' ? v : parseFloat(String(v ?? '').replace('%', ''));
+  return Number.isFinite(n) ? n : 0;
+}
+
+const isUSListing = s => typeof s === 'string' && /^\$[A-Z]{1,5}$/.test(s);
+
+// The decoded root of whichever node carries the holdings, found by what it
+// holds rather than by its index in `nodes`.
+function findHoldingsRoot(nodes) {
+  for (const node of nodes || []) {
+    if (node?.type !== 'data' || !Array.isArray(node.data)) continue;
+    const root = unflattenDevalue(node.data);
+    if (root && typeof root === 'object' && ('holdingsTable' in root || 'holdings' in root)) return root;
+  }
+  return null;
+}
+
+// Rows from either shape, plus the fund's full count and how many rows were
+// served. Throws, naming what is missing, rather than guess at a column.
+function parseStockAnalysisRoot(root, ticker) {
+  const total = Number.isFinite(root.count) && root.count > 0 ? root.count : null;
+
+  if (root.holdingsTable) {
+    const table = root.holdingsTable;
+    if (!Array.isArray(table.data)) throw new Error('holdingsTable has no data rows');
+    const col = resolveSAColumns(table, root.dataPoints);
+    const missing = ['ticker', 'name', 'weight'].filter(f => !col[f]).map(f => `"${SA_COLUMNS[f].label}"`);
+    if (missing.length) throw new Error(`holdingsTable: no column labelled ${missing.join(', ')} (served: ${(table.query?.columns || []).join(', ')})`);
+    if (!col.shares) console.warn(`    no "${SA_COLUMNS.shares.label}" column for ${ticker}: holdings kept, share counts left out`);
+    const holdings = table.data
+      .filter(r => isUSListing(r?.[col.ticker]))
+      .map(r => {
+        const t = r[col.ticker].slice(1);
+        const n = r[col.name];
+        const h = { ticker: t, name: typeof n === 'string' && n.trim() ? n.trim() : t, weight: parseWeight(r[col.weight]) };
+        return col.shares ? withShares(h, r[col.shares]) : h;
+      });
+    // A percent weight of one position stays within 100 either way, and a
+    // fund's served rows stay within SA_MAX_WEIGHT_SUM even for a 130/30 book
+    // with its cash line. A share count or a price under the weight label
+    // breaks both at once.
+    const ws = table.data.map(r => parseWeight(r?.[col.weight]));
+    const sum = ws.reduce((s, w) => s + Math.abs(w), 0);
+    if (ws.some(w => Math.abs(w) > 100) || sum > SA_MAX_WEIGHT_SUM) {
+      throw new Error(`"${SA_COLUMNS.weight.label}" column does not read as percent weights (sum ${sum.toFixed(1)})`);
+    }
+    return { holdings, total, served: table.data.length, shape: 'holdingsTable' };
+  }
+
+  if (Array.isArray(root.holdings)) {
+    const holdings = root.holdings
+      .filter(r => isUSListing(r?.s))
+      .map(r => withShares({
+        ticker: r.s.slice(1),
+        name:   typeof r.n === 'string' && r.n.trim() ? r.n.trim() : r.s.slice(1),
+        weight: parseWeight(r.as),
+      }, r.sh));
+    return { holdings, total, served: root.holdings.length, shape: 'holdings' };
+  }
+
+  throw new Error(`neither holdingsTable nor holdings in the payload (keys: ${Object.keys(root).join(', ')})`);
+}
 
 // Minimal devalue decoder (the format SvelteKit uses for __data.json nodes).
 function unflattenDevalue(data) {
@@ -632,44 +736,15 @@ async function fetchStockAnalysis(ticker) {
       'Accept': 'application/json, */*',
       'Referer': 'https://stockanalysis.com/',
     });
-    const node = d.nodes && d.nodes[2];
-    const blob = JSON.stringify(node || {});
-    if (!blob || blob === '{}') throw new Error('No data in nodes[2]');
+    const root = findHoldingsRoot(d.nodes);
+    if (!root) throw new Error('no node carries holdingsTable or holdings');
+    const { holdings: rows, total, served, shape } = parseStockAnalysisRoot(root, ticker);
 
-    let holdings = null;
-    let total = null;
-    let served = null;
-    try {
-      const root = unflattenDevalue(node.data);
-      if (Array.isArray(root?.holdings)) {
-        total = Number.isFinite(root.count) ? root.count : null;
-        served = root.holdings.length;
-        holdings = root.holdings
-          .filter(r => typeof r?.s === 'string' && /^\$[A-Z]{1,5}$/.test(r.s))
-          .map(r => withShares({
-            ticker: r.s.slice(1),
-            name:   typeof r.n === 'string' && r.n.trim() ? r.n.trim() : r.s.slice(1),
-            weight: parseFloat(String(r.as || '').replace('%', '')) || 0,
-          }, r.sh));
-      }
-    } catch (e) {
-      console.warn(`    decode failed (${e.message}), using the regex fallback`);
-    }
-
-    if (!holdings) {
-      // Adjacent string values in the SvelteKit flat array: "$NVDA","8.75%"
-      const matches = [...blob.matchAll(/"(\$[A-Z]{1,5})","([\d.]+)%"/g)];
-      if (matches.length === 0) throw new Error('No "$TICKER","weight%" patterns found');
-      holdings = matches.map(m => ({ ticker: m[1].replace('$', ''), name: m[1].replace('$', ''), weight: parseFloat(m[2]) }));
-      const totalStr = blob.match(/"(\d+) individual holdings"/);
-      total = totalStr ? parseInt(totalStr[1], 10) : null;
-    }
-
-    holdings = holdings.filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
+    const holdings = rows.filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
     // Unknown counts are treated as a slice: the safe reading for exits.
     SOURCE_TRUNCATED[ticker] = !(total && served && total <= served);
     const note = total ? ` (top ${holdings.length} of ${total})` : '';
-    console.log(`    → ${holdings.length} equity holdings${note}`);
+    console.log(`    → ${holdings.length} equity holdings${note} [${shape}]`);
     return holdings.length > 0 ? holdings : null;
   } catch (e) {
     console.error(`    ✗ ${e.message}`);
@@ -917,7 +992,7 @@ async function main() {
   }
 
   const fetched = Object.keys(results);
-  const all = [
+  const all = [...new Set([
     ...ISHARES_ETFS.map(e => e.ticker),
     ...INVESCO_ETFS.map(e => e.ticker),
     'ARKK', ...ALGER_ETFS.map(e => e.ticker), 'XSD',
@@ -932,12 +1007,31 @@ async function main() {
     'RSHO', 'DISK',
     ...NEW_SA_ETFS,
     ...BASE_INDEX_SA,
-  ];
+  ])];
   const failed = all.filter(t => !fetched.includes(t));
 
   console.log(`\n=== Summary ===`);
   console.log(`Fetched (${fetched.length}): ${fetched.join(', ')}`);
   if (failed.length) console.log(`Failed  (${failed.length}): ${failed.join(', ')}`);
+
+  // Too few funds is a broken source, not a quiet day. On 2026-10-16
+  // StockAnalysis changed its payload, this run fell from 98 funds to 28, and
+  // four days of thin data were committed and mailed out with every run green.
+  // Below the floor nothing is written and the run exits non-zero, so the
+  // workflow stops before the commit and both emails: the site keeps the last
+  // complete day, and the 13:50 UTC backup scrape gets a second try.
+  const floor = Math.ceil(all.length * MIN_FETCHED_SHARE);
+  const saList = [...new Set([...NEW_SA_ETFS, ...MEME_ETFS, ...BASE_INDEX_SA])];
+  const saOk = saList.filter(t => results[t]).length;
+  console.log(`Floor: ${fetched.length} of ${all.length} fetched, floor ${floor}. StockAnalysis block: ${saOk} of ${saList.length}.`);
+  if (fetched.length < floor) {
+    for (const f of fetchFailures) console.error(`  ${f.url}: ${f.error}`);
+    // "::error" is a GitHub Actions workflow command: it shows on the run page.
+    console.log(`::error title=Holdings scrape below floor::${fetched.length} of ${all.length} funds fetched, floor ${floor} ` +
+      `(StockAnalysis ${saOk} of ${saList.length}). lib/holdings-raw.json left as it was. Missing: ${failed.join(' ')}`);
+    process.exitCode = 1;
+    return;
+  }
 
   // Which kind of source produced each list. Issuer files are the full fund;
   // StockAnalysis is a top-25 slice unless the fund holds no more than that.
