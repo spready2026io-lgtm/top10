@@ -196,6 +196,23 @@ export default function About() {
                 only as a small position). A high Weight Score with lower coverage (held by fewer
                 funds but in size) is often the more interesting signal.
               </p>
+              <p className="text-slate-400 text-xs leading-relaxed mt-3 pt-3 border-t border-slate-800">
+                <span className="text-slate-300 font-semibold">The research behind it.</span>{' '}
+                A study of active US mutual fund and hedge fund managers found that each manager&apos;s
+                highest-conviction positions, their &ldquo;best ideas&rdquo;, beat the market and the rest of
+                the same portfolio by about 2.8% to 4.5% a year, depending on the benchmark. Most of the other
+                holdings showed no significant outperformance.{' '}
+                <a
+                  href="https://personal.lse.ac.uk/polk/research/BestIdeas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                >
+                  Best Ideas
+                </a>
+                , Antón, Cohen and Polk, working paper, IESE, Harvard Business School and the London School of
+                Economics, 2021.
+              </p>
             </div>
 
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
