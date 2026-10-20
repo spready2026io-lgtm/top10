@@ -217,7 +217,7 @@ export default function Landing() {
           <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(circle at 50% 50%, rgba(52,211,153,0.16), transparent 62%)' }} />
           <div style={{ position: 'relative', zIndex: 1, maxWidth: 560 }}>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff', marginBottom: 8 }}>Get The Daily Conviction from Tony</div>
-            <p style={{ fontSize: 16, lineHeight: 1.5, color: '#9aa6b3', margin: 0 }}>The day&apos;s 20 biggest buys and sells across {ACTIVE_ETFS} funds, in every theme. One short email each trading day.</p>
+            <p style={{ fontSize: 16, lineHeight: 1.5, color: '#9aa6b3', margin: 0 }}>The day&apos;s biggest buys and sells by active fund managers. One short email each trading day.</p>
           </div>
           <NewsletterSignup source="landing" />
         </div>

@@ -94,6 +94,10 @@ function subjectFor(d) {
   return `${head}: ${lead.etf} ${verb(lead)} ${size}${lead.ticker}`;
 }
 
+// Editions since 2026-10-20 cover active funds only (scope 'active').
+const isActiveScope = d => d.scope === 'active';
+const fundsWord = d => (isActiveScope(d) ? 'active funds' : 'funds');
+
 // Why today's edition must not reach subscribers, or null when it may.
 function holdReason(d) {
   const floor = d.coverageFloor ?? Math.ceil(COVERAGE_FLOOR * d.fundsTracked);
@@ -102,7 +106,7 @@ function holdReason(d) {
     if (d.fundsWithShares < d.fundsTracked) why.push(`${d.fundsTracked - d.fundsWithShares} had no share counts`);
     if (d.fundsStale) why.push(`${d.fundsStale} had a baseline older than the last trading day`);
     if (d.fundsExcluded?.length) why.push(`${d.fundsExcluded.length} sat out on an implausible flow`);
-    return `Only ${d.fundsCompared} of the ${d.fundsTracked} tracked funds were measured today, below the floor of ${floor}${why.length ? ` (${why.join(', ')})` : ''}.`;
+    return `Only ${d.fundsCompared} of the ${d.fundsTracked} tracked ${fundsWord(d)} were measured today, below the floor of ${floor}${why.length ? ` (${why.join(', ')})` : ''}.`;
   }
   if (d.status !== 'ok') return `The edition's status is "${d.status}".`;
   if (d.top.length < MIN_MOVES) {
@@ -123,6 +127,9 @@ function gateNote(d) {
     parts.push(`Not a priced US-listed equity: ${shown.join(', ')}${d.notListed.length > 8 ? `, and ${d.notListed.length - 8} more` : ''}.`);
   }
   if (d.movesBelowFloor) parts.push(`${plural(d.movesBelowFloor, 'move')} under ${floorLabel(d)} not listed.`);
+  if (d.fundsUntagged?.length) {
+    parts.push(`Not tagged active or index in lib/fund-management.json, so left out of this email and ranked as index on the site: ${d.fundsUntagged.join(', ')}.`);
+  }
   return parts.join(' ');
 }
 
@@ -189,17 +196,22 @@ function buildEmail(d, unsubUrl, internalNote) {
   const sells = d.top.filter(m => m.netShares < 0).sort((a, b) => Math.abs(b.value ?? 0) - Math.abs(a.value ?? 0));
   const floor = floorLabel(d);
   const n = d.movesConsidered;
-  const across = `across the ${d.fundsCompared} funds I could measure today`;
+  const funds = fundsWord(d);
+  const managers = isActiveScope(d) ? 'Active fund managers' : 'Fund managers';
+  const across = `across the ${d.fundsCompared} ${funds} I could measure today`;
   const intro = n === 0
-    ? `No fund made a move of ${floor} or more ${across}.`
+    ? `No ${isActiveScope(d) ? 'active fund' : 'fund'} made a move of ${floor} or more ${across}.`
     : listsEveryMove(d)
-      ? `Fund managers made ${plural(n, 'move')} of ${floor} or more ${across}. ${n === 1 ? 'Here it is.' : `Here are all ${n}, by dollar size.`}`
-      : `Fund managers made ${n} moves of ${floor} or more ${across}. These are the ${d.top.length} biggest, by dollar size.`;
+      ? `${managers} made ${plural(n, 'move')} of ${floor} or more ${across}. ${n === 1 ? 'Here it is.' : `Here are all ${n}, by dollar size.`}`
+      : `${managers} made ${n} moves of ${floor} or more ${across}. These are the ${d.top.length} biggest, by dollar size.`;
   const cons  = consensusLine(d);
   const tally = `${plural(buys.length, 'buy')} and ${plural(sells.length, 'sell')}`;
   const preheader = listsEveryMove(d)
-    ? `${tally}, every move of ${floor} or more across ${d.fundsCompared} funds.`
-    : `${tally}, the biggest moves across ${d.fundsCompared} funds.`;
+    ? `${tally}, every move of ${floor} or more across ${d.fundsCompared} ${funds}.`
+    : `${tally}, the biggest moves across ${d.fundsCompared} ${funds}.`;
+  const activeLine = isActiveScope(d)
+    ? "Only actively managed funds are covered: an index fund trades to follow its index, not on a manager's decision."
+    : '';
 
   const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -250,7 +262,7 @@ function buildEmail(d, unsubUrl, internalNote) {
         <a href="${SITE_URL}" style="display:inline-block;padding:12px 24px;font-family:${FONT};font-size:14px;font-weight:700;color:#022c22;text-decoration:none;">See today&#39;s theme rankings</a>
       </td></tr></table>
     <p style="margin:24px 0 0;padding-top:18px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.65;color:#64748b;">
-      <strong style="color:#334155;">How to read this.</strong> Share counts come from each fund's published daily holdings, compared with the previous trading day.
+      <strong style="color:#334155;">How to read this.</strong> ${activeLine ? `${esc(activeLine)} ` : ''}Share counts come from each fund's published daily holdings, compared with the previous trading day.
       Each fund's own inflows and outflows are stripped out first, so what is left is the fund choosing to add or cut.
       "Of fund" is how much of the portfolio the move represents. Dollar values are estimates at the latest price.
       Only US-listed stocks and moves worth ${floor} or more make the list, so a quiet day brings a shorter one.
@@ -275,7 +287,7 @@ function buildEmail(d, unsubUrl, internalNote) {
     'THE DAILY CONVICTION', longDate(d.date), '', intro, cons, '',
     buys.length ? `BUYS (${buys.length})` : '', ...buys.map(line), '',
     sells.length ? `SELLS (${sells.length})` : '', ...sells.map(line), '',
-    `Share counts from each fund's published daily holdings vs the previous trading day, with the fund's own inflows and outflows stripped out. Dollar values are estimates. Only US-listed stocks and moves worth ${floor} or more are listed. Data, not advice.`,
+    `${activeLine ? `${activeLine} ` : ''}Share counts from each fund's published daily holdings vs the previous trading day, with the fund's own inflows and outflows stripped out. Dollar values are estimates. Only US-listed stocks and moves worth ${floor} or more are listed. Data, not advice.`,
     SITE_URL,
     unsubUrl ? `Unsubscribe: ${unsubUrl}` : '',
   ].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');

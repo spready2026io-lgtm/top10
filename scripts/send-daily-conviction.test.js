@@ -124,3 +124,31 @@ test('no em or en dashes in any copy', () => {
   const held = edition({ status: 'partial', fundsCompared: 15, fundsExcluded: [{ etf: 'ARKK', flow: -38.21, moves: 12 }], notListed: [{ etf: 'AIS', ticker: 'TWD', reason: 'not an equity (ECNQUOTE)' }] });
   assert.doesNotMatch(holdReason(held) + gateNote(held), DASHES);
 });
+
+// ── Active funds only (2026-10-20) ───────────────────────────────────────────
+test('an active-scope edition says active funds, in the intro, preheader and how-to-read', () => {
+  const { html, text } = buildEmail(edition({ scope: 'active', fundsTracked: 52, fundsCompared: 48, coverageFloor: 42 }), null, null);
+  assert.match(text, /Active fund managers made 5 moves of \$1M or more across the 48 active funds/);
+  assert.match(text, /Only actively managed funds are covered/);
+  assert.match(html, /Only actively managed funds are covered: an index fund trades to follow its index, not on a manager&#39;s decision\./);
+  assert.match(html, /across 48 active funds\./);
+  assert.ok(!DASHES.test(html + text));
+});
+
+test('an edition without a scope keeps the old wording', () => {
+  const { text } = buildEmail(edition(), null, null);
+  assert.match(text, /^Fund managers made 5 moves/m);
+  assert.ok(!/actively managed/.test(text));
+});
+
+test('a held active-scope edition names active funds in the reason', () => {
+  const r = holdReason(edition({ scope: 'active', status: 'partial', fundsTracked: 52, fundsWithShares: 52, fundsCompared: 11, coverageFloor: 42, fundsStale: 41 }));
+  assert.match(r, /^Only 11 of the 52 tracked active funds were measured today, below the floor of 42/);
+});
+
+test('untagged funds are reported in the internal gate note only', () => {
+  const d = edition({ scope: 'active', fundsUntagged: ['NEWF'] });
+  assert.match(gateNote(d), /Not tagged active or index in lib\/fund-management\.json.*NEWF\./);
+  const { html, text } = buildEmail(d, null, null);
+  assert.ok(!/NEWF|fund-management/.test(html + text));
+});

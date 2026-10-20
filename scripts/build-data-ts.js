@@ -40,6 +40,24 @@ const TONY_NOTES_PATH = path.join(__dirname, '..', 'lib', 'tony-notes.json');
 // Auto-generated placeholder is used only when no entry exists for a ticker.
 const TONY_NOTES = fs.existsSync(TONY_NOTES_PATH) ? JSON.parse(fs.readFileSync(TONY_NOTES_PATH, 'utf8')) : {};
 
+// Active or index, per fund, from each fund's own SEC filings (Tony, 2026-10-20).
+// An index fund's weights are its index's formula; an active fund's weights are
+// a manager's decision, which is the conviction we rank on. A fund missing from
+// the file is untagged: it counts as index in the ranking and is left out of
+// The Daily Conviction until it is tagged.
+const FUND_MANAGEMENT_PATH = path.join(__dirname, '..', 'lib', 'fund-management.json');
+function loadFundManagement() {
+  if (!fs.existsSync(FUND_MANAGEMENT_PATH)) return {};
+  return JSON.parse(fs.readFileSync(FUND_MANAGEMENT_PATH, 'utf8')).funds || {};
+}
+const FUND_MANAGEMENT = loadFundManagement();
+
+// In the board ranking an active fund counts this many times an index fund
+// (Gadi, 2026-10-20: score active funds more). Displayed scores stay unweighted.
+// app/about/page.tsx tells readers an active fund "counts twice": change both together.
+const ACTIVE_WEIGHT = 2;
+const fundWeight = (etf, mgmt = FUND_MANAGEMENT) => (mgmt[etf]?.management === 'active' ? ACTIVE_WEIGHT : 1);
+
 // ── Theme → ETF mapping (must match data.ts THEME_ETFS) ─────────────────────
 
 // 2026-10-05: universe updated from Shuki's list. Thematic and sector funds
@@ -602,7 +620,7 @@ async function fetchEtfData(ticker) {
 
 // ── Scoring engine ───────────────────────────────────────────────────────────
 
-function scoreTheme(themeName, themeEtfs, holdingsMap) {
+function scoreTheme(themeName, themeEtfs, holdingsMap, mgmt = FUND_MANAGEMENT) {
   const availableEtfs = themeEtfs.filter(etf => holdingsMap[etf]);
   if (availableEtfs.length === 0) return { equities: [], etfCount: 0 };
 
@@ -625,22 +643,30 @@ function scoreTheme(themeName, themeEtfs, holdingsMap) {
   // Coverage is relative to availableEtfs (ETFs with real data), not the full
   // theme definition, so failed scrapers (WCLD, GTEK) don't penalise equities.
   const totalAvailable = availableEtfs.length;
+  const totalFundWeight = availableEtfs.reduce((s, etf) => s + fundWeight(etf, mgmt), 0);
 
   const scored = Object.entries(equityMap).map(([ticker, data]) => {
     const easyScore  = data.etfs.length;
     const avgWeight  = data.etfs.reduce((s, e) => s + e.weight, 0) / easyScore;
     const coverage   = easyScore / totalAvailable;          // 0–1
     const proScore   = parseFloat((avgWeight * coverage).toFixed(2));
+    // Ranking only, never displayed: breadth and weight with each active fund
+    // counting ACTIVE_WEIGHT times. Weight Score and its history stay
+    // unweighted, so Velocity compares like with like.
+    const rankBreadth = data.etfs.reduce((s, e) => s + fundWeight(e.etf, mgmt), 0);
+    const rankScore   = data.etfs.reduce((s, e) => s + fundWeight(e.etf, mgmt) * e.weight, 0) / totalFundWeight;
     const etfPresence = {};
     for (const etf of themeEtfs) {
       const match = data.etfs.find(e => e.etf === etf);
       etfPresence[etf] = match ? parseFloat(match.weight.toFixed(2)) : false;
     }
-    return { ticker, name: data.name, easyScore, avgWeight: parseFloat(avgWeight.toFixed(2)), proScore, coverage, etfPresence };
+    return { ticker, name: data.name, easyScore, avgWeight: parseFloat(avgWeight.toFixed(2)), proScore, coverage, etfPresence, rankBreadth, rankScore };
   });
 
-  // Sort: easyScore (ETF count) primary, avgWeight (avg weight among holders) as tiebreaker
-  scored.sort((a, b) => b.easyScore - a.easyScore || b.avgWeight - a.avgWeight);
+  // Sort: breadth with active funds counting double, then weight on the same
+  // basis, then the plain average weight among holders. With no active fund in
+  // a theme (Cyber, Energy) this is the plain breadth-then-weight order.
+  scored.sort((a, b) => b.rankBreadth - a.rankBreadth || b.rankScore - a.rankScore || b.avgWeight - a.avgWeight);
 
   return { equities: scored.slice(0, TOP_N), etfCount: availableEtfs.length };
 }
@@ -1466,6 +1492,8 @@ async function main() {
   const raw = JSON.parse(fs.readFileSync(RAW_PATH, 'utf8'));
   const holdingsMap = raw.holdings;
   console.log(`Holdings loaded: ${Object.keys(holdingsMap).join(', ')}\n`);
+  const untagged = [...new Set(Object.values(THEME_ETFS).flat())].filter(e => !FUND_MANAGEMENT[e]);
+  if (untagged.length) console.warn(`[Fund management] Not tagged active or index in lib/fund-management.json, ranked as index: ${untagged.join(', ')}\n`);
 
   // Score each theme
   const themeEquities = {};
@@ -1687,7 +1715,7 @@ async function fetchLastPrice(ticker) {
 // Exported so a targeted repopulate script can reuse the Yahoo fetch + generator
 // without triggering a full pipeline run (which rewrites every block + history.json).
 module.exports = { yfInit, fetchEtfData, genThemeReps, genThemeUniverse, pearson, pathIncrements, THEME_ETFS, DATA_PATH,
-  isUSMarketDay, fetchLastPrice, resolveName, genTickerNames };
+  isUSMarketDay, fetchLastPrice, resolveName, genTickerNames, scoreTheme, loadFundManagement, ACTIVE_WEIGHT };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
