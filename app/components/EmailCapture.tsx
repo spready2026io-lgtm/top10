@@ -2,11 +2,6 @@
 
 import { useState } from 'react';
 import { trackEvent } from '@/lib/gtag';
-import { computeManagers } from '@/lib/conviction';
-
-// Derived live from the data (same source the Conviction Board counts), so the
-// copy always matches the site and never goes stale when funds are added/removed.
-const FUND_COUNT = computeManagers().length;
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
@@ -105,7 +100,7 @@ export default function EmailCapture({
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2.5">
           <p className="text-sm leading-snug min-w-0">
             <span className="text-emerald-400 font-semibold">Get The Daily Conviction from Tony.</span>{' '}
-            <span className="text-slate-400">The day&apos;s 20 biggest buys and sells across {FUND_COUNT} funds, every trading day.</span>
+            <span className="text-slate-400">The day&apos;s biggest buys and sells by active fund managers, every trading day.</span>
           </p>
           <div className="sm:ml-auto w-full sm:w-auto sm:min-w-[21rem]">
             {form}
@@ -135,7 +130,7 @@ export default function EmailCapture({
           See what the funds bought and sold today.
         </h2>
         <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
-          One short email each trading day from Tony: the 20 biggest buys and sells across {FUND_COUNT} funds in every theme, with each fund&apos;s own inflows stripped out, so you see the decisions, not the noise. No spam, unsubscribe anytime.
+          One short email each trading day from Tony: the biggest buys and sells by the active fund managers we track, with each fund&apos;s own inflows stripped out, so you see the decisions, not the noise. No spam, unsubscribe anytime.
         </p>
         <div className="max-w-md mx-auto">
           {form}

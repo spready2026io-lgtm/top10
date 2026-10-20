@@ -47,11 +47,17 @@
  *     never shown as one. Its baseline still advances.
  *   - status is 'partial' when fewer than COVERAGE_FLOOR of the tracked funds
  *     were measured. The sender then holds the edition back from subscribers.
+ *
+ * Active funds only (Gadi, 2026-10-20). An index fund's trades follow its
+ * index (AIRR's scheduled rebalance filled 18 of 20 rows on 2026-10-19), so
+ * only funds tagged active in lib/fund-management.json are tracked, compared
+ * and counted toward the coverage floor. An untagged fund is left out and
+ * named in the edition file, which the internal copy reports.
  */
 
 const fs   = require('fs');
 const path = require('path');
-const { THEME_ETFS, isUSMarketDay } = require('./build-data-ts');
+const { THEME_ETFS, isUSMarketDay, loadFundManagement } = require('./build-data-ts');
 const { fetchStockAnalysis, SOURCE_TRUNCATED } = require('./fetch-holdings');
 
 const LIB           = path.join(__dirname, '..', 'lib');
@@ -81,6 +87,17 @@ function etfThemes() {
     for (const e of etfs) (map[e] ??= []).push(theme);
   }
   return map;
+}
+
+// The funds The Daily Conviction tracks: those tagged active. mgmt is the
+// `funds` map of lib/fund-management.json.
+function activeUniverse(funds, mgmt) {
+  const universe = [], indexFunds = [], untagged = [];
+  for (const etf of funds) {
+    const m = mgmt[etf]?.management;
+    (m === 'active' ? universe : m === 'index' ? indexFunds : untagged).push(etf);
+  }
+  return { universe, indexFunds, untagged };
 }
 
 // ticker -> { s: shares, w: weight %, n: name }. Duplicate rows (a ticker listed
@@ -402,7 +419,9 @@ async function main() {
   const raw = JSON.parse(fs.readFileSync(RAW_PATH, 'utf8'));
   const meta = raw.meta || {};
   const themesOf = etfThemes();
-  const universe = Object.keys(themesOf);
+  const { universe, indexFunds, untagged } = activeUniverse(Object.keys(themesOf), loadFundManagement());
+  console.log(`Active funds tracked: ${universe.length}. Index funds left out: ${indexFunds.length}.`);
+  if (untagged.length) console.log(`Not tagged active or index, left out until tagged: ${untagged.join(', ')}`);
 
   const baseline = fs.existsSync(BASELINE_PATH)
     ? JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'))
@@ -462,15 +481,20 @@ async function main() {
     console.log(`Not a priced US-listed equity, not listed: ${notListed.map(x => `${x.etf} ${x.ticker} (${x.name}: ${x.reason})`).join('; ')}`);
   }
 
-  const edition = assembleEdition({
-    date: today,
-    seeded: baseline.updated === null || (results.length === 0 && stale.length === 0),
-    fundsTracked: universe.length,
-    fundsWithShares: Object.keys(snapshots).length,
-    fundsStale: stale.length,
-    results, excluded, priced, notListed,
-    baselineFrom: baselineDates.length ? baselineDates.sort()[0] : null,
-  });
+  const edition = {
+    ...assembleEdition({
+      date: today,
+      seeded: baseline.updated === null || (results.length === 0 && stale.length === 0),
+      fundsTracked: universe.length,
+      fundsWithShares: Object.keys(snapshots).length,
+      fundsStale: stale.length,
+      results, excluded, priced, notListed,
+      baselineFrom: baselineDates.length ? baselineDates.sort()[0] : null,
+    }),
+    scope: 'active',
+    fundsIndexLeftOut: indexFunds.length,
+    fundsUntagged: untagged,
+  };
   const { top, status } = edition;
   writeJSON(MOVES_PATH, edition);
   console.log(`Moves of $${MIN_MOVE_VALUE / 1e6}M or more: ${edition.movesConsidered} (${edition.movesBelowFloor} smaller ones not listed).`);
@@ -486,8 +510,9 @@ async function main() {
     for (const [t, r] of Object.entries(snap.rows)) rows[t] = { s: r.s, w: +r.w.toFixed(4), n: r.n };
     baseline.etfs[etf] = { asOf: snap.asOf, src: snap.src, truncated: snap.truncated, rows };
   }
+  const tracked = new Set(universe);
   for (const etf of Object.keys(baseline.etfs)) {
-    if (!themesOf[etf]) delete baseline.etfs[etf];   // fund left the universe
+    if (!tracked.has(etf)) delete baseline.etfs[etf];   // left the universe, or not an active fund
   }
   writeBaseline(baseline);
   console.log(`Written → ${BASELINE_PATH} (${Object.keys(baseline.etfs).length} funds)`);
@@ -499,7 +524,7 @@ async function main() {
 }
 
 module.exports = {
-  compareFund, toRows, median, pricesFromDataTs,
+  compareFund, toRows, median, pricesFromDataTs, activeUniverse,
   previousTradingDay, compareAll, splitByFlow, namesMatch, listingVerdict, qualifyMoves, assembleEdition, consensus,
   TOP_N, MAX_DAILY_FLOW, MIN_MOVE_VALUE, COVERAGE_FLOOR,
 };

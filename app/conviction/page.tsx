@@ -187,7 +187,7 @@ export default function ConvictionPage() {
         <div className="mt-10 rounded-xl border border-slate-800 bg-slate-900/50 px-5 py-6">
           <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-1.5">Get The Daily Conviction</p>
           <p className="text-slate-400 text-sm mb-4 max-w-lg">
-            The day&apos;s 20 biggest buys and sells across these {totalManagers} managers, in one short email from Tony each trading day.
+            The day&apos;s biggest buys and sells by the active managers among them, in one short email from Tony each trading day.
           </p>
           <EmailCapture variant="inline" source="conviction" />
         </div>

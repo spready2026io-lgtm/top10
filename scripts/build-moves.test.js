@@ -176,3 +176,48 @@ test('consensus counts only listed moves', () => {
   const ed = edition({ priced: [...small, ...big] });
   assert.deepStrictEqual(ed.consensus.buys.map(c => c.ticker), ['BIG']);
 });
+
+// ── Active funds only (2026-10-20) ───────────────────────────────────────────
+test('only funds tagged active are tracked; index and untagged funds are left out', () => {
+  const { activeUniverse } = require('./build-moves');
+  const mgmt = { ARKK: { management: 'active' }, AIRR: { management: 'index' }, ALAI: { management: 'active' } };
+  const r = activeUniverse(['ARKK', 'AIRR', 'ALAI', 'NEWF'], mgmt);
+  assert.deepStrictEqual(r, { universe: ['ARKK', 'ALAI'], indexFunds: ['AIRR'], untagged: ['NEWF'] });
+});
+
+test('every fund in the universe is tagged in lib/fund-management.json', () => {
+  const { activeUniverse } = require('./build-moves');
+  const { THEME_ETFS, loadFundManagement } = require('./build-data-ts');
+  const r = activeUniverse([...new Set(Object.values(THEME_ETFS).flat())], loadFundManagement());
+  assert.deepStrictEqual(r.untagged, []);
+  assert.ok(r.universe.length > 0 && r.indexFunds.length > 0);
+});
+
+// ── Ranking: active funds count double (2026-10-20) ─────────────────────────
+test('an active holder outranks an index holder at the same breadth; displayed scores stay unweighted', () => {
+  const { scoreTheme, ACTIVE_WEIGHT } = require('./build-data-ts');
+  const mgmt = { A1: { management: 'active' }, I1: { management: 'index' }, I2: { management: 'index' } };
+  const holdings = {
+    A1: [{ ticker: 'AAA', name: 'Aaa', weight: 2 }],
+    I1: [{ ticker: 'III', name: 'Iii', weight: 5 }, { ticker: 'BBB', name: 'Bbb', weight: 1 }],
+    I2: [{ ticker: 'BBB', name: 'Bbb', weight: 1 }],
+  };
+  const { equities } = scoreTheme('T', ['A1', 'I1', 'I2'], holdings, mgmt);
+  assert.strictEqual(ACTIVE_WEIGHT, 2);
+  // AAA (1 active) ties BBB (2 index) on weighted breadth 2; AAA wins on weight. III (1 index) is last.
+  assert.deepStrictEqual(equities.map(e => e.ticker), ['AAA', 'BBB', 'III']);
+  const iii = equities.find(e => e.ticker === 'III');
+  assert.strictEqual(iii.easyScore, 1);
+  assert.strictEqual(iii.proScore, +(5 / 3).toFixed(2));   // unweighted: avgWeight x coverage
+});
+
+test('with no active fund the order is the old breadth-then-weight order', () => {
+  const { scoreTheme } = require('./build-data-ts');
+  const mgmt = { I1: { management: 'index' }, I2: { management: 'index' } };
+  const holdings = {
+    I1: [{ ticker: 'X', name: 'X', weight: 9 }, { ticker: 'Y', name: 'Y', weight: 1 }],
+    I2: [{ ticker: 'Y', name: 'Y', weight: 2 }],
+  };
+  const { equities } = scoreTheme('T', ['I1', 'I2'], holdings, mgmt);
+  assert.deepStrictEqual(equities.map(e => e.ticker), ['Y', 'X']);
+});

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Logo from '@/app/components/Logo';
 import { THEMES, THEME_ETFS, SCAN_TIMESTAMP_NY } from '@/lib/data';
 import { MARKET_TILES } from '@/lib/markets-data';
+import FUND_MANAGEMENT from '@/lib/fund-management.json';
 
 export const metadata = { title: 'About | Stockscout' };
 
@@ -12,6 +13,9 @@ export default function About() {
   const totalEtfs   = new Set(Object.values(THEME_ETFS).flat()).size;
   const themeCount  = THEMES.length;
   const aiN         = THEME_ETFS['AI & ML'].length;   // example denominator in the Coverage section
+  // Active or index per fund, from each fund's SEC filings (lib/fund-management.json).
+  const funds: Record<string, { management: string }> = FUND_MANAGEMENT.funds;
+  const activeEtfs  = [...new Set(Object.values(THEME_ETFS).flat())].filter(e => funds[e]?.management === 'active').length;
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -74,6 +78,11 @@ export default function About() {
             says nothing about a theme. Where a theme&apos;s funds are active, the score reads manager
             conviction. Where they are index-built baskets, it reads how consistently the theme&apos;s
             specialist funds concentrate on a name.
+          </p>
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+            {`${activeEtfs} of the ${totalEtfs} funds are actively managed, as stated in each fund's own SEC filings. `}
+            In the rankings an active fund counts twice as much as an index-built one, because its weights are a
+            manager&apos;s decision rather than an index&apos;s formula. The x/n on each tile still counts every fund once.
           </p>
 
           {/* ETF table */}
