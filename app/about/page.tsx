@@ -54,6 +54,30 @@ export default function About() {
           </p>
         </section>
 
+        {/* The research behind it: the Best Ideas paper */}
+        <section className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6">
+          <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-2">The research behind it</p>
+          <h2 className="text-xl font-bold text-white mb-3">Managers&apos; best ideas have beaten the market</h2>
+          <p className="text-slate-300 text-sm leading-relaxed mb-4">
+            A study of active US mutual fund and hedge fund managers found that each manager&apos;s
+            highest-conviction positions, their &ldquo;best ideas&rdquo;, beat the market and the rest of the same
+            portfolio by about <span className="text-white font-semibold">2.8% to 4.5% a year</span>, depending on the benchmark. Most of
+            the other holdings showed no significant outperformance. It is why Stockscout counts an active
+            manager&apos;s choices more heavily than an index fund&apos;s formula.
+          </p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <a
+              href="https://personal.lse.ac.uk/polk/research/BestIdeas.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-semibold px-4 py-2 transition-colors"
+            >
+              Read the paper (PDF)
+            </a>
+            <span className="text-slate-400 text-xs leading-relaxed">Antón, Cohen and Polk, <i>Best Ideas</i>, working paper, IESE, Harvard Business School and the London School of Economics, 2021.</span>
+          </div>
+        </section>
+
         {/* What is an ETF */}
         <section>
           <h2 className="text-xl font-bold text-white mb-4">What is an ETF?</h2>
@@ -195,23 +219,6 @@ export default function About() {
                 A stock can have 100% coverage but a low Weight Score (held by everyone, but
                 only as a small position). A high Weight Score with lower coverage (held by fewer
                 funds but in size) is often the more interesting signal.
-              </p>
-              <p className="text-slate-400 text-xs leading-relaxed mt-3 pt-3 border-t border-slate-800">
-                <span className="text-slate-300 font-semibold">The research behind it.</span>{' '}
-                A study of active US mutual fund and hedge fund managers found that each manager&apos;s
-                highest-conviction positions, their &ldquo;best ideas&rdquo;, beat the market and the rest of
-                the same portfolio by about 2.8% to 4.5% a year, depending on the benchmark. Most of the other
-                holdings showed no significant outperformance.{' '}
-                <a
-                  href="https://personal.lse.ac.uk/polk/research/BestIdeas.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 font-semibold"
-                >
-                  Best Ideas
-                </a>
-                , Antón, Cohen and Polk, working paper, IESE, Harvard Business School and the London School of
-                Economics, 2021.
               </p>
             </div>
 
