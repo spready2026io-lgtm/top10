@@ -1,55 +1,74 @@
 {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "status": "ok",
-  "generatedAt": "2026-10-22T13:50:51.455Z",
-  "baselineFrom": "2026-10-21",
+  "generatedAt": "2026-10-23T13:51:51.615Z",
+  "baselineFrom": "2026-10-22",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 52,
+  "fundsCompared": 51,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
-  "fundsExcluded": [],
+  "fundsExcluded": [
+    {
+      "etf": "VOLT",
+      "flow": 26.05,
+      "moves": 0
+    }
+  ],
   "minMoveValue": 1000000,
-  "movesConsidered": 24,
-  "movesBelowFloor": 16,
-  "notListed": [],
+  "movesConsidered": 21,
+  "movesBelowFloor": 15,
+  "notListed": [
+    {
+      "etf": "AIS",
+      "ticker": "TWD",
+      "name": "NEW TAIWAN DOLLAR",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "BILT",
+      "ticker": "TCL",
+      "name": "TRANSURBAN GROUP STAPLED UNITS",
+      "reason": "no US listing"
+    }
+  ],
   "top": [
     {
       "rank": 1,
-      "etf": "CNEQ",
+      "etf": "ARKK",
       "themes": [
         "Broad Tech"
       ],
-      "ticker": "TLN",
-      "name": "TALEN ENERGY CORP NEW USD 0.001",
+      "ticker": "META",
+      "name": "META PLATFORMS INC-CLASS A",
       "kind": "added",
-      "netShares": 36073,
-      "sharesBefore": 611465,
-      "sharesAfter": 677069,
-      "positionChangePct": 5.6,
-      "weightMoved": 0.2,
-      "weightAfter": 3.79,
-      "price": 344.24,
-      "value": 12417770
+      "netShares": 28075,
+      "sharesBefore": 182000,
+      "sharesAfter": 209331,
+      "positionChangePct": 15.5,
+      "weightMoved": 0.3,
+      "weightAfter": 2.27,
+      "price": 643.43,
+      "value": 18064297
     },
     {
       "rank": 2,
-      "etf": "ALAI",
+      "etf": "ARKK",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "TSLA",
-      "name": "TESLA INC USD 0.001",
-      "kind": "added",
-      "netShares": 30998,
-      "sharesBefore": 135285,
-      "sharesAfter": 171133,
-      "positionChangePct": 22.1,
-      "weightMoved": 0.47,
-      "weightAfter": 2.6,
-      "price": 383.26,
-      "value": 11880355
+      "ticker": "TER",
+      "name": "TERADYNE INC",
+      "kind": "trimmed",
+      "netShares": -57439,
+      "sharesBefore": 161327,
+      "sharesAfter": 103229,
+      "positionChangePct": -35.8,
+      "weightMoved": -0.29,
+      "weightAfter": 0.53,
+      "price": 310,
+      "value": -17805803
     },
     {
       "rank": 3,
@@ -57,35 +76,35 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "ASML",
-      "name": "ASML HOLDING NV EUR 0.09 ADR",
-      "kind": "added",
-      "netShares": 6471,
-      "sharesBefore": 6395,
-      "sharesAfter": 13095,
-      "positionChangePct": 97.7,
-      "weightMoved": 0.42,
-      "weightAfter": 0.86,
-      "price": 1617.67,
-      "value": 10467943
-    },
-    {
-      "rank": 4,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
       "ticker": "GOOG",
       "name": "ALPHABET INC CLASS C",
       "kind": "trimmed",
-      "netShares": -28919,
-      "sharesBefore": 353247,
-      "sharesAfter": 336993,
-      "positionChangePct": -7.9,
-      "weightMoved": -0.38,
-      "weightAfter": 4.38,
-      "price": 324.53,
-      "value": -9385083
+      "netShares": -37658,
+      "sharesBefore": 336993,
+      "sharesAfter": 299335,
+      "positionChangePct": -11.2,
+      "weightMoved": -0.5,
+      "weightAfter": 3.95,
+      "price": 319.7,
+      "value": -12039263
+    },
+    {
+      "rank": 4,
+      "etf": "CHAT",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "MU",
+      "name": "Micron Technology, Inc.",
+      "kind": "added",
+      "netShares": 9247,
+      "sharesBefore": 62268,
+      "sharesAfter": 71515,
+      "positionChangePct": 14.9,
+      "weightMoved": 0.49,
+      "weightAfter": 3.79,
+      "price": 878.36,
+      "value": 8122195
     },
     {
       "rank": 5,
@@ -93,17 +112,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
-      "kind": "added",
-      "netShares": 56036,
-      "sharesBefore": 343732,
-      "sharesAfter": 412092,
-      "positionChangePct": 15.7,
-      "weightMoved": 0.35,
-      "weightAfter": 2.58,
-      "price": 152.22,
-      "value": 8529800
+      "ticker": "GFS",
+      "name": "GLOBALFOUNDRIES INC USD 0.02",
+      "kind": "trimmed",
+      "netShares": -176752,
+      "sharesBefore": 315925,
+      "sharesAfter": 139173,
+      "positionChangePct": -55.9,
+      "weightMoved": -0.32,
+      "weightAfter": 0.25,
+      "price": 43.34,
+      "value": -7660432
     },
     {
       "rank": 6,
@@ -111,53 +130,53 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "ANET",
-      "name": "ARISTA NETWORKS INC USD 0.0001",
-      "kind": "new",
-      "netShares": 46465,
-      "sharesBefore": 0,
-      "sharesAfter": 46465,
-      "positionChangePct": null,
-      "weightMoved": 0.34,
-      "weightAfter": 0.34,
-      "price": 177.48,
-      "value": 8246608
+      "ticker": "HOOD",
+      "name": "ROBINHOOD MKTS INC USD 0.0001",
+      "kind": "trimmed",
+      "netShares": -53340,
+      "sharesBefore": 297918,
+      "sharesAfter": 244578,
+      "positionChangePct": -17.9,
+      "weightMoved": -0.21,
+      "weightAfter": 0.97,
+      "price": 97.2,
+      "value": -5184648
     },
     {
       "rank": 7,
-      "etf": "FWD",
+      "etf": "FRWD",
       "themes": [
         "Broad Tech"
       ],
-      "ticker": "GOOGL",
-      "name": "Alphabet Inc.",
-      "kind": "trimmed",
-      "netShares": -23756,
-      "sharesBefore": 214248,
-      "sharesAfter": 190897,
-      "positionChangePct": -11.1,
-      "weightMoved": -0.25,
-      "weightAfter": 2.01,
-      "price": 329.19,
-      "value": -7820238
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "kind": "added",
+      "netShares": 8950,
+      "sharesBefore": 19412,
+      "sharesAfter": 28362,
+      "positionChangePct": 46.1,
+      "weightMoved": 1.69,
+      "weightAfter": 5.36,
+      "price": 517.67,
+      "value": 4633147
     },
     {
       "rank": 8,
-      "etf": "CNEQ",
+      "etf": "FRWD",
       "themes": [
         "Broad Tech"
       ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
+      "ticker": "AMZN",
+      "name": "Amazon.com, Inc.",
       "kind": "added",
-      "netShares": 37511,
-      "sharesBefore": 847428,
-      "sharesAfter": 925866,
-      "positionChangePct": 4.2,
-      "weightMoved": 0.09,
-      "weightAfter": 2.3,
-      "price": 152.22,
-      "value": 5709924
+      "netShares": 16700,
+      "sharesBefore": 32842,
+      "sharesAfter": 49542,
+      "positionChangePct": 50.8,
+      "weightMoved": 1.55,
+      "weightAfter": 4.61,
+      "price": 247.93,
+      "value": 4140431
     },
     {
       "rank": 9,
@@ -165,35 +184,35 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "MU",
-      "name": "MICRON TECHNOLOGY INC USD 0.1",
-      "kind": "added",
-      "netShares": 6068,
-      "sharesBefore": 56729,
-      "sharesAfter": 64831,
-      "positionChangePct": 10.3,
-      "weightMoved": 0.22,
-      "weightAfter": 2.32,
-      "price": 896.53,
-      "value": 5440144
+      "ticker": "SN",
+      "name": "SHARKNINJA INC USD 0.0001",
+      "kind": "trimmed",
+      "netShares": -19556,
+      "sharesBefore": 51799,
+      "sharesAfter": 32243,
+      "positionChangePct": -37.8,
+      "weightMoved": -0.16,
+      "weightAfter": 0.26,
+      "price": 197.57,
+      "value": -3863777
     },
     {
       "rank": 10,
-      "etf": "FWD",
+      "etf": "ALAI",
       "themes": [
-        "Broad Tech"
+        "AI & ML"
       ],
-      "ticker": "DDOG",
-      "name": "Datadog, Inc.",
+      "ticker": "ETN",
+      "name": "EATON CORP PLC USD 0.01",
       "kind": "trimmed",
-      "netShares": -19746,
-      "sharesBefore": 149963,
-      "sharesAfter": 130501,
-      "positionChangePct": -13.1,
-      "weightMoved": -0.16,
-      "weightAfter": 1.04,
-      "price": 269.31,
-      "value": -5317795
+      "netShares": -6889,
+      "sharesBefore": 24697,
+      "sharesAfter": 17808,
+      "positionChangePct": -27.9,
+      "weightMoved": -0.1,
+      "weightAfter": 0.27,
+      "price": 363.69,
+      "value": -2505460
     },
     {
       "rank": 11,
@@ -201,35 +220,35 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "INTC",
-      "name": "INTEL CORP USD 0.001",
-      "kind": "new",
-      "netShares": 52842,
-      "sharesBefore": 0,
-      "sharesAfter": 52842,
-      "positionChangePct": null,
-      "weightMoved": 0.19,
-      "weightAfter": 0.19,
-      "price": 87.97,
-      "value": 4648511
+      "ticker": "NXT",
+      "name": "NEXTPOWER INC USD 0.0001",
+      "kind": "trimmed",
+      "netShares": -31162,
+      "sharesBefore": 105066,
+      "sharesAfter": 73904,
+      "positionChangePct": -29.7,
+      "weightMoved": -0.1,
+      "weightAfter": 0.24,
+      "price": 76.32,
+      "value": -2378284
     },
     {
       "rank": 12,
-      "etf": "FWD",
+      "etf": "ALAI",
       "themes": [
-        "Broad Tech"
+        "AI & ML"
       ],
-      "ticker": "META",
-      "name": "Meta Platforms, Inc.",
+      "ticker": "NTRA",
+      "name": "NATERA INC USD 0.0001",
       "kind": "trimmed",
-      "netShares": -6499,
-      "sharesBefore": 97761,
-      "sharesAfter": 91447,
-      "positionChangePct": -6.6,
-      "weightMoved": -0.14,
-      "weightAfter": 1.97,
-      "price": 651.53,
-      "value": -4234293
+      "netShares": -5842,
+      "sharesBefore": 61322,
+      "sharesAfter": 55480,
+      "positionChangePct": -9.5,
+      "weightMoved": -0.1,
+      "weightAfter": 0.92,
+      "price": 405.53,
+      "value": -2369106
     },
     {
       "rank": 13,
@@ -237,17 +256,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "TLN",
-      "name": "TALEN ENERGY CORP NEW USD 0.001",
-      "kind": "added",
-      "netShares": 10359,
-      "sharesBefore": 151621,
-      "sharesAfter": 167416,
-      "positionChangePct": 6.6,
-      "weightMoved": 0.15,
-      "weightAfter": 2.36,
-      "price": 344.24,
-      "value": 3565982
+      "ticker": "BABA",
+      "name": "ALIBABA GROUP HLDG USD 0.000025 ADR",
+      "kind": "trimmed",
+      "netShares": -21603,
+      "sharesBefore": 58212,
+      "sharesAfter": 36609,
+      "positionChangePct": -37.1,
+      "weightMoved": -0.09,
+      "weightAfter": 0.15,
+      "price": 100.06,
+      "value": -2161596
     },
     {
       "rank": 14,
@@ -255,17 +274,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "SNOW",
-      "name": "SNOWFLAKE INC USD 1.0",
-      "kind": "added",
-      "netShares": 9066,
-      "sharesBefore": 150146,
-      "sharesAfter": 164595,
-      "positionChangePct": 5.8,
-      "weightMoved": 0.11,
-      "weightAfter": 2.08,
-      "price": 319.07,
-      "value": 2892689
+      "ticker": "CBRS",
+      "name": "CEREBRAS SYS INC USD 0.00001",
+      "kind": "exited",
+      "netShares": -17365,
+      "sharesBefore": 17365,
+      "sharesAfter": 0,
+      "positionChangePct": null,
+      "weightMoved": -0.08,
+      "weightAfter": 0,
+      "price": 109.34,
+      "value": -1898689
     },
     {
       "rank": 15,
@@ -273,53 +292,53 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "NBIS",
-      "name": "NEBIUS GROUP N.V.",
-      "kind": "added",
-      "netShares": 16636,
-      "sharesBefore": 475315,
-      "sharesAfter": 508993,
-      "positionChangePct": 3.4,
-      "weightMoved": 0.11,
-      "weightAfter": 3.43,
-      "price": 161.69,
-      "value": 2689875
+      "ticker": "APH",
+      "name": "AMPHENOL CORP NEW USD 0.001",
+      "kind": "trimmed",
+      "netShares": -23312,
+      "sharesBefore": 87662,
+      "sharesAfter": 64350,
+      "positionChangePct": -26.6,
+      "weightMoved": -0.07,
+      "weightAfter": 0.19,
+      "price": 72.91,
+      "value": -1699678
     },
     {
       "rank": 16,
-      "etf": "ALAI",
+      "etf": "FRWD",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "AMD",
-      "name": "ADVANCED MICRO DEVICES INC USD 0.01",
+      "ticker": "MU",
+      "name": "Micron Technology, Inc.",
       "kind": "added",
-      "netShares": 4729,
-      "sharesBefore": 85480,
-      "sharesAfter": 93274,
-      "positionChangePct": 5.3,
-      "weightMoved": 0.1,
-      "weightAfter": 2.02,
-      "price": 524.4,
-      "value": 2479888
+      "netShares": 1875,
+      "sharesBefore": 8768,
+      "sharesAfter": 10643,
+      "positionChangePct": 21.4,
+      "weightMoved": 0.61,
+      "weightAfter": 3.45,
+      "price": 878.36,
+      "value": 1646925
     },
     {
       "rank": 17,
-      "etf": "ALAI",
+      "etf": "CLSE",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "STX",
-      "name": "SEAGATE TECHNOLOGY HOLD USD 0.00001",
+      "ticker": "SPCX",
+      "name": "Space Exploration Technologies Corp.",
       "kind": "added",
-      "netShares": 3687,
-      "sharesBefore": 112291,
-      "sharesAfter": 120004,
-      "positionChangePct": 3.2,
-      "weightMoved": 0.1,
-      "weightAfter": 3.28,
-      "price": 666.48,
-      "value": 2457312
+      "netShares": 10712,
+      "sharesBefore": 79492,
+      "sharesAfter": 90204,
+      "positionChangePct": 13.5,
+      "weightMoved": 0.16,
+      "weightAfter": 1.31,
+      "price": 147.33,
+      "value": 1578199
     },
     {
       "rank": 18,
@@ -327,17 +346,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "WDC",
-      "name": "WESTERN DIGITAL CORP USD 0.01",
-      "kind": "added",
-      "netShares": 6741,
-      "sharesBefore": 111719,
-      "sharesAfter": 122466,
-      "positionChangePct": 5.8,
-      "weightMoved": 0.1,
-      "weightAfter": 1.82,
-      "price": 363.39,
-      "value": 2449612
+      "ticker": "TWLO",
+      "name": "TWILIO INC USD 0.001",
+      "kind": "trimmed",
+      "netShares": -6080,
+      "sharesBefore": 125523,
+      "sharesAfter": 119443,
+      "positionChangePct": -4.8,
+      "weightMoved": -0.06,
+      "weightAfter": 1.25,
+      "price": 256.53,
+      "value": -1559702
     },
     {
       "rank": 19,
@@ -345,111 +364,102 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LITE",
-      "name": "LUMENTUM HLDGS INC USD 0.001",
-      "kind": "added",
-      "netShares": 3044,
-      "sharesBefore": 53556,
-      "sharesAfter": 58520,
-      "positionChangePct": 5.5,
-      "weightMoved": 0.1,
-      "weightAfter": 1.95,
-      "price": 794.79,
-      "value": 2419341
+      "ticker": "VEEV",
+      "name": "VEEVA SYS INC USD 0.00001",
+      "kind": "trimmed",
+      "netShares": -4832,
+      "sharesBefore": 26296,
+      "sharesAfter": 21464,
+      "positionChangePct": -18.4,
+      "weightMoved": -0.06,
+      "weightAfter": 0.28,
+      "price": 321.74,
+      "value": -1554648
     },
     {
       "rank": 20,
-      "etf": "ALAI",
+      "etf": "CLSE",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "GFS",
-      "name": "GLOBALFOUNDRIES INC USD 0.02",
-      "kind": "trimmed",
-      "netShares": -50819,
-      "sharesBefore": 354050,
-      "sharesAfter": 315925,
-      "positionChangePct": -13.9,
-      "weightMoved": -0.09,
-      "weightAfter": 0.59,
-      "price": 45.5,
-      "value": -2312264
+      "ticker": "SNDK",
+      "name": "Sandisk Corporation",
+      "kind": "added",
+      "netShares": 907,
+      "sharesBefore": 13358,
+      "sharesAfter": 14265,
+      "positionChangePct": 6.8,
+      "weightMoved": 0.12,
+      "weightAfter": 1.91,
+      "price": 1284.13,
+      "value": 1164706
     }
   ],
   "consensus": {
     "buys": [
       {
-        "ticker": "TLN",
-        "name": "TALEN ENERGY CORP NEW USD 0.001",
+        "ticker": "MU",
+        "name": "Micron Technology, Inc.",
         "funds": [
-          "CNEQ",
-          "ALAI"
+          "CHAT",
+          "FRWD"
         ],
-        "value": 15983752
-      },
-      {
-        "ticker": "SPCX",
-        "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
-        "funds": [
-          "ALAI",
-          "CNEQ"
-        ],
-        "value": 14239724
+        "value": 9769120
       }
     ],
     "sells": []
   },
   "flows": {
-    "AIS": 4.12,
-    "BAI": 0,
-    "ALAI": 3.59,
-    "AIFD": -1.5,
-    "SPRX": -1.53,
+    "AIS": 1.13,
+    "BAI": -0.14,
+    "ALAI": 0,
+    "AIFD": 0,
+    "SPRX": 0,
     "AOTG": 0,
     "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
-    "ANTW": 0,
+    "ANTW": 8.31,
     "AIHY": 0,
-    "NCLD": -0.34,
+    "NCLD": 8.09,
     "DISK": 0,
     "GTEK": 0,
     "ARKK": -0.41,
     "FRWD": 0,
     "BCTK": 0,
-    "FWD": 0.19,
-    "CBSE": 0,
+    "FWD": -0.53,
+    "CBSE": -0.95,
     "FCUS": 0,
-    "CNEQ": 4.83,
+    "CNEQ": 9.81,
     "SGRT": 0,
     "TEK": 0,
     "AIUP": 0,
-    "TCV": 0,
-    "LOUP": -0.1,
+    "TCV": 0.49,
+    "LOUP": 6,
     "MNVT": 0,
     "FFF": 0,
-    "GRNY": 0.06,
-    "GARY": -7.14,
+    "GRNY": 0,
+    "GARY": 0,
     "CLSE": 0,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 0,
+    "EUV": -3.07,
     "XDAT": 0,
-    "POW": 0,
-    "VOLT": 0,
-    "AIPO": 0,
+    "POW": 3.11,
+    "VOLT": 26.05,
+    "AIPO": 0.3,
     "RSHO": 0,
-    "IDEF": 0.16,
+    "IDEF": 0,
     "BILT": 0,
-    "WGMI": 7.88,
+    "WGMI": -8.68,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
     "MEME": 0,
     "RKNG": 0,
-    "CHAT": 1.32,
-    "DRAM": -0.04,
+    "CHAT": 0,
+    "DRAM": 0,
     "FDTX": 0,
     "MARS": 0
   },
