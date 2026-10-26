@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-10-25T13:39:44.393Z",
-  "scanTimestampNY": "October 25, 2026 at 9:39 AM ET",
+  "scanTimestamp": "2026-10-26T13:48:33.235Z",
+  "scanTimestampNY": "October 26, 2026 at 9:48 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -457,13 +457,13 @@
       },
       {
         "url": "https://wedbushfunds.com/latest-sod-holdings-ivep",
-        "error": "HTTP 404"
+        "error": "fetch failed"
       }
     ]
   },
   "yfScan": {
-    "total": 152,
-    "succeeded": 151,
+    "total": 151,
+    "succeeded": 150,
     "failed": [
       "AVIO"
     ]
