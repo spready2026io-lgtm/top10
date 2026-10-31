@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-10-30T13:39:38.720Z",
-  "scanTimestampNY": "October 30, 2026 at 9:39 AM ET",
+  "scanTimestamp": "2026-10-31T13:40:20.058Z",
+  "scanTimestampNY": "October 31, 2026 at 9:40 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 33
+        "count": 32
       },
       "AIFD": {
         "ok": true,
@@ -69,7 +69,7 @@
       },
       "IQM": {
         "ok": true,
-        "count": 23
+        "count": 22
       },
       "AGIQ": {
         "ok": true,
@@ -149,11 +149,11 @@
       },
       "FWD": {
         "ok": true,
-        "count": 21
+        "count": 20
       },
       "CBSE": {
         "ok": true,
-        "count": 24
+        "count": 23
       },
       "FCUS": {
         "ok": true,
@@ -189,7 +189,7 @@
       },
       "TEK": {
         "ok": true,
-        "count": 19
+        "count": 20
       },
       "FTEC": {
         "ok": true,
@@ -253,7 +253,7 @@
       },
       "EUV": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "XSW": {
         "ok": true,
@@ -273,7 +273,7 @@
       },
       "XDAT": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "CIBR": {
         "ok": true,
@@ -285,7 +285,7 @@
       },
       "BUG": {
         "ok": true,
-        "count": 20
+        "count": 21
       },
       "IHAK": {
         "ok": true,
@@ -317,11 +317,11 @@
       },
       "ELFY": {
         "ok": true,
-        "count": 23
+        "count": 24
       },
       "AIPO": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "AIRR": {
         "ok": true,
@@ -404,6 +404,10 @@
     ],
     "fetchErrors": [
       {
+        "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
+        "error": "HTTP 406"
+      },
+      {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46137V639/holdings/fund?idType=cusip&productType=ETF",
         "error": "HTTP 406"
       },
@@ -458,8 +462,8 @@
     ]
   },
   "yfScan": {
-    "total": 151,
-    "succeeded": 150,
+    "total": 150,
+    "succeeded": 149,
     "failed": [
       "AVIO"
     ]
