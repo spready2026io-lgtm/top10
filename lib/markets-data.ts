@@ -540,8 +540,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0.84
     },
     "flow1M": {
-      "usd": 961618500,
-      "pct": 4.29
+      "usd": 682888500,
+      "pct": 3.01
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -878,8 +878,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -22815000,
-      "pct": -12.71
+      "usd": -21294000,
+      "pct": -11.97
     },
     "note": "Onshore Shanghai and Shenzhen A-shares, the market domestic Chinese money trades. Read it against the China tile: onshore and offshore China regularly disagree, and the gap between the two is its own signal about who is buying, locals or foreigners."
   },
@@ -1385,8 +1385,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 481603500,
-      "pct": 2.2
+      "usd": 504537000,
+      "pct": 2.3
     },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
@@ -2568,8 +2568,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -9.88
     },
     "flow1M": {
-      "usd": 2075817000,
-      "pct": 27.49
+      "usd": 2036865000,
+      "pct": 26.84
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 4.48
     },
     "flow1M": {
-      "usd": 0,
-      "pct": 0
+      "usd": 14894000,
+      "pct": 0.96
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2906,8 +2906,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 10.09
     },
     "flow1M": {
-      "usd": -29330331,
-      "pct": -3.92
+      "usd": -29416874,
+      "pct": -3.93
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3075,8 +3075,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -1.3
     },
     "flow1M": {
-      "usd": -88561500,
-      "pct": -10.1
+      "usd": -97244000,
+      "pct": -10.98
     },
     "note": "Chile is effectively a copper call with a banking system attached: the lithium story adds a second commodity leg. Small market, big sensitivity to Chinese demand."
   }
@@ -3597,8 +3597,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -82404000,
-      "pct": -0.29
+      "usd": 0,
+      "pct": 0
     },
     "returns": {
       "1W": -1.26,
@@ -3819,8 +3819,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0.6
     },
     "flow1M": {
-      "usd": 2475720000,
-      "pct": 10.78
+      "usd": 2332200000,
+      "pct": 10.09
     },
     "returns": {
       "1W": -1.68,
@@ -4853,7 +4853,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Oct 31, 2026, 9:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Nov 1, 2026, 8:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
