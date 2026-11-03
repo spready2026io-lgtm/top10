@@ -1,47 +1,19 @@
 {
-  "date": "2026-11-02",
+  "date": "2026-11-03",
   "status": "ok",
-  "generatedAt": "2026-11-02T13:41:31.851Z",
-  "baselineFrom": "2026-10-30",
+  "generatedAt": "2026-11-03T13:41:59.146Z",
+  "baselineFrom": "2026-11-02",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 47,
+  "fundsCompared": 51,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
-  "fundsExcluded": [
-    {
-      "etf": "ANTW",
-      "flow": 18.75,
-      "moves": 0
-    },
-    {
-      "etf": "ARKK",
-      "flow": -10.19,
-      "moves": 2
-    },
-    {
-      "etf": "CNEQ",
-      "flow": -14.68,
-      "moves": 4
-    },
-    {
-      "etf": "MEME",
-      "flow": 23.13,
-      "moves": 20
-    }
-  ],
+  "fundsExcluded": [],
   "minMoveValue": 1000000,
-  "movesConsidered": 22,
-  "movesBelowFloor": 27,
-  "notListed": [
-    {
-      "etf": "BILT",
-      "ticker": "KEY",
-      "name": "KEYERA",
-      "reason": "the US listing is KeyCorp"
-    }
-  ],
+  "movesConsidered": 10,
+  "movesBelowFloor": 4,
+  "notListed": [],
   "top": [
     {
       "rank": 1,
@@ -49,17 +21,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "INTC",
-      "name": "INTEL CORPORATION",
+      "ticker": "LSCC",
+      "name": "LATTICE SEMICONDUCTOR",
       "kind": "trimmed",
-      "netShares": -1730085,
-      "sharesBefore": 3889989,
-      "sharesAfter": 2156400,
-      "positionChangePct": -44.5,
-      "weightMoved": -0.93,
-      "weightAfter": 1.16,
-      "price": 65.76,
-      "value": -113770390
+      "netShares": -384606,
+      "sharesBefore": 1008954,
+      "sharesAfter": 624348,
+      "positionChangePct": -38.1,
+      "weightMoved": -0.31,
+      "weightAfter": 0.51,
+      "price": 95.44,
+      "value": -36706797
     },
     {
       "rank": 2,
@@ -67,35 +39,35 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "TWST",
-      "name": "TWIST BIOSCIENCE",
-      "kind": "added",
-      "netShares": 260546,
-      "sharesBefore": 193753,
-      "sharesAfter": 454124,
-      "positionChangePct": 134.6,
-      "weightMoved": 0.33,
-      "weightAfter": 0.57,
-      "price": 152.78,
-      "value": 39806218
+      "ticker": "LITE",
+      "name": "LUMENTUM HOLDINGS",
+      "kind": "trimmed",
+      "netShares": -32364,
+      "sharesBefore": 418612,
+      "sharesAfter": 386248,
+      "positionChangePct": -7.7,
+      "weightMoved": -0.19,
+      "weightAfter": 2.25,
+      "price": 684.4,
+      "value": -22149922
     },
     {
       "rank": 3,
-      "etf": "BAI",
+      "etf": "CNEQ",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "ENTG",
-      "name": "ENTEGRIS INC",
-      "kind": "added",
-      "netShares": 243572,
-      "sharesBefore": 308696,
-      "sharesAfter": 551990,
-      "positionChangePct": 79,
-      "weightMoved": 0.31,
-      "weightAfter": 0.7,
-      "price": 154.39,
-      "value": 37605081
+      "ticker": "AAPL",
+      "name": "APPLE INC USD 0.00001",
+      "kind": "trimmed",
+      "netShares": -58144,
+      "sharesBefore": 894472,
+      "sharesAfter": 794751,
+      "positionChangePct": -6.8,
+      "weightMoved": -0.33,
+      "weightAfter": 4.47,
+      "price": 338.32,
+      "value": -19671278
     },
     {
       "rank": 4,
@@ -103,17 +75,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LSCC",
-      "name": "LATTICE SEMICONDUCTOR",
-      "kind": "trimmed",
-      "netShares": -279705,
-      "sharesBefore": 1289821,
-      "sharesAfter": 1008954,
-      "positionChangePct": -21.7,
-      "weightMoved": -0.21,
-      "weightAfter": 0.77,
-      "price": 92.97,
-      "value": -26004174
+      "ticker": "AMZN",
+      "name": "AMAZON.COM INC",
+      "kind": "added",
+      "netShares": 72693,
+      "sharesBefore": 1155249,
+      "sharesAfter": 1227942,
+      "positionChangePct": 6.3,
+      "weightMoved": 0.15,
+      "weightAfter": 2.56,
+      "price": 245.63,
+      "value": 17855582
     },
     {
       "rank": 5,
@@ -121,17 +93,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "MU",
-      "name": "MICRON TECHNOLOGY",
-      "kind": "trimmed",
-      "netShares": -28213,
-      "sharesBefore": 881493,
-      "sharesAfter": 852486,
-      "positionChangePct": -3.2,
-      "weightMoved": -0.2,
-      "weightAfter": 6.16,
-      "price": 884.74,
-      "value": -24961170
+      "ticker": "ENTG",
+      "name": "ENTEGRIS INC",
+      "kind": "added",
+      "netShares": 110454,
+      "sharesBefore": 551990,
+      "sharesAfter": 662444,
+      "positionChangePct": 20,
+      "weightMoved": 0.14,
+      "weightAfter": 0.85,
+      "price": 151.56,
+      "value": 16740408
     },
     {
       "rank": 6,
@@ -139,17 +111,17 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "AVGO",
-      "name": "BROADCOM INC",
+      "ticker": "MU",
+      "name": "MICRON TECHNOLOGY",
       "kind": "trimmed",
-      "netShares": -76281,
-      "sharesBefore": 1731920,
-      "sharesAfter": 1654079,
-      "positionChangePct": -4.4,
-      "weightMoved": -0.2,
-      "weightAfter": 4.41,
-      "price": 326.08,
-      "value": -24873708
+      "netShares": -19450,
+      "sharesBefore": 852486,
+      "sharesAfter": 833036,
+      "positionChangePct": -2.3,
+      "weightMoved": -0.14,
+      "weightAfter": 5.9,
+      "price": 833.59,
+      "value": -16213325
     },
     {
       "rank": 7,
@@ -157,38 +129,20 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LRCX",
-      "name": "LAM RESEARCH",
-      "kind": "trimmed",
-      "netShares": -103699,
-      "sharesBefore": 1875475,
-      "sharesAfter": 1770086,
-      "positionChangePct": -5.5,
-      "weightMoved": -0.2,
-      "weightAfter": 3.46,
-      "price": 239.11,
-      "value": -24795468
+      "ticker": "SPCX",
+      "name": "SPACE EXPLORATION TECHNOLOGIES COR",
+      "kind": "added",
+      "netShares": 86895,
+      "sharesBefore": 3198843,
+      "sharesAfter": 3285738,
+      "positionChangePct": 2.7,
+      "weightMoved": 0.1,
+      "weightAfter": 3.81,
+      "price": 136.37,
+      "value": 11849871
     },
     {
       "rank": 8,
-      "etf": "FWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AVGO",
-      "name": "Broadcom Inc.",
-      "kind": "added",
-      "netShares": 74111,
-      "sharesBefore": 165726,
-      "sharesAfter": 240405,
-      "positionChangePct": 44.6,
-      "weightMoved": 0.78,
-      "weightAfter": 2.53,
-      "price": 326.08,
-      "value": 24166115
-    },
-    {
-      "rank": 9,
       "etf": "BAI",
       "themes": [
         "AI & ML"
@@ -196,14 +150,32 @@
       "ticker": "SNDK",
       "name": "SANDISK",
       "kind": "trimmed",
-      "netShares": -19738,
-      "sharesBefore": 199891,
-      "sharesAfter": 179973,
-      "positionChangePct": -9.9,
-      "weightMoved": -0.19,
-      "weightAfter": 1.69,
-      "price": 1150.89,
-      "value": -22716267
+      "netShares": -10774,
+      "sharesBefore": 179973,
+      "sharesAfter": 169199,
+      "positionChangePct": -6,
+      "weightMoved": -0.1,
+      "weightAfter": 1.55,
+      "price": 1075.08,
+      "value": -11582912
+    },
+    {
+      "rank": 9,
+      "etf": "BAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "TSLA",
+      "name": "TESLA INC",
+      "kind": "added",
+      "netShares": 14969,
+      "sharesBefore": 381300,
+      "sharesAfter": 396269,
+      "positionChangePct": 3.9,
+      "weightMoved": 0.05,
+      "weightAfter": 1.36,
+      "price": 403.82,
+      "value": 6044782
     },
     {
       "rank": 10,
@@ -214,259 +186,69 @@
       "ticker": "TSEM",
       "name": "TOWER SEMICONDUCTOR",
       "kind": "trimmed",
-      "netShares": -106096,
-      "sharesBefore": 1266091,
-      "sharesAfter": 1158854,
-      "positionChangePct": -8.4,
-      "weightMoved": -0.14,
-      "weightAfter": 1.58,
-      "price": 166.48,
-      "value": -17662862
-    },
-    {
-      "rank": 11,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "GOOGL",
-      "name": "Alphabet Inc.",
-      "kind": "added",
-      "netShares": 52100,
-      "sharesBefore": 265918,
-      "sharesAfter": 335360,
-      "positionChangePct": 18.4,
-      "weightMoved": 0.91,
-      "weightAfter": 5.87,
-      "price": 279.84,
-      "value": 14579664
-    },
-    {
-      "rank": 12,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "MSFT",
-      "name": "MICROSOFT",
-      "kind": "added",
-      "netShares": 24828,
-      "sharesBefore": 607562,
-      "sharesAfter": 631843,
-      "positionChangePct": 4.1,
-      "weightMoved": 0.11,
-      "weightAfter": 2.69,
-      "price": 521.91,
-      "value": 12957981
-    },
-    {
-      "rank": 13,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPLORATION TECHNOLOGIES COR",
-      "kind": "added",
-      "netShares": 91613,
-      "sharesBefore": 3110032,
-      "sharesAfter": 3198843,
-      "positionChangePct": 2.9,
-      "weightMoved": 0.1,
-      "weightAfter": 3.52,
-      "price": 134.72,
-      "value": 12342103
-    },
-    {
-      "rank": 14,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "LITE",
-      "name": "Lumentum Holdings Inc.",
-      "kind": "trimmed",
-      "netShares": -14513,
-      "sharesBefore": 67591,
-      "sharesAfter": 57486,
-      "positionChangePct": -20.2,
-      "weightMoved": -0.76,
-      "weightAfter": 3.02,
-      "price": 840.7,
-      "value": -12201079
-    },
-    {
-      "rank": 15,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "COHR",
-      "name": "Coherent Corp.",
-      "kind": "added",
-      "netShares": 56643,
-      "sharesBefore": 156686,
-      "sharesAfter": 223547,
-      "positionChangePct": 33.9,
-      "weightMoved": 0.74,
-      "weightAfter": 2.94,
-      "price": 210.32,
-      "value": 11913156
-    },
-    {
-      "rank": 16,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "CRWV",
-      "name": "COREWEAVE CLASS A",
-      "kind": "trimmed",
-      "netShares": -215298,
-      "sharesBefore": 2837123,
-      "sharesAfter": 2619269,
-      "positionChangePct": -7.6,
-      "weightMoved": -0.1,
-      "weightAfter": 1.17,
-      "price": 54.87,
-      "value": -11813401
-    },
-    {
-      "rank": 17,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "NBIS",
-      "name": "Nebius Group N.V.",
-      "kind": "added",
-      "netShares": 72918,
-      "sharesBefore": 234917,
-      "sharesAfter": 323155,
-      "positionChangePct": 29.1,
-      "weightMoved": 0.7,
-      "weightAfter": 3.12,
-      "price": 154.14,
-      "value": 11239581
-    },
-    {
-      "rank": 18,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "TWLO",
-      "name": "TWILIO CLASS A",
-      "kind": "trimmed",
-      "netShares": -54386,
-      "sharesBefore": 463202,
-      "sharesAfter": 408399,
-      "positionChangePct": -11.8,
-      "weightMoved": -0.09,
-      "weightAfter": 0.68,
-      "price": 205.03,
-      "value": -11150762
-    },
-    {
-      "rank": 19,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "AMZN",
-      "name": "Amazon.com, Inc.",
-      "kind": "added",
-      "netShares": 43718,
-      "sharesBefore": 252831,
-      "sharesAfter": 313038,
-      "positionChangePct": 16.2,
-      "weightMoved": 0.66,
-      "weightAfter": 4.71,
-      "price": 240.35,
-      "value": 10507621
-    },
-    {
-      "rank": 20,
-      "etf": "CHAT",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "META",
-      "name": "Meta Platforms, Inc.",
-      "kind": "added",
-      "netShares": 14030,
-      "sharesBefore": 91581,
-      "sharesAfter": 111584,
-      "positionChangePct": 14.4,
-      "weightMoved": 0.54,
-      "weightAfter": 4.29,
-      "price": 614.99,
-      "value": 8628310
+      "netShares": -38164,
+      "sharesBefore": 1158854,
+      "sharesAfter": 1120690,
+      "positionChangePct": -3.3,
+      "weightMoved": -0.05,
+      "weightAfter": 1.48,
+      "price": 155.32,
+      "value": -5927632
     }
   ],
   "consensus": {
-    "buys": [
-      {
-        "ticker": "META",
-        "name": "Meta Platforms, Inc.",
-        "funds": [
-          "CHAT",
-          "FWD"
-        ],
-        "value": 10791230
-      }
-    ],
+    "buys": [],
     "sells": []
   },
   "flows": {
     "AIS": 0,
-    "BAI": -0.09,
-    "AIFD": -3.03,
+    "BAI": 0,
+    "AIFD": 0,
     "SPRX": 0,
-    "AOTG": 1.79,
+    "AOTG": 0,
     "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
-    "ANTW": 18.75,
+    "ANTW": 0,
     "AIHY": 0,
-    "NCLD": -4.14,
+    "NCLD": 0,
     "DISK": 0,
     "GTEK": 0,
-    "ARKK": -10.19,
-    "FRWD": 0.19,
+    "ARKK": -2.24,
+    "FRWD": 0,
     "BCTK": 0,
-    "FWD": 0.34,
+    "FWD": 0,
     "CBSE": 0,
     "FCUS": 0,
-    "CNEQ": -14.68,
-    "SGRT": 6.48,
+    "CNEQ": -4.65,
+    "SGRT": 0,
     "TEK": 0,
     "AIUP": 0,
     "TCV": 0,
-    "LOUP": -5.66,
+    "LOUP": 0,
     "MNVT": 0,
     "FFF": 0,
-    "GRNY": -0.2,
+    "GRNY": 0,
     "GARY": 0,
-    "CLSE": 0.13,
+    "CLSE": 0,
     "NXTE": 0,
     "LUMA": 0,
     "EUV": 0,
     "XDAT": 0,
     "POW": 0,
     "VOLT": 0,
-    "AIPO": 0.15,
+    "AIPO": 0,
     "RSHO": 0,
-    "IDEF": 0.13,
+    "IDEF": 0,
     "BILT": 0,
-    "WGMI": -6.48,
+    "WGMI": 0,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
-    "MEME": 23.13,
+    "MEME": 0,
     "RKNG": 0,
-    "CHAT": 6.52,
+    "CHAT": 0,
     "DRAM": 0,
     "FDTX": 0,
     "MARS": 0
