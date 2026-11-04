@@ -1,37 +1,93 @@
 {
-  "date": "2026-11-03",
+  "date": "2026-11-04",
   "status": "ok",
-  "generatedAt": "2026-11-03T13:41:59.146Z",
-  "baselineFrom": "2026-11-02",
+  "generatedAt": "2026-11-04T13:42:22.261Z",
+  "baselineFrom": "2026-11-03",
   "fundsTracked": 52,
   "fundsWithShares": 52,
   "fundsCompared": 51,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
-  "fundsExcluded": [],
+  "fundsExcluded": [
+    {
+      "etf": "WGMI",
+      "flow": -10.4,
+      "moves": 0
+    }
+  ],
   "minMoveValue": 1000000,
-  "movesConsidered": 10,
-  "movesBelowFloor": 4,
-  "notListed": [],
+  "movesConsidered": 26,
+  "movesBelowFloor": 13,
+  "notListed": [
+    {
+      "etf": "IDEF",
+      "ticker": "HO",
+      "name": "THALES SA",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "RHM",
+      "name": "RHEINMETALL AG",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "AIR",
+      "name": "AIRBUS GROUP",
+      "reason": "the US listing is AAR Corp."
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "KOG",
+      "name": "KONGSBERG GRUPPEN",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "HAG",
+      "name": "HENSOLDT AG",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "BAB",
+      "name": "BABCOCK INTERNATIONAL GROUP PLC",
+      "reason": "not an equity (ETF)"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "TKMS",
+      "name": "TKMS AG",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "SAF",
+      "name": "SAFRAN SA",
+      "reason": "no US listing"
+    }
+  ],
   "top": [
     {
       "rank": 1,
-      "etf": "BAI",
+      "etf": "IDEF",
       "themes": [
-        "AI & ML"
+        "Industrials",
+        "Space & Defense"
       ],
-      "ticker": "LSCC",
-      "name": "LATTICE SEMICONDUCTOR",
+      "ticker": "BA",
+      "name": "BOEING",
       "kind": "trimmed",
-      "netShares": -384606,
-      "sharesBefore": 1008954,
-      "sharesAfter": 624348,
-      "positionChangePct": -38.1,
-      "weightMoved": -0.31,
-      "weightAfter": 0.51,
-      "price": 95.44,
-      "value": -36706797
+      "netShares": -479937,
+      "sharesBefore": 758623,
+      "sharesAfter": 278686,
+      "positionChangePct": -63.3,
+      "weightMoved": -2.24,
+      "weightAfter": 1.3,
+      "price": 173.31,
+      "value": -83177881
     },
     {
       "rank": 2,
@@ -39,161 +95,347 @@
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LITE",
-      "name": "LUMENTUM HOLDINGS",
-      "kind": "trimmed",
-      "netShares": -32364,
-      "sharesBefore": 418612,
-      "sharesAfter": 386248,
-      "positionChangePct": -7.7,
-      "weightMoved": -0.19,
-      "weightAfter": 2.25,
-      "price": 684.4,
-      "value": -22149922
+      "ticker": "LSCC",
+      "name": "LATTICE SEMICONDUCTOR",
+      "kind": "exited",
+      "netShares": -625232,
+      "sharesBefore": 624348,
+      "sharesAfter": 0,
+      "positionChangePct": null,
+      "weightMoved": -0.51,
+      "weightAfter": 0,
+      "price": 105.92,
+      "value": -66224573
     },
     {
       "rank": 3,
-      "etf": "CNEQ",
+      "etf": "IDEF",
       "themes": [
-        "Broad Tech"
+        "Industrials",
+        "Space & Defense"
       ],
-      "ticker": "AAPL",
-      "name": "APPLE INC USD 0.00001",
+      "ticker": "GE",
+      "name": "GE AEROSPACE",
       "kind": "trimmed",
-      "netShares": -58144,
-      "sharesBefore": 894472,
-      "sharesAfter": 794751,
-      "positionChangePct": -6.8,
-      "weightMoved": -0.33,
-      "weightAfter": 4.47,
-      "price": 338.32,
-      "value": -19671278
+      "netShares": -146299,
+      "sharesBefore": 214982,
+      "sharesAfter": 68683,
+      "positionChangePct": -68.1,
+      "weightMoved": -1.26,
+      "weightAfter": 0.59,
+      "price": 320.67,
+      "value": -46913700
     },
     {
       "rank": 4,
-      "etf": "BAI",
+      "etf": "FWD",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "AMZN",
-      "name": "AMAZON.COM INC",
+      "ticker": "LLY",
+      "name": "Eli Lilly and Company",
       "kind": "added",
-      "netShares": 72693,
-      "sharesBefore": 1155249,
-      "sharesAfter": 1227942,
-      "positionChangePct": 6.3,
-      "weightMoved": 0.15,
-      "weightAfter": 2.56,
-      "price": 245.63,
-      "value": 17855582
+      "netShares": 13506,
+      "sharesBefore": 37781,
+      "sharesAfter": 51287,
+      "positionChangePct": 35.7,
+      "weightMoved": 0.61,
+      "weightAfter": 2.31,
+      "price": 1409.38,
+      "value": 19035086
     },
     {
       "rank": 5,
-      "etf": "BAI",
+      "etf": "IDEF",
       "themes": [
-        "AI & ML"
+        "Industrials",
+        "Space & Defense"
       ],
-      "ticker": "ENTG",
-      "name": "ENTEGRIS INC",
+      "ticker": "PANW",
+      "name": "PALO ALTO NETWORKS",
       "kind": "added",
-      "netShares": 110454,
-      "sharesBefore": 551990,
-      "sharesAfter": 662444,
-      "positionChangePct": 20,
-      "weightMoved": 0.14,
-      "weightAfter": 0.85,
-      "price": 151.56,
-      "value": 16740408
+      "netShares": 49203,
+      "sharesBefore": 134772,
+      "sharesAfter": 183975,
+      "positionChangePct": 36.5,
+      "weightMoved": 0.47,
+      "weightAfter": 1.74,
+      "price": 350.2,
+      "value": 17230891
     },
     {
       "rank": 6,
-      "etf": "BAI",
+      "etf": "IDEF",
       "themes": [
-        "AI & ML"
+        "Industrials",
+        "Space & Defense"
       ],
-      "ticker": "MU",
-      "name": "MICRON TECHNOLOGY",
-      "kind": "trimmed",
-      "netShares": -19450,
-      "sharesBefore": 852486,
-      "sharesAfter": 833036,
-      "positionChangePct": -2.3,
-      "weightMoved": -0.14,
-      "weightAfter": 5.9,
-      "price": 833.59,
-      "value": -16213325
+      "ticker": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS CLASS A",
+      "kind": "added",
+      "netShares": 66013,
+      "sharesBefore": 179513,
+      "sharesAfter": 245526,
+      "positionChangePct": 36.8,
+      "weightMoved": 0.44,
+      "weightAfter": 1.62,
+      "price": 244.68,
+      "value": 16152061
     },
     {
       "rank": 7,
-      "etf": "BAI",
+      "etf": "FWD",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPLORATION TECHNOLOGIES COR",
+      "ticker": "MRK",
+      "name": "Merck & Co., Inc.",
       "kind": "added",
-      "netShares": 86895,
-      "sharesBefore": 3198843,
-      "sharesAfter": 3285738,
-      "positionChangePct": 2.7,
-      "weightMoved": 0.1,
-      "weightAfter": 3.81,
-      "price": 136.37,
-      "value": 11849871
+      "netShares": 77630,
+      "sharesBefore": 273995,
+      "sharesAfter": 351625,
+      "positionChangePct": 28.3,
+      "weightMoved": 0.37,
+      "weightAfter": 1.67,
+      "price": 144.67,
+      "value": 11230732
     },
     {
       "rank": 8,
-      "etf": "BAI",
+      "etf": "ARKK",
       "themes": [
-        "AI & ML"
+        "Broad Tech"
       ],
-      "ticker": "SNDK",
-      "name": "SANDISK",
-      "kind": "trimmed",
-      "netShares": -10774,
-      "sharesBefore": 179973,
-      "sharesAfter": 169199,
-      "positionChangePct": -6,
-      "weightMoved": -0.1,
-      "weightAfter": 1.55,
-      "price": 1075.08,
-      "value": -11582912
+      "ticker": "SHOP",
+      "name": "SHOPIFY INC - CLASS A",
+      "kind": "added",
+      "netShares": 63239,
+      "sharesBefore": 1185070,
+      "sharesAfter": 1269108,
+      "positionChangePct": 5.2,
+      "weightMoved": 0.15,
+      "weightAfter": 2.98,
+      "price": 142.57,
+      "value": 9015984
     },
     {
       "rank": 9,
-      "etf": "BAI",
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "TSLA",
-      "name": "TESLA INC",
+      "ticker": "ANET",
+      "name": "ARISTA NETWORKS INC USD 0.0001",
       "kind": "added",
-      "netShares": 14969,
-      "sharesBefore": 381300,
-      "sharesAfter": 396269,
-      "positionChangePct": 3.9,
-      "weightMoved": 0.05,
-      "weightAfter": 1.36,
-      "price": 403.82,
-      "value": 6044782
+      "netShares": 51723,
+      "sharesBefore": 36024,
+      "sharesAfter": 87732,
+      "positionChangePct": 143.6,
+      "weightMoved": 0.35,
+      "weightAfter": 0.6,
+      "price": 169.91,
+      "value": 8788255
     },
     {
       "rank": 10,
-      "etf": "BAI",
+      "etf": "FWD",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "META",
+      "name": "Meta Platforms, Inc.",
+      "kind": "added",
+      "netShares": 13209,
+      "sharesBefore": 94785,
+      "sharesAfter": 107994,
+      "positionChangePct": 13.9,
+      "weightMoved": 0.26,
+      "weightAfter": 2.11,
+      "price": 621.03,
+      "value": 8203185
+    },
+    {
+      "rank": 11,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "FTNT",
+      "name": "FORTINET",
+      "kind": "added",
+      "netShares": 60657,
+      "sharesBefore": 170238,
+      "sharesAfter": 230895,
+      "positionChangePct": 35.6,
+      "weightMoved": 0.21,
+      "weightAfter": 0.8,
+      "price": 128.11,
+      "value": 7770768
+    },
+    {
+      "rank": 12,
+      "etf": "ARKK",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC-A",
+      "kind": "added",
+      "netShares": 35342,
+      "sharesBefore": 850560,
+      "sharesAfter": 900830,
+      "positionChangePct": 4.1,
+      "weightMoved": 0.1,
+      "weightAfter": 2.61,
+      "price": 175.4,
+      "value": 6198987
+    },
+    {
+      "rank": 13,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "ZS",
+      "name": "ZSCALER",
+      "kind": "added",
+      "netShares": 26956,
+      "sharesBefore": 73663,
+      "sharesAfter": 100619,
+      "positionChangePct": 36.6,
+      "weightMoved": 0.16,
+      "weightAfter": 0.61,
+      "price": 225.09,
+      "value": 6067526
+    },
+    {
+      "rank": 14,
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "TSEM",
-      "name": "TOWER SEMICONDUCTOR",
+      "ticker": "ETN",
+      "name": "EATON CORP PLC USD 0.01",
+      "kind": "added",
+      "netShares": 9378,
+      "sharesBefore": 11791,
+      "sharesAfter": 21164,
+      "positionChangePct": 79.6,
+      "weightMoved": 0.15,
+      "weightAfter": 0.33,
+      "price": 391.7,
+      "value": 3673363
+    },
+    {
+      "rank": 15,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "TLN",
+      "name": "TALEN ENERGY CORP NEW USD 0.001",
+      "kind": "added",
+      "netShares": 10186,
+      "sharesBefore": 178886,
+      "sharesAfter": 188999,
+      "positionChangePct": 5.7,
+      "weightMoved": 0.15,
+      "weightAfter": 2.73,
+      "price": 357.28,
+      "value": 3639254
+    },
+    {
+      "rank": 16,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "TMO",
+      "name": "THERMO FISHER SCIENTIFIC IN USD 1.0",
+      "kind": "added",
+      "netShares": 5050,
+      "sharesBefore": 46317,
+      "sharesAfter": 51348,
+      "positionChangePct": 10.9,
+      "weightMoved": 0.14,
+      "weightAfter": 1.45,
+      "price": 698.34,
+      "value": 3526617
+    },
+    {
+      "rank": 17,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "LITE",
+      "name": "LUMENTUM HLDGS INC USD 0.001",
       "kind": "trimmed",
-      "netShares": -38164,
-      "sharesBefore": 1158854,
-      "sharesAfter": 1120690,
-      "positionChangePct": -3.3,
-      "weightMoved": -0.05,
-      "weightAfter": 1.48,
-      "price": 155.32,
-      "value": -5927632
+      "netShares": -5036,
+      "sharesBefore": 64064,
+      "sharesAfter": 59002,
+      "positionChangePct": -7.9,
+      "weightMoved": -0.14,
+      "weightAfter": 1.62,
+      "price": 680.16,
+      "value": -3425286
+    },
+    {
+      "rank": 18,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "WRBY",
+      "name": "WARBY PARKER INC USD 0.0001",
+      "kind": "trimmed",
+      "netShares": -121256,
+      "sharesBefore": 323033,
+      "sharesAfter": 201645,
+      "positionChangePct": -37.6,
+      "weightMoved": -0.11,
+      "weightAfter": 0.18,
+      "price": 21.94,
+      "value": -2660357
+    },
+    {
+      "rank": 19,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "ALAB",
+      "name": "ASTERA LABS INC USD 0.0001",
+      "kind": "added",
+      "netShares": 9401,
+      "sharesBefore": 64113,
+      "sharesAfter": 73488,
+      "positionChangePct": 14.7,
+      "weightMoved": 0.09,
+      "weightAfter": 0.69,
+      "price": 233.62,
+      "value": 2196262
+    },
+    {
+      "rank": 20,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "EFOR",
+      "name": "EVERFORTH",
+      "kind": "added",
+      "netShares": 63896,
+      "sharesBefore": 190341,
+      "sharesAfter": 254237,
+      "positionChangePct": 33.6,
+      "weightMoved": 0.06,
+      "weightAfter": 0.23,
+      "price": 34.25,
+      "value": 2188438
     }
   ],
   "consensus": {
@@ -201,11 +443,12 @@
     "sells": []
   },
   "flows": {
-    "AIS": 0,
-    "BAI": 0,
+    "AIS": -6.15,
+    "BAI": 0.14,
+    "ALAI": -0.04,
     "AIFD": 0,
-    "SPRX": 0,
-    "AOTG": 0,
+    "SPRX": 2.08,
+    "AOTG": -0.88,
     "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
@@ -215,13 +458,13 @@
     "NCLD": 0,
     "DISK": 0,
     "GTEK": 0,
-    "ARKK": -2.24,
+    "ARKK": 1.76,
     "FRWD": 0,
     "BCTK": 0,
     "FWD": 0,
     "CBSE": 0,
     "FCUS": 0,
-    "CNEQ": -4.65,
+    "CNEQ": 0,
     "SGRT": 0,
     "TEK": 0,
     "AIUP": 0,
@@ -237,12 +480,12 @@
     "EUV": 0,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": 0,
+    "VOLT": 2.08,
     "AIPO": 0,
     "RSHO": 0,
     "IDEF": 0,
     "BILT": 0,
-    "WGMI": 0,
+    "WGMI": -10.4,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
