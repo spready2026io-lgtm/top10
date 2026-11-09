@@ -1,35 +1,40 @@
 {
-  "date": "2026-11-06",
+  "date": "2026-11-09",
   "status": "ok",
-  "generatedAt": "2026-11-06T13:41:42.680Z",
-  "baselineFrom": "2026-11-05",
+  "generatedAt": "2026-11-09T13:41:24.345Z",
+  "baselineFrom": "2026-11-06",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 51,
+  "fundsCompared": 50,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
   "fundsExcluded": [
     {
-      "etf": "SGRT",
-      "flow": -17.73,
-      "moves": 8
+      "etf": "ALAI",
+      "flow": -27.01,
+      "moves": 2
+    },
+    {
+      "etf": "CNEQ",
+      "flow": -23.61,
+      "moves": 0
     }
   ],
   "minMoveValue": 1000000,
-  "movesConsidered": 44,
-  "movesBelowFloor": 18,
+  "movesConsidered": 23,
+  "movesBelowFloor": 57,
   "notListed": [
-    {
-      "etf": "AIS",
-      "ticker": "TWD",
-      "name": "NEW TAIWAN DOLLAR",
-      "reason": "not an equity (ECNQUOTE)"
-    },
     {
       "etf": "AIS",
       "ticker": "KRW",
       "name": "SOUTH KOREA WON",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "AIS",
+      "ticker": "TWD",
+      "name": "NEW TAIWAN DOLLAR",
       "reason": "not an equity (ECNQUOTE)"
     },
     {
@@ -39,303 +44,75 @@
       "reason": "no US listing"
     },
     {
-      "etf": "IDEF",
-      "ticker": "BAB",
-      "name": "BABCOCK INTERNATIONAL GROUP PLC",
-      "reason": "not an equity (ETF)"
+      "etf": "BILT",
+      "ticker": "ADP",
+      "name": "AEROPORTS DE PARIS SA",
+      "reason": "the US listing is Automatic Data Processing, Inc."
+    },
+    {
+      "etf": "BILT",
+      "ticker": "FHZN",
+      "name": "FLUGHAFEN ZUERICH AG",
+      "reason": "no US listing"
     }
   ],
   "top": [
     {
       "rank": 1,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AVGO",
-      "name": "BROADCOM INC",
-      "kind": "trimmed",
-      "netShares": -356353,
-      "sharesBefore": 358186,
-      "sharesAfter": 9161,
-      "positionChangePct": -97.5,
-      "weightMoved": -1.94,
-      "weightAfter": 0.05,
-      "price": 291.53,
-      "value": -103887590
-    },
-    {
-      "rank": 2,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "NVDA",
-      "name": "NVIDIA CORP",
-      "kind": "added",
-      "netShares": 240683,
-      "sharesBefore": 892082,
-      "sharesAfter": 1151016,
-      "positionChangePct": 26.4,
-      "weightMoved": 0.77,
-      "weightAfter": 3.7,
-      "price": 181.6,
-      "value": 43708033
-    },
-    {
-      "rank": 3,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPLORATION TECHN-CL A",
-      "kind": "added",
-      "netShares": 268750,
-      "sharesBefore": 2993115,
-      "sharesAfter": 3323102,
-      "positionChangePct": 8.8,
-      "weightMoved": 0.59,
-      "weightAfter": 7.28,
-      "price": 123.62,
-      "value": 33222875
-    },
-    {
-      "rank": 4,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "TER",
-      "name": "TERADYNE INC",
-      "kind": "trimmed",
-      "netShares": -150475,
-      "sharesBefore": 161391,
-      "sharesAfter": 14218,
-      "positionChangePct": -91.4,
-      "weightMoved": -0.53,
-      "weightAfter": 0.05,
-      "price": 212.74,
-      "value": -32012051
-    },
-    {
-      "rank": 5,
       "etf": "BAI",
       "themes": [
         "AI & ML"
       ],
       "ticker": "WDAY",
       "name": "WORKDAY CLASS A",
-      "kind": "new",
-      "netShares": 110852,
-      "sharesBefore": 0,
-      "sharesAfter": 110852,
-      "positionChangePct": null,
-      "weightMoved": 0.22,
-      "weightAfter": 0.22,
-      "price": 200.17,
-      "value": 22189245
-    },
-    {
-      "rank": 6,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "MSFT",
-      "name": "MICROSOFT",
       "kind": "added",
-      "netShares": 39829,
-      "sharesBefore": 640356,
-      "sharesAfter": 679362,
-      "positionChangePct": 6.2,
-      "weightMoved": 0.21,
-      "weightAfter": 3.54,
-      "price": 535.93,
-      "value": 21345556
+      "netShares": 164811,
+      "sharesBefore": 110852,
+      "sharesAfter": 276319,
+      "positionChangePct": 147.8,
+      "weightMoved": 0.3,
+      "weightAfter": 0.5,
+      "price": 192.9,
+      "value": 31792042
     },
     {
-      "rank": 7,
-      "etf": "ARKK",
+      "rank": 2,
+      "etf": "DRAM",
       "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AMD",
-      "name": "ADVANCED MICRO DEVICES",
-      "kind": "added",
-      "netShares": 43916,
-      "sharesBefore": 208352,
-      "sharesAfter": 256531,
-      "positionChangePct": 20.7,
-      "weightMoved": 0.31,
-      "weightAfter": 1.84,
-      "price": 404.4,
-      "value": 17759630
-    },
-    {
-      "rank": 8,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "CRWV",
-      "name": "COREWEAVE INC-CL A",
-      "kind": "trimmed",
-      "netShares": -323799,
-      "sharesBefore": 2688023,
-      "sharesAfter": 2419219,
-      "positionChangePct": -11.8,
-      "weightMoved": -0.25,
-      "weightAfter": 1.87,
-      "price": 43.66,
-      "value": -14137064
-    },
-    {
-      "rank": 9,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "GOOG",
-      "name": "ALPHABET INC-CL C",
-      "kind": "added",
-      "netShares": 43904,
-      "sharesBefore": 148348,
-      "sharesAfter": 195287,
-      "positionChangePct": 29,
-      "weightMoved": 0.22,
-      "weightAfter": 0.97,
-      "price": 281.74,
-      "value": 12369513
-    },
-    {
-      "rank": 10,
-      "etf": "ARKK",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "CBRS",
-      "name": "CEREBRAS SYSTEMS INC - A",
-      "kind": "added",
-      "netShares": 136703,
-      "sharesBefore": 1023927,
-      "sharesAfter": 1181579,
-      "positionChangePct": 13.1,
-      "weightMoved": 0.2,
-      "weightAfter": 1.71,
-      "price": 81.71,
-      "value": 11170002
-    },
-    {
-      "rank": 11,
-      "etf": "CNEQ",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AVGO",
-      "name": "BROADCOM INC NPV",
-      "kind": "trimmed",
-      "netShares": -37495,
-      "sharesBefore": 702057,
-      "sharesAfter": 609805,
-      "positionChangePct": -5.8,
-      "weightMoved": -0.21,
-      "weightAfter": 3.37,
-      "price": 291.53,
-      "value": -10930917
-    },
-    {
-      "rank": 12,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "U",
-      "name": "UNITY SOFTWARE INC USD 0.000005",
-      "kind": "added",
-      "netShares": 220529,
-      "sharesBefore": 325650,
-      "sharesAfter": 515156,
-      "positionChangePct": 74.9,
-      "weightMoved": 0.52,
-      "weightAfter": 1.22,
-      "price": 48.8,
-      "value": 10761815
-    },
-    {
-      "rank": 13,
-      "etf": "CNEQ",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "WDC",
-      "name": "WESTERN DIGITAL CORP USD 0.01",
-      "kind": "trimmed",
-      "netShares": -37180,
-      "sharesBefore": 629161,
-      "sharesAfter": 542909,
-      "positionChangePct": -6.4,
-      "weightMoved": -0.19,
-      "weightAfter": 2.75,
-      "price": 267.63,
-      "value": -9950483
-    },
-    {
-      "rank": 14,
-      "etf": "CNEQ",
-      "themes": [
-        "Broad Tech"
+        "Semiconductors"
       ],
       "ticker": "MU",
-      "name": "MICRON TECHNOLOGY INC USD 0.1",
+      "name": "Micron Technology, Inc.",
       "kind": "trimmed",
-      "netShares": -14893,
-      "sharesBefore": 231062,
-      "sharesAfter": 198147,
-      "positionChangePct": -7,
-      "weightMoved": -0.18,
-      "weightAfter": 2.46,
-      "price": 656.39,
-      "value": -9775616
+      "netShares": -40425,
+      "sharesBefore": 558327,
+      "sharesAfter": 513631,
+      "positionChangePct": -7.3,
+      "weightMoved": -0.19,
+      "weightAfter": 2.36,
+      "price": 690,
+      "value": -27893250
     },
     {
-      "rank": 15,
+      "rank": 3,
       "etf": "BAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LITE",
-      "name": "LUMENTUM HOLDINGS",
+      "ticker": "TSEM",
+      "name": "TOWER SEMICONDUCTOR",
       "kind": "trimmed",
-      "netShares": -18563,
-      "sharesBefore": 387198,
-      "sharesAfter": 368137,
-      "positionChangePct": -4.8,
-      "weightMoved": -0.09,
-      "weightAfter": 1.82,
-      "price": 509.7,
-      "value": -9461561
-    },
-    {
-      "rank": 16,
-      "etf": "BAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "AAOI",
-      "name": "APPLIED OPTOELECTRONICS",
-      "kind": "trimmed",
-      "netShares": -196699,
-      "sharesBefore": 1576529,
-      "sharesAfter": 1377804,
+      "netShares": -133600,
+      "sharesBefore": 1062146,
+      "sharesAfter": 934829,
       "positionChangePct": -12.5,
-      "weightMoved": -0.09,
-      "weightAfter": 0.63,
-      "price": 46.89,
-      "value": -9223216
+      "weightMoved": -0.17,
+      "weightAfter": 1.21,
+      "price": 137.34,
+      "value": -18348624
     },
     {
-      "rank": 17,
+      "rank": 4,
       "etf": "BAI",
       "themes": [
         "AI & ML"
@@ -343,106 +120,341 @@
       "ticker": "LRCX",
       "name": "LAM RESEARCH",
       "kind": "trimmed",
-      "netShares": -49749,
-      "sharesBefore": 1774418,
-      "sharesAfter": 1722388,
-      "positionChangePct": -2.8,
-      "weightMoved": -0.09,
-      "weightAfter": 3.1,
-      "price": 185.2,
-      "value": -9213515
+      "netShares": -81647,
+      "sharesBefore": 1722388,
+      "sharesAfter": 1650929,
+      "positionChangePct": -4.7,
+      "weightMoved": -0.15,
+      "weightAfter": 3.13,
+      "price": 200.44,
+      "value": -16365325
     },
     {
-      "rank": 18,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "TSM",
-      "name": "TAIWAN SEMICONDUCTOR M TWD 10.0 ADR",
-      "kind": "trimmed",
-      "netShares": -24476,
-      "sharesBefore": 349607,
-      "sharesAfter": 291825,
-      "positionChangePct": -7.7,
-      "weightMoved": -0.42,
-      "weightAfter": 4.99,
-      "price": 353.1,
-      "value": -8642476
-    },
-    {
-      "rank": 19,
-      "etf": "CNEQ",
+      "rank": 5,
+      "etf": "ARKK",
       "themes": [
         "Broad Tech"
       ],
-      "ticker": "AMZN",
-      "name": "AMAZON COM INC USD 0.01",
-      "kind": "trimmed",
-      "netShares": -32928,
-      "sharesBefore": 1092773,
-      "sharesAfter": 974614,
-      "positionChangePct": -3.3,
-      "weightMoved": -0.16,
-      "weightAfter": 4.8,
-      "price": 260.21,
-      "value": -8568195
+      "ticker": "NTRA",
+      "name": "NATERA INC",
+      "kind": "added",
+      "netShares": 46389,
+      "sharesBefore": 185525,
+      "sharesAfter": 232394,
+      "positionChangePct": 24.9,
+      "weightMoved": 0.25,
+      "weightAfter": 1.23,
+      "price": 310.67,
+      "value": 14411671
     },
     {
-      "rank": 20,
-      "etf": "CNEQ",
+      "rank": 6,
+      "etf": "FWD",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices, Inc.",
+      "kind": "added",
+      "netShares": 17762,
+      "sharesBefore": 107065,
+      "sharesAfter": 125030,
+      "positionChangePct": 16.6,
+      "weightMoved": 0.27,
+      "weightAfter": 1.92,
+      "price": 449.04,
+      "value": 7975848
+    },
+    {
+      "rank": 7,
+      "etf": "BAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "IQV",
+      "name": "IQVIA HOLDINGS INC",
+      "kind": "added",
+      "netShares": 28812,
+      "sharesBefore": 21898,
+      "sharesAfter": 50840,
+      "positionChangePct": 130.8,
+      "weightMoved": 0.07,
+      "weightAfter": 0.13,
+      "price": 271.83,
+      "value": 7831966
+    },
+    {
+      "rank": 8,
+      "etf": "FWD",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "NVDA",
+      "name": "NVIDIA Corporation",
+      "kind": "added",
+      "netShares": 39557,
+      "sharesBefore": 524741,
+      "sharesAfter": 565294,
+      "positionChangePct": 7.5,
+      "weightMoved": 0.25,
+      "weightAfter": 3.61,
+      "price": 186.64,
+      "value": 7382918
+    },
+    {
+      "rank": 9,
+      "etf": "FWD",
       "themes": [
         "Broad Tech"
       ],
       "ticker": "META",
-      "name": "META PLATFORMS INC USD 0.000006",
+      "name": "Meta Platforms, Inc.",
+      "kind": "added",
+      "netShares": 11577,
+      "sharesBefore": 107994,
+      "sharesAfter": 119776,
+      "positionChangePct": 10.7,
+      "weightMoved": 0.24,
+      "weightAfter": 2.5,
+      "price": 610.15,
+      "value": 7063707
+    },
+    {
+      "rank": 10,
+      "etf": "FWD",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "SPCX",
+      "name": "Space Exploration Technologies Corp.",
+      "kind": "added",
+      "netShares": 41795,
+      "sharesBefore": 381823,
+      "sharesAfter": 424343,
+      "positionChangePct": 10.9,
+      "weightMoved": 0.19,
+      "weightAfter": 1.95,
+      "price": 134.27,
+      "value": 5611815
+    },
+    {
+      "rank": 11,
+      "etf": "FWD",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "KLAC",
+      "name": "KLA Corporation",
+      "kind": "added",
+      "netShares": 30394,
+      "sharesBefore": 243631,
+      "sharesAfter": 274488,
+      "positionChangePct": 12.5,
+      "weightMoved": 0.14,
+      "weightAfter": 1.3,
+      "price": 138.49,
+      "value": 4209265
+    },
+    {
+      "rank": 12,
+      "etf": "SPRX",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices, Inc.",
+      "kind": "added",
+      "netShares": 7000,
+      "sharesBefore": 2764,
+      "sharesAfter": 9764,
+      "positionChangePct": 253.3,
+      "weightMoved": 2.06,
+      "weightAfter": 2.88,
+      "price": 449.04,
+      "value": 3143280
+    },
+    {
+      "rank": 13,
+      "etf": "ARKK",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "KTOS",
+      "name": "KRATOS DEFENSE & SECURITY",
+      "kind": "added",
+      "netShares": 87471,
+      "sharesBefore": 1738290,
+      "sharesAfter": 1830257,
+      "positionChangePct": 5,
+      "weightMoved": 0.05,
+      "weightAfter": 1.09,
+      "price": 35.1,
+      "value": 3070232
+    },
+    {
+      "rank": 14,
+      "etf": "CLSE",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "AAPL",
+      "name": "Apple Inc.",
+      "kind": "added",
+      "netShares": 8685,
+      "sharesBefore": 83697,
+      "sharesAfter": 92271,
+      "positionChangePct": 10.4,
+      "weightMoved": 0.31,
+      "weightAfter": 3.34,
+      "price": 342.37,
+      "value": 2973483
+    },
+    {
+      "rank": 15,
+      "etf": "ARKK",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "AVGO",
+      "name": "BROADCOM INC",
+      "kind": "exited",
+      "netShares": -9185,
+      "sharesBefore": 9161,
+      "sharesAfter": 0,
+      "positionChangePct": null,
+      "weightMoved": -0.05,
+      "weightAfter": 0,
+      "price": 293.69,
+      "value": -2697543
+    },
+    {
+      "rank": 16,
+      "etf": "CLSE",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "GDDY",
+      "name": "GoDaddy Inc.",
+      "kind": "added",
+      "netShares": 22919,
+      "sharesBefore": 97839,
+      "sharesAfter": 120628,
+      "positionChangePct": 23.5,
+      "weightMoved": 0.29,
+      "weightAfter": 1.53,
+      "price": 114.38,
+      "value": 2621475
+    },
+    {
+      "rank": 17,
+      "etf": "DECO",
+      "themes": [
+        "Crypto"
+      ],
+      "ticker": "RIOT",
+      "name": "Riot Platforms, Inc.",
       "kind": "trimmed",
-      "netShares": -14104,
-      "sharesBefore": 348200,
-      "sharesAfter": 306938,
-      "positionChangePct": -4.4,
-      "weightMoved": -0.16,
-      "weightAfter": 3.52,
-      "price": 605.08,
-      "value": -8534048
+      "netShares": -107728,
+      "sharesBefore": 143618,
+      "sharesAfter": 35890,
+      "positionChangePct": -75,
+      "weightMoved": -11.56,
+      "weightAfter": 3.85,
+      "price": 16.71,
+      "value": -1800135
+    },
+    {
+      "rank": 18,
+      "etf": "SPRX",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "COHR",
+      "name": "Coherent Corp.",
+      "kind": "added",
+      "netShares": 9000,
+      "sharesBefore": 60576,
+      "sharesAfter": 69576,
+      "positionChangePct": 14.9,
+      "weightMoved": 1.11,
+      "weightAfter": 8.6,
+      "price": 192.81,
+      "value": 1735290
+    },
+    {
+      "rank": 19,
+      "etf": "AIFD",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "MU",
+      "name": "Micron Technology, Inc.",
+      "kind": "trimmed",
+      "netShares": -2490,
+      "sharesBefore": 8489,
+      "sharesAfter": 5999,
+      "positionChangePct": -29.3,
+      "weightMoved": -1.65,
+      "weightAfter": 3.97,
+      "price": 690,
+      "value": -1718100
+    },
+    {
+      "rank": 20,
+      "etf": "AIFD",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "NVDA",
+      "name": "NVIDIA Corporation",
+      "kind": "trimmed",
+      "netShares": -8634,
+      "sharesBefore": 42656,
+      "sharesAfter": 34022,
+      "positionChangePct": -20.2,
+      "weightMoved": -1.54,
+      "weightAfter": 6.08,
+      "price": 186.64,
+      "value": -1611450
     }
   ],
   "consensus": {
-    "buys": [],
+    "buys": [
+      {
+        "ticker": "AMD",
+        "name": "Advanced Micro Devices, Inc.",
+        "funds": [
+          "FWD",
+          "SPRX"
+        ],
+        "value": 11119128
+      }
+    ],
     "sells": [
+      {
+        "ticker": "MU",
+        "name": "Micron Technology, Inc.",
+        "funds": [
+          "DRAM",
+          "AIFD"
+        ],
+        "value": -29611350
+      },
       {
         "ticker": "AVGO",
         "name": "BROADCOM INC",
         "funds": [
           "ARKK",
-          "CNEQ"
+          "AIFD"
         ],
-        "value": -114818507
-      },
-      {
-        "ticker": "MU",
-        "name": "MICRON TECHNOLOGY INC USD 0.1",
-        "funds": [
-          "CNEQ",
-          "ALAI"
-        ],
-        "value": -13781564
-      },
-      {
-        "ticker": "AMZN",
-        "name": "AMAZON COM INC USD 0.01",
-        "funds": [
-          "CNEQ",
-          "ALAI"
-        ],
-        "value": -13457020
+        "value": -3848808
       }
     ]
   },
   "flows": {
-    "AIS": -1.49,
-    "BAI": -0.13,
-    "ALAI": -9.53,
+    "AIS": -1.97,
+    "BAI": 0.59,
+    "ALAI": -27.01,
     "AIFD": 0,
     "SPRX": 0,
     "AOTG": 0,
@@ -450,47 +462,47 @@
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
-    "ANTW": 4.26,
-    "AIHY": -3.03,
-    "NCLD": -0.48,
-    "DISK": 0,
+    "ANTW": 0,
+    "AIHY": 0,
+    "NCLD": 2.1,
+    "DISK": -1.61,
     "GTEK": 0,
-    "ARKK": 2.05,
-    "FRWD": 0,
+    "ARKK": 0.26,
+    "FRWD": 1.02,
     "BCTK": 0,
-    "FWD": 0,
+    "FWD": 0.19,
     "CBSE": 0,
-    "FCUS": -6.68,
-    "CNEQ": -7.8,
-    "SGRT": -17.73,
-    "TEK": 0,
-    "AIUP": 0,
+    "FCUS": 0,
+    "CNEQ": -23.61,
+    "SGRT": -0.49,
+    "TEK": 3.56,
+    "AIUP": -2.74,
     "TCV": 0,
-    "LOUP": 4,
+    "LOUP": -5.77,
     "MNVT": 0,
     "FFF": 0,
-    "GRNY": -0.08,
+    "GRNY": -0.25,
     "GARY": 0,
-    "CLSE": -1.42,
+    "CLSE": -0.13,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 0,
+    "EUV": 0.34,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": 0,
-    "AIPO": 0,
+    "VOLT": -9.74,
+    "AIPO": -1.36,
     "RSHO": 0,
-    "IDEF": 0.16,
+    "IDEF": 0,
     "BILT": 0,
-    "WGMI": 0,
+    "WGMI": 3.37,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
     "MEME": 0,
     "RKNG": 0,
     "CHAT": 0,
-    "DRAM": 0,
-    "FDTX": 0,
+    "DRAM": -0.77,
+    "FDTX": -7.15,
     "MARS": 0
   },
   "scope": "active",

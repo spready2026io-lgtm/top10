@@ -202,8 +202,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 1.09
     },
     "flow1M": {
-      "usd": 266976000,
-      "pct": 2.86
+      "usd": 192816000,
+      "pct": 2.05
     },
     "note": "One tile for the whole continent. IEUR spans developed Europe end to end, from UK banks to French luxury to German industrials. Watch it against the single-market tiles below: when Europe rises but a member market lags, that divergence is the story."
   },
@@ -709,8 +709,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -114158000,
-      "pct": -1.92
+      "usd": -93402000,
+      "pct": -1.58
     },
     "note": "Broad China through offshore listings, the shares global money can actually buy: Hong Kong lists and US ADRs, led by the internet platforms. This is the tile that moves when foreign sentiment on China turns."
   },
@@ -1385,8 +1385,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -0.17
     },
     "flow1M": {
-      "usd": 513787500,
-      "pct": 2.63
+      "usd": 534339000,
+      "pct": 2.74
     },
     "note": "South Korea is memory chips, batteries and autos, with Samsung towering over the index. Cheap on paper for years (the Korea discount), it re-rates in bursts whenever governance reform or a chip upcycle gets credible."
   },
@@ -2568,8 +2568,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -4.01
     },
     "flow1M": {
-      "usd": 206271000,
-      "pct": 2.32
+      "usd": -159900000,
+      "pct": -1.73
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
@@ -2906,8 +2906,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -7.53
     },
     "flow1M": {
-      "usd": 28538579,
-      "pct": 4.84
+      "usd": 17716530,
+      "pct": 2.95
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -4061,8 +4061,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 1.09
     },
     "flow1M": {
-      "usd": 266976000,
-      "pct": 2.86
+      "usd": 192816000,
+      "pct": 2.05
     },
     "returns": {
       "1W": -0.84,
@@ -4869,7 +4869,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Nov 8, 2026, 8:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Nov 9, 2026, 8:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
