@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-11-13T14:40:50.786Z",
-  "scanTimestampNY": "November 13, 2026 at 9:40 AM ET",
+  "scanTimestamp": "2026-11-13T15:43:35.507Z",
+  "scanTimestampNY": "November 13, 2026 at 10:43 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -20,8 +20,8 @@
         "count": 8
       },
       "IVES": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 30
       },
       "ALAI": {
         "ok": true,
@@ -312,8 +312,8 @@
         "count": 9
       },
       "IVEP": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 30
       },
       "ELFY": {
         "ok": true,
@@ -397,11 +397,8 @@
       }
     },
     "total": 98,
-    "ok": 96,
-    "failed": [
-      "IVES",
-      "IVEP"
-    ],
+    "ok": 98,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -450,20 +447,12 @@
       {
         "url": "https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/product-documents/daily-holdings/wcld.csv",
         "error": "HTTP 404"
-      },
-      {
-        "url": "https://wedbushfunds.com/latest-sod-holdings-ives",
-        "error": "HTTP 404"
-      },
-      {
-        "url": "https://wedbushfunds.com/latest-sod-holdings-ivep",
-        "error": "HTTP 404"
       }
     ]
   },
   "yfScan": {
-    "total": 161,
-    "succeeded": 160,
+    "total": 160,
+    "succeeded": 159,
     "failed": [
       "AVIO"
     ]
