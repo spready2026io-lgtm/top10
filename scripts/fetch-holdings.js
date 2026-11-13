@@ -55,9 +55,10 @@ function withShares(h, raw) {
 const SOURCE_TRUNCATED = {};
 
 // Share of this script's fund list that must come back for its output to be
-// written. A normal CI day misses 7 to 9 of 101 (QQQ and the six Invesco
-// funds fetch-holdings-playwright.js picks up, plus Wedbush's two since
-// 2026-10-15), so 0.8 (81) leaves room for a bad day at one issuer and none
+// written. A normal CI day misses 7 of 101 (QQQ and the six Invesco funds
+// fetch-holdings-playwright.js picks up; Wedbush's two were also missing
+// 2026-10-15 to 2026-11-13, until its reader moved to the JSON feed), so
+// 0.8 (81) leaves room for a bad day at one issuer and none
 // for losing StockAnalysis, which serves 70 of the 101.
 const MIN_FETCHED_SHARE = 0.8;
 
@@ -321,12 +322,33 @@ async function fetchSPDR() {
   }
 }
 
-// ── Wedbush (IVES, IVEP — direct CSV) ───────────────────────────────────────
+// ── Wedbush (IVES, IVEP: the fund page's JSON feed) ─────────────────────────
+//
+// Wedbush retired the latest-sod-holdings-<slug> CSV around 2026-10-15 (404
+// since). Its fund pages now fill the holdings table from
+// assets/feeds/feeds.php?fund=<TICKER>, which returns
+// holdings: { asof: 'YYYY-MM-DD', rows: [[ticker, name, sedol, shares, marketValue, weightPct], ...] }.
+// The site falls back to assets/feeds/seed.json when that fails; we do not,
+// because the seed is weeks old and a stale fund is worse than a missing one.
 
 const WEDBUSH_ETFS = [
-  { ticker: 'IVES', slug: 'ives' },
-  { ticker: 'IVEP', slug: 'ivep' },
+  { ticker: 'IVES' },
+  { ticker: 'IVEP' },
 ];
+
+// Older than this and the feed is treated as broken, not as today's holdings.
+const WEDBUSH_MAX_AGE_DAYS = 7;
+
+// The feed's names are security descriptions with the par value on the end:
+// "APPLE INC USD 0.00001", "MICROSOFT COM USD0.00000625", "BROADCOM INC NPV",
+// "PRYSMIAN SPA EUR 1.0 ADR". Drop the par value and a trailing COM / COM STK
+// so the name reads like the other issuers' (all caps, as Wedbush's CSV was).
+function cleanWedbushName(s) {
+  return String(s || '')
+    .replace(/\s+(?:[A-Z]{3}\s?\d+(?:\.\d+)?|NPV)(?=(?:\s+ADR)?$)/, '')
+    .replace(/\s+COM(?:\s+STK)?$/, '')
+    .trim();
+}
 
 const CASH_TICKERS = new Set(['DTRXX', 'DTCXX', 'FGTXX', 'FGXXX', 'CASH', 'USD', 'OTHER']);
 
@@ -334,33 +356,31 @@ function isCashOrMoneyMarket(t) {
   return CASH_TICKERS.has(t) || /XX+$/.test(t); // catches FGXXX, DTRXX, VMFXX, etc.
 }
 
-async function fetchWedbush({ ticker, slug }) {
-  const url = `https://wedbushfunds.com/latest-sod-holdings-${slug}`;
+async function fetchWedbush({ ticker }) {
+  const url = `https://wedbushfunds.com/assets/feeds/feeds.php?fund=${encodeURIComponent(ticker)}`;
   console.log(`  [Wedbush] ${ticker}...`);
   try {
-    const text = await fetchText(url);
-    const rows = text.trim().split(/\r?\n/).map(parseCSVLine);
+    const data = await fetchJSON(url);
+    const h = data && data.holdings;
+    if (!h || !Array.isArray(h.rows) || h.rows.length === 0) throw new Error('No holdings in feed');
 
-    // CSV has metadata rows before actual headers — find the row with 'Ticker'
-    const hIdx = rows.findIndex(r => r.some(c => /^ticker$/i.test(c.trim())));
-    if (hIdx === -1) throw new Error('Header row not found');
+    const asof = String(h.asof || '');
+    const ageDays = (Date.now() - Date.parse(`${asof}T00:00:00Z`)) / 86400000;
+    if (!Number.isFinite(ageDays)) throw new Error(`Unreadable as-of date "${asof}"`);
+    if (ageDays > WEDBUSH_MAX_AGE_DAYS) throw new Error(`Feed is stale: as of ${asof}`);
 
-    const hdrs = rows[hIdx].map(h => h.toLowerCase().trim());
-    const tIdx = hdrs.findIndex(h => h === 'ticker' || h === 'symbol');
-    const nIdx = hdrs.findIndex(h => h === 'name');
-    const wIdx = hdrs.findIndex(h => h === 'weight');
-    const sIdx = hdrs.findIndex(h => h === 'shares');
-    if (tIdx === -1 || wIdx === -1) throw new Error('Missing columns');
-
-    const holdings = rows.slice(hIdx + 1)
+    // Row: [ticker, name, sedol, shares, marketValue, weightPct]. Weight is
+    // already a percent (the rows sum to 100).
+    const holdings = h.rows
+      .filter(r => Array.isArray(r) && r.length >= 6)
       .map(r => withShares({
-        ticker: (r[tIdx] || '').trim(),
-        name:   nIdx >= 0 ? (r[nIdx] || '').trim() : (r[tIdx] || '').trim(),
-        weight: parseFloat(r[wIdx]) || 0,
-      }, sIdx >= 0 ? r[sIdx] : undefined))
+        ticker: String(r[0] || '').trim(),
+        name:   cleanWedbushName(r[1]) || String(r[0] || '').trim(),
+        weight: parseFloat(r[5]) || 0,
+      }, r[3]))
       .filter(r => r.weight > 0 && isEquityTicker(r.ticker) && !isCashOrMoneyMarket(r.ticker));
 
-    console.log(`    → ${holdings.length} equity holdings`);
+    console.log(`    → ${holdings.length} equity holdings (as of ${asof})`);
     return holdings.length > 0 ? holdings : null;
   } catch (e) {
     console.error(`    ✗ ${e.message}`);
@@ -1065,7 +1085,7 @@ async function main() {
 
 // Exported for scripts/build-moves.js, which borrows the StockAnalysis reader
 // for funds whose primary source publishes no share counts.
-module.exports = { fetchStockAnalysis, SOURCE_TRUNCATED };
+module.exports = { fetchStockAnalysis, SOURCE_TRUNCATED, fetchWedbush, cleanWedbushName };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
