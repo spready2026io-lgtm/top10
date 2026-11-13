@@ -16,7 +16,9 @@ jobs:
   # proceeds if today's "ETF holdings update" commit is missing — i.e. the
   # primary either never fired or failed before committing fresh data.
   guard:
-    runs-on: ubuntu-latest
+    # Pinned to 24.04: ubuntu-latest moved to 26.04, where Playwright 1.60
+    # cannot install Chromium (failed run 2026-11-13).
+    runs-on: ubuntu-24.04
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
     steps:
@@ -45,7 +47,7 @@ jobs:
   scrape:
     needs: guard
     if: needs.guard.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # see the note on the guard job
     permissions:
       contents: write
 
