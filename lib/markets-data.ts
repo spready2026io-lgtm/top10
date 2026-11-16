@@ -540,8 +540,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0.35
     },
     "flow1M": {
-      "usd": 1059828000,
-      "pct": 4.71
+      "usd": 1018536000,
+      "pct": 4.51
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -878,8 +878,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -1541500,
-      "pct": -0.96
+      "usd": 0,
+      "pct": 0
     },
     "note": "Onshore Shanghai and Shenzhen A-shares, the market domestic Chinese money trades. Read it against the China tile: onshore and offshore China regularly disagree, and the gap between the two is its own signal about who is buying, locals or foreigners."
   },
@@ -1892,8 +1892,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 9.64
     },
     "flow1M": {
-      "usd": 79500000,
-      "pct": 21.68
+      "usd": 74200000,
+      "pct": 19.94
     },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
   },
@@ -2061,8 +2061,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 9813750,
-      "pct": 4.17
+      "usd": 13739250,
+      "pct": 5.93
     },
     "note": "Malaysia is one of the quieter ASEAN markets: banks, utilities and a data-center construction wave. Low drama, moderate beta, occasionally rediscovered by regional flows."
   },
@@ -2568,8 +2568,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -3.62
     },
     "flow1M": {
-      "usd": -1472454000,
-      "pct": -14.28
+      "usd": -1746324000,
+      "pct": -16.5
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 154260000,
-      "pct": 10.15
+      "usd": 146547000,
+      "pct": 9.6
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2906,8 +2906,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0.23
     },
     "flow1M": {
-      "usd": 11645494,
-      "pct": 1.91
+      "usd": 18479759,
+      "pct": 3.07
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3075,8 +3075,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -7.38
     },
     "flow1M": {
-      "usd": -142200000,
-      "pct": -16.19
+      "usd": -131535000,
+      "pct": -15.16
     },
     "note": "Chile is effectively a copper call with a banking system attached: the lithium story adds a second commodity leg. Small market, big sensitivity to Chinese demand."
   }
@@ -3093,8 +3093,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 490621000,
-      "pct": 0.86
+      "usd": 601705000,
+      "pct": 1.05
     },
     "returns": {
       "1W": -0.67,
@@ -3823,8 +3823,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 1634556000,
-      "pct": 6.88
+      "usd": 1589896000,
+      "pct": 6.68
     },
     "returns": {
       "1W": 0.84,
@@ -3979,39 +3979,39 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Taiwan",
-        "w": 34.81
+        "w": 35.34
       },
       {
         "c": "Korea (South)",
-        "w": 23.21
+        "w": 22.82
       },
       {
         "c": "India",
-        "w": 16.36
+        "w": 16.26
       },
       {
         "c": "Brazil",
-        "w": 4.9
+        "w": 4.99
       },
       {
         "c": "South Africa",
-        "w": 4.11
+        "w": 4.04
       },
       {
         "c": "Saudi Arabia",
-        "w": 3.19
+        "w": 3.18
       },
       {
         "c": "Mexico",
-        "w": 2.34
+        "w": 2.32
       },
       {
         "c": "United Arab Emirates",
-        "w": 1.81
+        "w": 1.79
       },
       {
         "c": "Poland",
-        "w": 1.6
+        "w": 1.58
       },
       {
         "c": "Thailand",
@@ -4043,7 +4043,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Peru",
-        "w": 0.51
+        "w": 0.5
       },
       {
         "c": "Turkey",
@@ -4217,27 +4217,27 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "United Kingdom",
-        "w": 23.08
+        "w": 23.3
       },
       {
         "c": "Switzerland",
-        "w": 14.68
+        "w": 14.62
       },
       {
         "c": "France",
-        "w": 14.1
+        "w": 14.07
       },
       {
         "c": "Germany",
-        "w": 13.24
+        "w": 13.21
       },
       {
         "c": "Netherlands",
-        "w": 7.84
+        "w": 7.75
       },
       {
         "c": "Sweden",
-        "w": 6.06
+        "w": 6.05
       },
       {
         "c": "Spain",
@@ -4245,7 +4245,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Italy",
-        "w": 5.01
+        "w": 5.03
       },
       {
         "c": "Denmark",
@@ -4253,7 +4253,7 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Belgium",
-        "w": 1.96
+        "w": 1.97
       },
       {
         "c": "Finland",
@@ -4261,11 +4261,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Norway",
-        "w": 1.53
+        "w": 1.54
       },
       {
         "c": "Austria",
-        "w": 0.71
+        "w": 0.7
       },
       {
         "c": "Ireland",
@@ -4439,31 +4439,31 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "France",
-        "w": 27.76
+        "w": 27.83
       },
       {
         "c": "Germany",
-        "w": 25.83
+        "w": 25.85
       },
       {
         "c": "Netherlands",
-        "w": 15.7
+        "w": 15.49
       },
       {
         "c": "Spain",
-        "w": 11.46
+        "w": 11.53
       },
       {
         "c": "Italy",
-        "w": 9.31
+        "w": 9.34
       },
       {
         "c": "Belgium",
-        "w": 3.46
+        "w": 3.5
       },
       {
         "c": "Finland",
-        "w": 3.25
+        "w": 3.24
       },
       {
         "c": "Ireland",
@@ -4471,11 +4471,11 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Austria",
-        "w": 1.07
+        "w": 1.08
       },
       {
         "c": "Portugal",
-        "w": 0.62
+        "w": 0.63
       }
     ]
   },
@@ -4839,19 +4839,19 @@ export const LENS_FUNDS: LensFund[] = [
     "countries": [
       {
         "c": "Brazil",
-        "w": 51.59
+        "w": 52.25
       },
       {
         "c": "Mexico",
-        "w": 29.14
+        "w": 28.63
       },
       {
         "c": "Chile",
-        "w": 7.69
+        "w": 7.64
       },
       {
         "c": "Peru",
-        "w": 6.79
+        "w": 6.69
       },
       {
         "c": "Colombia",
@@ -4859,17 +4859,17 @@ export const LENS_FUNDS: LensFund[] = [
       },
       {
         "c": "Sweden",
-        "w": 1.25
+        "w": 1.21
       },
       {
         "c": "United States",
-        "w": 0.59
+        "w": 0.61
       }
     ]
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Nov 15, 2026, 8:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Nov 16, 2026, 8:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
