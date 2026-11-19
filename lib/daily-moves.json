@@ -1,428 +1,218 @@
 {
-  "date": "2026-11-18",
+  "date": "2026-11-19",
   "status": "ok",
-  "generatedAt": "2026-11-18T13:42:33.693Z",
-  "baselineFrom": "2026-11-17",
+  "generatedAt": "2026-11-19T13:42:25.548Z",
+  "baselineFrom": "2026-11-18",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 50,
+  "fundsCompared": 48,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
   "fundsExcluded": [
     {
-      "etf": "NCLD",
-      "flow": -11.35,
-      "moves": 2
+      "etf": "ALAI",
+      "flow": 20.83,
+      "moves": 3
     },
     {
       "etf": "ARKK",
-      "flow": 14.09,
-      "moves": 0
-    }
-  ],
-  "minMoveValue": 1000000,
-  "movesConsidered": 17,
-  "movesBelowFloor": 34,
-  "notListed": [
-    {
-      "etf": "AIS",
-      "ticker": "TWD",
-      "name": "NEW TAIWAN DOLLAR",
-      "reason": "not an equity (ECNQUOTE)"
+      "flow": 14.27,
+      "moves": 4
     },
     {
-      "etf": "AIS",
-      "ticker": "KRW",
-      "name": "SOUTH KOREA WON",
-      "reason": "not an equity (ECNQUOTE)"
-    },
-    {
-      "etf": "AIS",
-      "ticker": "CNY",
-      "name": "CHINESE YUAN",
-      "reason": "no US listing"
+      "etf": "CNEQ",
+      "flow": 27.42,
+      "moves": 1
     },
     {
       "etf": "IDEF",
-      "ticker": "LDO",
-      "name": "LEONARDO FINMECCANICA SPA",
-      "reason": "not an equity (ECNQUOTE)"
+      "flow": -12.78,
+      "moves": 2
+    }
+  ],
+  "minMoveValue": 1000000,
+  "movesConsidered": 6,
+  "movesBelowFloor": 19,
+  "notListed": [
+    {
+      "etf": "BAI",
+      "ticker": "ANTHC",
+      "name": "ANTHROPIC SERIES G PREF EQ Prvt",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "BILT",
+      "ticker": "SCYR",
+      "name": "SACYR",
+      "reason": "no US listing"
     }
   ],
   "top": [
     {
       "rank": 1,
-      "etf": "CNEQ",
+      "etf": "DRAM",
       "themes": [
-        "Broad Tech"
+        "Semiconductors"
       ],
       "ticker": "MU",
-      "name": "MICRON TECHNOLOGY INC USD 0.1",
-      "kind": "added",
-      "netShares": 17643,
-      "sharesBefore": 280134,
-      "sharesAfter": 303842,
-      "positionChangePct": 6.2,
-      "weightMoved": 0.15,
-      "weightAfter": 2.64,
-      "price": 712.42,
-      "value": 12569226
+      "name": "Micron Technology, Inc.",
+      "kind": "trimmed",
+      "netShares": -25558,
+      "sharesBefore": 210423,
+      "sharesAfter": 183847,
+      "positionChangePct": -12.2,
+      "weightMoved": -0.13,
+      "weightAfter": 0.94,
+      "price": 705.27,
+      "value": -18025291
     },
     {
       "rank": 2,
-      "etf": "CNEQ",
+      "etf": "FWD",
       "themes": [
         "Broad Tech"
       ],
-      "ticker": "ALAB",
-      "name": "ASTERA LABS INC USD 0.0001",
+      "ticker": "META",
+      "name": "Meta Platforms, Inc.",
       "kind": "added",
-      "netShares": 43865,
-      "sharesBefore": 447771,
-      "sharesAfter": 501331,
-      "positionChangePct": 9.6,
-      "weightMoved": 0.11,
-      "weightAfter": 1.29,
-      "price": 211.6,
-      "value": 9281834
+      "netShares": 23983,
+      "sharesBefore": 122161,
+      "sharesAfter": 146280,
+      "positionChangePct": 19.6,
+      "weightMoved": 0.5,
+      "weightAfter": 3.04,
+      "price": 616.38,
+      "value": 14782642
     },
     {
       "rank": 3,
-      "etf": "ALAI",
+      "etf": "BAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "TLN",
-      "name": "TALEN ENERGY CORP NEW USD 0.001",
-      "kind": "added",
-      "netShares": 21155,
-      "sharesBefore": 233578,
-      "sharesAfter": 270244,
-      "positionChangePct": 8.5,
-      "weightMoved": 0.28,
-      "weightAfter": 3.52,
-      "price": 354.71,
-      "value": 7503890
+      "ticker": "LRCX",
+      "name": "LAM RESEARCH",
+      "kind": "trimmed",
+      "netShares": -56222,
+      "sharesBefore": 1559914,
+      "sharesAfter": 1531434,
+      "positionChangePct": -3.5,
+      "weightMoved": -0.1,
+      "weightAfter": 2.71,
+      "price": 211.67,
+      "value": -11900511
     },
     {
       "rank": 4,
-      "etf": "ALAI",
+      "etf": "TCAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "SPCX",
-      "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
-      "kind": "added",
-      "netShares": 42017,
-      "sharesBefore": 507065,
-      "sharesAfter": 582753,
-      "positionChangePct": 7.8,
-      "weightMoved": 0.22,
-      "weightAfter": 3.03,
-      "price": 141.7,
-      "value": 5953809
+      "ticker": "GEV",
+      "name": "GE Vernova Inc.",
+      "kind": "trimmed",
+      "netShares": -3215,
+      "sharesBefore": 11710,
+      "sharesAfter": 8495,
+      "positionChangePct": -27.5,
+      "weightMoved": -1,
+      "weightAfter": 2.64,
+      "price": 772.22,
+      "value": -2482687
     },
     {
       "rank": 5,
-      "etf": "ALAI",
+      "etf": "TCAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "CAT",
-      "name": "CATERPILLAR INC USD 1.0",
+      "ticker": "CEG",
+      "name": "Constellation Energy Corporation",
       "kind": "added",
-      "netShares": 7505,
-      "sharesBefore": 10213,
-      "sharesAfter": 18396,
-      "positionChangePct": 68.9,
-      "weightMoved": 0.16,
-      "weightAfter": 0.39,
-      "price": 570.79,
-      "value": 4283779
+      "netShares": 9319,
+      "sharesBefore": 25442,
+      "sharesAfter": 34761,
+      "positionChangePct": 36.6,
+      "weightMoved": 1.05,
+      "weightAfter": 3.93,
+      "price": 262.74,
+      "value": 2448474
     },
     {
       "rank": 6,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "ALAB",
-      "name": "ASTERA LABS INC USD 0.0001",
-      "kind": "added",
-      "netShares": 16385,
-      "sharesBefore": 155366,
-      "sharesAfter": 182068,
-      "positionChangePct": 9.9,
-      "weightMoved": 0.13,
-      "weightAfter": 1.42,
-      "price": 211.6,
-      "value": 3467066
-    },
-    {
-      "rank": 7,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "ZS",
-      "name": "ZSCALER INC USD 0.001",
-      "kind": "trimmed",
-      "netShares": -16748,
-      "sharesBefore": 50343,
-      "sharesAfter": 36938,
-      "positionChangePct": -31.2,
-      "weightMoved": -0.11,
-      "weightAfter": 0.25,
-      "price": 185.19,
-      "value": -3101562
-    },
-    {
-      "rank": 8,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "WDC",
-      "name": "WESTERN DIGITAL CORP USD 0.01",
-      "kind": "added",
-      "netShares": 9631,
-      "sharesBefore": 210506,
-      "sharesAfter": 234115,
-      "positionChangePct": 4.3,
-      "weightMoved": 0.1,
-      "weightAfter": 2.44,
-      "price": 283.33,
-      "value": 2728751
-    },
-    {
-      "rank": 9,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "FPS",
-      "name": "FORGENT PWR SOLUTIONS I USD 0.00001",
-      "kind": "added",
-      "netShares": 127599,
-      "sharesBefore": 501705,
-      "sharesAfter": 662619,
-      "positionChangePct": 23.8,
-      "weightMoved": 0.1,
-      "weightAfter": 0.52,
-      "price": 21.2,
-      "value": 2705099
-    },
-    {
-      "rank": 10,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "AVGO",
-      "name": "BROADCOM INC NPV",
-      "kind": "added",
-      "netShares": 7660,
-      "sharesBefore": 286370,
-      "sharesAfter": 313046,
-      "positionChangePct": 2.5,
-      "weightMoved": 0.1,
-      "weightAfter": 3.93,
-      "price": 341.6,
-      "value": 2616656
-    },
-    {
-      "rank": 11,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "TSLA",
-      "name": "TESLA INC USD 0.001",
-      "kind": "added",
-      "netShares": 6810,
-      "sharesBefore": 167161,
-      "sharesAfter": 185071,
-      "positionChangePct": 3.8,
-      "weightMoved": 0.09,
-      "weightAfter": 2.58,
-      "price": 380.11,
-      "value": 2588549
-    },
-    {
-      "rank": 12,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "ANET",
-      "name": "ARISTA NETWORKS INC USD 0.0001",
-      "kind": "added",
-      "netShares": 13631,
-      "sharesBefore": 148203,
-      "sharesAfter": 171675,
-      "positionChangePct": 8.6,
-      "weightMoved": 0.09,
-      "weightAfter": 1.18,
-      "price": 186.42,
-      "value": 2541091
-    },
-    {
-      "rank": 13,
-      "etf": "CLSE",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AMD",
-      "name": "Advanced Micro Devices, Inc.",
-      "kind": "trimmed",
-      "netShares": -4169,
-      "sharesBefore": 58562,
-      "sharesAfter": 54393,
-      "positionChangePct": -7.1,
-      "weightMoved": -0.22,
-      "weightAfter": 2.88,
-      "price": 503.41,
-      "value": -2098716
-    },
-    {
-      "rank": 14,
-      "etf": "ALAI",
-      "themes": [
-        "AI & ML"
-      ],
-      "ticker": "SPGI",
-      "name": "S+P GLOBAL INC USD 1.0",
-      "kind": "trimmed",
-      "netShares": -3582,
-      "sharesBefore": 36665,
-      "sharesAfter": 35518,
-      "positionChangePct": -9.2,
-      "weightMoved": -0.06,
-      "weightAfter": 0.59,
-      "price": 452.35,
-      "value": -1620318
-    },
-    {
-      "rank": 15,
-      "etf": "CLSE",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AAPL",
-      "name": "Apple Inc.",
-      "kind": "trimmed",
-      "netShares": -4470,
-      "sharesBefore": 91837,
-      "sharesAfter": 87367,
-      "positionChangePct": -4.9,
-      "weightMoved": -0.17,
-      "weightAfter": 3.24,
-      "price": 351.91,
-      "value": -1573038
-    },
-    {
-      "rank": 16,
       "etf": "AOTG",
       "themes": [
         "AI & ML"
       ],
       "ticker": "NVDA",
       "name": "NVIDIA Corporation",
-      "kind": "trimmed",
-      "netShares": -8610,
-      "sharesBefore": 62070,
-      "sharesAfter": 54945,
-      "positionChangePct": -13.5,
-      "weightMoved": -1.4,
-      "weightAfter": 8.96,
-      "price": 155.46,
-      "value": -1338511
-    },
-    {
-      "rank": 17,
-      "etf": "BILT",
-      "themes": [
-        "Industrials"
-      ],
-      "ticker": "OGE",
-      "name": "OGE ENERGY",
       "kind": "added",
-      "netShares": 24802,
-      "sharesBefore": 24210,
-      "sharesAfter": 49012,
-      "positionChangePct": 102.4,
-      "weightMoved": 1.05,
-      "weightAfter": 2.08,
-      "price": 50.95,
-      "value": 1263662
+      "netShares": 8332,
+      "sharesBefore": 54945,
+      "sharesAfter": 61512,
+      "positionChangePct": 15.7,
+      "weightMoved": 1.4,
+      "weightAfter": 10.34,
+      "price": 150.96,
+      "value": 1257799
     }
   ],
   "consensus": {
-    "buys": [
-      {
-        "ticker": "ALAB",
-        "name": "ASTERA LABS INC USD 0.0001",
-        "funds": [
-          "CNEQ",
-          "ALAI"
-        ],
-        "value": 12748900
-      }
-    ],
+    "buys": [],
     "sells": []
   },
   "flows": {
     "AIS": 0,
-    "BAI": 3.4,
-    "ALAI": 6.64,
+    "BAI": 1.78,
+    "ALAI": 20.83,
     "AIFD": 0,
-    "SPRX": -1.54,
-    "AOTG": 2.39,
-    "TCAI": 0.83,
+    "SPRX": 0,
+    "AOTG": -3.21,
+    "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
     "ANTW": 0,
-    "AIHY": 6.25,
-    "NCLD": -11.35,
-    "DISK": 0,
+    "AIHY": 0,
+    "NCLD": 1.01,
+    "DISK": 5.98,
     "GTEK": 0,
-    "ARKK": 14.09,
-    "FRWD": 0,
+    "ARKK": 14.27,
+    "FRWD": 0.28,
     "BCTK": 0,
-    "FWD": 0,
+    "FWD": 0.11,
     "CBSE": 0,
     "FCUS": 0,
-    "CNEQ": 2.17,
-    "SGRT": 0,
+    "CNEQ": 27.42,
+    "SGRT": -2.55,
     "TEK": 0,
     "AIUP": 0,
-    "TCV": -5.36,
-    "LOUP": -5.44,
+    "TCV": 0,
+    "LOUP": 0,
     "MNVT": 0,
     "FFF": 0,
-    "GRNY": -0.13,
+    "GRNY": -0.1,
     "GARY": 0,
     "CLSE": 0,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 0.15,
+    "EUV": 0,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": 0.1,
+    "VOLT": 0,
     "AIPO": 0,
     "RSHO": 0,
-    "IDEF": -0.11,
+    "IDEF": -12.78,
     "BILT": 0,
-    "WGMI": -1.49,
+    "WGMI": 0,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
     "MEME": 0,
     "RKNG": 0,
-    "CHAT": 1.32,
-    "DRAM": -0.04,
+    "CHAT": 8.55,
+    "DRAM": -0.48,
     "FDTX": 0,
     "MARS": 0
   },
