@@ -1,44 +1,45 @@
 {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "status": "ok",
-  "generatedAt": "2026-11-19T13:42:25.548Z",
-  "baselineFrom": "2026-11-18",
+  "generatedAt": "2026-11-20T13:42:07.407Z",
+  "baselineFrom": "2026-11-19",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 48,
+  "fundsCompared": 49,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
   "fundsExcluded": [
     {
-      "etf": "ALAI",
-      "flow": 20.83,
-      "moves": 3
-    },
-    {
       "etf": "ARKK",
-      "flow": 14.27,
-      "moves": 4
+      "flow": 29.91,
+      "moves": 5
     },
     {
       "etf": "CNEQ",
-      "flow": 27.42,
+      "flow": -20.62,
       "moves": 1
     },
     {
-      "etf": "IDEF",
-      "flow": -12.78,
-      "moves": 2
+      "etf": "CHAT",
+      "flow": 12.25,
+      "moves": 0
     }
   ],
   "minMoveValue": 1000000,
-  "movesConsidered": 6,
-  "movesBelowFloor": 19,
+  "movesConsidered": 21,
+  "movesBelowFloor": 31,
   "notListed": [
     {
-      "etf": "BAI",
-      "ticker": "ANTHC",
-      "name": "ANTHROPIC SERIES G PREF EQ Prvt",
+      "etf": "BILT",
+      "ticker": "ADP",
+      "name": "AEROPORTS DE PARIS SA",
+      "reason": "the US listing is Automatic Data Processing, Inc."
+    },
+    {
+      "etf": "BILT",
+      "ticker": "FGP",
+      "name": "FIRSTGROUP PLC",
       "reason": "no US listing"
     },
     {
@@ -51,168 +52,430 @@
   "top": [
     {
       "rank": 1,
+      "etf": "BAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "ANT",
+      "name": "ANTHROPIC CLASS A",
+      "kind": "new",
+      "netShares": 6268809,
+      "sharesBefore": 0,
+      "sharesAfter": 6268809,
+      "positionChangePct": null,
+      "weightMoved": 5.16,
+      "weightAfter": 5.16,
+      "price": 97.17,
+      "value": 609140171
+    },
+    {
+      "rank": 2,
       "etf": "DRAM",
       "themes": [
         "Semiconductors"
       ],
       "ticker": "MU",
       "name": "Micron Technology, Inc.",
-      "kind": "trimmed",
-      "netShares": -25558,
-      "sharesBefore": 210423,
-      "sharesAfter": 183847,
-      "positionChangePct": -12.2,
-      "weightMoved": -0.13,
-      "weightAfter": 0.94,
-      "price": 705.27,
-      "value": -18025291
-    },
-    {
-      "rank": 2,
-      "etf": "FWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "META",
-      "name": "Meta Platforms, Inc.",
       "kind": "added",
-      "netShares": 23983,
-      "sharesBefore": 122161,
-      "sharesAfter": 146280,
-      "positionChangePct": 19.6,
-      "weightMoved": 0.5,
-      "weightAfter": 3.04,
-      "price": 616.38,
-      "value": 14782642
+      "netShares": 718910,
+      "sharesBefore": 183847,
+      "sharesAfter": 899961,
+      "positionChangePct": 397.1,
+      "weightMoved": 3.63,
+      "weightAfter": 4.55,
+      "price": 690.44,
+      "value": 496364220
     },
     {
       "rank": 3,
-      "etf": "BAI",
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "LRCX",
-      "name": "LAM RESEARCH",
-      "kind": "trimmed",
-      "netShares": -56222,
-      "sharesBefore": 1559914,
-      "sharesAfter": 1531434,
-      "positionChangePct": -3.5,
-      "weightMoved": -0.1,
-      "weightAfter": 2.71,
-      "price": 211.67,
-      "value": -11900511
+      "ticker": "ANT",
+      "name": "ANTHROPIC PBC USD 0.00001",
+      "kind": "new",
+      "netShares": 490712,
+      "sharesBefore": 0,
+      "sharesAfter": 490712,
+      "positionChangePct": null,
+      "weightMoved": 1.47,
+      "weightAfter": 1.47,
+      "price": 97.17,
+      "value": 47682485
     },
     {
       "rank": 4,
-      "etf": "TCAI",
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "GEV",
-      "name": "GE Vernova Inc.",
+      "ticker": "TTWO",
+      "name": "TAKE-TWO INTERACTIVE SOFTW USD 0.01",
       "kind": "trimmed",
-      "netShares": -3215,
-      "sharesBefore": 11710,
-      "sharesAfter": 8495,
-      "positionChangePct": -27.5,
-      "weightMoved": -1,
-      "weightAfter": 2.64,
-      "price": 772.22,
-      "value": -2482687
+      "netShares": -73215,
+      "sharesBefore": 111603,
+      "sharesAfter": 38420,
+      "positionChangePct": -65.6,
+      "weightMoved": -0.48,
+      "weightAfter": 0.25,
+      "price": 208.65,
+      "value": -15276310
     },
     {
       "rank": 5,
-      "etf": "TCAI",
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "CEG",
-      "name": "Constellation Energy Corporation",
-      "kind": "added",
-      "netShares": 9319,
-      "sharesBefore": 25442,
-      "sharesAfter": 34761,
-      "positionChangePct": 36.6,
-      "weightMoved": 1.05,
-      "weightAfter": 3.93,
-      "price": 262.74,
-      "value": 2448474
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES INC USD 0.01",
+      "kind": "trimmed",
+      "netShares": -17094,
+      "sharesBefore": 224525,
+      "sharesAfter": 207495,
+      "positionChangePct": -7.6,
+      "weightMoved": -0.26,
+      "weightAfter": 3.12,
+      "price": 489.19,
+      "value": -8362214
     },
     {
       "rank": 6,
-      "etf": "AOTG",
+      "etf": "ALAI",
       "themes": [
         "AI & ML"
       ],
-      "ticker": "NVDA",
-      "name": "NVIDIA Corporation",
+      "ticker": "OKTA",
+      "name": "OKTA INC USD 0.0001",
       "kind": "added",
-      "netShares": 8332,
-      "sharesBefore": 54945,
-      "sharesAfter": 61512,
-      "positionChangePct": 15.7,
-      "weightMoved": 1.4,
-      "weightAfter": 10.34,
-      "price": 150.96,
-      "value": 1257799
+      "netShares": 24232,
+      "sharesBefore": 36583,
+      "sharesAfter": 60825,
+      "positionChangePct": 66.2,
+      "weightMoved": 0.16,
+      "weightAfter": 0.39,
+      "price": 206.85,
+      "value": 5012389
+    },
+    {
+      "rank": 7,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "SHOP",
+      "name": "SHOPIFY INC NPV",
+      "kind": "trimmed",
+      "netShares": -34993,
+      "sharesBefore": 145332,
+      "sharesAfter": 110381,
+      "positionChangePct": -24.1,
+      "weightMoved": -0.14,
+      "weightAfter": 0.45,
+      "price": 131.97,
+      "value": -4618026
+    },
+    {
+      "rank": 8,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "META",
+      "name": "META PLATFORMS INC USD 0.000006",
+      "kind": "trimmed",
+      "netShares": -7404,
+      "sharesBefore": 201409,
+      "sharesAfter": 194063,
+      "positionChangePct": -3.7,
+      "weightMoved": -0.14,
+      "weightAfter": 3.56,
+      "price": 596.22,
+      "value": -4414413
+    },
+    {
+      "rank": 9,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "SPCX",
+      "name": "SPACE EXPL TECHNOLOGIES C USD 0.001",
+      "kind": "added",
+      "netShares": 25756,
+      "sharesBefore": 704357,
+      "sharesAfter": 730314,
+      "positionChangePct": 3.7,
+      "weightMoved": 0.11,
+      "weightAfter": 3.11,
+      "price": 138.43,
+      "value": 3565403
+    },
+    {
+      "rank": 10,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "ZS",
+      "name": "ZSCALER INC USD 0.001",
+      "kind": "added",
+      "netShares": 14225,
+      "sharesBefore": 44162,
+      "sharesAfter": 58400,
+      "positionChangePct": 32.2,
+      "weightMoved": 0.09,
+      "weightAfter": 0.37,
+      "price": 205.71,
+      "value": 2926225
+    },
+    {
+      "rank": 11,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "VST",
+      "name": "Vistra Corp.",
+      "kind": "trimmed",
+      "netShares": -20386,
+      "sharesBefore": 62876,
+      "sharesAfter": 39680,
+      "positionChangePct": -33.9,
+      "weightMoved": -1.6,
+      "weightAfter": 3.11,
+      "price": 124.15,
+      "value": -2530922
+    },
+    {
+      "rank": 12,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "ILMN",
+      "name": "ILLUMINA INC USD 0.01",
+      "kind": "trimmed",
+      "netShares": -12435,
+      "sharesBefore": 159788,
+      "sharesAfter": 147399,
+      "positionChangePct": -7.8,
+      "weightMoved": -0.08,
+      "weightAfter": 0.91,
+      "price": 200.66,
+      "value": -2495145
+    },
+    {
+      "rank": 13,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "TSLA",
+      "name": "TESLA INC USD 0.001",
+      "kind": "added",
+      "netShares": 6104,
+      "sharesBefore": 223599,
+      "sharesAfter": 229767,
+      "positionChangePct": 2.7,
+      "weightMoved": 0.07,
+      "weightAfter": 2.65,
+      "price": 374.41,
+      "value": 2285399
+    },
+    {
+      "rank": 14,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "CBRS",
+      "name": "Cerebras Systems Inc.",
+      "kind": "added",
+      "netShares": 23918,
+      "sharesBefore": 58466,
+      "sharesAfter": 79771,
+      "positionChangePct": 42.8,
+      "weightMoved": 1.54,
+      "weightAfter": 5.13,
+      "price": 86.96,
+      "value": 2079909
+    },
+    {
+      "rank": 15,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "U",
+      "name": "Unity Software Inc.",
+      "kind": "trimmed",
+      "netShares": -37465,
+      "sharesBefore": 147377,
+      "sharesAfter": 103326,
+      "positionChangePct": -26.6,
+      "weightMoved": -1.16,
+      "weightAfter": 3.21,
+      "price": 46.7,
+      "value": -1749615
+    },
+    {
+      "rank": 16,
+      "etf": "BILT",
+      "themes": [
+        "Industrials"
+      ],
+      "ticker": "HZN",
+      "name": "BRIGHT HORIZON ENERGY CORP",
+      "kind": "new",
+      "netShares": 21535,
+      "sharesBefore": 0,
+      "sharesAfter": 21535,
+      "positionChangePct": null,
+      "weightMoved": 1.42,
+      "weightAfter": 1.42,
+      "price": 78.1,
+      "value": 1681883
+    },
+    {
+      "rank": 17,
+      "etf": "ALAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "CLS",
+      "name": "CELESTICA INC NPV",
+      "kind": "new",
+      "netShares": 7000,
+      "sharesBefore": 0,
+      "sharesAfter": 7000,
+      "positionChangePct": null,
+      "weightMoved": 0.05,
+      "weightAfter": 0.05,
+      "price": 240.23,
+      "value": 1681610
+    },
+    {
+      "rank": 18,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "CRDO",
+      "name": "Credo Technology Group Holding Ltd",
+      "kind": "added",
+      "netShares": 13776,
+      "sharesBefore": 46341,
+      "sharesAfter": 58046,
+      "positionChangePct": 31.1,
+      "weightMoved": 1.05,
+      "weightAfter": 4.44,
+      "price": 117.76,
+      "value": 1622262
+    },
+    {
+      "rank": 19,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "GLBE",
+      "name": "Global-E Online Ltd.",
+      "kind": "trimmed",
+      "netShares": -35854,
+      "sharesBefore": 168446,
+      "sharesAfter": 125065,
+      "positionChangePct": -22.3,
+      "weightMoved": -0.88,
+      "weightAfter": 3.07,
+      "price": 35.1,
+      "value": -1258475
+    },
+    {
+      "rank": 20,
+      "etf": "LOUP",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "LRCX",
+      "name": "Lam Research Corporation",
+      "kind": "added",
+      "netShares": 5600,
+      "sharesBefore": 30624,
+      "sharesAfter": 34855,
+      "positionChangePct": 19.1,
+      "weightMoved": 0.73,
+      "weightAfter": 4.53,
+      "price": 203.68,
+      "value": 1140608
     }
   ],
   "consensus": {
-    "buys": [],
+    "buys": [
+      {
+        "ticker": "ANT",
+        "name": "ANTHROPIC CLASS A",
+        "funds": [
+          "BAI",
+          "ALAI"
+        ],
+        "value": 656822656
+      }
+    ],
     "sells": []
   },
   "flows": {
     "AIS": 0,
-    "BAI": 1.78,
-    "ALAI": 20.83,
+    "BAI": 0.38,
+    "ALAI": 0.03,
     "AIFD": 0,
     "SPRX": 0,
-    "AOTG": -3.21,
+    "AOTG": 0,
     "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
     "ANTW": 0,
-    "AIHY": 0,
-    "NCLD": 1.01,
-    "DISK": 5.98,
+    "AIHY": 1.67,
+    "NCLD": 5,
+    "DISK": 0,
     "GTEK": 0,
-    "ARKK": 14.27,
-    "FRWD": 0.28,
+    "ARKK": 29.91,
+    "FRWD": 0.23,
     "BCTK": 0,
-    "FWD": 0.11,
+    "FWD": 0,
     "CBSE": 0,
     "FCUS": 0,
-    "CNEQ": 27.42,
-    "SGRT": -2.55,
+    "CNEQ": -20.62,
+    "SGRT": 0,
     "TEK": 0,
-    "AIUP": 0,
+    "AIUP": -0.21,
     "TCV": 0,
-    "LOUP": 0,
+    "LOUP": -4.47,
     "MNVT": 0,
     "FFF": 0,
-    "GRNY": -0.1,
+    "GRNY": 0,
     "GARY": 0,
     "CLSE": 0,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 0,
+    "EUV": 1.32,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": 0,
+    "VOLT": -5.22,
     "AIPO": 0,
     "RSHO": 0,
-    "IDEF": -12.78,
+    "IDEF": -5.2,
     "BILT": 0,
-    "WGMI": 0,
+    "WGMI": -1.51,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
     "MEME": 0,
     "RKNG": 0,
-    "CHAT": 8.55,
-    "DRAM": -0.48,
+    "CHAT": 12.25,
+    "DRAM": -1.52,
     "FDTX": 0,
     "MARS": 0
   },
