@@ -540,8 +540,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0.76
     },
     "flow1M": {
-      "usd": 876015000,
-      "pct": 4.23
+      "usd": 763384500,
+      "pct": 3.66
     },
     "note": "The largest developed market outside the US. Governance reform, real wage growth and the end of the negative-rate era pulled global allocators back after decades of neglect. The yen is the swing factor: this fund is unhedged, so currency moves show up in the return."
   },
@@ -1892,8 +1892,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 8.79
     },
     "flow1M": {
-      "usd": 85429500,
-      "pct": 22.62
+      "usd": 80374500,
+      "pct": 21
     },
     "note": "Indonesia is a domestic-demand and commodities story: banks, nickel and a young consumer base. A classic risk-on emerging market, it moves with commodity prices and the dollar."
   },
@@ -2906,8 +2906,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 13.46
     },
     "flow1M": {
-      "usd": 74678682,
-      "pct": 13.8
+      "usd": 83920059,
+      "pct": 15.78
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3075,8 +3075,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -2.66
     },
     "flow1M": {
-      "usd": -115506000,
-      "pct": -14.62
+      "usd": -95418000,
+      "pct": -12.39
     },
     "note": "Chile is effectively a copper call with a banking system attached: the lithium story adds a second commodity leg. Small market, big sensitivity to Chinese demand."
   }
@@ -3827,8 +3827,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0.21
     },
     "flow1M": {
-      "usd": 264418000,
-      "pct": 1.21
+      "usd": 217756000,
+      "pct": 0.99
     },
     "returns": {
       "1W": -9.42,
@@ -4869,7 +4869,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Nov 22, 2026, 8:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Nov 23, 2026, 8:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).
