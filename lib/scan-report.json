@@ -1,6 +1,6 @@
 {
-  "scanTimestamp": "2026-11-23T13:40:32.664Z",
-  "scanTimestampNY": "November 23, 2026 at 8:40 AM ET",
+  "scanTimestamp": "2026-11-24T01:22:38.726Z",
+  "scanTimestampNY": "November 23, 2026 at 8:22 PM ET",
   "etfScan": {
     "results": {
       "AIS": {
@@ -16,8 +16,8 @@
         "count": 41
       },
       "IGPT": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 8
       },
       "IVES": {
         "ok": true,
@@ -29,7 +29,7 @@
       },
       "CHAT": {
         "ok": true,
-        "count": 33
+        "count": 34
       },
       "AIFD": {
         "ok": true,
@@ -92,8 +92,8 @@
         "count": 30
       },
       "PSI": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 10
       },
       "XSD": {
         "ok": true,
@@ -116,8 +116,8 @@
         "count": 6
       },
       "PTF": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 10
       },
       "WCLD": {
         "ok": true,
@@ -253,7 +253,7 @@
       },
       "EUV": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "XSW": {
         "ok": true,
@@ -304,12 +304,12 @@
         "count": 25
       },
       "PBD": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 9
       },
       "PBW": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 9
       },
       "IVEP": {
         "ok": true,
@@ -321,15 +321,15 @@
       },
       "AIPO": {
         "ok": true,
-        "count": 25
+        "count": 24
       },
       "AIRR": {
         "ok": true,
         "count": 55
       },
       "PRN": {
-        "ok": false,
-        "count": 0
+        "ok": true,
+        "count": 10
       },
       "RSHO": {
         "ok": true,
@@ -397,15 +397,8 @@
       }
     },
     "total": 98,
-    "ok": 92,
-    "failed": [
-      "IGPT",
-      "PSI",
-      "PTF",
-      "PBD",
-      "PBW",
-      "PRN"
-    ],
+    "ok": 98,
+    "failed": [],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",

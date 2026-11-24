@@ -1,142 +1,22 @@
 {
-  "date": "2026-11-23",
+  "date": "2026-11-24",
   "status": "ok",
-  "generatedAt": "2026-11-23T13:42:00.524Z",
-  "baselineFrom": "2026-11-20",
+  "generatedAt": "2026-11-24T01:23:59.362Z",
+  "baselineFrom": "2026-11-23",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 44,
+  "fundsCompared": 52,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
-  "fundsExcluded": [
-    {
-      "etf": "ALAI",
-      "flow": -75.38,
-      "moves": 19
-    },
-    {
-      "etf": "ANTW",
-      "flow": 29.22,
-      "moves": 8
-    },
-    {
-      "etf": "ARKK",
-      "flow": -55.4,
-      "moves": 3
-    },
-    {
-      "etf": "BCTK",
-      "flow": 34.9,
-      "moves": 1
-    },
-    {
-      "etf": "CNEQ",
-      "flow": -60.36,
-      "moves": 3
-    },
-    {
-      "etf": "GRNY",
-      "flow": -15.53,
-      "moves": 5
-    },
-    {
-      "etf": "IDEF",
-      "flow": -12.72,
-      "moves": 0
-    },
-    {
-      "etf": "CHAT",
-      "flow": -16.28,
-      "moves": 4
-    }
-  ],
+  "fundsExcluded": [],
   "minMoveValue": 1000000,
-  "movesConsidered": 19,
-  "movesBelowFloor": 61,
-  "notListed": [
-    {
-      "etf": "VOLT",
-      "ticker": "ABBN",
-      "name": "ABB LTD",
-      "reason": "no US listing"
-    }
-  ],
+  "movesConsidered": 1,
+  "movesBelowFloor": 3,
+  "notListed": [],
   "top": [
     {
       "rank": 1,
-      "etf": "DRAM",
-      "themes": [
-        "Semiconductors"
-      ],
-      "ticker": "MU",
-      "name": "Micron Technology, Inc.",
-      "kind": "trimmed",
-      "netShares": -85136,
-      "sharesBefore": 899961,
-      "sharesAfter": 797734,
-      "positionChangePct": -9.6,
-      "weightMoved": -0.41,
-      "weightAfter": 3.82,
-      "price": 594.51,
-      "value": -50614203
-    },
-    {
-      "rank": 2,
-      "etf": "FWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "MSFT",
-      "name": "Microsoft Corporation",
-      "kind": "trimmed",
-      "netShares": -22407,
-      "sharesBefore": 199764,
-      "sharesAfter": 184585,
-      "positionChangePct": -10.8,
-      "weightMoved": -0.38,
-      "weightAfter": 3.12,
-      "price": 484.52,
-      "value": -10856640
-    },
-    {
-      "rank": 3,
-      "etf": "VOLT",
-      "themes": [
-        "Electrification"
-      ],
-      "ticker": "ETN",
-      "name": "EATON CORP PLC",
-      "kind": "trimmed",
-      "netShares": -15606,
-      "sharesBefore": 109951,
-      "sharesAfter": 94345,
-      "positionChangePct": -14.2,
-      "weightMoved": -0.79,
-      "weightAfter": 4.78,
-      "price": 311.33,
-      "value": -4858616
-    },
-    {
-      "rank": 4,
-      "etf": "FWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "ASML",
-      "name": "ASML Holding N.V.",
-      "kind": "trimmed",
-      "netShares": -3283,
-      "sharesBefore": 31404,
-      "sharesAfter": 29257,
-      "positionChangePct": -10.1,
-      "weightMoved": -0.14,
-      "weightAfter": 1.29,
-      "price": 1266.22,
-      "value": -4157000
-    },
-    {
-      "rank": 5,
       "etf": "VOLT",
       "themes": [
         "Electrification"
@@ -144,266 +24,14 @@
       "ticker": "OGE",
       "name": "OGE ENERGY CORP",
       "kind": "trimmed",
-      "netShares": -79804,
-      "sharesBefore": 693370,
-      "sharesAfter": 613566,
-      "positionChangePct": -11.5,
-      "weightMoved": -0.66,
-      "weightAfter": 5.11,
-      "price": 51.12,
-      "value": -4079580
-    },
-    {
-      "rank": 6,
-      "etf": "VOLT",
-      "themes": [
-        "Electrification"
-      ],
-      "ticker": "SO",
-      "name": "SOUTHERN CO/THE",
-      "kind": "new",
-      "netShares": 32811,
-      "sharesBefore": 0,
-      "sharesAfter": 32811,
-      "positionChangePct": null,
-      "weightMoved": 0.5,
-      "weightAfter": 0.5,
-      "price": 93.13,
-      "value": 3055688
-    },
-    {
-      "rank": 7,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "META",
-      "name": "Meta Platforms, Inc.",
-      "kind": "added",
-      "netShares": 4641,
-      "sharesBefore": 8395,
-      "sharesAfter": 13733,
-      "positionChangePct": 51.1,
-      "weightMoved": 1.1,
-      "weightAfter": 3.24,
-      "price": 560.84,
-      "value": 2602858
-    },
-    {
-      "rank": 8,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "MSFT",
-      "name": "Microsoft Corporation",
-      "kind": "added",
-      "netShares": 4762,
-      "sharesBefore": 30509,
-      "sharesAfter": 37803,
-      "positionChangePct": 14.4,
-      "weightMoved": 0.97,
-      "weightAfter": 7.71,
-      "price": 484.52,
-      "value": 2307284
-    },
-    {
-      "rank": 9,
-      "etf": "SGRT",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "PLTR",
-      "name": "Palantir Technologies Inc.",
-      "kind": "trimmed",
-      "netShares": -14149,
-      "sharesBefore": 31444,
-      "sharesAfter": 17295,
-      "positionChangePct": -45,
-      "weightMoved": -4.18,
-      "weightAfter": 5.11,
-      "price": 143.49,
-      "value": -2030240
-    },
-    {
-      "rank": 10,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "NVDA",
-      "name": "NVIDIA Corporation",
-      "kind": "added",
-      "netShares": 16039,
-      "sharesBefore": 115717,
-      "sharesAfter": 141359,
-      "positionChangePct": 12.8,
-      "weightMoved": 0.85,
-      "weightAfter": 7.47,
-      "price": 125.53,
-      "value": 2013376
-    },
-    {
-      "rank": 11,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AMZN",
-      "name": "Amazon.com, Inc.",
-      "kind": "added",
-      "netShares": 7991,
-      "sharesBefore": 53722,
-      "sharesAfter": 66171,
-      "positionChangePct": 13.7,
-      "weightMoved": 0.83,
-      "weightAfter": 6.88,
-      "price": 246.82,
-      "value": 1972339
-    },
-    {
-      "rank": 12,
-      "etf": "MNVT",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "Z",
-      "name": "Zillow Group, Inc.",
-      "kind": "new",
-      "netShares": 68626,
-      "sharesBefore": 0,
-      "sharesAfter": 68626,
-      "positionChangePct": null,
-      "weightMoved": 3.48,
-      "weightAfter": 3.48,
-      "price": 27.29,
-      "value": 1872804
-    },
-    {
-      "rank": 13,
-      "etf": "MNVT",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "RDDT",
-      "name": "Reddit, Inc.",
-      "kind": "new",
-      "netShares": 21199,
-      "sharesBefore": 0,
-      "sharesAfter": 21199,
-      "positionChangePct": null,
-      "weightMoved": 3.54,
-      "weightAfter": 3.54,
-      "price": 85.33,
-      "value": 1808911
-    },
-    {
-      "rank": 14,
-      "etf": "CLSE",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "AMD",
-      "name": "Advanced Micro Devices, Inc.",
-      "kind": "added",
-      "netShares": 4033,
-      "sharesBefore": 54393,
-      "sharesAfter": 58173,
-      "positionChangePct": 7.4,
-      "weightMoved": 0.21,
-      "weightAfter": 3.07,
-      "price": 424.39,
-      "value": 1711565
-    },
-    {
-      "rank": 15,
-      "etf": "CLSE",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "FTNT",
-      "name": "Fortinet, Inc.",
-      "kind": "added",
-      "netShares": 12268,
-      "sharesBefore": 81418,
-      "sharesAfter": 93308,
-      "positionChangePct": 15.1,
-      "weightMoved": 0.17,
-      "weightAfter": 1.32,
-      "price": 124.56,
-      "value": 1528102
-    },
-    {
-      "rank": 16,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "MU",
-      "name": "Micron Technology, Inc.",
-      "kind": "added",
-      "netShares": 2513,
-      "sharesBefore": 11402,
-      "sharesAfter": 14861,
-      "positionChangePct": 20.3,
-      "weightMoved": 0.63,
-      "weightAfter": 3.72,
-      "price": 594.51,
-      "value": 1494004
-    },
-    {
-      "rank": 17,
-      "etf": "FRWD",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "WDC",
-      "name": "Western Digital Corporation",
-      "kind": "added",
-      "netShares": 4421,
-      "sharesBefore": 27741,
-      "sharesAfter": 34464,
-      "positionChangePct": 14.7,
-      "weightMoved": 0.49,
-      "weightAfter": 3.79,
-      "price": 261.11,
-      "value": 1154367
-    },
-    {
-      "rank": 18,
-      "etf": "MNVT",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "TMDX",
-      "name": "TransMedics Group, Inc.",
-      "kind": "trimmed",
-      "netShares": -13208,
-      "sharesBefore": 43739,
-      "sharesAfter": 30531,
-      "positionChangePct": -30.2,
-      "weightMoved": -2.31,
-      "weightAfter": 5.34,
-      "price": 85.25,
-      "value": -1125982
-    },
-    {
-      "rank": 19,
-      "etf": "SGRT",
-      "themes": [
-        "Broad Tech"
-      ],
-      "ticker": "CCK",
-      "name": "Crown Holdings, Inc.",
-      "kind": "added",
-      "netShares": 8525,
-      "sharesBefore": 10992,
-      "sharesAfter": 19517,
-      "positionChangePct": 77.6,
-      "weightMoved": 1.94,
-      "weightAfter": 4.45,
-      "price": 117.96,
-      "value": 1005609
+      "netShares": -42221,
+      "sharesBefore": 613566,
+      "sharesAfter": 545841,
+      "positionChangePct": -7.2,
+      "weightMoved": -0.35,
+      "weightAfter": 4.52,
+      "price": 51.41,
+      "value": -2170582
     }
   ],
   "consensus": {
@@ -412,55 +40,55 @@
   },
   "flows": {
     "AIS": 0,
-    "BAI": -2.92,
-    "ALAI": -75.38,
+    "BAI": 0,
+    "ALAI": 0,
     "AIFD": 0,
     "SPRX": 0,
     "AOTG": 0,
     "TCAI": 0,
-    "LRNZ": 1.54,
+    "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
-    "ANTW": 29.22,
-    "AIHY": 0,
-    "NCLD": 6.83,
+    "ANTW": 0,
+    "AIHY": 5.56,
+    "NCLD": 0,
     "DISK": 0,
     "GTEK": 0,
-    "ARKK": -55.4,
-    "FRWD": 8.3,
-    "BCTK": 34.9,
-    "FWD": 3.62,
+    "ARKK": 0,
+    "FRWD": 0,
+    "BCTK": 0,
+    "FWD": 0,
     "CBSE": 0,
-    "FCUS": -3.25,
-    "CNEQ": -60.36,
+    "FCUS": 0,
+    "CNEQ": 0,
     "SGRT": 0,
     "TEK": 0,
-    "AIUP": 1.39,
+    "AIUP": 0,
     "TCV": 0,
-    "LOUP": 0.7,
-    "MNVT": 0,
+    "LOUP": 0,
+    "MNVT": -1.48,
     "FFF": 0,
-    "GRNY": -15.53,
+    "GRNY": 0,
     "GARY": 0,
-    "CLSE": -0.46,
+    "CLSE": 0,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 0,
+    "EUV": 1.16,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": 0,
-    "AIPO": -0.31,
+    "VOLT": -4.16,
+    "AIPO": -1,
     "RSHO": 0,
-    "IDEF": -12.72,
+    "IDEF": 0,
     "BILT": 0,
-    "WGMI": 5.61,
+    "WGMI": 0,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
-    "MEME": 2.93,
+    "MEME": 0,
     "RKNG": 0,
-    "CHAT": -16.28,
-    "DRAM": -1.9,
+    "CHAT": 0,
+    "DRAM": 0,
     "FDTX": 0,
     "MARS": 0
   },
