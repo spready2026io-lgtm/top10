@@ -1,37 +1,277 @@
 {
-  "date": "2026-11-24",
+  "date": "2026-11-25",
   "status": "ok",
-  "generatedAt": "2026-11-24T01:23:59.362Z",
-  "baselineFrom": "2026-11-23",
+  "generatedAt": "2026-11-25T13:42:05.485Z",
+  "baselineFrom": "2026-11-24",
   "fundsTracked": 52,
   "fundsWithShares": 52,
-  "fundsCompared": 52,
+  "fundsCompared": 48,
   "fundsStale": 0,
   "coverageFloor": 42,
   "maxDailyFlowPct": 10,
-  "fundsExcluded": [],
+  "fundsExcluded": [
+    {
+      "etf": "ALAI",
+      "flow": -29.3,
+      "moves": 10
+    },
+    {
+      "etf": "ARKK",
+      "flow": -31.81,
+      "moves": 1
+    },
+    {
+      "etf": "CBSE",
+      "flow": -10.14,
+      "moves": 1
+    },
+    {
+      "etf": "CNEQ",
+      "flow": -76.6,
+      "moves": 3
+    }
+  ],
   "minMoveValue": 1000000,
-  "movesConsidered": 1,
-  "movesBelowFloor": 3,
-  "notListed": [],
+  "movesConsidered": 11,
+  "movesBelowFloor": 6,
+  "notListed": [
+    {
+      "etf": "AIS",
+      "ticker": "KRW",
+      "name": "SOUTH KOREA WON",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "AIS",
+      "ticker": "TWD",
+      "name": "NEW TAIWAN DOLLAR",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "AIS",
+      "ticker": "CNY",
+      "name": "CHINESE YUAN",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "VOLT",
+      "ticker": "ABBN",
+      "name": "ABB LTD",
+      "reason": "no US listing"
+    },
+    {
+      "etf": "IDEF",
+      "ticker": "LDO",
+      "name": "LEONARDO FINMECCANICA SPA",
+      "reason": "not an equity (ECNQUOTE)"
+    },
+    {
+      "etf": "BILT",
+      "ticker": "KEY",
+      "name": "KEYERA",
+      "reason": "the US listing is KeyCorp"
+    }
+  ],
   "top": [
     {
       "rank": 1,
+      "etf": "DRAM",
+      "themes": [
+        "Semiconductors"
+      ],
+      "ticker": "MU",
+      "name": "Micron Technology, Inc.",
+      "kind": "trimmed",
+      "netShares": -55121,
+      "sharesBefore": 797734,
+      "sharesAfter": 732804,
+      "positionChangePct": -7,
+      "weightMoved": -0.27,
+      "weightAfter": 3.6,
+      "price": 629.79,
+      "value": -34714655
+    },
+    {
+      "rank": 2,
+      "etf": "BAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "NVDA",
+      "name": "NVIDIA",
+      "kind": "added",
+      "netShares": 122103,
+      "sharesBefore": 2039552,
+      "sharesAfter": 2152164,
+      "positionChangePct": 6,
+      "weightMoved": 0.18,
+      "weightAfter": 3.11,
+      "price": 155.38,
+      "value": 18972364
+    },
+    {
+      "rank": 3,
+      "etf": "BAI",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS CLASS A",
+      "kind": "trimmed",
+      "netShares": -42873,
+      "sharesBefore": 1332050,
+      "sharesAfter": 1282978,
+      "positionChangePct": -3.2,
+      "weightMoved": -0.08,
+      "weightAfter": 2.52,
+      "price": 210.86,
+      "value": -9040201
+    },
+    {
+      "rank": 4,
+      "etf": "CHAT",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "ANT",
+      "name": "Anthropic, PBC",
+      "kind": "trimmed",
+      "netShares": -68852,
+      "sharesBefore": 640961,
+      "sharesAfter": 558684,
+      "positionChangePct": -11,
+      "weightMoved": -0.42,
+      "weightAfter": 3.41,
+      "price": 81.91,
+      "value": -5639323
+    },
+    {
+      "rank": 5,
       "etf": "VOLT",
       "themes": [
         "Electrification"
       ],
-      "ticker": "OGE",
-      "name": "OGE ENERGY CORP",
+      "ticker": "SO",
+      "name": "SOUTHERN CO/THE",
+      "kind": "added",
+      "netShares": 49301,
+      "sharesBefore": 31483,
+      "sharesAfter": 80916,
+      "positionChangePct": 155.9,
+      "weightMoved": 0.77,
+      "weightAfter": 1.26,
+      "price": 94.11,
+      "value": 4639717
+    },
+    {
+      "rank": 6,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "RTX",
+      "name": "RTX",
       "kind": "trimmed",
-      "netShares": -42221,
-      "sharesBefore": 613566,
-      "sharesAfter": 545841,
-      "positionChangePct": -7.2,
-      "weightMoved": -0.35,
-      "weightAfter": 4.52,
-      "price": 51.41,
-      "value": -2170582
+      "netShares": -15859,
+      "sharesBefore": 743671,
+      "sharesAfter": 719462,
+      "positionChangePct": -2.2,
+      "weightMoved": -0.17,
+      "weightAfter": 7.54,
+      "price": 195.33,
+      "value": -3097738
+    },
+    {
+      "rank": 7,
+      "etf": "CLSE",
+      "themes": [
+        "Broad Tech"
+      ],
+      "ticker": "FTNT",
+      "name": "Fortinet, Inc.",
+      "kind": "added",
+      "netShares": 19060,
+      "sharesBefore": 93308,
+      "sharesAfter": 111776,
+      "positionChangePct": 20.6,
+      "weightMoved": 0.26,
+      "weightAfter": 1.55,
+      "price": 132.5,
+      "value": 2525450
+    },
+    {
+      "rank": 8,
+      "etf": "CHAT",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "GOOGL",
+      "name": "Alphabet Inc.",
+      "kind": "added",
+      "netShares": 7995,
+      "sharesBefore": 290105,
+      "sharesAfter": 292024,
+      "positionChangePct": 2.8,
+      "weightMoved": 0.17,
+      "weightAfter": 6.07,
+      "price": 279.05,
+      "value": 2231005
+    },
+    {
+      "rank": 9,
+      "etf": "CHAT",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "kind": "added",
+      "netShares": 4093,
+      "sharesBefore": 145633,
+      "sharesAfter": 146676,
+      "positionChangePct": 2.9,
+      "weightMoved": 0.15,
+      "weightAfter": 5.42,
+      "price": 496.13,
+      "value": 2030660
+    },
+    {
+      "rank": 10,
+      "etf": "CHAT",
+      "themes": [
+        "AI & ML"
+      ],
+      "ticker": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "kind": "added",
+      "netShares": 7517,
+      "sharesBefore": 271415,
+      "sharesAfter": 273247,
+      "positionChangePct": 2.8,
+      "weightMoved": 0.14,
+      "weightAfter": 5.13,
+      "price": 252.29,
+      "value": 1896464
+    },
+    {
+      "rank": 11,
+      "etf": "IDEF",
+      "themes": [
+        "Industrials",
+        "Space & Defense"
+      ],
+      "ticker": "HXL",
+      "name": "HEXCEL",
+      "kind": "trimmed",
+      "netShares": -15233,
+      "sharesBefore": 112170,
+      "sharesAfter": 95678,
+      "positionChangePct": -13.7,
+      "weightMoved": -0.06,
+      "weightAfter": 0.38,
+      "price": 74.58,
+      "value": -1136077
     }
   ],
   "consensus": {
@@ -39,56 +279,56 @@
     "sells": []
   },
   "flows": {
-    "AIS": 0,
-    "BAI": 0,
-    "ALAI": 0,
-    "AIFD": 0,
-    "SPRX": 0,
+    "AIS": -5.16,
+    "BAI": -0.47,
+    "ALAI": -29.3,
+    "AIFD": -0.78,
+    "SPRX": -1.05,
     "AOTG": 0,
     "TCAI": 0,
     "LRNZ": 0,
     "EPAI": 0,
     "IQM": 0,
     "ANTW": 0,
-    "AIHY": 5.56,
-    "NCLD": 0,
+    "AIHY": 0,
+    "NCLD": 7.58,
     "DISK": 0,
     "GTEK": 0,
-    "ARKK": 0,
-    "FRWD": 0,
+    "ARKK": -31.81,
+    "FRWD": 0.25,
     "BCTK": 0,
     "FWD": 0,
-    "CBSE": 0,
+    "CBSE": -10.14,
     "FCUS": 0,
-    "CNEQ": 0,
+    "CNEQ": -76.6,
     "SGRT": 0,
     "TEK": 0,
     "AIUP": 0,
     "TCV": 0,
     "LOUP": 0,
-    "MNVT": -1.48,
+    "MNVT": 0,
     "FFF": 0,
-    "GRNY": 0,
+    "GRNY": -0.13,
     "GARY": 0,
-    "CLSE": 0,
+    "CLSE": -0.63,
     "NXTE": 0,
     "LUMA": 0,
-    "EUV": 1.16,
+    "EUV": 0,
     "XDAT": 0,
     "POW": 0,
-    "VOLT": -4.16,
-    "AIPO": -1,
+    "VOLT": 0.42,
+    "AIPO": 0,
     "RSHO": 0,
-    "IDEF": 0,
+    "IDEF": -1.12,
     "BILT": 0,
-    "WGMI": 0,
+    "WGMI": 1.45,
     "DECO": 0,
     "TEKX": 0,
     "WAR": 0,
     "MEME": 0,
     "RKNG": 0,
-    "CHAT": 0,
-    "DRAM": 0,
+    "CHAT": -2.09,
+    "DRAM": -1.23,
     "FDTX": 0,
     "MARS": 0
   },
