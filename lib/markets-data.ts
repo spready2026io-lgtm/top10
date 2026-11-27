@@ -198,8 +198,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 670437000,
-      "pct": 7.1
+      "usd": 382077000,
+      "pct": 3.93
     },
     "flow1M": {
       "usd": 886707000,
@@ -536,8 +536,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 0,
-      "pct": 0
+      "usd": -117787500,
+      "pct": -0.52
     },
     "flow1M": {
       "usd": 798337500,
@@ -1719,8 +1719,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": -21075000,
-      "pct": -2.44
+      "usd": -14050000,
+      "pct": -1.64
     },
     "flow1M": {
       "usd": -150335000,
@@ -1888,8 +1888,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 9975000,
-      "pct": 2.14
+      "usd": -525000,
+      "pct": -0.11
     },
     "flow1M": {
       "usd": 77700000,
@@ -2057,8 +2057,8 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 19267500,
-      "pct": 8
+      "usd": 0,
+      "pct": 0
     },
     "flow1M": {
       "usd": 40461750,
@@ -2568,8 +2568,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": -1649752000,
-      "pct": -16.62
+      "usd": -1512524000,
+      "pct": -15.45
     },
     "note": "Brazil is the heavyweight of Latin America: commodities exporters and high-yielding banks, with politics and the real always part of the trade. When global money rotates into LatAm, it lands here first."
   },
@@ -2737,8 +2737,8 @@ export const MARKET_TILES: MarketTile[] = [
       "pct": -2.83
     },
     "flow1M": {
-      "usd": 29336000,
-      "pct": 1.98
+      "usd": -29336000,
+      "pct": -1.9
     },
     "note": "Mexico is the nearshoring trade: industrials, banks and consumer names tied tightly to the US cycle and to trade policy headlines. It is grouped with Latin America but its economic engine is its northern border."
   },
@@ -2902,12 +2902,12 @@ export const MARKET_TILES: MarketTile[] = [
       ]
     },
     "flow1W": {
-      "usd": 16319316,
-      "pct": 2.7
+      "usd": -7266926,
+      "pct": -1.16
     },
     "flow1M": {
-      "usd": 36130294,
-      "pct": 6.18
+      "usd": 36271218,
+      "pct": 6.21
     },
     "note": "The reform trade. Argentina's market rerated hard on fiscal shock therapy, and ARGT (a Global X fund, the only pure vehicle) is driven as much by policy credibility as by earnings. Expect outsized swings in both directions."
   },
@@ -3827,8 +3827,8 @@ export const LENS_FUNDS: LensFund[] = [
       "pct": 0
     },
     "flow1M": {
-      "usd": 230412000,
-      "pct": 0.99
+      "usd": 90519000,
+      "pct": 0.39
     },
     "returns": {
       "1W": -0.7,
@@ -4057,8 +4057,8 @@ export const LENS_FUNDS: LensFund[] = [
     "name": "iShares Core MSCI Europe ETF",
     "aum": 9488864256,
     "flow1W": {
-      "usd": 670437000,
-      "pct": 7.1
+      "usd": 382077000,
+      "pct": 3.93
     },
     "flow1M": {
       "usd": 886707000,
@@ -4865,7 +4865,7 @@ export const LENS_FUNDS: LensFund[] = [
   }
 ];
 
-export const MARKETS_TIMESTAMP_NY = "Nov 26, 2026, 8:41 AM ET";
+export const MARKETS_TIMESTAMP_NY = "Nov 27, 2026, 8:41 AM ET";
 
 // First date in markets-history.json: flow windows are meaningful only once
 // history spans them (1W needs a week, 1M a month).

@@ -1,11 +1,11 @@
 {
-  "scanTimestamp": "2026-11-26T13:40:09.771Z",
-  "scanTimestampNY": "November 26, 2026 at 8:40 AM ET",
+  "scanTimestamp": "2026-11-27T13:40:10.326Z",
+  "scanTimestampNY": "November 27, 2026 at 8:40 AM ET",
   "etfScan": {
     "results": {
       "AIS": {
         "ok": true,
-        "count": 19
+        "count": 40
       },
       "ARTY": {
         "ok": true,
@@ -77,7 +77,7 @@
       },
       "ANTW": {
         "ok": true,
-        "count": 22
+        "count": 23
       },
       "AIHY": {
         "ok": true,
@@ -185,7 +185,7 @@
       },
       "XNTK": {
         "ok": true,
-        "count": 24
+        "count": 25
       },
       "TEK": {
         "ok": true,
@@ -297,7 +297,7 @@
       },
       "POW": {
         "ok": true,
-        "count": 17
+        "count": 42
       },
       "VOLT": {
         "ok": true,
@@ -345,7 +345,7 @@
       },
       "CRAK": {
         "ok": true,
-        "count": 7
+        "count": 8
       },
       "PXE": {
         "ok": true,
@@ -353,7 +353,7 @@
       },
       "IBAT": {
         "ok": true,
-        "count": 6
+        "count": 7
       },
       "WGMI": {
         "ok": true,
@@ -377,7 +377,7 @@
       },
       "UFO": {
         "ok": true,
-        "count": 21
+        "count": 20
       },
       "WAR": {
         "ok": true,
@@ -392,13 +392,15 @@
         "count": 19
       },
       "RKNG": {
-        "ok": true,
-        "count": 25
+        "ok": false,
+        "count": 0
       }
     },
     "total": 98,
-    "ok": 98,
-    "failed": [],
+    "ok": 97,
+    "failed": [
+      "RKNG"
+    ],
     "fetchErrors": [
       {
         "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/holdings/fund?idType=ticker&productType=ETF",
@@ -451,8 +453,8 @@
     ]
   },
   "yfScan": {
-    "total": 159,
-    "succeeded": 158,
+    "total": 164,
+    "succeeded": 163,
     "failed": [
       "AVIO"
     ]
